@@ -3,8 +3,8 @@ package EchoesOfTheOath.Characters;
 public class Mage extends Character{
     private boolean[] isUsed = new boolean[3];
 
-    public Mage(){
-        super("Mage", 1500, 110);
+    public Mage() {
+        super("Mage", 1500, 110, 1);
     }
 
     @Override
@@ -40,5 +40,11 @@ public class Mage extends Character{
             }
         }
         return true;
+    }
+
+    @Override public void takeDamage(int dmg){
+        super.takeDamage(dmg);
+
+        System.out.println(getName()+" has "+getHp()+" HP remaining!");
     }
 }

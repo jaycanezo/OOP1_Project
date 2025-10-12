@@ -4,7 +4,7 @@ public class Archer extends Character{
     private boolean[] isUsed = new boolean[3];
 
     public Archer(){
-        super("Archer", 1300, 130);
+        super("Archer", 1300, 130, 1);
     }
 
     @Override
@@ -40,5 +40,11 @@ public class Archer extends Character{
             }
         }
         return true;
+    }
+
+    @Override public void takeDamage(int dmg){
+        super.takeDamage(dmg);
+
+        System.out.println(getName()+" has "+getHp()+" HP remaining!");
     }
 }

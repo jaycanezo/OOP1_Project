@@ -7,14 +7,32 @@ abstract public class Character {
     private String name;
     private int hp;
     private int def;
+    private int level;
 
-    public Character(String name, int hp, int def) {
+    public Character(String name, int hp, int def, int level) {
         this.name=name;
         this.hp=hp;
         this.def=def;
+        this.level=level;
+    }
+
+    public int getHp() {
+        return this.hp;
+    }
+
+    public int getDef() {
+        return this.def;
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+
+    public void setLevel(int level){
+        this.level=level;
     }
     
-    abstract void useSkill(int skillNumber, Character enemy);
+    public abstract void useSkill(int skillNumber, Character enemy);
     public String getName(){
         return name;
     }
@@ -24,7 +42,9 @@ abstract public class Character {
     }
 
     public void takeDamage(int dmg){
-        System.out.println(name+" takes"+dmg+"damage!");
+        dmg-=def*level;
+        hp-=dmg*level;
+        System.out.println(name+" takes "+dmg+" damage!");
     }
 }
 
