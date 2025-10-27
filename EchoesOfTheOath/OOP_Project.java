@@ -177,7 +177,8 @@ public class OOP_Project {
         System.out.flush();
 
         //Start of the journey in the human nation
-        
+        Storyline storyline = new Storyline();
+
         System.out.println();
         System.out.println("You are now fighting King Bartholomew Monarch (\"Baby M\")");  
         System.out.println();
@@ -238,6 +239,7 @@ public class OOP_Project {
                 String retryChoice=scan.next();
                 
                 if(retryChoice.equalsIgnoreCase("y")){
+                    chosen.resetCooldowns();
                     chosen.setHp(chosen.getMaxHp());
                     babyM.setHp( babyM.getMaxHp());
                     System.out.println("You have been revived! The battle restarts.");
@@ -250,9 +252,9 @@ public class OOP_Project {
             }
         }
 
-        
+        storyline.theVeinsOfHumanasQuest(chosen.getName());
 
-
+        System.out.println();
         System.out.println("You are now fighting The Archivist");
         System.out.println();
         Archivist archivist = new Archivist();
@@ -313,8 +315,10 @@ public class OOP_Project {
                 String retryChoice=scan.next();
                 
                 if(retryChoice.equalsIgnoreCase("y")){
+                    chosen.resetCooldowns();
                     chosen.setHp(chosen.getMaxHp());
                     archivist.setHp(archivist.getMaxHp());
+                    System.out.println();
                     System.out.println("You have been revived! The battle restarts.");
                     System.out.println();
                 } else if(retryChoice.equalsIgnoreCase("n")){
