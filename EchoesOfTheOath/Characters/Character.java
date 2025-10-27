@@ -104,6 +104,12 @@ abstract public class Character {
     public void setSkillCooldown(int skillNumber, int turns) {
         skillCooldowns[skillNumber - 1] = turns;
     }
+
+    public void resetCooldowns() {
+    for (int i = 0; i < skillCooldowns.length; i++) {
+        skillCooldowns[i] = 0;
+    }
+}
 }
 
 

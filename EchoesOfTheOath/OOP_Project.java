@@ -178,6 +178,7 @@ public class OOP_Project {
 
         //Start of the journey in the human nation
         
+        System.out.println();
         System.out.println("You are now fighting King Bartholomew Monarch (\"Baby M\")");  
         System.out.println();
         babyM babyM = new babyM();
@@ -219,6 +220,7 @@ public class OOP_Project {
             //defeat condition
             if (babyM.getHp() <= 0) {
                 System.out.println(babyM.getName() + " has been defeated!");
+                chosen.resetCooldowns();
                 chosen.setHp(chosen.getMaxHp());
                 System.out.println(chosen.getName() + "'s HP has been fully restored!");
                 chosen.setLevel(chosen.getLevel() + 1);
@@ -272,7 +274,7 @@ public class OOP_Project {
                     }
                 } else if (skillChoice >= 1 && skillChoice <= 3) {
                     if (chosen.isSkillAvailable(skillChoice)) {
-                        chosen.useSkill(skillChoice, babyM);
+                        chosen.useSkill(skillChoice, archivist);
                         System.out.println();
                         validAction = true;
                     } else {
@@ -293,6 +295,7 @@ public class OOP_Project {
             //defeat condition
             if (archivist.getHp() <= 0) {
                 System.out.println(archivist.getName() + " has been defeated!");
+                chosen.resetCooldowns();
                 chosen.setHp(chosen.getMaxHp());
                 System.out.println(chosen.getName() + "'s HP has been fully restored!");
                 chosen.setLevel(chosen.getLevel() + 1);
@@ -314,40 +317,12 @@ public class OOP_Project {
                     archivist.setHp(archivist.getMaxHp());
                     System.out.println("You have been revived! The battle restarts.");
                     System.out.println();
-                } else {
+                } else if(retryChoice.equalsIgnoreCase("n")){
                     System.out.println("Game Over. Thank you for playing!");
                     scan.close();
                     return;
                 }
             }
-        }
-
-
-        while(chosen.getHp()>0&&archivist.getHp()>0){
-            if(chosen.getHp()>0){
-                System.out.print("Choose a skill (1, 2, 3): ");
-                int skillChoice = scan.nextInt();
-                chosen.useSkill(skillChoice, archivist);
-                System.out.println();
-            } else {
-                System.out.println(chosen.getName()+" has been defeated!");
-                break;
-            }
-            
-            if(archivist.getHp()>0){
-                int randomSkill = archivist.random.nextInt(3) + 1;
-                archivist.useSkill(randomSkill, chosen);
-                System.out.println();
-            } else if(archivist.getHp()<=0){
-                System.out.println(archivist.getName()+" has been defeated!");
-                chosen.setLevel(chosen.getLevel()+1);
-                System.out.println(chosen.getName()+" leveled up to level "+chosen.getLevel()+"!");
-                break;
-            } else {
-                System.out.println(chosen.getName()+" has been defeated!");
-                break;
-            }
-            
         }
 
         scan.close();
