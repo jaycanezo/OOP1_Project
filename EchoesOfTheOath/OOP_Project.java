@@ -45,10 +45,10 @@ public class OOP_Project {
         // Wait for Enter
         scan.nextLine();
         
-        // Clear screen using ANSI escape codes
-        System.out.print("\033[H\033[2J"); // Move cursor to top-left and clear screen
+        System.out.print("\033[H\033[2J"); //clear screen using ANSI escape codes
         System.out.flush();
 
+        //start of the storyline intro, cannot be skipped for immersion/lore purposes
         String text = "Long ago, three adventurers-a brave warrior, a swift archer, and a wise mage-traveled across worlds, earning fame for vanquishing great evils. Their bond was unbreakable, their deeds legendary...\n\nUntil one mission brought them face to face with a power unlike any other-a force that had slain even the mightiest heroes.";
         
         for (char c : text.toCharArray()) {
@@ -59,12 +59,14 @@ public class OOP_Project {
 
         scan.nextLine();
         System.out.println();
-        
+
+        //creation of character objects
         Warrior warrior = new Warrior();
         Archer archer = new Archer();
         Mage mage = new Mage();
         Boss boss = new Boss();
 
+        //character trial, can only move to the next character after all skills are used/tested
         System.out.print("You encountered a powerful foe!");
         scan.nextLine();
 
@@ -149,6 +151,7 @@ public class OOP_Project {
             break;
         }
 
+        System.out.println();
         System.out.print("Enter your hero's name: ");
         String playerName = scan.nextLine();
         chosen.setName(playerName);
@@ -169,52 +172,157 @@ public class OOP_Project {
         scan.nextLine();
         System.out.println("As the Darkness surrounds you, a mysterious light begins to glow within your heart.");
         scan.nextLine();
-        System.out.print("\033[H\033[2J"); // Move cursor to top-left and clear screen
+
+        System.out.print("\033[H\033[2J"); //clear screen
         System.out.flush();
 
         //Start of the journey in the human nation
-
-
-        System.out.println("[Darkness. Faint echoes of battle—swords clashing, spells bursting, someone screaming the hero’s name. Then silence.]");
-        scan.nextLine();
-        System.out.println("(soft inhale)\r\n…There it is again.");
-        scan.nextLine();
-        System.out.println("That same dream. The light, the roar, the pain— then… nothing.");
-        scan.nextLine();
-
-        System.out.println("You are now fighting King Bartholomew Monarch (\"Baby M\")");
+        
+        System.out.println("You are now fighting King Bartholomew Monarch (\"Baby M\")");  
         System.out.println();
         babyM babyM = new babyM();
-        while(chosen.getHp()>0&&babyM.getHp()>0){
-            if(chosen.getHp()>0){
-                System.out.print("Choose a skill (1, 2, 3): ");
+        while (babyM.getHp() > 0) {
+            //user turn
+            boolean validAction = false;
+            while (!validAction) {
+                System.out.print("Choose a skill (1, 2, 3) or 4 to use a potion: ");
                 int skillChoice = scan.nextInt();
-                chosen.useSkill(skillChoice, babyM);
-                System.out.println();
-            } else {
-                System.out.println(chosen.getName()+" has been defeated!");
-                break;
+
+                if (skillChoice == 4) {
+                    if (chosen.getPotionCount() > 0) {
+                        chosen.usePotion();
+                        validAction = true;
+                    } else {
+                        System.out.println("No potions left! Choose another action.");
+                        System.out.println();
+                    }
+                } else if (skillChoice >= 1 && skillChoice <= 3) {
+                    if (chosen.isSkillAvailable(skillChoice)) {
+                        chosen.useSkill(skillChoice, babyM);
+                        System.out.println();
+                        validAction = true;
+                    } else {
+                        System.out.println("Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining.");
+                        System.out.println("Choose another action.");
+                        System.out.println();
+                    }
+                }
             }
-            
-            if(babyM.getHp()>0){
+
+            //enemy turn
+            if (babyM.getHp() > 0) {
                 int randomSkill = babyM.random.nextInt(3) + 1;
                 babyM.useSkill(randomSkill, chosen);
                 System.out.println();
-            } else if(babyM.getHp()<=0){
-                System.out.println(babyM.getName()+" has been defeated!");
-                chosen.setLevel(chosen.getLevel()+1);
-                System.out.println(chosen.getName()+" leveled up to level "+chosen.getLevel()+"!");
+            }
+
+            //defeat condition
+            if (babyM.getHp() <= 0) {
+                System.out.println(babyM.getName() + " has been defeated!");
+                chosen.setHp(chosen.getMaxHp());
+                System.out.println(chosen.getName() + "'s HP has been fully restored!");
+                chosen.setLevel(chosen.getLevel() + 1);
+                System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
+                chosen.setPotionCount(chosen.getPotionCount() + 5);
+                System.out.println("Reward: 5 Health Potion added to inventory.");
+                System.out.println("Current Level: "+chosen.getLevel());
+                System.out.println("Current Potions: " + chosen.getPotionCount());
+                System.out.println("You may now proceed on your journey.");
+                System.out.println();
                 break;
-            } else {
-                System.out.println(chosen.getName()+" has been defeated!");
-                break;
+            } else if (chosen.getHp() <= 0) {
+                System.out.println(chosen.getName() + " has been defeated!");
+                System.out.println("Would you like to try again? (y/n): ");
+                String retryChoice=scan.next();
+                
+                if(retryChoice.equalsIgnoreCase("y")){
+                    chosen.setHp(chosen.getMaxHp());
+                    babyM.setHp( babyM.getMaxHp());
+                    System.out.println("You have been revived! The battle restarts.");
+                    System.out.println();
+                } else {
+                    System.out.println("Game Over. Thank you for playing!");
+                    scan.close();
+                    return;
+                }
             }
         }
 
-        System.out.println("Level: "+chosen.getLevel());
+        
+
+
         System.out.println("You are now fighting The Archivist");
         System.out.println();
         Archivist archivist = new Archivist();
+
+        while (archivist.getHp() > 0) {
+            //user turn
+            boolean validAction = false;
+            while (!validAction) {
+                System.out.print("Choose a skill (1, 2, 3) or 4 to use a potion: ");
+                int skillChoice = scan.nextInt();
+
+                if (skillChoice == 4) {
+                    if (chosen.getPotionCount() > 0) {
+                        chosen.usePotion();
+                        validAction = true;
+                    } else {
+                        System.out.println("No potions left! Choose another action.");
+                        System.out.println();
+                    }
+                } else if (skillChoice >= 1 && skillChoice <= 3) {
+                    if (chosen.isSkillAvailable(skillChoice)) {
+                        chosen.useSkill(skillChoice, babyM);
+                        System.out.println();
+                        validAction = true;
+                    } else {
+                        System.out.println("Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining.");
+                        System.out.println("Choose another action.");
+                        System.out.println();
+                    }
+                }
+            }
+
+            //enemy turn
+            if (archivist.getHp() > 0) {
+                int randomSkill = archivist.random.nextInt(3) + 1;
+                archivist.useSkill(randomSkill, chosen);
+                System.out.println();
+            }
+
+            //defeat condition
+            if (archivist.getHp() <= 0) {
+                System.out.println(archivist.getName() + " has been defeated!");
+                chosen.setHp(chosen.getMaxHp());
+                System.out.println(chosen.getName() + "'s HP has been fully restored!");
+                chosen.setLevel(chosen.getLevel() + 1);
+                System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
+                chosen.setPotionCount(chosen.getPotionCount() + 5);
+                System.out.println("Reward: 5 Health Potion added to inventory.");
+                System.out.println("Current Level: "+chosen.getLevel());
+                System.out.println("Current Potions: " + chosen.getPotionCount());
+                System.out.println("You may now proceed on your journey.");
+                System.out.println();
+                break;
+            } else if (chosen.getHp() <= 0) {
+                System.out.println(chosen.getName() + " has been defeated!");
+                System.out.println("Would you like to try again? (y/n): ");
+                String retryChoice=scan.next();
+                
+                if(retryChoice.equalsIgnoreCase("y")){
+                    chosen.setHp(chosen.getMaxHp());
+                    archivist.setHp(archivist.getMaxHp());
+                    System.out.println("You have been revived! The battle restarts.");
+                    System.out.println();
+                } else {
+                    System.out.println("Game Over. Thank you for playing!");
+                    scan.close();
+                    return;
+                }
+            }
+        }
+
+
         while(chosen.getHp()>0&&archivist.getHp()>0){
             if(chosen.getHp()>0){
                 System.out.print("Choose a skill (1, 2, 3): ");
