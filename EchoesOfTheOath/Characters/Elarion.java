@@ -1,10 +1,14 @@
 package EchoesOfTheOath.Characters;
 
 
-public class babyM extends Character{
-    public babyM(){
-        super("Baby M", 1400, 2);
+
+
+public class Elarion extends Character{
+    public Elarion(){
+        super("Elarion", 1400, 12);
     }
+
+
 
 
     @Override
@@ -13,35 +17,48 @@ public class babyM extends Character{
         int dmg = 0;
 
 
+
+
         //for skill defaulting if random skill is on cooldown
         if (cd[skillNumber - 1] > 0 && skillNumber != 1) {
             skillNumber = 1; //defaults to basic atk
         }
 
 
+
+
         switch (skillNumber) {
             case 1:
                 dmg = random.nextInt((21) + 30 + 20) * getLevel();
-                System.out.println(getName() + " uses Tantrum Toss!");
-                System.out.println("In a fit of screaming paranoia, the King wildly throws his golden rattle at his opponent.");
+                System.out.println(getName() + " uses Echo Rend!");
+                System.out.println("\"Your own hands betray you.\"");
+                System.out.println("Elarion unleashes a wave of distorted echoes.\n");
                 break;
+
+
 
 
             case 2:
                 dmg = random.nextInt((70) + 50 + 20) * getLevel();
-                System.out.println(getName() + " uses Feigned Faint!");
-                System.out.println("Baby M lulls his opponent into a false sense of security only to launch a surprise strike!");
+                System.out.println(getName() + " uses Memory Shatter!");
+                System.out.println("\"You forget what you were… and I become stronger.\"");
+                System.out.println("Elarion summons glowing memory shards from the hero, then crushes them into a shield.\n");
                 cd[skillNumber - 1] = 2;
                 break;
 
 
+
+
             case 3:
                 dmg = random.nextInt((100) + 230 * 4) * getLevel();
-                System.out.println(getName() + " uses his Ultimate: Enforced Decree!");
-                System.out.println("The infant King abruptly stops all movement as Someone overrides his own, charging forward with mechanical precision!");
+                System.out.println(getName() + " uses his Ultimate: The Final Vow!");
+                System.out.println("\"Your destiny cannot escape the light.\"");
+                System.out.println("Elarion calls down a pillar of fate that engulfs the hero in blinding light.\n");
                 cd[skillNumber - 1] = 3;
                 break;
         }
+
+
 
 
         enemy.takeDamage(dmg);
@@ -49,11 +66,16 @@ public class babyM extends Character{
     }
 
 
+
+
     @Override public void takeDamage(int dmg){
         super.takeDamage(dmg);
+
+
 
 
         System.out.println(getName()+" has "+getHp()+" HP remaining!");
     }
    
 }
+
