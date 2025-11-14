@@ -49,7 +49,7 @@ public class Storyline {
             scan.nextLine();
             
             System.out.println("Woman:");
-            System.out.println("Then my children go hungry again? You think the lord's gonna feed us?");
+            System.out.println("Then my children will go hungry again? You think the lord's gonna feed us?");
             scan.nextLine();
 
             System.out.println("(a heavy silence falls; both avoid the " + name + "'s eyes)");
@@ -57,10 +57,10 @@ public class Storyline {
             System.out.println("(Internal monologue)");
             System.out.println("\"Collectors...So that's what the stall owner meant earlier.\"");
             scan.nextLine();
-            System.out.println("\"Not monsters in the dark—just people in power who've forgotten what mercy looks like.\"");
+            System.out.println("\"Not monsters in the dark--just people in power who've forgotten what mercy looks like.\"");
             scan.nextLine();
             
-            System.out.println("(a young boy tugs on " + name + " cloak)");
+            System.out.println("(a young boy tugs on " + name + "'s cloak)");
             scan.nextLine();
             
             System.out.println("Boy: ");
@@ -180,20 +180,22 @@ public class Storyline {
 
             System.out.println("(villagers look at each other)");
             System.out.println("Imprisoned Woman:");
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
             System.out.println("Thank you... who ever you are.");
-            System.out.println(name +" (*nodds):");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
             }
+            
+            System.out.println(name +" (*nodds):");
             System.out.println("Now go! before the guards will catch all of you.");
-            System.out.println("("+name + " exits the chapel; camera pans — villagers hurry away into the night)");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
+            
+            System.out.println("("+name + " exits the chapel; villagers hurry away into the night)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -214,7 +216,7 @@ public class Storyline {
                 break;
             }
             System.out.println("Old Man:");
-            System.out.println("Could it be… a sign? That someone still remembers the old oath?");
+            System.out.println("Could it be... a sign? That someone still remembers the old oath?");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -222,7 +224,7 @@ public class Storyline {
             }
 
             System.out.println("(Internal monologue):");
-            System.out.println("\"The 'old oath'...There’s that word again. Even the people here whisper it like a ghost story. Could it be connected... to mine?\"");
+            System.out.println("\"The 'old oath'... There's that word again. Even the people here whisper it like a ghost story. Could it be connected... to mine?\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -234,14 +236,14 @@ public class Storyline {
                 isSkipped = true;
                 break;
             }
-            System.out.println(">>>\"We vow to protect balance.. We vow to...\"");
+            System.out.println("\"We vow to protect balance... We vow to...\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
             }
             System.out.println(name + " looks up, eyes narrowing");
-            System.out.println("\"That voice again...If helping these people brings me closer to remembering-then maybe that's where I start.\" ");
+            System.out.println("\"That voice again... If helping these people brings me closer to remembering-then maybe that's where I start.\" ");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -337,7 +339,7 @@ public class Storyline {
         if(isSkipped) {
             scan.nextLine();
             System.out.println("Quest Summary:");
-            System.out.println("You aided the people of Vensvale and exposed the rot beneath Humanas’s golden crown. The whispers of rebellion stir, and somewhere in the wind… a forgotten oath stirs with them.");
+            System.out.println("You aided the people of Vensvale and exposed the rot beneath Humanas's golden crown. The whispers of rebellion stir, and somewhere in the wind... a forgotten oath stirs with them.");
             scan.nextLine();
         }
 
@@ -356,7 +358,7 @@ public class Storyline {
         System.out.print("\033[H\033[2J"); //clear screen
         System.out.flush();
 
-        System.out.println("(the next morning dawns—sunlight leaks through the cracked stained glass of the castle courtyard)");
+        System.out.println("(the next morning dawns--sunlight leaks through the cracked stained glass of the castle courtyard)");
         scan.nextLine();
 
         System.out.println("(a servant rushes past, nearly bumping into " + name + ")");
@@ -703,17 +705,17 @@ public class Storyline {
         System.out.println("(silence. The library crumbles slowly, scrolls burning into motes of light.)");
         scan.nextLine();
         System.out.println("The Archivist (fading, voice almost human):");
-        System.out.println("\"Foolish… thing… You think freedom brings peace?\"");
+        System.out.println("\"Foolish... thing... You think freedom brings peace?\"");
         scan.nextLine();
         System.out.println("Hero (softly):");
         System.out.println("\"No. But at least it brings choice.\"");
         scan.nextLine();
-        System.out.println("(The Archivist’s last ink-drop hits the floor — it ripples outward, forming a single, blank page.)");
+        System.out.println("(The Archivist's last ink-drop hits the floor — it ripples outward, forming a single, blank page.)");
         scan.nextLine();
         System.out.println("(Hero kneels, picks it up.)");
         scan.nextLine();
         System.out.println("Hero (to self):");
-        System.out.println("\"A record without an ending… maybe that’s how it should be.\"");
+        System.out.println("\"A record without an ending... maybe that's how it should be.\"");
         scan.nextLine();
         System.out.println("(the roof collapses, sunlight pierces through the library for the first time. Music swells with quiet triumph and melancholy.)");
         scan.nextLine();
@@ -1953,7 +1955,6 @@ public class Storyline {
             System.out.println("Narration: \"The Forgotten Throne. Where we bound him.\"");
             System.out.println(":\"Sarukdal said he's 'unmaking' the Oath. I can feel it. The world's energy is draining... siphoning... right to the room above me.\"");
             System.out.println("\"This ends now.\"");
-            scan.nextLine();
 
 
             System.out.println("Quest Started: The Unbound Throne");
@@ -1967,15 +1968,50 @@ public class Storyline {
 
 
             System.out.println("(You are in a void, a maze of floating platforms and broken architecture from Humanas and the Elven lands. Elarion's voice echoes from everywhere and nowhere.)");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("Elarion (Voice, calm, amused): ");
             System.out.println("\"My favorite guardian. The key to my prison. You came all this way... just to see what you've wrought.\"");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("(As you navigate, you are attacked by \"Echoes of Guilt\"—shadow-phantoms of the townsfolk from Humanas and the elves from the civil war.)");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("Phantom Elf:");
             System.out.println("\"You let us die!\" ");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("Phantom Human:");
             System.out.println("\"You abandoned us!\"");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("Narration: \"He's using my own memories against me. The people I couldn't save.\"");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("\"He's trying to break my will. Just like he broke the others.\"");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("\"But I'm not them. Not anymore.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
@@ -1985,15 +2021,50 @@ public class Storyline {
 
 
             System.out.println("(You reach the large, circular platform. A swirling portal of shadow blocks the path forward.)");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("Elarion (Voice):");
             System.out.println("“You think you are a hero? You think you have fixed anything? You are a catalyst—a walking disaster. Look. Look at the truth.”");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("(A figure steps out of the portal. It is you, just as you were at the moment of your first fall—armor broken, weapon shattered, eyes wide with terror.)");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("Elarion (Voice):");
             System.out.println("\"You think you have grown beyond your failures? Look again.\"");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("Narration: \"That moment… my fall. My fear. The part of me that gave up.\"");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("(The shadow reaches out — the hero grips their blade tighter.)");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println(chosen.getName() + ":");
             System.out.println("\"I am not running anymore.\"");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("(The reflection shatters like glass. The path ahead opens.)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
@@ -2003,8 +2074,18 @@ public class Storyline {
 
 
             System.out.println("(You step through the portal and into the throne room. It is a vast, empty void. On a throne of fractured light sits ELARION. He appears as a shifting entity of pure shadow, but as you approach, he takes on a form — a perfect, mirror image of you, made of darkness.)");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("Elarion:");
             System.out.println("\"So. The final piece returns.\"");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
             System.out.println("Narration: \"This is it. The end.\"");
             System.out.println("\"He looks… like me. The shadow I cast.\"");
             input = scan.nextLine();
@@ -2014,7 +2095,7 @@ public class Storyline {
             }
             break;
         }
-        
+
         scan.nextLine();
         System.out.println("You have finished the quest: \"The Unbound Throne\"!");
 
@@ -2039,14 +2120,20 @@ public class Storyline {
         scan.nextLine();
 
         System.out.println("(Elarion stands from the throne, his shadow-form hero smiling condescendingly.)");
+        scan.nextLine();
         System.out.println("Elarion: ");
         System.out.println("\"You came all this way to find yourself. And here you are. Pathetic. Weak. Broken.\" ");
+        scan.nextLine();
         System.out.println("\"Your friends are gone. Your Oath is shattered. What possible hope do you have?\"");
+        scan.nextLine();
         System.out.println(chosen.getName() + " (raises weapon, pendant glowing brightly):");
+        scan.nextLine();
         System.out.println("\"I am the Echo.\"");
+        scan.nextLine();
         System.out.println("\"I am the Guardian.\"");
+        scan.nextLine();
         System.out.println("\"And I am the Oath.\"");
-
+        scan.nextLine();
 
         System.out.print("\033[H\033[2J"); //clear screen
         System.out.flush();

@@ -445,9 +445,11 @@ public class OOP_Project {
             //defeat condition
             if (archivist.getHp() <= 0) {
                 System.out.println(archivist.getName() + " has been defeated!");
+                scan.nextLine();
                 chosen.resetCooldowns();
                 chosen.setHp(chosen.getMaxHp());
                 System.out.println(chosen.getName() + "'s HP has been fully restored!");
+                scan.nextLine();
                 chosen.setLevel(chosen.getLevel() + 1);
                 System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
                 chosen.setPotionCount(chosen.getPotionCount() + 5);
@@ -856,7 +858,6 @@ public class OOP_Project {
                 System.out.println("Reward: 5 Health Potion added to inventory.");
                 System.out.println("Current Level: "+chosen.getLevel());
                 System.out.println("Current Potions: " + chosen.getPotionCount());
-                System.out.println("You may now proceed on your journey.");
                 System.out.println();
                 break;
             } else if (chosen.getHp() <= 0) {
@@ -888,7 +889,7 @@ public class OOP_Project {
             }
         }
 
-
+        System.out.println("As you reach the end");
 
 
         scan.close();

@@ -16,7 +16,7 @@ abstract public class Character {
 
     public Character(String name, int hp, int level) {
         this.name=name;
-        this.hp=hp;
+        this.hp=hp*level;//====================================================
         this.maxHp=hp;
         this.level=level;
         this.skillCooldowns = new int[3];
