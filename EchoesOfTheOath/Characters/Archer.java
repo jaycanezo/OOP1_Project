@@ -77,7 +77,7 @@ public class Archer extends Character{
         System.out.println();
         System.out.println("(2)Volley of Nature\n" + "Damage: " + 50*getLevel() + " - " + 120*getLevel() + " + " + 20*getLevel());
         System.out.println();
-        System.out.println("(3)Nature’s Wrath\n" + "Damage: " + 150*getLevel() + " - " + 250*getLevel() + " + " + 80*getLevel());
+        System.out.println("(3)Nature's Wrath\n" + "Damage: " + 150*getLevel() + " - " + 250*getLevel() + " + " + 80*getLevel());
         System.out.println();
     }
 }

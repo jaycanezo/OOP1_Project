@@ -98,9 +98,11 @@ public class OOP_Project {
                 input = scan.nextLine();
                 if (!input.equalsIgnoreCase("D")) {
                     System.out.println("Invalid input. Please press 'D' to display character information.");
+                    System.out.println();
                 }
             } catch (Exception e) {
                 System.out.println("Error at: " + e + ", try again.");
+                System.out.println();
                 scan.nextLine();
             }
         } while (!input.equalsIgnoreCase("D"));
@@ -111,9 +113,13 @@ public class OOP_Project {
             int skillChoice=0;
             try {
                 skillChoice = scan.nextInt();
+                if(skillChoice<1||skillChoice>3){
+                    System.out.println("Please press [1], [2] or [3] only.");
+                }
             } catch (Exception e) {
-                System.out.println("Error at: "+e+", try again.");
+                System.out.println("Invalid Input. Please press [1], [2] or [3] only.");
                 scan.next();
+                System.out.println();
                 continue; // JACK ADDED CODE
             }
             warrior.useSkill(skillChoice, boss);
@@ -130,9 +136,11 @@ public class OOP_Project {
                 input = scan.nextLine();
                 if (!input.equalsIgnoreCase("D")) {
                     System.out.println("Invalid input. Please press 'D' to display character information.");
+                    System.out.println();
                 }
             } catch (Exception e) {
                 System.out.println("Error at: " + e + ", try again.");
+                System.out.println();
                 scan.nextLine();
             }
         } while (!input.equalsIgnoreCase("D"));
@@ -143,8 +151,12 @@ public class OOP_Project {
             int skillChoice=0;
             try {
                 skillChoice = scan.nextInt();
+                if(skillChoice<1||skillChoice>3){
+                    System.out.println("Please press [1], [2] or [3] only.");
+                }
             } catch (Exception e) {
-                System.out.println("Error at: "+e+", try again.");
+                System.out.println("Invalid Input. Please press [1], [2] or [3] only.");
+                System.out.println();
                 scan.next();
                 continue; // JACK ADDED CODE
             }
@@ -162,9 +174,11 @@ public class OOP_Project {
                 input = scan.nextLine();
                 if (!input.equalsIgnoreCase("D")) {
                     System.out.println("Invalid input. Please press 'D' to display character information.");
+                    System.out.println();
                 }
             } catch (Exception e) {
                 System.out.println("Error at: " + e + ", try again.");
+                System.out.println();
                 scan.nextLine();
             }
         } while (!input.equalsIgnoreCase("D"));
@@ -175,8 +189,12 @@ public class OOP_Project {
             int skillChoice=0;
             try {
                 skillChoice = scan.nextInt();
+                if(skillChoice<1||skillChoice>3){
+                    System.out.println("Please press [1], [2] or [3] only.");
+                }                
             } catch (Exception e) {
-                System.out.println("Error at: "+e+", try again.");
+                System.out.println("Invalid Input. Please press [1], [2] or [3] only.");
+                System.out.println();
                 scan.next();
                 continue; // JACK ADDED CODE
             }
@@ -214,13 +232,13 @@ public class OOP_Project {
             try {
                 choice = scan.nextInt();
                 scan.nextLine();
+                if(choice>3||choice<1){
+                    System.out.println("Please enter [1] for Warriorr, [2] for Archer or [3] for Mage only.");
+                }
             } catch (Exception e) {
-                System.out.println("Error at: "+e+", try again.");
-                scan.next();
+                System.out.println("Input Error. Please enter [1] for Warriorr, [2] for Archer or [3] for Mage only.");
+                scan.nextLine();
             }
-
-
-
 
             switch(choice){
                 case 1:
@@ -240,21 +258,17 @@ public class OOP_Project {
 
 
 
-
+        System.out.println();
         System.out.print("Enter your hero's name: ");
         String playerName = scan.nextLine();
         chosen.setName(playerName);
 
 
 
-
         System.out.println("\nYou have chosen the " + chosen.getClass().getSimpleName() + " named " + chosen.getName() + "!");
-        System.out.println("\nPress any key to continue your Journey..."); //JACK ADDED CODE
         scan.nextLine();
-
-
-
-
+        System.out.println("Press any key to continue your Journey..."); //JACK ADDED CODE
+        scan.nextLine();
         System.out.println("Demon: You will not defeat me you weaklings! HaHAhaHA");
         scan.nextLine();      
         System.out.println("The Demon uses its Ultimate: \"The Final Vow\"");
@@ -284,11 +298,14 @@ public class OOP_Project {
         storyline.quest1HumanasQuest(chosen);
         //============================================================NATION 1 MINI BOSS============================================================
 
-        System.out.println();
-        System.out.println("You are now fighting King Bartholomew Monarch (\"Baby M\")");
-        System.out.println("HP: 3000 | MP: 200 | DEF: 220");  
-        System.out.println();
         babyM babyM = new babyM();
+
+        System.out.println();
+        System.out.println("You are now fighting "+babyM.getName()+", Humanas Nation - Mini Boss");
+
+        System.out.println("HP: " + babyM.getHp() + " | Level: "+ babyM.getLevel());
+        scan.nextLine();
+        
         while (babyM.getHp() > 0) {
             //user turn
             boolean validAction = false;
@@ -301,7 +318,7 @@ public class OOP_Project {
                     scan.nextLine();
                 } catch (Exception e) {
                     System.out.println("Error: " + e + ". Please enter a valid number (1-4).");
-                    scan.next();
+                    scan.nextLine();
                     System.out.println();
                     continue;
                 }
@@ -311,20 +328,21 @@ public class OOP_Project {
                 if (skillChoice == 4) {
                     if (chosen.getPotionCount() > 0) {
                         chosen.usePotion();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("No potions left! Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 } else if (skillChoice >= 1 && skillChoice <= 3) {
                     if (chosen.isSkillAvailable(skillChoice)) {
                         chosen.useSkill(skillChoice, babyM);
-                        System.out.println();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining.");
                         System.out.println("Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 }
             }
@@ -334,28 +352,34 @@ public class OOP_Project {
             if (babyM.getHp() > 0) {
                 int randomSkill = babyM.random.nextInt(3) + 1;
                 babyM.useSkill(randomSkill, chosen);
-                System.out.println();
+                scan.nextLine();
             }
 
 
             //defeat condition
             if (babyM.getHp() <= 0) {
                 System.out.println(babyM.getName() + " has been defeated!");
+                scan.nextLine();
                 chosen.resetCooldowns();
                 chosen.setHp(chosen.getMaxHp());
                 System.out.println(chosen.getName() + "'s HP has been fully restored!");
+                scan.nextLine();
                 chosen.setLevel(chosen.getLevel() + 1);
                 System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
-                chosen.setPotionCount(chosen.getPotionCount() + 5);
+                scan.nextLine();
+                chosen.setPotionCount(chosen.getPotionCount() + 2);
                 System.out.println("Reward: 5 Health Potion added to inventory.");
+                scan.nextLine();
                 System.out.println("Current Level: "+chosen.getLevel());
                 System.out.println("Current Potions: " + chosen.getPotionCount());
+                scan.nextLine();
                 System.out.println("You may now proceed on your journey.");
                 scan.nextLine();
                 break;
             } // START OF ADDED CODE - JACK
             else if (chosen.getHp() <= 0) {
                 System.out.println(chosen.getName() + " has been defeated!");
+                scan.nextLine();
                 String retryChoice = "";
 
 
@@ -369,7 +393,8 @@ public class OOP_Project {
                         chosen.setHp(chosen.getMaxHp());
                         babyM.setHp(babyM.getMaxHp());
                         System.out.println("You have been revived! The battle restarts.");
-                        System.out.println();
+                        scan.nextLine();
+                        scan.nextLine();
                         break;
                     } else if (retryChoice.equalsIgnoreCase("n")) {
                         System.out.println("Game Over. Thank you for playing!");
@@ -377,9 +402,9 @@ public class OOP_Project {
                         return;
                     } else {
                         System.out.println("Invalid choice! Please type only 'y' or 'n'.");
-                        System.out.println();
                     }
                 }
+                
             }
             // END OF ADDED CODE - JACK
         }
@@ -390,11 +415,14 @@ public class OOP_Project {
 
         //============================================================NATION 1 MAIN BOSS============================================================
 
-        System.out.println("You are now fighting The Archivist");
-        System.out.println();
         Archivist archivist = new Archivist();
 
+        System.out.println();
+        System.out.println("You are now fighting "+archivist.getName()+", Humanas Nation - Main Boss");
 
+        System.out.println("HP: " + archivist.getHp() + " | Level: "+ archivist.getLevel());
+        scan.nextLine();
+        
         while (archivist.getHp() > 0) {
             //user turn
             boolean validAction = false;
@@ -406,7 +434,7 @@ public class OOP_Project {
                     scan.nextLine();
                 } catch (Exception e) {
                     System.out.println("Error: " + e + ". Please enter a valid number (1-4).");
-                    scan.next();
+                    scan.nextLine();
                     System.out.println();
                     continue;
                 }
@@ -415,20 +443,21 @@ public class OOP_Project {
                 if (skillChoice == 4) {
                     if (chosen.getPotionCount() > 0) {
                         chosen.usePotion();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("No potions left! Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 } else if (skillChoice >= 1 && skillChoice <= 3) {
                     if (chosen.isSkillAvailable(skillChoice)) {
                         chosen.useSkill(skillChoice, archivist);
-                        System.out.println();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining.");
                         System.out.println("Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 }
             }
@@ -438,7 +467,7 @@ public class OOP_Project {
             if (archivist.getHp() > 0) {
                 int randomSkill = archivist.random.nextInt(3) + 1;
                 archivist.useSkill(randomSkill, chosen);
-                System.out.println();
+                scan.nextLine();
             }
 
 
@@ -452,15 +481,20 @@ public class OOP_Project {
                 scan.nextLine();
                 chosen.setLevel(chosen.getLevel() + 1);
                 System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
+                scan.nextLine();
                 chosen.setPotionCount(chosen.getPotionCount() + 5);
                 System.out.println("Reward: 5 Health Potion added to inventory.");
+                scan.nextLine();
                 System.out.println("Current Level: "+chosen.getLevel());
                 System.out.println("Current Potions: " + chosen.getPotionCount());
+                scan.nextLine();
                 System.out.println("You may now proceed on your journey.");
-                System.out.println();
+                scan.nextLine();
                 break;
-            } else if (chosen.getHp() <= 0) {
+            }
+            else if (chosen.getHp() <= 0) {
                 System.out.println(chosen.getName() + " has been defeated!");
+                scan.nextLine();
                 String retryChoice = "";
 
 
@@ -474,7 +508,6 @@ public class OOP_Project {
                         chosen.setHp(chosen.getMaxHp());
                         archivist.setHp(archivist.getMaxHp());
                         System.out.println("You have been revived! The battle restarts.");
-                        System.out.println();
                         break;
                     } else if (retryChoice.equalsIgnoreCase("n")) {
                         System.out.println("Game Over. Thank you for playing!");
@@ -482,9 +515,9 @@ public class OOP_Project {
                         return;
                     } else {
                         System.out.println("Invalid choice! Please type only 'y' or 'n'.");
-                        System.out.println();
                     }
                 }
+                scan.nextLine();
             }
         }
 
@@ -493,15 +526,19 @@ public class OOP_Project {
 
         //============================================================NATION 2 MINI QUEST============================================================
         storyline.whispersBeneathTheBoughs(chosen);
-        storyline.theSilverfangTrial(chosen);
+        //storyline.theSilverfangTrial(chosen);
         //============================================================NATION 2 MINI BOSS============================================================
-        System.out.println();
-        System.out.println("You are now fighting Ilaryx, The Silverfang Huntress");  
-        scan.nextLine();
+        
         Ilaryx ilaryx = new Ilaryx();
+
+        System.out.println();
+        System.out.println("You are now fighting "+ilaryx.getName()+", Veyora Nation - Main Boss");
+
+        System.out.println("HP: " + ilaryx.getHp() + " | Level: "+ ilaryx.getLevel());
+        scan.nextLine();
+        
         while (ilaryx.getHp() > 0) {
-
-
+            //user turn
             boolean validAction = false;
             while (!validAction) {
                 int skillChoice = -1;
@@ -511,7 +548,7 @@ public class OOP_Project {
                     scan.nextLine();
                 } catch (Exception e) {
                     System.out.println("Error: " + e + ". Please enter a valid number (1-4).");
-                    scan.next();
+                    scan.nextLine();
                     System.out.println();
                     continue;
                 }
@@ -520,48 +557,58 @@ public class OOP_Project {
                 if (skillChoice == 4) {
                     if (chosen.getPotionCount() > 0) {
                         chosen.usePotion();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("No potions left! Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 } else if (skillChoice >= 1 && skillChoice <= 3) {
                     if (chosen.isSkillAvailable(skillChoice)) {
                         chosen.useSkill(skillChoice, ilaryx);
-                        System.out.println();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining.");
                         System.out.println("Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 }
             }
 
 
+            //enemy turn
             if (ilaryx.getHp() > 0) {
-                int randomSkill = ilaryx.random.nextInt(3) + 1;
+                int randomSkill = archivist.random.nextInt(3) + 1;
                 ilaryx.useSkill(randomSkill, chosen);
-                System.out.println();
+                scan.nextLine();
             }
 
 
+            //defeat condition
             if (ilaryx.getHp() <= 0) {
                 System.out.println(ilaryx.getName() + " has been defeated!");
+                scan.nextLine();
                 chosen.resetCooldowns();
                 chosen.setHp(chosen.getMaxHp());
                 System.out.println(chosen.getName() + "'s HP has been fully restored!");
+                scan.nextLine();
                 chosen.setLevel(chosen.getLevel() + 1);
                 System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
-                chosen.setPotionCount(chosen.getPotionCount() + 5);
-                System.out.println("Reward: 5 Health Potion added to inventory.");
+                scan.nextLine();
+                chosen.setPotionCount(chosen.getPotionCount() + 2);
+                System.out.println("Reward: 2 Health Potion added to inventory.");
+                scan.nextLine();
                 System.out.println("Current Level: "+chosen.getLevel());
                 System.out.println("Current Potions: " + chosen.getPotionCount());
+                scan.nextLine();
                 System.out.println("You may now proceed on your journey.");
-                System.out.println();
+                scan.nextLine();
                 break;
-            } else if (chosen.getHp() <= 0) {
+            }
+            else if (chosen.getHp() <= 0) {
                 System.out.println(chosen.getName() + " has been defeated!");
+                scan.nextLine();
                 String retryChoice = "";
 
 
@@ -575,7 +622,6 @@ public class OOP_Project {
                         chosen.setHp(chosen.getMaxHp());
                         ilaryx.setHp(ilaryx.getMaxHp());
                         System.out.println("You have been revived! The battle restarts.");
-                        System.out.println();
                         break;
                     } else if (retryChoice.equalsIgnoreCase("n")) {
                         System.out.println("Game Over. Thank you for playing!");
@@ -583,9 +629,9 @@ public class OOP_Project {
                         return;
                     } else {
                         System.out.println("Invalid choice! Please type only 'y' or 'n'.");
-                        System.out.println();
                     }
                 }
+                scan.nextLine();
             }
         }
 
@@ -593,14 +639,19 @@ public class OOP_Project {
 
         //============================================================NATION 2 MAIN QUEST============================================================
         storyline.theRootsOfDespair(chosen);
-        storyline.theWardenOfTheFractured(chosen);
+        //storyline.theWardenOfTheFractured(chosen);
         //============================================================NATION 2 MAIN BOSS============================================================
 
-        System.out.println("You are now fighting Lunareth, The Warden of the Fractured Bough");
-        scan.nextLine();
         Lunareth lunareth = new Lunareth();
 
+        System.out.println();
+        System.out.println("You are now fighting "+lunareth.getName()+", Veyora Nation - Main Boss");
+
+        System.out.println("HP: " + lunareth.getHp() + " | Level: "+ lunareth.getLevel());
+        scan.nextLine();
+        
         while (lunareth.getHp() > 0) {
+            //user turn
             boolean validAction = false;
             while (!validAction) {
                 int skillChoice = -1;
@@ -610,7 +661,7 @@ public class OOP_Project {
                     scan.nextLine();
                 } catch (Exception e) {
                     System.out.println("Error: " + e + ". Please enter a valid number (1-4).");
-                    scan.next();
+                    scan.nextLine();
                     System.out.println();
                     continue;
                 }
@@ -619,50 +670,58 @@ public class OOP_Project {
                 if (skillChoice == 4) {
                     if (chosen.getPotionCount() > 0) {
                         chosen.usePotion();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("No potions left! Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 } else if (skillChoice >= 1 && skillChoice <= 3) {
                     if (chosen.isSkillAvailable(skillChoice)) {
                         chosen.useSkill(skillChoice, lunareth);
-                        System.out.println();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining.");
                         System.out.println("Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 }
             }
 
 
+            //enemy turn
             if (lunareth.getHp() > 0) {
                 int randomSkill = lunareth.random.nextInt(3) + 1;
                 lunareth.useSkill(randomSkill, chosen);
-                System.out.println();
+                scan.nextLine();
             }
 
 
-
-
+            //defeat condition
             if (lunareth.getHp() <= 0) {
                 System.out.println(lunareth.getName() + " has been defeated!");
+                scan.nextLine();
                 chosen.resetCooldowns();
                 chosen.setHp(chosen.getMaxHp());
                 System.out.println(chosen.getName() + "'s HP has been fully restored!");
+                scan.nextLine();
                 chosen.setLevel(chosen.getLevel() + 1);
                 System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
+                scan.nextLine();
                 chosen.setPotionCount(chosen.getPotionCount() + 5);
                 System.out.println("Reward: 5 Health Potion added to inventory.");
+                scan.nextLine();
                 System.out.println("Current Level: "+chosen.getLevel());
                 System.out.println("Current Potions: " + chosen.getPotionCount());
+                scan.nextLine();
                 System.out.println("You may now proceed on your journey.");
-                System.out.println();
+                scan.nextLine();
                 break;
-            } else if (chosen.getHp() <= 0) {
+            }
+            else if (chosen.getHp() <= 0) {
                 System.out.println(chosen.getName() + " has been defeated!");
+                scan.nextLine();
                 String retryChoice = "";
 
 
@@ -676,7 +735,6 @@ public class OOP_Project {
                         chosen.setHp(chosen.getMaxHp());
                         lunareth.setHp(lunareth.getMaxHp());
                         System.out.println("You have been revived! The battle restarts.");
-                        System.out.println();
                         break;
                     } else if (retryChoice.equalsIgnoreCase("n")) {
                         System.out.println("Game Over. Thank you for playing!");
@@ -684,9 +742,9 @@ public class OOP_Project {
                         return;
                     } else {
                         System.out.println("Invalid choice! Please type only 'y' or 'n'.");
-                        System.out.println();
                     }
                 }
+                scan.nextLine();
             }
         }
 
@@ -695,10 +753,17 @@ public class OOP_Project {
         storyline.theLastBastionQuest(chosen);
         //============================================================NATION 3 MINI BOSS============================================================
        
-        System.out.println();
-        System.out.println("You are now fighting Sarukdal");  
+        System.out.println(); 
         scan.nextLine();
+
         Sarukdal sarukdal = new Sarukdal();
+
+        System.out.println();
+        System.out.println("You are now fighting "+sarukdal.getName()+", Veyora Nation - Main Boss");
+
+        System.out.println("HP: " + sarukdal.getHp() + " | Level: "+ sarukdal.getLevel());
+        scan.nextLine();
+        
         while (sarukdal.getHp() > 0) {
             //user turn
             boolean validAction = false;
@@ -710,7 +775,7 @@ public class OOP_Project {
                     scan.nextLine();
                 } catch (Exception e) {
                     System.out.println("Error: " + e + ". Please enter a valid number (1-4).");
-                    scan.next();
+                    scan.nextLine();
                     System.out.println();
                     continue;
                 }
@@ -719,20 +784,21 @@ public class OOP_Project {
                 if (skillChoice == 4) {
                     if (chosen.getPotionCount() > 0) {
                         chosen.usePotion();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("No potions left! Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 } else if (skillChoice >= 1 && skillChoice <= 3) {
                     if (chosen.isSkillAvailable(skillChoice)) {
                         chosen.useSkill(skillChoice, sarukdal);
-                        System.out.println();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining.");
                         System.out.println("Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 }
             }
@@ -742,27 +808,34 @@ public class OOP_Project {
             if (sarukdal.getHp() > 0) {
                 int randomSkill = sarukdal.random.nextInt(3) + 1;
                 sarukdal.useSkill(randomSkill, chosen);
-                System.out.println();
+                scan.nextLine();
             }
 
 
             //defeat condition
             if (sarukdal.getHp() <= 0) {
                 System.out.println(sarukdal.getName() + " has been defeated!");
+                scan.nextLine();
                 chosen.resetCooldowns();
                 chosen.setHp(chosen.getMaxHp());
                 System.out.println(chosen.getName() + "'s HP has been fully restored!");
+                scan.nextLine();
                 chosen.setLevel(chosen.getLevel() + 1);
                 System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
-                chosen.setPotionCount(chosen.getPotionCount() + 5);
-                System.out.println("Reward: 5 Health Potion added to inventory.");
+                scan.nextLine();
+                chosen.setPotionCount(chosen.getPotionCount() + 2);
+                System.out.println("Reward: 2 Health Potion added to inventory.");
+                scan.nextLine();
                 System.out.println("Current Level: "+chosen.getLevel());
                 System.out.println("Current Potions: " + chosen.getPotionCount());
+                scan.nextLine();
                 System.out.println("You may now proceed on your journey.");
-                System.out.println();
+                scan.nextLine();
                 break;
-            } else if (chosen.getHp() <= 0) {
+            }
+            else if (chosen.getHp() <= 0) {
                 System.out.println(chosen.getName() + " has been defeated!");
+                scan.nextLine();
                 String retryChoice = "";
 
 
@@ -776,7 +849,6 @@ public class OOP_Project {
                         chosen.setHp(chosen.getMaxHp());
                         sarukdal.setHp(sarukdal.getMaxHp());
                         System.out.println("You have been revived! The battle restarts.");
-                        System.out.println();
                         break;
                     } else if (retryChoice.equalsIgnoreCase("n")) {
                         System.out.println("Game Over. Thank you for playing!");
@@ -784,9 +856,9 @@ public class OOP_Project {
                         return;
                     } else {
                         System.out.println("Invalid choice! Please type only 'y' or 'n'.");
-                        System.out.println();
                     }
                 }
+                scan.nextLine();
             }
         }
 
@@ -794,11 +866,14 @@ public class OOP_Project {
        storyline.theUnboundThroneQuest(chosen);
 
         //============================================================NATION 3 MAIN BOSS============================================================
-        System.out.println("You are now fighting Elarion");
-        scan.nextLine();
         Elarion elarion = new Elarion();
 
+        System.out.println();
+        System.out.println("You are now fighting "+elarion.getName()+", Veyora Nation - Main Boss");
 
+        System.out.println("HP: " + elarion.getHp() + " | Level: "+ elarion.getLevel());
+        scan.nextLine();
+        
         while (elarion.getHp() > 0) {
             //user turn
             boolean validAction = false;
@@ -810,7 +885,7 @@ public class OOP_Project {
                     scan.nextLine();
                 } catch (Exception e) {
                     System.out.println("Error: " + e + ". Please enter a valid number (1-4).");
-                    scan.next();
+                    scan.nextLine();
                     System.out.println();
                     continue;
                 }
@@ -819,20 +894,21 @@ public class OOP_Project {
                 if (skillChoice == 4) {
                     if (chosen.getPotionCount() > 0) {
                         chosen.usePotion();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("No potions left! Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 } else if (skillChoice >= 1 && skillChoice <= 3) {
                     if (chosen.isSkillAvailable(skillChoice)) {
                         chosen.useSkill(skillChoice, elarion);
-                        System.out.println();
+                        scan.nextLine();
                         validAction = true;
                     } else {
                         System.out.println("Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining.");
                         System.out.println("Choose another action.");
-                        System.out.println();
+                        scan.nextLine();
                     }
                 }
             }
@@ -842,26 +918,34 @@ public class OOP_Project {
             if (elarion.getHp() > 0) {
                 int randomSkill = elarion.random.nextInt(3) + 1;
                 elarion.useSkill(randomSkill, chosen);
-                System.out.println();
+                scan.nextLine();
             }
 
 
             //defeat condition
             if (elarion.getHp() <= 0) {
                 System.out.println(elarion.getName() + " has been defeated!");
+                scan.nextLine();
                 chosen.resetCooldowns();
                 chosen.setHp(chosen.getMaxHp());
                 System.out.println(chosen.getName() + "'s HP has been fully restored!");
+                scan.nextLine();
                 chosen.setLevel(chosen.getLevel() + 1);
                 System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
+                scan.nextLine();
                 chosen.setPotionCount(chosen.getPotionCount() + 5);
                 System.out.println("Reward: 5 Health Potion added to inventory.");
+                scan.nextLine();
                 System.out.println("Current Level: "+chosen.getLevel());
                 System.out.println("Current Potions: " + chosen.getPotionCount());
-                System.out.println();
+                scan.nextLine();
+                System.out.println("You may now proceed on your journey.");
+                scan.nextLine();
                 break;
-            } else if (chosen.getHp() <= 0) {
+            }
+            else if (chosen.getHp() <= 0) {
                 System.out.println(chosen.getName() + " has been defeated!");
+                scan.nextLine();
                 String retryChoice = "";
 
 
@@ -875,7 +959,6 @@ public class OOP_Project {
                         chosen.setHp(chosen.getMaxHp());
                         elarion.setHp(elarion.getMaxHp());
                         System.out.println("You have been revived! The battle restarts.");
-                        System.out.println();
                         break;
                     } else if (retryChoice.equalsIgnoreCase("n")) {
                         System.out.println("Game Over. Thank you for playing!");
@@ -883,9 +966,9 @@ public class OOP_Project {
                         return;
                     } else {
                         System.out.println("Invalid choice! Please type only 'y' or 'n'.");
-                        System.out.println();
                     }
                 }
+                scan.nextLine();
             }
         }
 

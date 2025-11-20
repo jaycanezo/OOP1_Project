@@ -89,10 +89,8 @@ abstract public class Character {
             System.out.println(getName() + " uses Hp Potion! Restores " + healed + " HP!");
             potionCount--;
             System.out.println("Potions left: " + (potionCount));
-            System.out.println();
         } else {
             System.out.println("No potions left!");
-            System.out.println();
         }
     }
 
