@@ -3,7 +3,7 @@ package EchoesOfTheOath.Characters;
 
 public class babyM extends Character{
     public babyM(){
-        super("King Bartholomew Monarch (\"Baby M\")", 1400, 2);
+        super("King Bartholomew Monarch (\"Baby M\")", " || Humanas Nation 1 - Mini Boss", 1400, 2);
     }
 
 
@@ -22,14 +22,14 @@ public class babyM extends Character{
         switch (skillNumber) {
             case 1:
                 dmg = random.nextInt((21) + 30 + 20) * getLevel();
-                System.out.println(getName() + " uses Tantrum Toss!");
+                System.out.println(getName() + " uses Basic Skill: Tantrum Toss!");
                 System.out.println("In a fit of screaming paranoia, the King wildly throws his golden rattle at his opponent.");
                 break;
 
 
             case 2:
                 dmg = random.nextInt((70) + 50 + 20) * getLevel();
-                System.out.println(getName() + " uses Feigned Faint!");
+                System.out.println(getName() + " uses Advanced Skill: Feigned Faint!");
                 System.out.println("Baby M lulls his opponent into a false sense of security only to launch a surprise strike!");
                 cd[skillNumber - 1] = 2;
                 break;
@@ -37,7 +37,7 @@ public class babyM extends Character{
 
             case 3:
                 dmg = random.nextInt((100) + 230 * 4) * getLevel();
-                System.out.println(getName() + " uses his Ultimate: Enforced Decree!");
+                System.out.println(getName() + " uses Ultimate: Enforced Decree!");
                 System.out.println("The infant King abruptly stops all movement as Someone overrides his own, charging forward with mechanical precision!");
                 cd[skillNumber - 1] = 3;
                 break;
@@ -55,5 +55,4 @@ public class babyM extends Character{
 
         System.out.println(getName()+" has "+getHp()+" HP remaining!");
     }
-   
 }

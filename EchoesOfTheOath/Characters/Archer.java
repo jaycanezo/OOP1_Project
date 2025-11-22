@@ -27,17 +27,17 @@ public class Archer extends Character{
         switch (skillNumber){
             case 1:
                 dmg=random.nextInt((21)+30+20)*getLevel();
-                System.out.println(getName() + " uses Piercing Shot!");
+                System.out.println(getName() + " uses Basic Skill: Piercing Shot!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 dmg=random.nextInt((70)+50+20)*getLevel();
-                System.out.println(getName()+" uses Volley of Nature!");
+                System.out.println(getName()+" uses Advanced Skill: Volley of Nature!");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 dmg=random.nextInt((100)+150+80*4)*getLevel();
-                System.out.println(getName()+" uses Nature's Wrath!");
+                System.out.println(getName()+" uses Ultimate: Nature's Wrath!");
                 setSkillCooldown(3, 3);
                 break;
         }

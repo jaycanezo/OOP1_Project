@@ -7,6 +7,7 @@ import java.util.Random;
 abstract public class Character {
     public Random random = new Random();
     private String name;
+    private String title;
     private int hp;
     private int maxHp;
     private int level;
@@ -16,6 +17,15 @@ abstract public class Character {
 
     public Character(String name, int hp, int level) {
         this.name=name;
+        this.hp=hp*level;//====================================================
+        this.maxHp=hp;
+        this.level=level;
+        this.skillCooldowns = new int[3];
+    }
+
+    public Character(String name, String title, int hp, int level) {
+        this.name=name;
+        this.title=title;
         this.hp=hp*level;//====================================================
         this.maxHp=hp;
         this.level=level;
@@ -68,6 +78,10 @@ abstract public class Character {
 
     public void setName(String name){
         this.name=name;
+    }
+
+    public String getTitle(){
+        return title;
     }
 
 

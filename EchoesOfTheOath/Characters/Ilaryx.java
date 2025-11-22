@@ -3,7 +3,7 @@ package EchoesOfTheOath.Characters;
 
 public class Ilaryx extends Character {
     public Ilaryx(){
-        super("Ilaryx, The Silverfang Huntress", 1400, 6);
+        super("Ilaryx"," || Veyora Nation 2 - Mini Boss", 1400, 6);
     }
 
 
@@ -22,14 +22,14 @@ public class Ilaryx extends Character {
         switch (skillNumber) {
             case 1:
                 dmg = random.nextInt((21) + 30 + 20) * getLevel();
-                System.out.println(getName() + " uses Quick Shot!");
+                System.out.println(getName() + " uses Basic Skill: Quick Shot!");
                 System.out.println("Ilaryx fires a Double Tap! Two arrows blaze toward the enemy.");
                 break;
 
 
             case 2:
                 dmg = random.nextInt((70) + 50 + 20) * getLevel();
-                System.out.println(getName() + " uses Hunter’s Trap!");
+                System.out.println(getName() + " uses Advanced Skill: Hunter's Trap!");
                 System.out.println("Ilaryx activates Invisible Snare! A hidden defense is placed!");
                 cd[skillNumber - 1] = 2;
                 break;
@@ -37,7 +37,7 @@ public class Ilaryx extends Character {
 
             case 3:
                 dmg = random.nextInt((100) + 230 * 4) * getLevel();
-                System.out.println(getName() + " uses Arrow of the Silverfang!");
+                System.out.println(getName() + " uses Ultimate: Arrow of the Silverfang!");
                 System.out.println("Ilaryx channels silver magic into her bow, preparing one massive, charged shot. Prepare for impact!");
                 cd[skillNumber - 1] = 3;
                 break;

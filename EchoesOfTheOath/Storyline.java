@@ -1684,161 +1684,6 @@ public class Storyline {
         System.out.flush();
     }
     
-    
-    
-    // --- Quest 8: The Warden of the Fractured Bough (Final Boss) ---
-    public void theWardenOfTheFractured(Character chosen) {//not included
-        
-        String name = chosen.getName();
-        boolean isSkipped = false;
-        String input;
-        
-
-        System.out.println("FINAL QUEST: “The Warden of the Fractured Bough”");
-
-        while (true) {
-	System.out.println("\n(Press [Enter] to continue or [s] to skip at any time.)\n");
-	input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-
-            
-            
-            System.out.println("BOSS BATTLE BEGINS: LUNARETH, THE WARDEN OF THE FRACTURED BOUGH");
-            System.out.println("--- Phase I — “The Silver Warden” ---");
-            System.out.println("Music: “Moonlight Tyrant”");
-            System.out.println("Lunareth’s Skills:");
-            System.out.println("  Moonpierce Shot (Skill 1): Fires two arrows, ignores 30% defense.");
-            System.out.println("  Binding Roots (Skill 2): Immobilizes all enemies for 2 turns.");
-            System.out.println("  Passive – Warden’s Focus: Attack increases when you use defensive skills.");
-            
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-            
-            System.out.println("(Battle animation — Lunareth moves gracefully, like a dance.)");
-            System.out.println("Lunareth (during attacks):");
-            System.out.println("\"You hesitate — as you always did!\"");
-            System.out.println("\"The forest bends to my will!\"");
-            
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-            
-            System.out.println(name + " (gritting teeth):");
-            System.out.println("\"You’re not saving them, Lunareth — you’re enslaving them!\"");
-            System.out.println("Lunareth:");
-            System.out.println("\"Order is mercy. Chaos is death.\"");
-            
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-            
-            System.out.println("--- Phase Transition — “The Eclipse Breaks” ---");
-            System.out.println("(At 50% HP, the citadel trembles. Lunareth kneels, clutching his chest.)");
-            System.out.println("(Internal monologue):");
-            System.out.println("\"For a moment, the tyrant falters — and the guardian flickers beneath.\"");
-            
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-            
-            System.out.println(name + ":");
-            System.out.println("\"Lunareth… you can still fight it!\"");
-            System.out.println("Lunareth (voice cracking):");
-            System.out.println("\"I am fighting it!\"");
-            System.out.println("(The moon above darkens. Lunareth’s eyes turn entirely black.)");
-            
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-
-            System.out.println("--- Phase II — “Eclipse Ascendant” ---");
-            System.out.println("Music: “Fractured Oath”");
-            System.out.println("Lunareth’s New Skill:");
-            System.out.println("  Ultimate – Eclipse Volley: Leaps and rains down four arrows per target.");
-            System.out.println("Environmental Hazard – Lunar Rain: Silver light damages ALL characters on the field.");
-            
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-            
-            System.out.println("Lunareth (shouting midair):");
-            System.out.println("\"If the forest must burn to be reborn — so be it!\"");
-            System.out.println(name + " (raising weapon):");
-            System.out.println("\"Then I’ll save it from you — even if it means losing you!\"");
-            
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-
-            System.out.println("QTE: Break Lunareth’s Bow");
-            System.out.println("(Player input required — a timed sequence to deflect lunar arrows and close the distance.)");
-            System.out.println("(Success: " + name + " slashes upward, shattering Lunareth’s silver bow.)");
-            
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-            
-            System.out.println("--- Final Phase — “The Warden’s Heart” ---");
-
-
-            
-            
-            break; 
-        }
-
-        if (isSkipped) {
-            System.out.println("\n--- QUEST SKIPPED ---");
-            System.out.println("Quest Summary: “The Warden of the Fractured Bough”");
-            System.out.println("You confronted Lunareth in his citadel. The battle was a tragic duel against a");
-            System.out.println("friend lost to grief and corruption. After a multi-phase battle that pushed you");
-            System.out.println("to your limit, you shattered his bow, breaking the corruption. In his final");
-            System.out.println("moments, Lunareth found peace, remembered his oath, and returned to the forest.");
-        }
-        
-        //
-        //INSERT  BATTLE
-        //
-
-        System.out.println("\nQuest Completed: “The Warden of the Fractured Bough”");
-        System.out.println("Rewards:");
-        System.out.println("  Ability: Lunar Requiem — “Increases damage vs. corrupted enemies by 25%.”");
-        System.out.println("  Key Item: The Warden’s Fragment");
-        System.out.println("  Lore Entry: The Oath Restored (Fragment IV)");
-        
-        System.out.println("\n(Closing Narration):");
-        
-        
-        System.out.println("\nNext Quest Preview: NATION 3 — “Ashes of the Sun”");
-        System.out.println("(Press Enter to continue...)");
-        scan.nextLine();
-
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-
-    
-
     public void theLastBastionQuest(Character chosen){//Nation 3 Mini Quest
         String name = chosen.getName();
         boolean isSkipped = false;
@@ -2069,6 +1914,11 @@ public class Storyline {
         scan.nextLine();
         System.out.println("Sarukdal: ");
         System.out.println("\"I was the shield. Now, I am the wall. You will not pass. You will not hurt us again.\"");
+
+        scan.nextLine();
+
+        System.out.print("\033[H\033[2J"); //clear screen using ANSI escape codes
+        System.out.flush();
     }
 
 

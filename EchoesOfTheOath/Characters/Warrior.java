@@ -27,21 +27,21 @@ public class Warrior extends Character{
         switch (skillNumber) {
             case 1:
                 dmg = random.nextInt(21) + 30 * getLevel();
-                System.out.println(getName() + " uses Slash!");
+                System.out.println(getName() + " uses Basic Skill: Slash!");
                 setSkillCooldown(1, 0);
                 break;
 
 
             case 2:
                 dmg = random.nextInt(71) + 50 * getLevel();
-                System.out.println(getName() + " uses Crimson Strike!");
+                System.out.println(getName() + " uses Advanced Skill: Crimson Strike!");
                 setSkillCooldown(2, 2);//1-turn cooldown
                 break;
 
 
             case 3:
                 dmg = random.nextInt(101) + 800 * getLevel();
-                System.out.println(getName() + " uses Blade Quake!");
+                System.out.println(getName() + " uses Ultimate: Blade Quake!");
                 setSkillCooldown(3, 3);//2-turn cooldown
                 break;
         }

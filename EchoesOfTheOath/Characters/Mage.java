@@ -27,17 +27,17 @@ public class Mage extends Character{
         switch (skillNumber){
             case 1:
                 dmg=random.nextInt((21)+30+200)*getLevel();
-                System.out.println(getName() + " uses Fireball!");
+                System.out.println(getName() + " uses Basic Skill: Fireball!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 dmg=random.nextInt((70)+50+100)*getLevel();
-                System.out.println(getName()+" uses Heat Surge!");
+                System.out.println(getName()+" uses Advanced Skill: Heat Surge!");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 dmg=random.nextInt((100)+1400+100)*getLevel();
-                System.out.println(getName()+" uses Astral Cataclysm!");
+                System.out.println(getName()+" uses Ultimate: Astral Cataclysm!");
                 setSkillCooldown(3, 3);
                 break;
         }
