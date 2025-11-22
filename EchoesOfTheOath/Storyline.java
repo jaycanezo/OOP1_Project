@@ -779,7 +779,7 @@ public class Storyline {
         // This loop contains the entire quest.
         
         while (true) {
-            System.out.println("faint sound of wind rustling leaves; the whisper of distant voices)");
+            System.out.println("(faint sound of wind rustling leaves; the whisper of distant voices)");
             scan.nextLine();
             System.out.println("(Internal monologue):");
             System.out.println("\"The air here feels... alive.\"");
@@ -787,24 +787,30 @@ public class Storyline {
             System.out.println("\"But not with peace.\"");
             scan.nextLine();
 
-            System.out.println(name + " stands before an ancient, overgrown forest. Pale blue motes drift.)");
+            System.out.println("("+name + " stands before an ancient, overgrown forest. Pale blue motes drift.)");
             scan.nextLine();
             System.out.println("(Internal monologue):");
             System.out.println("\"The elves once called this place Veyora, the cradle of all nature.\"");
             scan.nextLine();
-            System.out.println("\"But the roots twist now — tangled with something that remembers me.\"");
+            System.out.println("\"But the roots twist now -- tangled with something that remembers me.\"");
             scan.nextLine();
             
-            System.out.println("(" + name + " steps forward; the screen distorts briefly, showing a flash — Lunareth smiling beside " + name + " at the Celestial Gate)");
+            System.out.println("(" + name + " steps forward; the screen distorts briefly, showing a flash -- Lunareth smiling beside " + name + " at the Celestial Gate)");
             scan.nextLine();
             System.out.println(name + " (gritting teeth):");
             System.out.println("\"That light again… Why does it hurt to remember?\"");
             scan.nextLine();
 
             System.out.println("Mini Quest Started: \"Whispers Beneath the Boughs\"");
+            String input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true; 
+                break; 
+            }
+
             System.out.println("Objective: Investigate the Eastern Grove and uncover the source of the whispers.");
             System.out.println("(Press ['s'] to skip and [Enter] to continue.)\n");
-	        String input = scan.nextLine();
+	        input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true; 
                 break; 
@@ -856,7 +862,7 @@ public class Storyline {
             }
 
             System.out.println("Rebel (spits to the ground):");
-            System.out.println("\"Outsider. You smell of Humanas — of the ink-born filth.\"");
+            System.out.println("\"Outsider. You smell of Humanas -- of the ink-born filth.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -879,7 +885,7 @@ public class Storyline {
             }
 
             System.out.println("Scout:");
-            System.out.println("\"The Warden does not meet wanderers. Only the chosen — or the condemned.\"");
+            System.out.println("\"The Warden does not meet wanderers. Only the chosen -- or the condemned.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -902,7 +908,7 @@ public class Storyline {
             }
 
             System.out.println("Scout:");
-            System.out.println("\"If you truly seek him, go east. But beware the mists. They whisper truth and lies alike.\"");
+            System.out.println("\"If you truly seek him, go east. But beware of the mists. They whisper truth and lies alike.\"");
             System.out.println("\"The Root watches all who tread here.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
@@ -934,14 +940,14 @@ public class Storyline {
             }
             
             System.out.println(name + " (covers ears):");
-            System.out.println("\"Stop… you're not real.\"");
+            System.out.println("\"Stop... you're not real.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
             }
 
-            System.out.println("(A spectral vision forms — the silhouette of Lunareth appears briefly.)");
+            System.out.println("(A spectral vision forms -- the silhouette of Lunareth appears briefly.)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -956,14 +962,14 @@ public class Storyline {
                 break;
             }
             
-            System.out.println("\"You promised balance… and left me to bear its ruin.\"");
+            System.out.println("\"You promised balance... and left me to bear its ruin.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
             }
             
-            System.out.println("(" + name + " swings their weapon — the image shatters. Roots from the ground lash upward!)");
+            System.out.println("(" + name + " swings their weapon -- the image shatters. Roots from the ground lash upward!)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -992,7 +998,7 @@ public class Storyline {
             }
             
             System.out.println(name + " (to self):");
-            System.out.println("\"The corruption here… it feels alive. Like it’s searching for something.\"");
+            System.out.println("\"The corruption here… it feels alive. Like it's searching for something.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1030,7 +1036,7 @@ public class Storyline {
                 break;
             }
             
-            System.out.println("(" + name + " looks closer — dark veins spread up her arm.)");
+            System.out.println("(" + name + " looks closer -- dark veins spread up her arm.)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1062,15 +1068,8 @@ public class Storyline {
             }
             
             System.out.println("Healer (eyes narrowing):");
-            System.out.println("\"Help? Then bring me a Tear of Veyora — the last pure sap from the forest’s heart.\"");
-            System.out.println("\"But beware… the one who guards it no longer knows friend from prey.\"");
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-            
-            System.out.println("Quest Objective: Retrieve the Tear of Veyora from the Silverfang Huntress's domain.");
+            System.out.println("\"Help? Then bring me a Tear of Veyora -- the last pure sap from the fores's heart.\"");
+            System.out.println("\"But beware... the one who guards it no longer knows friend from prey.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1078,7 +1077,7 @@ public class Storyline {
             }
             
             System.out.println("Healer (quietly):");
-            System.out.println("\"She was once the pride of Lunareth's guard. If you face her… speak before you strike.\"");
+            System.out.println("\"She was once the pride of Lunareth's guard. If you face her... speak before you strike.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1128,7 +1127,7 @@ public class Storyline {
         System.out.print("\033[H\033[2J"); //clear screen
         System.out.flush();
 
-        System.out.println(name + " steps into a vast glade. Moonlight cuts through the mist.)");
+        System.out.println("("+name + " steps into a vast glade. Moonlight cuts through the mist.)");
         scan.nextLine();
         System.out.println("(Internal monologue):");
         System.out.println("\"The forest grows silent.\"");
@@ -1195,7 +1194,7 @@ public class Storyline {
         System.out.println("(Ilaryx kneels, eyes clear but full of guilt. " + name + " approaches.)");
         scan.nextLine();
         System.out.println("Ilaryx (hoarse):");
-        System.out.println("\"The Tear… take it.\"");
+        System.out.println("\"The Tear... take it.\"");
         System.out.println("(Ilaryx opens her hand, revealing a glowing crystal drop of pure sap.)");
         scan.nextLine();
 
@@ -1217,16 +1216,16 @@ public class Storyline {
         System.out.println("\"They do. I once made one too.\"");
         scan.nextLine();
         System.out.println("Ilaryx (recognition flickers):");
-        System.out.println("\"…You. The one from the Oath…\"");
+        System.out.println("\"...You. The one from the Oath...\"");
         scan.nextLine();
         System.out.println("(Ilaryx collapses before finishing. The Tear glows brighter in " + name + "'s hand.)");
-            
+        scan.nextLine();    
         System.out.println("(Internal monologue):");
         System.out.println("\"Her arrows fell silent. But her doubt... lingered...\"");
         scan.nextLine();
         System.out.println(name + " (softly):");
-        System.out.println("\"Lunareth… I'm coming.\"");
-
+        System.out.println("\"Lunareth... I'm coming.\"");
+        scan.nextLine();
 
 
 
@@ -1235,8 +1234,9 @@ public class Storyline {
 
 
         System.out.println("Main Quest Started: \"The Roots of Despair\"");
-        System.out.println("Objective: ");
-                
+        scan.nextLine();
+
+        System.out.println("Objective: Reach the Heart of Veyora and confront the Root of Despair");
         while (true) {
 	    System.out.println("\n(Press ['s'] to skip and [Enter] to continue.)");
 	    input = scan.nextLine();
@@ -1246,6 +1246,12 @@ public class Storyline {
             }
 
             System.out.println("("+name + " walks with the glowing Tear of Veyora)");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
+
             System.out.println("\"The Huntress's arrows no longer pierce the air.\"");
             System.out.println("\"But the wound she guarded still bleeds beneath the earth.\"");
             input = scan.nextLine();
@@ -1262,7 +1268,7 @@ public class Storyline {
             }
             
             System.out.println("Healer (weak but smiling):");
-            System.out.println("\"You found it… I can feel the forest breathe again.\"");
+            System.out.println("\"You found it... I can feel the forest breathe again.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1294,7 +1300,7 @@ public class Storyline {
             }
             
             System.out.println("Healer (looks to the east):");
-            System.out.println("\"The Root of Despair. Once, it carried Lunareth’s voice... Now it speaks only madness.\"");
+            System.out.println("\"The Root of Despair. Once, it carried Lunareth's voice... Now it speaks only madness.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1310,8 +1316,8 @@ public class Storyline {
             }
             
             System.out.println("Healer:");
-            System.out.println("\"Be warned — the closer you get, the louder the Oath will whisper.\"");
-            System.out.println("\"It remembers you… even if he does not.\"");
+            System.out.println("\"Be warned -- the closer you get, the louder the Oath will whisper.\"");
+            System.out.println("\"It remembers you... even if he does not.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1326,7 +1332,7 @@ public class Storyline {
             }
             
             System.out.println("(Internal monologue):");
-            System.out.println("\"The deeper I walk, the more the forest changes. It’s not dying… it’s dreaming.\"");
+            System.out.println("\"The deeper I walk, the more the forest changes. It's not dying… it's dreaming.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1349,7 +1355,7 @@ public class Storyline {
             }
             
             System.out.println("Sarukdal (faint):");
-            System.out.println("\"He’s lost to it… we all are…\"");
+            System.out.println("\"He's lost to it... we all are...\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1357,7 +1363,7 @@ public class Storyline {
             }
             
             System.out.println(name + " (gritting teeth):");
-            System.out.println("\"No. You’re still in there.\"");
+            System.out.println("\"No. You're still in there.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1379,7 +1385,7 @@ public class Storyline {
             }
             
             System.out.println("Lunareth (illusory):");
-            System.out.println("\"So… the Oathbreaker returns.\"");
+            System.out.println("\"So... the Oathbreaker returns.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1387,7 +1393,7 @@ public class Storyline {
             }
             
             System.out.println(name + " (shocked):");
-            System.out.println("\"Lunareth…?\"");
+            System.out.println("\"Lunareth...?\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1395,7 +1401,7 @@ public class Storyline {
             }
             
             System.out.println("Lunareth:");
-            System.out.println("\"Do you still claim that name? ‘Hero’? You who fell — you who let Elarion’s seal shatter?\"");
+            System.out.println("\"Do you still claim that name? 'Hero'? You who fell -- you who let Elarion's seal shatter?\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1403,7 +1409,7 @@ public class Storyline {
             }
             
             System.out.println(name + ":");
-            System.out.println("\"That wasn’t how it happened—\"");
+            System.out.println("\"That wasn't how it happened--\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1471,7 +1477,7 @@ public class Storyline {
             }
             
             System.out.println("(Internal monologue during battle:)");
-            System.out.println("\"These aren't enemies. They're memories — all trapped in the same lie.\"");
+            System.out.println("\"These aren't enemies. They're memories -- all trapped in the same lie.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1486,7 +1492,7 @@ public class Storyline {
             }
 
             System.out.println(name + " (panting):");
-            System.out.println("\"Lunareth… this isn’t you.\"");
+            System.out.println("\"Lunareth... this isn't you.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1494,7 +1500,7 @@ public class Storyline {
             }
             
             System.out.println("Lunareth (voice distant, fading):");
-            System.out.println("\"You don’t understand. I saw what happens when oaths break...\"");
+            System.out.println("\"You don't understand. I saw what happens when oaths break...\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1509,7 +1515,7 @@ public class Storyline {
                 break;
             }
             
-            System.out.println("(" + name + " places a hand on the Root’s core. Light bursts—a memory.)");
+            System.out.println("(" + name + " places a hand on the Root's core. Light bursts—a memory.)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1524,7 +1530,7 @@ public class Storyline {
             }
             
             System.out.println("Young Lunareth (smiling):");
-            System.out.println("\"We vow to protect balance. Not through fear… but through unity.\"");
+            System.out.println("\"We vow to protect balance. Not through fear... but through unity.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1547,14 +1553,14 @@ public class Storyline {
             }
             
             System.out.println(name + " (whispers):");
-            System.out.println("\"I remember now…\"");
+            System.out.println("\"I remember now...\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
             }
             
-            System.out.println("(The Root’s light stabilizes. The forest glows softly. A deep rumble echoes from above.)");
+            System.out.println("(The Root's light stabilizes. The forest glows softly. A deep rumble echoes from above.)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1562,7 +1568,7 @@ public class Storyline {
             }
             
             System.out.println("(Internal monologue):");
-            System.out.println("\"The forest breathes again… but its heart still aches.\"");
+            System.out.println("\"The forest breathes again... but its heart still aches.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1592,7 +1598,7 @@ public class Storyline {
                 break;
             }
 
-            System.out.println(name + " approaches Lunareth's citadel -- an enormous fortress of living wood.)");
+            System.out.println("("+name + " approaches Lunareth's citadel -- an enormous fortress of living wood.)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1624,7 +1630,7 @@ public class Storyline {
             }
             
             System.out.println(name + ":");
-            System.out.println("\"That we’d protect the balance — together.\"");
+            System.out.println("\"That we'd protect the balance -- together.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1633,14 +1639,14 @@ public class Storyline {
             
             System.out.println("Lunareth (bitter smile):");
             System.out.println("\"And you broke it.\"");
-            System.out.println("\"So now… I’ll break you.\"");
+            System.out.println("\"So now... I'll break you.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
             }
             
-            System.out.println("(He raises his bow — moonlight gathers.)");
+            System.out.println("(He raises his bow -- moonlight gathers.)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -1681,7 +1687,7 @@ public class Storyline {
     
     
     // --- Quest 8: The Warden of the Fractured Bough (Final Boss) ---
-    public void theWardenOfTheFractured(Character chosen) {
+    public void theWardenOfTheFractured(Character chosen) {//not included
         
         String name = chosen.getName();
         boolean isSkipped = false;
@@ -1837,10 +1843,10 @@ public class Storyline {
         String name = chosen.getName();
         boolean isSkipped = false;
         
-        System.out.println("(Lunareth collapses to one knee — his armor splintering, fragments of light leaking out.)");
+        System.out.println("(Lunareth collapses to one knee -- his armor splintering, fragments of light leaking out.)");
         scan.nextLine();
         System.out.println("Lunareth (faintly):");
-        System.out.println("\"You were right… I couldn't protect them.\"");
+        System.out.println("\"You were right... I couldn't protect them.\"");
         System.out.println("\"So I tried to control what was left.\"");
         scan.nextLine();
             
@@ -1848,7 +1854,7 @@ public class Storyline {
         System.out.println("\"You don't have to carry it alone anymore.\"");
         scan.nextLine();
         System.out.println("Lunareth (smiling weakly):");
-        System.out.println("\"The forest… remembers your name again.\"");
+        System.out.println("\"The forest... remembers your name again.\"");
         scan.nextLine();
             
         System.out.println("(The moonlight fades. Lunareth's body dissolves into silver motes that drift into the tree's heart.)");
@@ -1867,7 +1873,7 @@ public class Storyline {
         System.out.println("\"He found his way back.\"");
         scan.nextLine();
 
-        System.out.println("(" + name + " opens their palm — a fragment of Lunareth's bow rests there.)");
+        System.out.println("(" + name + " opens their palm -- a fragment of Lunareth's bow rests there.)");
         scan.nextLine();
         System.out.println("Healer (softly):");
         System.out.println("\"Then Veyora breathes again.\"");
@@ -1877,7 +1883,7 @@ public class Storyline {
         scan.nextLine();
         System.out.println("\"But the sky above it whispers of storms yet to come.\"");
         scan.nextLine();
-        System.out.println("\"For in the silence left by Lunareth's fall… something else begins to stir.\"");
+        System.out.println("\"For in the silence left by Lunareth's fall... something else begins to stir.\"");
         scan.nextLine();
 
         while (true) {
@@ -1888,11 +1894,11 @@ public class Storyline {
 
             System.out.print("\"The Umbral Fortress.\"");
             scan.nextLine();
-            System.out.print("\"The air itself is poison. It doesn't just feel cold… it feels empty. Like a void.\"");
+            System.out.print("\"The air itself is poison. It doesn't just feel cold... it feels empty. Like a void.\"");
             scan.nextLine();
             System.out.print("\"This is where it all ended. This is where I fell.\"");
             scan.nextLine();
-            System.out.print("\"Elarion is here. I can feel him… waiting.\"");
+            System.out.println("\"Elarion is here. I can feel him... waiting.\"");
             scan.nextLine();
 
 
@@ -1901,7 +1907,7 @@ public class Storyline {
 
 
             System.out.println("Spirit of Lunareth:");
-            System.out.println("\"The fortress… it feeds on our broken Oath. Be careful, Echo. The one who guards it… he was the strongest of us.\"");
+            System.out.println("\"The fortress... it feeds on our broken Oath. Be careful, Echo. The one who guards it... he was the strongest of us.\"");
             scan.nextLine();
             
             System.out.println("Spirit of The Archivist:");
@@ -1912,8 +1918,9 @@ public class Storyline {
             System.out.println("(the spirits fade; "+name+" crosses the chasm and enters the fortress)");
             scan.nextLine();
             
-            System.out.println("[Scene: The Hall of Broken Oaths]");
-            System.out.println("(the interior is a maze of shadowy corridors; as "+name+" walks, phantoms of the past play out on the walls—scenes of "+name+" and the three guardians)");
+            System.out.println("(The Hall of Broken Oaths; the interior is a maze of shadowy corridors; as "+name+" walks, phantoms of the past play out on the walls—scenes of "+name+" and the three guardians)");
+            scan.nextLine();
+
             System.out.println("(A phantom scene appears: the four guardians—"+name+", ARCHIVIST, LUNARETH, and a massive, armored SARUKDAL—stand together, preparing for the original sealing)");
             scan.nextLine();
 
@@ -1927,16 +1934,20 @@ public class Storyline {
             scan.nextLine();
             
             System.out.println("(the phantom scene shatters as a new, violent one replaces it: the moment "+name+" was struck down, the Oath shattering, Sarukdal screaming in rage and despair as the shadow consumes him)");
-            System.out.println("(narration) \"He didn't falter. I did, I was the weak link. My failure… it didn't just break the Oath, it broke him.\"");
+            scan.nextLine();
+            System.out.println("\"He didn't falter. I did, I was the weak link. My failure… it didn't just break the Oath, it broke him.\"");
             scan.nextLine();
             
             System.out.println("(A deep, grating voice echoes from a chamber ahead)");
+            scan.nextLine();
             System.out.println("\"TRAITOR. WEAKLING. YOU HAVE RETURNED.\"");
-            System.out.println("(narration) \"Sarukdal.\"");
+            scan.nextLine();
+            System.out.println("\"Sarukdal.\"");
             scan.nextLine();
 
 
             System.out.println("Quest Started: The Last Bastion");
+            scan.nextLine();
             System.out.println("Objective: Navigate the Hall of Broken Oaths and find Sarukdal, the final guardian.");
             System.out.println("Press ['s'] to skip, and [Enter] to continue.");
             String input = scan.nextLine();
@@ -1945,8 +1956,13 @@ public class Storyline {
                 break;
             }
         
-            System.out.println("[Scene: The Chasm of Guilt]");
-            System.out.println("("+name+" enters a vast chamber; in the center, on a raised dais, kneels SARUKDAL. He is a monstrous being of shadow and armor, his greatshield fused to his body, pulsating with dark energy. He is kneeling before a pulsating dark crystal.)");
+            System.out.println("(The Chasm of Guilt; "+name+" enters a vast chamber; in the center, on a raised dais, kneels SARUKDAL. He is a monstrous being of shadow and armor, his greatshield fused to his body, pulsating with dark energy. He is kneeling before a pulsating dark crystal.)");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("s")) {
+                isSkipped = true;
+                break;
+            }
+
             System.out.println("("+name+" finds the path blocked by a chasm; to cross, the hero must answer shadow-riddles that test their memory of the Oath)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
@@ -1956,6 +1972,7 @@ public class Storyline {
             
             System.out.println("Shadow Voice (Sarukdal's):");
             System.out.println("\"What is the price of a shield?\"");
+            input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
@@ -1963,6 +1980,7 @@ public class Storyline {
 
             System.out.println(name+":");
             System.out.println("\"Endurance.\"");
+            input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
@@ -1970,6 +1988,7 @@ public class Storyline {
 
             System.out.println("Shadow Voice (Sarukdal's):");
             System.out.println("\"What is the price of a memory?\"");
+            input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
@@ -1977,6 +1996,7 @@ public class Storyline {
 
             System.out.println(name+":");
             System.out.println("\"Truth.\"");
+            input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
@@ -1984,6 +2004,7 @@ public class Storyline {
 
             System.out.println("Shadow Voice (Sarukdal's):");
             System.out.println("\"What is the price of an Oath?\"");
+            input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
@@ -2007,8 +2028,8 @@ public class Storyline {
             break;
         }
 
-        scan.nextLine();
         System.out.println("You have finished the quest: The Last Bastion!");
+        scan.nextLine();
 
         if(isSkipped) {
             scan.nextLine();
@@ -2031,8 +2052,8 @@ public class Storyline {
         System.out.println("You may now proceed on your journey.");
         scan.nextLine();
 
-        System.out.println("[Scene: Before the Guardian]");
-        System.out.println("(the hero steps onto the dais; Sarukdal slowly rises, his sheer size blotting out the light)");
+        System.out.println("(Before the Guardian; the hero steps onto the dais; Sarukdal slowly rises, his sheer size blotting out the light)");
+        scan.nextLine();
         System.out.println("Sarukdal (voice, a deep echo of pain): ");
         System.out.println("\"You... came back. After you ran. After you failed.\"");
         scan.nextLine();
@@ -2042,7 +2063,8 @@ public class Storyline {
         System.out.println("Sarukdal: ");
         System.out.println("\"LIES! The Oath was bound to your memory! You CHOSE to forget! You left us to rot! I... I held... I held as long as I could... but the shield shattered from within.\"");
         scan.nextLine();
-        System.out.println("(narration) \"He's right. Forgetting was a betrayal.\" \"There's no explaining this. Only answering for it.\"");
+        System.out.println("\"He's right. Forgetting was a betrayal.\" \"There's no explaining this. Only answering for it.\"");
+        scan.nextLine();
         System.out.println("(Sarukdal raises his massive, corrupted shield)");
         scan.nextLine();
         System.out.println("Sarukdal: ");
@@ -2053,7 +2075,8 @@ public class Storyline {
     public void theUnboundThroneQuest(Character chosen){//Nation 3 Main Quest
         boolean isSkipped = false;
 
-        System.out.println(chosen.getName() + " lands the final blow. Sarukdal falls to one knee. The dark energy cracks and shatters from his armor. The shadow recedes from his eyes, revealing the true guardian beneath.");
+        System.out.println("("+chosen.getName() + " lands the final blow. Sarukdal falls to one knee. The dark energy cracks and shatters from his armor. The shadow recedes from his eyes, revealing the true guardian beneath.)");
+        scan.nextLine();
         System.out.println("Sarukdal (voice, now quiet and clear, though weak):");
         System.out.println("\"" + chosen.getName() + "...? You... you came back. You... broke through.\"");
         scan.nextLine();
@@ -2080,27 +2103,32 @@ public class Storyline {
         scan.nextLine();
 
 
-        System.out.println("Sarukdal dissolves into motes of dark and light. His greatshield clatters to the ground, now cleansed of corruption. " + chosen.getName() + "'s final memory is restored.");
+        System.out.println("(Sarukdal dissolves into motes of dark and light. His greatshield clatters to the ground, now cleansed of corruption. " + chosen.getName() + "'s final memory is restored.)");
         scan.nextLine();
 
 
-        System.out.println("Narration: \"I remember everything. The sealing. The fall. The reason.\"");
+        System.out.println("\"I remember everything. The sealing. The fall. The reason.\"");
+        scan.nextLine();
         System.out.println(":\"Elarion isn't just a being. He's the shadow we cast.\"");
+        scan.nextLine();
         System.out.println("\"And I'm the only one left to cast it.\"");
         scan.nextLine();
 
 
         while (true) {
-            System.out.println("The chamber behind Sarukdal opens, revealing a spiraling staircase of fractured light, ascending into pure darkness.");
+            System.out.println("(The chamber behind Sarukdal opens, revealing a spiraling staircase of fractured light, ascending into pure darkness.)");
             scan.nextLine();
 
 
-            System.out.println("Narration: \"The Forgotten Throne. Where we bound him.\"");
+            System.out.println("\"The Forgotten Throne. Where we bound him.\"");
+            scan.nextLine();
             System.out.println(":\"Sarukdal said he's 'unmaking' the Oath. I can feel it. The world's energy is draining... siphoning... right to the room above me.\"");
+            scan.nextLine();
             System.out.println("\"This ends now.\"");
 
 
             System.out.println("Quest Started: The Unbound Throne");
+            scan.nextLine();
             System.out.println("Objective: Ascend the labyrinth and confront Elarion in the Forgotten Throne room.");
             System.out.println("Press ['s'] to skip, and [Enter] to continue.");
             String input = scan.nextLine();
@@ -2143,7 +2171,7 @@ public class Storyline {
                 isSkipped = true;
                 break;
             }
-            System.out.println("Narration: \"He's using my own memories against me. The people I couldn't save.\"");
+            System.out.println("\"He's using my own memories against me. The people I couldn't save.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -2170,7 +2198,7 @@ public class Storyline {
                 break;
             }
             System.out.println("Elarion (Voice):");
-            System.out.println("“You think you are a hero? You think you have fixed anything? You are a catalyst—a walking disaster. Look. Look at the truth.”");
+            System.out.println("You think you are a hero? You think you have fixed anything? You are a catalyst--a walking disaster. Look. Look at the truth.");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -2189,13 +2217,13 @@ public class Storyline {
                 isSkipped = true;
                 break;
             }
-            System.out.println("Narration: \"That moment… my fall. My fear. The part of me that gave up.\"");
+            System.out.println("\"That moment... my fall. My fear. The part of me that gave up.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
             }
-            System.out.println("(The shadow reaches out — the hero grips their blade tighter.)");
+            System.out.println("(The shadow reaches out -- the hero grips their blade tighter.)");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -2230,7 +2258,7 @@ public class Storyline {
                 break;
             }
             System.out.println("Narration: \"This is it. The end.\"");
-            System.out.println("\"He looks… like me. The shadow I cast.\"");
+            System.out.println("\"He looks... like me. The shadow I cast.\"");
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
@@ -2246,7 +2274,7 @@ public class Storyline {
             scan.nextLine();
             System.out.println("Quest Summary:");
             System.out.println("With Sarukdal's spirit finally at peace, the path to the pinnacle of the Umbral Fortress had opened.");
-            System.out.println("You ascended through the void-like labyrinth — a manifestation of your own shattered memories and fears — until you reached the Forgotten Throne, where the Oath was first sworn, and confronted Elarion himself.");
+            System.out.println("You ascended through the void-like labyrinth -- a manifestation of your own shattered memories and fears -- until you reached the Forgotten Throne, where the Oath was first sworn, and confronted Elarion himself.");
             scan.nextLine();
         }
 
@@ -2270,7 +2298,6 @@ public class Storyline {
         System.out.println("\"Your friends are gone. Your Oath is shattered. What possible hope do you have?\"");
         scan.nextLine();
         System.out.println(chosen.getName() + " (raises weapon, pendant glowing brightly):");
-        scan.nextLine();
         System.out.println("\"I am the Echo.\"");
         scan.nextLine();
         System.out.println("\"I am the Guardian.\"");

@@ -78,7 +78,7 @@ abstract public class Character {
             dmg=0;
         }
        
-        System.out.println(name+" takes "+dmg+" damage!");
+        System.out.println(name+" takes "+dmg*level+" damage!");
     }
 
 

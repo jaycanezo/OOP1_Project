@@ -751,11 +751,12 @@ public class OOP_Project {
 
         //============================================================NATION 3 MINI QUEST============================================================
         storyline.theLastBastionQuest(chosen);
-        //============================================================NATION 3 MINI BOSS============================================================
-       
-        System.out.println(); 
+        //============================================================NATION 3 MINI BOSS=============================================================
         scan.nextLine();
 
+        System.out.print("\033[H\033[2J"); //clear screen using ANSI escape codes
+        System.out.flush();
+        
         Sarukdal sarukdal = new Sarukdal();
 
         System.out.println();
