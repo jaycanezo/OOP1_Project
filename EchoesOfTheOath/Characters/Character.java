@@ -145,6 +145,12 @@ abstract public class Character {
 
 
 }
+
+    public void displayCharacterInfo(){
+        
+    }
+
+    
 }
 
 

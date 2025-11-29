@@ -14,7 +14,7 @@ public class BattleLogic{
         System.out.println(boss.getName()+"'s HP: " + boss.getHp() + " | Level: " + boss.getLevel());
         scan.nextLine();
 
-        System.out.println(chosen.getName()+"'s Stats: HP: " + boss.getHp() + " | Level: " + boss.getLevel());
+        System.out.println(chosen.getName()+"'s Stats: HP: " + chosen.getHp() + " | Level: " + chosen.getLevel());
         scan.nextLine();
 
         while (boss.getHp() > 0) {

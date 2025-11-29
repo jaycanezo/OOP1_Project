@@ -83,7 +83,8 @@ public class MainQuest1 {
         if (strikes1 <= 0) { 
             failReward(chosen);  
         } else {
-            successReward(chosen, successCount);
+            successReward(chosen);
+            successCount++;
         }
         
         // ---- PHASE 2 ----
@@ -91,7 +92,8 @@ public class MainQuest1 {
         if (strikes2 <= 0) { 
             failReward(chosen); 
         } else {
-            successReward(chosen, successCount);
+            successReward(chosen);
+            successCount++;
         }
 
         // ---- PHASE 3 ----
@@ -99,7 +101,8 @@ public class MainQuest1 {
         if (strikes3 <= 0) { 
             failReward(chosen); 
         } else {
-            successReward(chosen, successCount);
+            successReward(chosen);
+            successCount++;
         }
 
         // ---- PHASE 4 ----
@@ -110,7 +113,8 @@ public class MainQuest1 {
         // ============================
         if(successCount==3){
             chosen.setHp(chosen.getLevel()+1);
-            System.out.println("You have leveled up to "+chosen.getLevel());
+            System.out.println("You were only successful in "+(successCount+1)+"/4 Phases.");
+            System.out.println("You have leveled up to "+chosen.getLevel()+"!");
             scan.nextLine();
         } else {
             System.out.println("You did not levelup because you were only successful in "+(successCount+1)+"/4 Phases.");
@@ -297,6 +301,9 @@ public class MainQuest1 {
         System.out.println("You escaped the maze and proceeds to The Heart of the Veins");
         scan.nextLine();
 
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         System.out.println("PHASE 3 - The Heart of the Veins");
         System.out.println("Strikes: " + strikes + "/3");
         scan.nextLine();
@@ -360,6 +367,12 @@ public class MainQuest1 {
     // ----------------------------------------------------------
     public void phase4() {
 
+        System.out.println("You got out of the Vein's Heart, and saw the citizens gathering");
+        scan.nextLine();
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         System.out.println("PHASE 4 - The People Rise");
         scan.nextLine();
 
@@ -404,11 +417,10 @@ public class MainQuest1 {
         scan.nextLine();
     }
 
-    public void successReward(Character chosen, int successCount) {
+    public void successReward(Character chosen) {
         chosen.setPotionCount(chosen.getPotionCount() + 3);
         System.out.println("Reward: 3 health potions added to your inventory.");
         scan.nextLine();
-        successCount++;
         System.out.println("Current Level: "+chosen.getLevel());
         System.out.println("Current Potions: " + chosen.getPotionCount());
         scan.nextLine();

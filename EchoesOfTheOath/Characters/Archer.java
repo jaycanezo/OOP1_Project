@@ -66,7 +66,7 @@ public class Archer extends Character{
         System.out.println(getName()+" has "+getHp()+" HP remaining!");
     }
 
-
+    @Override
     public void displayCharacterInfo(){
         System.out.println("\nSwift and precise, Archers strike from afar with deadly accuracy. Masters of the bow, they can pierce armor, control the battlefield, and rain destruction upon enemies before they can even draw near.");
         System.out.println();
