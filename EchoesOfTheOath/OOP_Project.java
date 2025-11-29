@@ -1,20 +1,11 @@
 package EchoesOfTheOath;
 import java.util.Scanner;
 
-
-import EchoesOfTheOath.Characters.Archer;
-import EchoesOfTheOath.Characters.Boss;
+import EchoesOfTheOath.Characters.*;
 import EchoesOfTheOath.Characters.Character;
-import EchoesOfTheOath.Characters.Mage;
-import EchoesOfTheOath.Characters.Warrior;
-import EchoesOfTheOath.Characters.babyM;
-import EchoesOfTheOath.Characters.Archivist;
-import EchoesOfTheOath.Characters.Sarukdal;
-import EchoesOfTheOath.Characters.Elarion;
-import EchoesOfTheOath.Characters.Ilaryx;
-import EchoesOfTheOath.Characters.Lunareth;
 
-
+import EchoesOfTheOath.Nation1.*;
+import EchoesOfTheOath.Nation3.MainQuest3;
 public class OOP_Project {
     public static void main(String[] args) throws InterruptedException {
         Scanner scan = new Scanner(System.in);
@@ -55,7 +46,6 @@ public class OOP_Project {
         System.out.print("\033[H\033[2J"); //clear screen using ANSI escape codes
         System.out.flush();
 
-
         //start of the storyline intro, cannot be skipped for immersion/lore purposes
         String text = "Long ago, three adventurers-a brave warrior, a swift archer, and a wise mage-traveled across worlds, earning fame for vanquishing great evils. Their bond was unbreakable, their deeds legendary...\n\nUntil one mission brought them face to face with a power unlike any other-a force that had slain even the mightiest heroes.";
        
@@ -65,10 +55,8 @@ public class OOP_Project {
             Thread.sleep(1);  // paras text delay
         }
 
-
         scan.nextLine();
         System.out.println();
-
 
         //creation of character objects
         Warrior warrior = new Warrior();
@@ -76,18 +64,15 @@ public class OOP_Project {
         Mage mage = new Mage();
         Boss boss = new Boss();
 
-
         // START OF ADDED CODE - JACK
         warrior.setLevel(11);
         archer.setLevel(11);
         mage.setLevel(11);
         // END OF ADDED CODE - JACK
 
-
         //character trial, can only move to the next character after all skills are used/tested
         System.out.print("You encountered a powerful foe!");
         scan.nextLine();
-
 
         // START OF ADDED CODE - JACK
         String input = "";
@@ -127,7 +112,6 @@ public class OOP_Project {
         }
         scan.nextLine();
 
-
         System.out.println("Archer steps in from a distance!");
         // START OF ADDED CODE - JACK
         do {
@@ -164,7 +148,6 @@ public class OOP_Project {
             System.out.println();
         }
         scan.nextLine();
-
 
         System.out.println("The Mage steps forward, staff in hand, ready to unleash the power of the elements.");
         // START OF ADDED CODE - JACK
@@ -203,9 +186,6 @@ public class OOP_Project {
         }
         scan.nextLine();
 
-
-
-
         System.out.println("Archer: Oh no the Demon is preparing to launch an attack!");
         scan.nextLine();
         System.out.println("Warrior: Lets use our power together");
@@ -213,30 +193,23 @@ public class OOP_Project {
         System.out.println("The heroes then leaped forward the Demon combining their strengths in hopes of defeating the enemy.");
         scan.nextLine();
 
-
-
-
         Character chosen = null;
-
-
-
 
         System.out.println("You have witnessed the power of the heroes! Choose a Character in order to continue the story.");
         System.out.print("[1]Warrior [2]Archer [3]Mage: ");
-
-
-
 
         int choice = 0;
         while (true) {
             try {
                 choice = scan.nextInt();
                 scan.nextLine();
-                if(choice>3||choice<1){
+                if(choice<1||choice>3){
+                    System.out.println();
                     System.out.println("Please enter [1] for Warriorr, [2] for Archer or [3] for Mage only.");
                 }
             } catch (Exception e) {
-                System.out.println("Input Error. Please enter [1] for Warriorr, [2] for Archer or [3] for Mage only.");
+                System.out.println();
+                System.out.print("Input Error. Please enter [1] for Warriorr, [2] for Archer or [3] for Mage only:");
                 scan.nextLine();
             }
 
@@ -257,10 +230,20 @@ public class OOP_Project {
         }
 
 
+        String playerName=null;
 
-        System.out.println();
-        System.out.print("Enter your hero's name: ");
-        String playerName = scan.nextLine();
+        while(true){
+            System.out.println();
+            System.out.print("Enter your hero's name: ");
+            playerName = scan.nextLine();
+            if(playerName != null && playerName.trim().isEmpty()){
+                System.out.println();
+                System.out.println("Input does not accept empty, or space only String");
+                continue;
+            }
+            break;
+        }
+        
         chosen.setName(playerName);
 
 
@@ -292,12 +275,15 @@ public class OOP_Project {
         Storyline storyline = new Storyline();
 
         //============================================================NATION 1============================================================
-        storyline.quest1HumanasQuest(chosen);//Nation 1 Mini Quest
+        MiniQuest1 miniQuest1 = new MiniQuest1();
+        MainQuest1 mainQuest1 = new MainQuest1();
+
+        miniQuest1.quest1HumanasQuest(chosen);//Nation 1 Mini Quest
         
         babyM babyM = new babyM();//Nation 1 Mini Boss
         BattleLogic.battleLogic(chosen, babyM);
 
-        storyline.theVeinsOfHumanasQuest(chosen);//Nation 1 Main Quest
+        mainQuest1.VeinsOfHumanas(chosen);//Nation 1 Main Quest
 
         Archivist archivist = new Archivist();//Nation 1 Main Boss
         BattleLogic.battleLogic(chosen, archivist);
@@ -314,12 +300,14 @@ public class OOP_Project {
         BattleLogic.battleLogic(chosen, lunareth);
 
         //============================================================NATION 3============================================================
+        MainQuest3 mainQuest3 = new MainQuest3();
+        
         storyline.theLastBastionQuest(chosen);//Nation 3 Mini Quest
         
         Sarukdal sarukdal = new Sarukdal();//Nation 3 Mini Boss
         BattleLogic.battleLogic(chosen, sarukdal);
 
-        storyline.theUnboundThroneQuest(chosen);//Nation 3 Main Quest
+        mainQuest3.theUnboundThroneQuest(chosen);//Nation 3 Main Quest
 
         Elarion elarion = new Elarion();//Nation 3 Main Boss
         BattleLogic.battleLogic(chosen, elarion);

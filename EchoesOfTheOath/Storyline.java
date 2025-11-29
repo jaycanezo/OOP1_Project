@@ -2,158 +2,210 @@ package EchoesOfTheOath;
 
 import EchoesOfTheOath.Characters.Character;
 
-import java.net.Socket;
-import java.util.Scanner;
+import java.util.*;
 
 public class Storyline {
     Scanner scan = new Scanner(System.in);
 
-    public void quest1HumanasQuest(Character chosen) {//Nation 1 Mini Quest
+    /*public void quest1HumanasQuest(Character chosen) {//Nation 1 Mini Quest
         String name = chosen.getName();
         boolean isSkipped = false;  
+        boolean sceneFinished = false;
 
-        while(true) {
-            System.out.println("(" + name + " walks along the worn dirt path leading to the outskirts of a town)");
-            scan.nextLine();
-            System.out.println("(the wind carries faint echoes of bells and shouting)");
-            scan.nextLine();
-            System.out.println("(Internal monologue):");
-            System.out.println("\"The city comes into view - tall walls, broken gates, and guards that look more like beggars in armor.\"");
-            scan.nextLine();
-            System.out.println("\"This must be Humanas...\" ");
-            scan.nextLine();
-            System.out.println("\"Once proud, maybe. But now… it looks like it's just trying to survive.\" ");
-            scan.nextLine();
-            
-            System.out.println("(" + name + " steps through the gates; villagers move quickly, avoiding eye contact; a guard leans lazily by a post, glaring)");
-            scan.nextLine();
-            System.out.println("Guard:");
-            System.out.println("You there. Traveler. What business brings you to Vensvale huh?");
-            scan.nextLine();
-            
-            System.out.println(name +":");
-            System.out.println("Oh, just passing through.");
-            scan.nextLine();
-            
-            System.out.println("Guard (grunts):");
-            System.out.println("Hmph. Best keep moving then. Outsiders get blamed for enough already.");
-            scan.nextLine();
-            
-            System.out.println("(Internal monologue):");
-            System.out.println("\"Blamed? For what, exactly?\"");
-            scan.nextLine();
-            
-            System.out.println("(" + name + " walks deeper into the market; half-empty stalls, broken carts, and desperate murmurs)");
-            scan.nextLine();
-            
-            System.out.println("Merchant (*arguing with a woman):");
-            System.out.println("Prices went up again! The collectors came last night-they took half my stock!");
-            scan.nextLine();
-            
-            System.out.println("Woman:");
-            System.out.println("Then my children will go hungry again? You think the lord's gonna feed us?");
-            scan.nextLine();
+        while(!sceneFinished) {
+            while(true){
+                System.out.println("(" + name + " walks along the worn dirt path leading to the outskirts of a town)");
+                scan.nextLine();
+                System.out.println("(the wind carries faint echoes of bells and shouting)");
+                scan.nextLine();
+                System.out.println("(Internal monologue):");
+                System.out.println("\"The city comes into view - tall walls, broken gates, and guards that look more like beggars in armor.\"");
+                scan.nextLine();
+                System.out.println("\"This must be Humanas...\" ");
+                scan.nextLine();
+                System.out.println("\"Once proud, maybe. But now… it looks like it's just trying to survive.\" ");
+                scan.nextLine();
+                
+                System.out.println("(" + name + " steps through the gates; villagers move quickly, avoiding eye contact; a guard leans lazily by a post, glaring)");
+                scan.nextLine();
+                System.out.println("Guard:");
+                System.out.println("You there. Traveler. What business brings you to Vensvale huh?");
+                scan.nextLine();
+                
+                System.out.println(name +":");
+                System.out.println("Oh, just passing through.");
+                scan.nextLine();
+                
+                System.out.println("Guard (grunts):");
+                System.out.println("Hmph. Best keep moving then. Outsiders get blamed for enough already.");
+                scan.nextLine();
+                
+                System.out.println("(Internal monologue):");
+                System.out.println("\"Blamed? For what, exactly?\"");
+                scan.nextLine();
+                
+                System.out.println("(" + name + " walks deeper into the market; half-empty stalls, broken carts, and desperate murmurs)");
+                scan.nextLine();
+                
+                System.out.println("Merchant (*arguing with a woman):");
+                System.out.println("Prices went up again! The collectors came last night-they took half my stock!");
+                scan.nextLine();
+                
+                System.out.println("Woman:");
+                System.out.println("Then my children will go hungry again? You think the lord's gonna feed us?");
+                scan.nextLine();
 
-            System.out.println("(a heavy silence falls; both avoid " + name + "'s eyes)");
-            scan.nextLine();
-            System.out.println("(Internal monologue)");
-            System.out.println("\"Collectors... So that's what the stall owner meant earlier.\"");
-            scan.nextLine();
-            System.out.println("\"Not monsters in the dark--just people in power who've forgotten what mercy looks like.\"");
-            scan.nextLine();
-            
-            System.out.println("(a young boy tugs on " + name + "'s cloak)");
-            scan.nextLine();
-            
-            System.out.println("Boy: ");
-            System.out.println("Uhh.. E-excuse me mister... c-can you help my mama?");
-            scan.nextLine();
-            
-            System.out.println(name +" (*kneels slightly):");
-            System.out.println("What's wrong?");
-            scan.nextLine();
-            
-            System.out.println("Boy (*hesitant):");
-            System.out.println("The guards took her. They said s-she didn't pay enough tax... but she already gave them all our coins.");
-            scan.nextLine();
-            
-            System.out.println(name +" (*pauses):");
-            System.out.println("...Where did they take her?");
-            scan.nextLine();
-            
-            System.out.println("Boy:");
-            System.out.println("To the old chapel. The one the King closed.");
-            scan.nextLine();
+                System.out.println("(a heavy silence falls; both avoid " + name + "'s eyes)");
+                scan.nextLine();
+                System.out.println("(Internal monologue)");
+                System.out.println("\"Collectors... So that's what the stall owner meant earlier.\"");
+                scan.nextLine();
+                System.out.println("\"Not monsters in the dark--just people in power who've forgotten what mercy looks like.\"");
+                scan.nextLine();
+                
+                System.out.println("(a young boy tugs on " + name + "'s cloak)");
+                scan.nextLine();
+                
+                System.out.println("Boy: ");
+                System.out.println("Uhh.. E-excuse me mister... c-can you help my mama?");
+                scan.nextLine();
+                
+                System.out.println(name +" (*kneels slightly):");
+                System.out.println("What's wrong?");
+                scan.nextLine();
+                
+                System.out.println("Boy (*hesitant):");
+                System.out.println("The guards took her. They said s-she didn't pay enough tax... but she already gave them all our coins.");
+                scan.nextLine();
+                
+                System.out.println(name +" (*pauses):");
+                System.out.println("...Where did they take her?");
+                scan.nextLine();
+                
+                System.out.println("Boy:");
+                System.out.println("To the old chapel. The one the King closed.");
+                scan.nextLine();
 
-            System.out.println("(the boy's eyes glisten; " + name +" nods and stands)");
-            scan.nextLine();
+                System.out.println("(the boy's eyes glisten; " + name +" nods and stands)");
+                scan.nextLine();
 
-            System.out.println("(Internal monologue):");
-            System.out.println("\"A closed chapel turned into a prison... This kingdom really is rotten to the core.\"");
-            scan.nextLine();
+                System.out.println("(Internal monologue):");
+                System.out.println("\"A closed chapel turned into a prison... This kingdom really is rotten to the core.\"");
+                scan.nextLine();
 
-            System.out.println("Quest Started: Echoes of a Broken Crown");
-            System.out.println("Objective: Investigate the chapel and uncover what's happening to the townsfolk");
-            System.out.println("Press ['s'] to skip, and [Enter] to continue.");
-            String input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
+                System.out.println("Quest Started: Echoes of a Broken Crown");
+                System.out.println("Objective: Investigate the chapel, help the kid find his mom and uncover what's happening to the townsfolk.");
+                System.out.println("Press ['s'] to skip, and [Enter] to continue.");
+                String input = scan.nextLine();
+                if (input.equalsIgnoreCase("s")) {
+                    isSkipped = true;
+                    break;
+                }
+                
+                System.out.println("("+ name + " enters the outskirts of the ruined chapel -- torchlight flickers inside. Distant voices echo.)");
+                input = scan.nextLine();
+                if (input.equalsIgnoreCase("s")) {
+                    isSkipped = true;
+                    break;
+                }
+                System.out.println("("+ name + " hides behind a broken pillar, listening)");
+                input = scan.nextLine();
+                if (input.equalsIgnoreCase("s")) {
+                    isSkipped = true;
+                    break;
+                }
+
+                System.out.println("Guard 1:");
+                System.out.println("Another one who couldn't pay, huh? Shame. Could've worked it off at the mines.");
+                input = scan.nextLine();
+                if (input.equalsIgnoreCase("s")) {
+                    isSkipped = true;
+                    break;
+                }
+                System.out.println("Guard 2 (*snickers):");
+                System.out.println("Mines are full anyway. The lord needs examples, not workers.");
+                input = scan.nextLine();
+                if (input.equalsIgnoreCase("s")) {
+                    isSkipped = true;
+                    break;
+                }
+                System.out.println("Guard 1:");
+                System.out.println("Ha. Maybe the others will learn next time. Fear is cheaper than mercy.");
+                input = scan.nextLine();
+                if (input.equalsIgnoreCase("s")) {
+                    isSkipped = true;
+                    break;
+                }
+
+                System.out.println("(Internal monologue):");
+                System.out.println("\"Fear's cheaper than mercy.\"");
+                System.out.println("\"Those words... they sting. Like I've heard them before--just from the other side of the sword.\"");
+                input = scan.nextLine();
+                if (input.equalsIgnoreCase("s")) {
+                    isSkipped = true;
+                    break;
+                }
+
+                System.out.println("(" + name + " creeps closer, spots villagers locked inside; quietly, "+name+" tries do decrypt the passcode in the lock.");
+                input = scan.nextLine();
+                if (input.equalsIgnoreCase("s")) {
+                    isSkipped = true;
+                    break;
+                }
+
+                int turns=3;
+                int password=0;
+                int randomPass = new Random().nextInt(4) + 1;
+
+                while(turns!=0){
+                    while(true){
+                        try{
+                            System.out.print("Enter a random number from [1-4]: ");
+                            password = scan.nextInt();
+                            scan.nextLine();
+                            if (password < 1 || password > 4) {
+                                System.out.println("Invalid! Only enter numbers from 1 to 4.\n");
+                                continue;
+                            }
+                            
+                            break;
+                        }catch(InputMismatchException e){
+                            System.out.println("Input Invalid. Only enter integers from 1 to 4");
+                            System.out.println();
+                            scan.nextLine();
+                        }
+                    }
+                    
+                    
+                    if (password==randomPass) {
+                        System.out.println("Passcode Correct, Lock opens!");
+                        System.out.println();
+                        break;
+                    }else{
+                        System.out.println("Passcode Incorrect, Try again!");
+                        turns--;
+                        System.out.println("Turns left: "+turns+", once 0 return back to the beginning of the quest.");
+                        System.out.println();
+                    }
+                    
+                    if (turns == 0) {
+                        System.out.println("You failed the passcode challenge. Restarting quest...");
+                        System.out.println();
+                    }
+                }
+                if(turns==0){
+                    break;
+                }else{
+                    sceneFinished=true;
+                    break;
+                }
             }
             
-            System.out.println("("+ name + " enters the outskirts of the ruined chapel -- torchlight flickers inside. Distant voices echo.)");
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-            System.out.println("("+ name + " hides behind a broken pillar, listening)");
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
+            
 
-            System.out.println("Guard 1:");
-            System.out.println("Another one who couldn't pay, huh? Shame. Could've worked it off at the mines.");
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-            System.out.println("Guard 2 (*snickers):");
-            System.out.println("Mines are full anyway. The lord needs examples, not workers.");
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-            System.out.println("Guard 1:");
-            System.out.println("Ha. Maybe the others will learn next time. Fear is cheaper than mercy.");
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-
-            System.out.println("(Internal monologue):");
-            System.out.println("\"Fear's cheaper than mercy.\"");
-            System.out.println("\"Those words... they sting. Like I've heard them before--just from the other side of the sword.\"");
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
-
-            System.out.println("(" + name + " creeps closer, spots villagers locked inside; quietly breaks the door latch)");
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("s")) {
-                isSkipped = true;
-                break;
-            }
             System.out.println("Imprisoned Woman:");
             System.out.println("Who... who are you?");
-            input = scan.nextLine();
+            String input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 isSkipped = true;
                 break;
@@ -442,7 +494,7 @@ public class Storyline {
 
         System.out.print("\033[H\033[2J"); //clear screen
         System.out.flush();
-    }
+    }*/
     
     public void theVeinsOfHumanasQuest(Character chosen){//Nation 1 Main Quest
         boolean isSkipped = false;

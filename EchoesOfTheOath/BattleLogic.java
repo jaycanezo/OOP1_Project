@@ -79,7 +79,7 @@ public class BattleLogic{
                 System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
                 scan.nextLine();
 
-                chosen.setPotionCount(chosen.getPotionCount() + 2);
+                chosen.setPotionCount(chosen.getPotionCount() + 5);
                 System.out.println("Reward: 5 Health Potion added to inventory.");
                 scan.nextLine();
 
@@ -121,7 +121,8 @@ public class BattleLogic{
                 }
             }
         }
-        scan.close();
+        System.out.print("\033[H\033[2J"); //clear screen
+        System.out.flush();
     }
 }
 
