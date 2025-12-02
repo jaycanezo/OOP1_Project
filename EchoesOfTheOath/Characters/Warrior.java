@@ -69,21 +69,57 @@ public class Warrior extends Character{
         System.out.println(getName()+" has "+getHp()+" HP remaining!");
     }
 
-
-    public void displayCharacterInfo(){
-        System.out.println("\nWarriors rely on strength and resilience to crush their foes. With unmatched endurance and devastating melee power, they embody the shield and sword of any battle.");
-        System.out.println();
-       
-        System.out.println("SKILLS:");
-
-
-        System.out.println("(1)Slash\n" + "Damage: " + 30*getLevel() + " - " + 50*getLevel() + " + " + 10*getLevel());
-        System.out.println();
-        System.out.println("(2)Crimson Strike\n" + "Damage: " + 30*getLevel() + " - " + 120*getLevel() + " + " + 10*getLevel());
-        System.out.println();
-        System.out.println("(3)Blade Quake\n"  + "Damage: " + 800*getLevel() + " - " + 900*getLevel() + " + " + 100*getLevel());
-        System.out.println();
+    public String getSkillName(int skillNumber) {
+        switch(skillNumber) {
+            case 1: return "Slash";
+            case 2: return "Crimson Strike";
+            case 3: return "Blade Quake";
+            default: return "Unknown Skill";
+        }
     }
 
+
+    public String getSkillDamageRange(int skillNumber) {
+        switch(skillNumber) {
+            case 1: return (30*getLevel()) + "-" + (50*getLevel()) + "+" + (10*getLevel());
+            case 2: return (50*getLevel()) + "-" + (120*getLevel()) + "+" + (10*getLevel());
+            case 3: return (800*getLevel()) + "-" + (900*getLevel()) + "+" + (100*getLevel());
+            default: return "0";
+        }
+    }
+
+    public void displayCharacterInfo() {
+        System.out.println("\nWarriors rely on strength and resilience to crush their foes. With unmatched endurance and devastating melee power, they embody the shield and sword of any battle.");
+        System.out.println();
+
+
+        System.out.println("SKILLS:");
+       
+        for (int i = 1; i <= 3; i++) {
+            String skillName = getSkillName(i);
+            String damageRange = getSkillDamageRange(i);
+            System.out.println("(" + i + ")" + skillName + "\nDamage: " + damageRange + "\n");
+        }
+    }
+
+    @Override
+    public void displaySkills() {
+        System.out.println("\n--- " + getName() + "'s Skills ---");
+        for (int i = 1; i <= 3; i++) {
+            String skillName = getSkillName(i);
+            String damageRange = getSkillDamageRange(i);
+            int cooldown = getSkillCooldown(i);
+            String status;
+
+            if (isSkillAvailable(i)) {
+                status = "Ready";
+            } else {
+                status = "Cooldown: " + cooldown + " turn(s)";
+            }
+
+            System.out.println(i + ". " + skillName + " | Damage: " + damageRange + " | " + status);
+            System.out.println();
+        }
+    }
 
 }

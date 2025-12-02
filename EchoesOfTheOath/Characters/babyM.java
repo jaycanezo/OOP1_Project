@@ -53,6 +53,6 @@ public class babyM extends Character{
         super.takeDamage(dmg);
 
 
-        System.out.println(getName()+" has "+getHp()+" HP remaining!");
+        System.out.println(getName()+" has "+ getHp()+" HP remaining!");
     }
 }

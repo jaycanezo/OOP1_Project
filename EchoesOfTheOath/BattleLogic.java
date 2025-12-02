@@ -8,22 +8,32 @@ public class BattleLogic{
 
         Scanner scan = new Scanner(System.in);
 
+        final String RESET = "\033[0m";
+        final String RED = "\033[31m";      // enemy / damage / low HP
+        final String GREEN = "\033[32m";    // ready skill / good HP
+        final String BLUE = "\033[34m";     // player name
+        final String YELLOW = "\033[33m";   // skill cooldown / caution
+        final String PURPLE = "\033[35m";   // special skill / potion
+
         System.out.println();
-        System.out.println("You are now fighting " + boss.getName() + boss.getTitle());
+        System.out.println("You are now fighting " + RED + boss.getName() + boss.getTitle() + RESET);
 
-        System.out.println(boss.getName()+"'s HP: " + boss.getHp() + " | Level: " + boss.getLevel());
+        System.out.println();
+        System.out.println(RED + boss.getName()+ RESET + "'s HP: " + boss.getHp() + " | Level: " + boss.getLevel());
+        System.out.println(BLUE + chosen.getName()+ RESET + "'s Stats: HP: " + chosen.getHp() + " | Level: " + chosen.getLevel());
         scan.nextLine();
 
-        System.out.println(chosen.getName()+"'s Stats: HP: " + chosen.getHp() + " | Level: " + chosen.getLevel());
-        scan.nextLine();
+        int retryCount = 0; //ADDED CODE JACK
+        final int MAX_RETRIES = 4; //ADDED CODE JACK
 
         while (boss.getHp() > 0) {
 
             // ---------------- USER TURN ----------------
             boolean validAction = false;
             while (!validAction) {
-                int skillChoice = -1;
+                chosen.displaySkills(); //ADDED CODE JACK
 
+                int skillChoice = -1;
                 try {
                     System.out.print("Choose a skill (1, 2, 3) or 4 to use a potion: ");
                     skillChoice = scan.nextInt();
@@ -41,7 +51,7 @@ public class BattleLogic{
                         scan.nextLine();
                         validAction = true;
                     } else {
-                        System.out.println("No potions left! Choose another action.");
+                        System.out.println(RED + "No potions left! Choose another action." + RESET);
                         scan.nextLine();
                     }
                 } 
@@ -51,7 +61,7 @@ public class BattleLogic{
                         scan.nextLine();
                         validAction = true;
                     } else {
-                        System.out.println("Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining.");
+                        System.out.println(YELLOW + "Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining." + RESET);
                         System.out.println("Choose another action.");
                         scan.nextLine();
                     }
@@ -67,56 +77,65 @@ public class BattleLogic{
 
             // ---------------- DEFEAT CHECK ----------------
             if (boss.getHp() <= 0) {
-                System.out.println(boss.getName() + " has been defeated!");
+                System.out.println(GREEN + boss.getName() + " has been defeated!" + RESET);
                 scan.nextLine();
 
                 chosen.resetCooldowns();
                 chosen.setHp(chosen.getMaxHp());
-                System.out.println(chosen.getName() + "'s HP has been fully restored!");
+                System.out.println(GREEN + chosen.getName() + "'s HP has been fully restored!" + RESET);
                 scan.nextLine();
 
                 chosen.setLevel(chosen.getLevel() + 1);
-                System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
+                System.out.println(GREEN + chosen.getName() + " leveled up to level " + chosen.getLevel() + "!" + RESET);
                 scan.nextLine();
 
                 chosen.setPotionCount(chosen.getPotionCount() + 5);
-                System.out.println("Reward: 5 Health Potion added to inventory.");
+                System.out.println(GREEN + "Reward: 5 Health Potion added to inventory." + RESET);
                 scan.nextLine();
 
                 System.out.println("Current Level: " + chosen.getLevel());
                 System.out.println("Current Potions: " + chosen.getPotionCount());
                 scan.nextLine();
 
-                System.out.println("You may now proceed on your journey.");
+                System.out.println(GREEN + "You may now proceed on your journey." + RESET);
                 scan.nextLine();
                 break;
             }
 
             // ---------------- PLAYER DEFEAT ----------------
             if (chosen.getHp() <= 0) {
-                System.out.println(chosen.getName() + " has been defeated!");
+                System.out.println(RED + chosen.getName() + " has been defeated!" + RESET);
                 scan.nextLine();
 
+                retryCount++;
+
+                if (retryCount >= MAX_RETRIES) {
+                    System.out.println(RED + "You have used all your retries." + RESET);
+                    System.out.println(RED + "GAME OVER. The journey ends here." + RESET);
+                    scan.close();
+                    return; // End entire game
+                }
+
                 while (true) {
-                    System.out.print("Would you like to try again? (y/n): ");
+                    System.out.print("Would you like to try again? (" + (MAX_RETRIES - retryCount) + " retries left) (y/n): ");
                     String retryChoice = scan.next();
 
                     if (retryChoice.equalsIgnoreCase("y")) {
                         chosen.resetCooldowns();
                         chosen.setHp(chosen.getMaxHp());
                         boss.setHp(boss.getMaxHp());
-                        System.out.println("You have been revived! The battle restarts.");
+                        System.out.println(GREEN + "You have been revived! The battle restarts." + RESET);
                         scan.nextLine();
                         scan.nextLine();
                         break;
                     } 
                     else if (retryChoice.equalsIgnoreCase("n")) {
-                        System.out.println("Game Over. Thank you for playing!");
+                        System.out.println(RED + "Game Over. Thank you for playing!" + RESET);
                         scan.close();
                         return;
                     } 
                     else {
-                        System.out.println("Invalid choice! Please type only 'y' or 'n'.");
+                        System.out.println(YELLOW + "Invalid choice! Please type only 'y' or 'n'." + RESET);
                     }
                 }
             }
@@ -125,5 +144,3 @@ public class BattleLogic{
         System.out.flush();
     }
 }
-
-

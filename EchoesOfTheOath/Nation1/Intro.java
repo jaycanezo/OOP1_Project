@@ -267,7 +267,7 @@ public class Intro {
                     continue;
                 }
             } catch (Exception e) {
-                System.out.println("\nInput Error. Please enter [1] for Warriorr, [2] for Archer or [3] for Mage only:");
+                System.out.println("\nInput Error. Please enter [1] for Warrior, [2] for Archer or [3] for Mage only:");
                 scan.nextLine();
                 continue;
             }

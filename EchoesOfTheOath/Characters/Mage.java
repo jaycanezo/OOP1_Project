@@ -66,20 +66,58 @@ public class Mage extends Character{
         System.out.println(getName()+" has "+getHp()+" HP remaining!");
     }
 
-
-    public void displayCharacterInfo(){
-        System.out.println("\nSwift and precise, Archers strike from afar with deadly accuracy. Masters of the bow, they can pierce armor, control the battlefield, and rain destruction upon enemies before they can even draw near.");
-        System.out.println();
-       
-        System.out.println("SKILLS:");
-       
-        System.out.println("(1)Piercing Shot\n" + "Damage: " + 30*getLevel() + " - " + 50*getLevel() + " + " + 20*getLevel());
-        System.out.println();
-        System.out.println("(2)Volley of Nature\n" + "Damage: " + 50*getLevel() + " - " + 120*getLevel() + " + " + 20*getLevel());
-        System.out.println();
-        System.out.println("(3)Nature’s Wrath\n" + "Damage: " + 150*getLevel() + " - " + 250*getLevel() + " + " + 80*getLevel());
-        System.out.println();
+    public String getSkillName(int skillNumber) {
+        switch(skillNumber) {
+            case 1: return "Fire Ball";
+            case 2: return "Heatfire Surge";
+            case 3: return "Astral";
+            default: return "Unknown Skill";
+        }
     }
 
+
+    public String getSkillDamageRange(int skillNumber) {
+        switch(skillNumber) {
+            case 1: return (30*getLevel()) + "-" + (50*getLevel()) + "+" + (200*getLevel());
+            case 2: return (100*getLevel()) + "-" + (300*getLevel()) + "+" + (100*getLevel());
+            case 3: return String.valueOf(1500*getLevel());
+            default: return "0";
+        }
+    }
+
+
+    public void displayCharacterInfo() {
+        System.out.println("\nWielders of ancient knowledge, Mages command the elements and arcane forces. Fragile in body but unmatched in power, they bend magic at will to devastate their enemies from a distance.");
+        System.out.println();
+
+
+        System.out.println("SKILLS:");
+       
+        for (int i = 1; i <= 3; i++) {
+            String skillName = getSkillName(i);
+            String damageRange = getSkillDamageRange(i);
+            System.out.println("(" + i + ")" + skillName + "\nDamage: " + damageRange + "\n");
+        }
+    }
+
+    @Override
+    public void displaySkills() {
+        System.out.println("\n--- " + getName() + "'s Skills ---");
+        for (int i = 1; i <= 3; i++) {
+            String skillName = getSkillName(i);
+            String damageRange = getSkillDamageRange(i);
+            int cooldown = getSkillCooldown(i);
+            String status;
+
+            if (isSkillAvailable(i)) {
+                status = "Ready";
+            } else {
+                status = "Cooldown: " + cooldown + " turn(s)";
+            }
+
+            System.out.println(i + ". " + skillName + " | Damage: " + damageRange + " | " + status);
+            System.out.println();
+        }
+    }
 
 }

@@ -14,6 +14,12 @@ abstract public class Character {
     private int potionCount=0;
     private int[] skillCooldowns;
 
+    public final String RESET = "\033[0m";
+    public final String RED = "\033[31m";      // enemy / damage / low HP
+    public final String GREEN = "\033[32m";    // ready skill / good HP
+    public final String BLUE = "\033[34m";     // player name
+    public final String YELLOW = "\033[33m";   // skill cooldown / caution
+    public final String PURPLE = "\033[35m";   // skills / potion
 
     public Character(String name, int hp, int level) {
         this.name=name;
@@ -92,7 +98,7 @@ abstract public class Character {
             dmg=0;
         }
        
-        System.out.println(name+" takes "+dmg*level+" damage!");
+        System.out.println(name + " takes " + RED + dmg * level + " damage!" + RESET);
     }
 
 
@@ -100,11 +106,11 @@ abstract public class Character {
         if(potionCount>0){
             int healed = 1000 * getLevel();
             setHp(getHp() + healed);
-            System.out.println(getName() + " uses Hp Potion! Restores " + healed + " HP!");
+            System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "HP Potion" + RESET + "! Restores " + GREEN + healed + " HP" + RESET + "!");
             potionCount--;
-            System.out.println("Potions left: " + (potionCount));
+            System.out.println(YELLOW + "Potions left: " + potionCount + RESET);
         } else {
-            System.out.println("No potions left!");
+            System.out.println(RED + "No potions left!" + RESET);
         }
     }
 
@@ -139,18 +145,15 @@ abstract public class Character {
 
 
     public void resetCooldowns() {
-    for (int i = 0; i < skillCooldowns.length; i++) {
-        skillCooldowns[i] = 0;
+        for (int i = 0; i < skillCooldowns.length; i++) {
+            skillCooldowns[i] = 0;
+        }
     }
 
-
-}
-
-    public void displayCharacterInfo(){
-        
+    public void displaySkills() {
+        System.out.println(getName() + " has no skills to display.");
     }
 
-    
 }
 
 
