@@ -2,7 +2,6 @@ package EchoesOfTheOath;
 import EchoesOfTheOath.Characters.Character;
 import java.util.Scanner;
 
-
 public class BattleLogic{
     public static void battleLogic(Character chosen, Character boss) {
 
@@ -20,7 +19,7 @@ public class BattleLogic{
 
         System.out.println();
         System.out.println(RED + boss.getName()+ RESET + "'s HP: " + boss.getHp() + " | Level: " + boss.getLevel());
-        System.out.println(BLUE + chosen.getName()+ RESET + "'s Stats: HP: " + chosen.getHp() + " | Level: " + chosen.getLevel());
+        System.out.println(BLUE + chosen.getName()+ RESET + "'s Stats: HP: " + chosen.getMaxHp() + " | Level: " + chosen.getLevel());
         scan.nextLine();
 
         int retryCount = 0; //ADDED CODE JACK
@@ -117,7 +116,7 @@ public class BattleLogic{
                 }
 
                 while (true) {
-                    System.out.print("Would you like to try again? (" + (MAX_RETRIES - retryCount) + " retries left) (y/n): ");
+                    System.out.print("Would you like to try again? (" + YELLOW + (MAX_RETRIES - retryCount) + RESET + " retries left) (y/n): ");
                     String retryChoice = scan.next();
 
                     if (retryChoice.equalsIgnoreCase("y")) {

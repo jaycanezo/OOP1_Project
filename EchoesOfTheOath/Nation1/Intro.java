@@ -42,7 +42,7 @@ public class Intro {
         System.out.println("\nYou have chosen the " + chosen.getClass().getSimpleName() +
                            " named " + chosen.getName() + "!");
         scan.nextLine();
-        System.out.println("Press any key to continue your Journey...");
+        System.out.println("Press enter to continue your Journey...");
         scan.nextLine();
 
         finalDemonScene(scan, chosen);

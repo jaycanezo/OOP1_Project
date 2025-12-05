@@ -18,7 +18,7 @@ public class Mage extends Character{
 
 
         if (!isSkillAvailable(skillNumber)) {
-            System.out.println("Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining.");
+            System.out.println(YELLOW + "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining." + RESET);
             return;
         }
 
@@ -27,17 +27,17 @@ public class Mage extends Character{
         switch (skillNumber){
             case 1:
                 dmg=random.nextInt((21)+30+200)*getLevel();
-                System.out.println(getName() + " uses Basic Skill: Fireball!");
+                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Fireball" + RESET + "!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 dmg=random.nextInt((70)+50+100)*getLevel();
-                System.out.println(getName()+" uses Advanced Skill: Heat Surge!");
+                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Heat Surge" + RESET + "!");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 dmg=random.nextInt((100)+1400+100)*getLevel();
-                System.out.println(getName()+" uses Ultimate: Astral Cataclysm!");
+                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Astral Cataclysm" + RESET + "!");
                 setSkillCooldown(3, 3);
                 break;
         }
@@ -62,8 +62,8 @@ public class Mage extends Character{
     @Override public void takeDamage(int dmg){
         super.takeDamage(dmg);
 
-
-        System.out.println(getName()+" has "+getHp()+" HP remaining!");
+        System.out.println(BLUE + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);
+        System.out.println(BLUE + getName() + RESET + " has " + GREEN + getHp() + " HP remaining!" + RESET);
     }
 
     public String getSkillName(int skillNumber) {
@@ -110,9 +110,9 @@ public class Mage extends Character{
             String status;
 
             if (isSkillAvailable(i)) {
-                status = "Ready";
+                status = GREEN + "Ready" + RESET;
             } else {
-                status = "Cooldown: " + cooldown + " turn(s)";
+                status = YELLOW + "Cooldown: " + cooldown + " turn(s)" + RESET;
             }
 
             System.out.println(i + ". " + skillName + " | Damage: " + damageRange + " | " + status);

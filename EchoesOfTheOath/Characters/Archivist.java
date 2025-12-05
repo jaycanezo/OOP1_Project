@@ -21,18 +21,18 @@ public class Archivist extends Character {
         switch (skillNumber){
             case 1:
                 dmg=random.nextInt((21) + 30 + 20) * getLevel();
-                System.out.println(getName() + " uses Basic Skill: The Panoptic Eye!");
+                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: The Panoptic Eye" + RESET + "!");
                 System.out.println("Projects a pale, shimmering after-image of the target. Instantly drawing blood not at the target, but at its future shadow.");
                 break;
             case 2:
                 dmg=random.nextInt((70) + 50 + 20) * getLevel();
-                System.out.println(getName()+" uses Advanced Skill: Temporary Relief!");
+                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Temporary Relief" + RESET + "!");
                 System.out.println("The Archivist unleases a powerful attack that strikes them with the force of accumulated, unseen debts.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
                 dmg=random.nextInt((100) + 230 * 4) * getLevel();
-                System.out.println(getName()+" uses Ultimate Skill: Enforced Decree!");
+                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate Skill: Enforced Decree" + RESET + "!");
                 System.out.println("The Archivist summons a devastating storm of spectral scrolls overwhelming and tearing apart his opponent as he seeks to claim them as his final possession.");
                 cd[skillNumber - 1] = 3;
                 break;
@@ -46,7 +46,7 @@ public class Archivist extends Character {
     @Override public void takeDamage(int dmg){
         super.takeDamage(dmg);
 
-
-        System.out.println(getName()+" has "+getHp()+" HP remaining!");
+        System.out.println(RED + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);
+        System.out.println(RED + getName() + RESET + " has " + GREEN + getHp() + " HP remaining!" + RESET);
     }
 }

@@ -4,7 +4,6 @@ package EchoesOfTheOath.Characters;
 public class Warrior extends Character{
     private boolean[] isUsed = new boolean[3];
 
-
     public Warrior(){
         super("Warrior", 1500, 1);
     }
@@ -16,32 +15,26 @@ public class Warrior extends Character{
             return;
         }
 
-
         if (!isSkillAvailable(skillNumber)) {
-            System.out.println("Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining.");
+            System.out.println(YELLOW + "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining." + RESET);
             return;
         }
-
 
         int dmg = 0;
         switch (skillNumber) {
             case 1:
-                dmg = random.nextInt(21) + 30 * getLevel();
-                System.out.println(getName() + " uses Basic Skill: Slash!");
+                dmg = (random.nextInt(50 - 30 + 1) + 30 + 10) * getLevel();
+                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Slash" + RESET + "!");
                 setSkillCooldown(1, 0);
                 break;
-
-
             case 2:
-                dmg = random.nextInt(71) + 50 * getLevel();
-                System.out.println(getName() + " uses Advanced Skill: Crimson Strike!");
+                dmg = (random.nextInt(120 - 50 + 1) + 50 + 10) * getLevel();
+                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Crimson Strike" + RESET + "!");
                 setSkillCooldown(2, 2);//1-turn cooldown
                 break;
-
-
             case 3:
-                dmg = random.nextInt(101) + 800 * getLevel();
-                System.out.println(getName() + " uses Ultimate: Blade Quake!");
+                dmg = (random.nextInt(260 - 120 + 1) + 120 + 90) * getLevel();
+                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Blade Quake" + RESET + "!");
                 setSkillCooldown(3, 3);//2-turn cooldown
                 break;
         }
@@ -66,7 +59,8 @@ public class Warrior extends Character{
     @Override public void takeDamage(int dmg){
         super.takeDamage(dmg);
        
-        System.out.println(getName()+" has "+getHp()+" HP remaining!");
+        System.out.println(BLUE + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);
+        System.out.println(BLUE + getName() + RESET + " has " + GREEN + getHp() + " HP remaining!" + RESET);
     }
 
     public String getSkillName(int skillNumber) {
@@ -112,9 +106,9 @@ public class Warrior extends Character{
             String status;
 
             if (isSkillAvailable(i)) {
-                status = "Ready";
+                status = GREEN + "Ready" + RESET;
             } else {
-                status = "Cooldown: " + cooldown + " turn(s)";
+                status = YELLOW + "Cooldown: " + cooldown + " turn(s)" + RESET;
             }
 
             System.out.println(i + ". " + skillName + " | Damage: " + damageRange + " | " + status);

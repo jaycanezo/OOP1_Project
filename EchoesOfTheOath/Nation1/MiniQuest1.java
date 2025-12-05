@@ -468,7 +468,7 @@ public class MiniQuest1 {
         chosen.setPotionCount(chosen.getPotionCount() + 2);
         System.out.println("Reward: 2 health potions added to your inventory.");
         scan.nextLine();
-        System.out.println("Current Level: "+chosen.getLevel());
+        System.out.println("Current Level: " + chosen.getLevel());
         System.out.println("Current Potions: " + chosen.getPotionCount());
         scan.nextLine();
         System.out.println("You may now proceed on your journey.");

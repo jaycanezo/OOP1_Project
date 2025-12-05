@@ -30,7 +30,7 @@ public class Elarion extends Character{
         switch (skillNumber) {
             case 1:
                 dmg = random.nextInt((21) + 30 + 20) * getLevel();
-                System.out.println(getName() + " uses Basic Skill: Echo Rend!");
+                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: Echo Rend" + RESET + "!");
                 System.out.println("Elarion unleashes a wave of distorted echoes.\n");
                 break;
 
@@ -39,7 +39,7 @@ public class Elarion extends Character{
 
             case 2:
                 dmg = random.nextInt((70) + 50 + 20) * getLevel();
-                System.out.println(getName() + " uses Advanced Skill: Memory Shatter!");
+                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Memory Shatter" + RESET + "!");
                 System.out.println("Elarion summons glowing memory shards from the hero, then crushes them into a shield.\n");
                 cd[skillNumber - 1] = 2;
                 break;
@@ -49,7 +49,7 @@ public class Elarion extends Character{
 
             case 3:
                 dmg = random.nextInt((100) + 230 * 4) * getLevel();
-                System.out.println(getName() + " uses Ultimate: The Final Vow!");
+                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: The Final Vow" + RESET + "!");
                 System.out.println("Elarion calls down a pillar of fate that engulfs the hero in blinding light.\n");
                 cd[skillNumber - 1] = 3;
                 break;
@@ -68,10 +68,8 @@ public class Elarion extends Character{
     @Override public void takeDamage(int dmg){
         super.takeDamage(dmg);
 
-
-
-
-        System.out.println(getName()+" has "+getHp()+" HP remaining!");
+        System.out.println(RED + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);
+        System.out.println(RED + getName() + RESET + " has " + GREEN + getHp() + " HP remaining!" + RESET);
     }
    
 }

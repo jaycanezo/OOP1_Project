@@ -15,27 +15,25 @@ public class Archer extends Character{
             return;
         }
 
-
         if (!isSkillAvailable(skillNumber)) {
             System.out.println(YELLOW + "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining." + RESET);
             return;
         }
 
-
         int dmg=0;
         switch (skillNumber){
             case 1:
-                dmg=random.nextInt((21)+30+20)*getLevel();
+                dmg = (random.nextInt(50 - 30 + 1) + 30 + 20) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Piercing Shot" + RESET + "!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
-                dmg=random.nextInt((70)+50+20)*getLevel();
+                dmg = (random.nextInt(120 - 50 + 1) + 50 + 20) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Volley of Nature" + RESET + "!");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
-                dmg=random.nextInt((100)+150+80*4)*getLevel();
+                dmg = (random.nextInt(260 - 150 + 1) + 150 + 80) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Nature's Wrath" + RESET + "!");
                 setSkillCooldown(3, 3);
                 break;
@@ -58,10 +56,12 @@ public class Archer extends Character{
     }
 
 
-    @Override public void takeDamage(int dmg){
+    @Override 
+    public void takeDamage(int dmg){
         super.takeDamage(dmg);
 
-        System.out.println(getName() + " has "+getHp()+" HP remaining!");
+        System.out.println(BLUE + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);
+        System.out.println(BLUE + getName() + RESET + " has " + GREEN + getHp() + " HP remaining!" + RESET);
     }
 
     public String getSkillName(int skillNumber) {
@@ -76,9 +76,9 @@ public class Archer extends Character{
 
     public String getSkillDamageRange(int skillNumber) {
         switch(skillNumber) {
-            case 1: return (30*getLevel()) + "-" + (50*getLevel()) + "+" + (20*getLevel());
-            case 2: return (50*getLevel()) + "-" + (120*getLevel()) + "+" + (20*getLevel());
-            case 3: return (150*getLevel()) + "-" + (250*getLevel()) + "+" + (80*getLevel());
+            case 1: return (30*getLevel()) + " - " + (50*getLevel()) + " + " + (20*getLevel());
+            case 2: return (50*getLevel()) + " - " + (120*getLevel()) + " + " + (20*getLevel());
+            case 3: return (150*getLevel()) + " - " + (260*getLevel()) + " + " + (80*getLevel());
             default: return "0";
         }
     }
@@ -87,7 +87,6 @@ public class Archer extends Character{
     public void displayCharacterInfo() {
         System.out.println("\nSwift and precise, Archers strike from afar with deadly accuracy. Masters of the bow, they can pierce armor, control the battlefield, and rain destruction upon enemies before they can even draw near.");
         System.out.println();
-
 
         System.out.println("SKILLS:");
        

@@ -15,11 +15,11 @@ abstract public class Character {
     private int[] skillCooldowns;
 
     public final String RESET = "\033[0m";
-    public final String RED = "\033[31m";      // enemy / damage / low HP
-    public final String GREEN = "\033[32m";    // ready skill / good HP
-    public final String BLUE = "\033[34m";     // player name
-    public final String YELLOW = "\033[33m";   // skill cooldown / caution
-    public final String PURPLE = "\033[35m";   // skills / potion
+    public final String RED = "\033[91m";      // enemy / damage / low HP
+    public final String GREEN = "\033[92m";    // ready skill / good HP
+    public final String BLUE = "\033[94m";     // player name
+    public final String YELLOW = "\033[93m";   // skill cooldown / caution
+    public final String PURPLE = "\033[95m";   // skills / potion
 
     public Character(String name, int hp, int level) {
         this.name=name;
@@ -65,12 +65,13 @@ abstract public class Character {
 
 
     public void setHp(int hp){
-        this.hp=hp;
+        this.hp = hp;
     }
 
 
     public void setLevel(int level){
         this.level=level;
+        this.hp = maxHp * level;
     }
 
 
@@ -92,20 +93,17 @@ abstract public class Character {
 
 
     public void takeDamage(int dmg){
-        if(dmg>0){
-            hp-=dmg*level;
-        } else {
-            dmg=0;
+        if (dmg > 0) {
+            hp -= dmg;
+            if (hp < 0) hp = 0; // prevent negative HP
         }
-       
-        System.out.println(name + " takes " + RED + dmg * level + " damage!" + RESET);
     }
 
 
     public void usePotion() {
         if(potionCount>0){
             int healed = 1000 * getLevel();
-            setHp(getHp() + healed);
+            setHp(Math.min(getHp() + healed, getMaxHp()));
             System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "HP Potion" + RESET + "! Restores " + GREEN + healed + " HP" + RESET + "!");
             potionCount--;
             System.out.println(YELLOW + "Potions left: " + potionCount + RESET);
