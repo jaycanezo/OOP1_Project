@@ -6,7 +6,7 @@ import EchoesOfTheOath.Characters.*;
 import EchoesOfTheOath.Characters.Character;
 
 public class Intro {
-    
+
     public static Character main(String[] args) throws InterruptedException {
 
         Scanner scan = new Scanner(System.in);
@@ -39,8 +39,7 @@ public class Intro {
         String playerName = askPlayerName(scan);
         chosen.setName(playerName);
 
-        System.out.println("\nYou have chosen the " + chosen.getClass().getSimpleName() +
-                           " named " + chosen.getName() + "!");
+        System.out.println("\nYou have chosen the " + chosen.getClass().getSimpleName() +" named " + chosen.getName() + "!");
         scan.nextLine();
         System.out.println("Press enter to continue your Journey...");
         scan.nextLine();
@@ -92,11 +91,11 @@ public class Intro {
     }
 
     private static void storylineIntro(Scanner scan) throws InterruptedException {
-        String text =
-            "Long ago, three adventurers-a brave warrior, a swift archer, and a wise mage-" +
-            "traveled across worlds, earning fame for vanquishing great evils. Their bond was unbreakable, " +
-            "their deeds legendary...\n\nUntil one mission brought them face to face with a power unlike any other-" +
-            "a force that had slain even the mightiest heroes.";
+        String text = "Long ago, three adventurers-a brave warrior, a swift archer, and a wise mage-" +
+                "traveled across worlds, earning fame for vanquishing great evils. Their bond was unbreakable, " +
+                "their deeds legendary...\n\nUntil one mission brought them face to face with a power unlike any other-"
+                +
+                "a force that had slain even the mightiest heroes.";
 
         for (char c : text.toCharArray()) {
             System.out.print(c);
@@ -163,7 +162,6 @@ public class Intro {
         }
         scan.nextLine();
 
-
         // ---------------------------
         // ARCHER TRIAL
         // ---------------------------
@@ -200,7 +198,6 @@ public class Intro {
             System.out.println();
         }
         scan.nextLine();
-
 
         // ---------------------------
         // MAGE TRIAL
@@ -240,13 +237,13 @@ public class Intro {
         scan.nextLine();
     }
 
-
     private static void storyCutscene(Scanner scan) {
         System.out.println("Archer: Oh no the Demon is preparing to launch an attack!");
         scan.nextLine();
         System.out.println("Warrior: Lets use our power together");
         scan.nextLine();
-        System.out.println("The heroes then leaped forward the Demon combining their strengths in hopes of defeating the enemy.");
+        System.out.println(
+                "The heroes then leaped forward the Demon combining their strengths in hopes of defeating the enemy.");
         scan.nextLine();
     }
 
@@ -254,7 +251,8 @@ public class Intro {
         Character chosen = null;
         int choice = 0;
 
-        System.out.println("You have witnessed the power of the heroes! Choose a Character in order to continue the story.");
+        System.out.println(
+                "You have witnessed the power of the heroes! Choose a Character in order to continue the story.");
         System.out.print("[1]Warrior [2]Archer [3]Mage: ");
 
         while (true) {
@@ -273,9 +271,15 @@ public class Intro {
             }
 
             switch (choice) {
-                case 1: chosen = new Warrior(); break;
-                case 2: chosen = new Archer(); break;
-                case 3: chosen = new Mage(); break;
+                case 1:
+                    chosen = new Warrior();
+                    break;
+                case 2:
+                    chosen = new Archer();
+                    break;
+                case 3:
+                    chosen = new Mage();
+                    break;
             }
             break;
         }
@@ -321,4 +325,3 @@ public class Intro {
         System.out.flush();
     }
 }
-

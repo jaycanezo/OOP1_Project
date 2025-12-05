@@ -1,36 +1,38 @@
 package EchoesOfTheOath;
+
 import EchoesOfTheOath.Characters.Character;
 import java.util.Scanner;
 
-public class BattleLogic{
+public class BattleLogic {
     public static void battleLogic(Character chosen, Character boss) {
 
         Scanner scan = new Scanner(System.in);
 
         final String RESET = "\033[0m";
-        final String RED = "\033[31m";      // enemy / damage / low HP
-        final String GREEN = "\033[32m";    // ready skill / good HP
-        final String BLUE = "\033[34m";     // player name
-        final String YELLOW = "\033[33m";   // skill cooldown / caution
-        final String PURPLE = "\033[35m";   // special skill / potion
+        final String RED = "\033[31m"; // enemy / damage / low HP
+        final String GREEN = "\033[32m"; // ready skill / good HP
+        final String BLUE = "\033[34m"; // player name
+        final String YELLOW = "\033[33m"; // skill cooldown / caution
+        final String PURPLE = "\033[35m"; // special skill / potion
 
         System.out.println();
         System.out.println("You are now fighting " + RED + boss.getName() + boss.getTitle() + RESET);
 
         System.out.println();
-        System.out.println(RED + boss.getName()+ RESET + "'s HP: " + boss.getHp() + " | Level: " + boss.getLevel());
-        System.out.println(BLUE + chosen.getName()+ RESET + "'s Stats: HP: " + chosen.getMaxHp() + " | Level: " + chosen.getLevel());
+        System.out.println(RED + boss.getName() + RESET + "'s HP: " + boss.getHp() + " | Level: " + boss.getLevel());
+        System.out.println(BLUE + chosen.getName() + RESET + "'s Stats: HP: " + chosen.getMaxHp() + " | Level: "
+                + chosen.getLevel());
         scan.nextLine();
 
-        int retryCount = 0; //ADDED CODE JACK
-        final int MAX_RETRIES = 4; //ADDED CODE JACK
+        int retryCount = 0; // ADDED CODE JACK
+        final int MAX_RETRIES = 4; // ADDED CODE JACK
 
         while (boss.getHp() > 0) {
 
             // ---------------- USER TURN ----------------
             boolean validAction = false;
             while (!validAction) {
-                chosen.displaySkills(); //ADDED CODE JACK
+                chosen.displaySkills(); // ADDED CODE JACK
 
                 int skillChoice = -1;
                 try {
@@ -53,14 +55,14 @@ public class BattleLogic{
                         System.out.println(RED + "No potions left! Choose another action." + RESET);
                         scan.nextLine();
                     }
-                } 
-                else if (skillChoice >= 1 && skillChoice <= 3) {
+                } else if (skillChoice >= 1 && skillChoice <= 3) {
                     if (chosen.isSkillAvailable(skillChoice)) {
                         chosen.useSkill(skillChoice, boss);
                         scan.nextLine();
                         validAction = true;
                     } else {
-                        System.out.println(YELLOW + "Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining." + RESET);
+                        System.out.println(YELLOW + "Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice)
+                                + " turn(s) remaining." + RESET);
                         System.out.println("Choose another action.");
                         scan.nextLine();
                     }
@@ -85,7 +87,8 @@ public class BattleLogic{
                 scan.nextLine();
 
                 chosen.setLevel(chosen.getLevel() + 1);
-                System.out.println(GREEN + chosen.getName() + " leveled up to level " + chosen.getLevel() + "!" + RESET);
+                System.out
+                        .println(GREEN + chosen.getName() + " leveled up to level " + chosen.getLevel() + "!" + RESET);
                 scan.nextLine();
 
                 chosen.setPotionCount(chosen.getPotionCount() + 5);
@@ -116,7 +119,8 @@ public class BattleLogic{
                 }
 
                 while (true) {
-                    System.out.print("Would you like to try again? (" + YELLOW + (MAX_RETRIES - retryCount) + RESET + " retries left) (y/n): ");
+                    System.out.print("Would you like to try again? (" + YELLOW + (MAX_RETRIES - retryCount) + RESET
+                            + " retries left) (y/n): ");
                     String retryChoice = scan.next();
 
                     if (retryChoice.equalsIgnoreCase("y")) {
@@ -127,19 +131,17 @@ public class BattleLogic{
                         scan.nextLine();
                         scan.nextLine();
                         break;
-                    } 
-                    else if (retryChoice.equalsIgnoreCase("n")) {
+                    } else if (retryChoice.equalsIgnoreCase("n")) {
                         System.out.println(RED + "Game Over. Thank you for playing!" + RESET);
                         scan.close();
                         return;
-                    } 
-                    else {
+                    } else {
                         System.out.println(YELLOW + "Invalid choice! Please type only 'y' or 'n'." + RESET);
                     }
                 }
             }
         }
-        System.out.print("\033[H\033[2J"); //clear screen
+        System.out.print("\033[H\033[2J"); // clear screen
         System.out.flush();
     }
 }

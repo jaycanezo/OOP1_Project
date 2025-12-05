@@ -15,11 +15,11 @@ abstract public class Character {
     private int[] skillCooldowns;
 
     public final String RESET = "\033[0m";
-    public final String RED = "\033[91m";      // enemy / damage / low HP
-    public final String GREEN = "\033[92m";    // ready skill / good HP
-    public final String BLUE = "\033[94m";     // player name
-    public final String YELLOW = "\033[93m";   // skill cooldown / caution
-    public final String PURPLE = "\033[95m";   // skills / potion
+    public final String RED = "\033[31m";      // enemy / damage / low HP
+    public final String GREEN = "\033[32m";    // ready skill / good HP
+    public final String BLUE = "\033[34m";     // player name
+    public final String YELLOW = "\033[33m";   // skill cooldown / caution
+    public final String PURPLE = "\033[35m";   // skills / potion
 
     public Character(String name, int hp, int level) {
         this.name=name;
