@@ -23,23 +23,21 @@ public class Warrior extends Character{
         int dmg = 0;
         switch (skillNumber) {
             case 1:
-                dmg = (random.nextInt(50 - 30 + 1) + 30 + 10) * getLevel();
+                dmg = (random.nextInt(45 - 15 + 1) + 15 + 15) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Slash" + RESET + "!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
-                dmg = (random.nextInt(120 - 50 + 1) + 50 + 10) * getLevel();
+                dmg = (random.nextInt(90 - 65 + 1) + 65 + 10) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Crimson Strike" + RESET + "!");
                 setSkillCooldown(2, 2);//1-turn cooldown
                 break;
             case 3:
-                dmg = (random.nextInt(260 - 120 + 1) + 120 + 90) * getLevel();
+                dmg = (random.nextInt(255 - 135 + 1) + 135 + 40) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Blade Quake" + RESET + "!");
                 setSkillCooldown(3, 3);//2-turn cooldown
                 break;
         }
-
-
         enemy.takeDamage(dmg);
         isUsed[skillNumber-1]=true;
         reduceCooldowns();
@@ -75,9 +73,9 @@ public class Warrior extends Character{
 
     public String getSkillDamageRange(int skillNumber) {
         switch(skillNumber) {
-            case 1: return (30*getLevel()) + "-" + (50*getLevel()) + "+" + (10*getLevel());
-            case 2: return (50*getLevel()) + "-" + (120*getLevel()) + "+" + (10*getLevel());
-            case 3: return (800*getLevel()) + "-" + (900*getLevel()) + "+" + (100*getLevel());
+            case 1: return (15*getLevel()) + " - " + (45*getLevel()) + " + " + (15*getLevel());
+            case 2: return (65*getLevel()) + " - " + (90*getLevel()) + " + " + (10*getLevel());
+            case 3: return (135*getLevel()) + " - " + (255*getLevel()) + " + " + (40*getLevel());
             default: return "0";
         }
     }
@@ -85,7 +83,6 @@ public class Warrior extends Character{
     public void displayCharacterInfo() {
         System.out.println("\nWarriors rely on strength and resilience to crush their foes. With unmatched endurance and devastating melee power, they embody the shield and sword of any battle.");
         System.out.println();
-
 
         System.out.println("SKILLS:");
        
@@ -112,7 +109,6 @@ public class Warrior extends Character{
             }
 
             System.out.println(i + ". " + skillName + " | Damage: " + damageRange + " | " + status);
-            System.out.println();
         }
     }
 

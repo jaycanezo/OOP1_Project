@@ -23,23 +23,24 @@ public class Archer extends Character{
         int dmg=0;
         switch (skillNumber){
             case 1:
-                dmg = (random.nextInt(50 - 30 + 1) + 30 + 20) * getLevel();
+                dmg = (random.nextInt(45 - 15 + 1) + 15 + 25) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Piercing Shot" + RESET + "!");
+                System.out.println("You shoot a swift arrow at your foe.");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
-                dmg = (random.nextInt(120 - 50 + 1) + 50 + 20) * getLevel();
+                dmg = (random.nextInt(95 - 70 + 1) + 70 + 20) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Volley of Nature" + RESET + "!");
+                System.out.println("You fire multiple arrows, raining them down on your enemy.");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
-                dmg = (random.nextInt(260 - 150 + 1) + 150 + 80) * getLevel();
+                dmg = (random.nextInt(230 - 105 + 1) + 105 + 80) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Nature's Wrath" + RESET + "!");
+                System.out.println("You unleash four guiding arrows, striking your enemy with precision.");
                 setSkillCooldown(3, 3);
                 break;
         }
-
-
         enemy.takeDamage(dmg);
         isUsed[skillNumber-1]=true;
         reduceCooldowns();
@@ -76,9 +77,9 @@ public class Archer extends Character{
 
     public String getSkillDamageRange(int skillNumber) {
         switch(skillNumber) {
-            case 1: return (30*getLevel()) + " - " + (50*getLevel()) + " + " + (20*getLevel());
-            case 2: return (50*getLevel()) + " - " + (120*getLevel()) + " + " + (20*getLevel());
-            case 3: return (150*getLevel()) + " - " + (260*getLevel()) + " + " + (80*getLevel());
+            case 1: return (15*getLevel()) + " - " + (45*getLevel()) + " + " + (25*getLevel());
+            case 2: return (70*getLevel()) + " - " + (95*getLevel()) + " + " + (20*getLevel());
+            case 3: return (105*getLevel()) + " - " + (230*getLevel()) + " + " + (80*getLevel());
             default: return "0";
         }
     }
@@ -100,6 +101,8 @@ public class Archer extends Character{
     @Override
     public void displaySkills() {
         System.out.println("\n--- " + getName() + "'s Skills ---");
+        System.out.println();
+
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
@@ -113,8 +116,8 @@ public class Archer extends Character{
             }
 
             System.out.println(i + ". " + skillName + " | Damage: " + damageRange + " | " + status);
-            System.out.println();
         }
+
     }
 
 }

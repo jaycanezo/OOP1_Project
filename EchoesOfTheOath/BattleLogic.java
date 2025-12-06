@@ -16,12 +16,18 @@ public class BattleLogic {
         final String PURPLE = "\033[35m"; // special skill / potion
 
         System.out.println();
-        System.out.println("You are now fighting " + RED + boss.getName() + boss.getTitle() + RESET);
-
+        System.out.println(boss.getTitle());
         System.out.println();
-        System.out.println(RED + boss.getName() + RESET + "'s HP: " + boss.getHp() + " | Level: " + boss.getLevel());
-        System.out.println(BLUE + chosen.getName() + RESET + "'s Stats: HP: " + chosen.getMaxHp() + " | Level: "
-                + chosen.getLevel());
+
+        System.out.println("You are now fighting " + RED + boss.getName() + RESET);
+        scan.nextLine();
+
+        System.out.println(RED + boss.getName() + RESET);
+        System.out.println("HP: " + boss.getHp() + " | Level: " + boss.getLevel());
+        scan.nextLine();
+
+        System.out.println(BLUE + chosen.getName() + RESET);
+        System.out.println("HP: " + chosen.getMaxHp() + " | Level: "+ chosen.getLevel());
         scan.nextLine();
 
         int retryCount = 0; // ADDED CODE JACK
@@ -33,6 +39,11 @@ public class BattleLogic {
             boolean validAction = false;
             while (!validAction) {
                 chosen.displaySkills(); // ADDED CODE JACK
+
+                System.out.println();
+                System.out.println(RED + boss.getName() + "'s Current HP: " + RESET + boss.getHp() + "/" + boss.getMaxHp());
+                System.out.println(BLUE + chosen.getName() + "'s Current HP: " + RESET + chosen.getHp() + "/" + chosen.getMaxHp());
+                scan.nextLine();
 
                 int skillChoice = -1;
                 try {

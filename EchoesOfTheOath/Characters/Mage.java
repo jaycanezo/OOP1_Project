@@ -90,7 +90,6 @@ public class Mage extends Character{
         System.out.println("\nWielders of ancient knowledge, Mages command the elements and arcane forces. Fragile in body but unmatched in power, they bend magic at will to devastate their enemies from a distance.");
         System.out.println();
 
-
         System.out.println("SKILLS:");
        
         for (int i = 1; i <= 3; i++) {
@@ -116,7 +115,6 @@ public class Mage extends Character{
             }
 
             System.out.println(i + ". " + skillName + " | Damage: " + damageRange + " | " + status);
-            System.out.println();
         }
     }
 

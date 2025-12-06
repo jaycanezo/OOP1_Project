@@ -102,10 +102,12 @@ abstract public class Character {
 
     public void usePotion() {
         if(potionCount>0){
-            int healed = 1000 * getLevel();
+            int missingHp = getMaxHp() - getHp();
+            int healed = (int)(missingHp * 0.30);
             setHp(Math.min(getHp() + healed, getMaxHp()));
             System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "HP Potion" + RESET + "! Restores " + GREEN + healed + " HP" + RESET + "!");
             potionCount--;
+            System.out.println(BLUE + getName() + RESET + " has " + GREEN + getHp() + " HP remaining!" + RESET);
             System.out.println(YELLOW + "Potions left: " + potionCount + RESET);
         } else {
             System.out.println(RED + "No potions left!" + RESET);
