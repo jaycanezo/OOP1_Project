@@ -3,7 +3,7 @@ package EchoesOfTheOath.Characters;
 
 public class Ilaryx extends Character {
     public Ilaryx(){
-        super("Ilaryx"," || Veyora Nation 2 - Mini Boss", 1400, 6);
+        super("Ilaryx","VEYORA NATION 2 - Mini Boss", 1400, 6);
     }
 
 
@@ -12,37 +12,29 @@ public class Ilaryx extends Character {
         int[] cd = getSkillCooldowns();
         int dmg = 0;
 
-
-       
         if (cd[skillNumber - 1] > 0 && skillNumber != 1) {
             skillNumber = 1;
         }
 
-
         switch (skillNumber) {
             case 1:
-                dmg = random.nextInt((21) + 30 + 20) * getLevel();
+                dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: Quick Shot" + RESET + "!");
                 System.out.println("Ilaryx fires a Double Tap! Two arrows blaze toward the enemy.");
                 break;
-
-
             case 2:
-                dmg = random.nextInt((70) + 50 + 20) * getLevel();
+                dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Hunter's Trap" + RESET + "!");
                 System.out.println("Ilaryx activates Invisible Snare! A hidden defense is placed!");
                 cd[skillNumber - 1] = 2;
                 break;
-
-
             case 3:
-                dmg = random.nextInt((100) + 230 * 4) * getLevel();
+                dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: Arrow of the Silverfang" + RESET + "!");
                 System.out.println("Ilaryx channels silver magic into her bow, preparing one massive, charged shot. Prepare for impact!");
                 cd[skillNumber - 1] = 3;
                 break;
         }
-
 
         enemy.takeDamage(dmg);
         reduceCooldowns();
