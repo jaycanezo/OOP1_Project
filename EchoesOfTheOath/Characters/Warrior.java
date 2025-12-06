@@ -25,16 +25,19 @@ public class Warrior extends Character{
             case 1:
                 dmg = (random.nextInt(45 - 15 + 1) + 15 + 15) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Slash" + RESET + "!");
+                System.out.println("You swing your sword in a swift slash toward your enemy, dealing damage.");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 dmg = (random.nextInt(90 - 65 + 1) + 65 + 10) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Crimson Strike" + RESET + "!");
+                System.out.println("You perform a heavy, sweeping strike, landing a fierce blow on your enemy.");
                 setSkillCooldown(2, 2);//1-turn cooldown
                 break;
             case 3:
                 dmg = (random.nextInt(255 - 135 + 1) + 135 + 40) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Blade Quake" + RESET + "!");
+                System.out.println("You unleash devastating strength in a massive ground-splitting attack on your enemy.");
                 setSkillCooldown(3, 3);//2-turn cooldown
                 break;
         }
@@ -89,7 +92,7 @@ public class Warrior extends Character{
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
-            System.out.println("(" + i + ")" + skillName + "\nDamage: " + damageRange + "\n");
+            System.out.println("(" + i + ") " + skillName + "\nDamage: " + damageRange + "\n");
         }
     }
 

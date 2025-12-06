@@ -19,7 +19,14 @@ public class MiniQuest2 {
 
         // Helper method calls (using the actual helper from the previous solution)
         clearScreen();
-
+        System.out.println("---------------------------------------------------------------");
+        System.out.println("████    ██   ██████   ██████   ██   ██████   ████    ██    ████");
+        System.out.println("██ ██   ██   ██  ██     ██     ██   ██  ██   ██ ██   ██   ██  ██");
+        System.out.println("██  ██  ██   ██████     ██     ██   ██  ██   ██  ██  ██      ██");
+        System.out.println("██   ██ ██   ██  ██     ██     ██   ██  ██   ██   ██ ██     ██");
+        System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████     █████");
+        System.out.println("----------------------Veyora: Nation of Elves--------------------");
+        System.out.println("");
         // --- Narrative Introduction ---
         System.out.println("(silence. The library crumbles slowly, scrolls burning into motes of light.)");
         scanner.nextLine();

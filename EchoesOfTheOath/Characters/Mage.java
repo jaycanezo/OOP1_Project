@@ -28,16 +28,19 @@ public class Mage extends Character{
             case 1:
                 dmg=random.nextInt((21)+30+200)*getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Fireball" + RESET + "!");
+                System.out.println("You hurl a blazing fireball at your enemy, dealing damage.");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 dmg=random.nextInt((70)+50+100)*getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Heat Surge" + RESET + "!");
+                System.out.println("You unleash a surge of intense flames, striking your enemy with great force.");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 dmg=random.nextInt((100)+1400+100)*getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Astral Cataclysm" + RESET + "!");
+                System.out.println("You summon a massive fiery rock, obliterating everything in the area around your enemy.");
                 setSkillCooldown(3, 3);
                 break;
         }

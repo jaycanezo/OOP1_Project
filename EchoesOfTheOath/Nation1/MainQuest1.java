@@ -31,8 +31,7 @@ public class MainQuest1 {
         System.out.println(name + " looks out the shattered window toward the city");
         scan.nextLine();
         System.out.println(name + ":");
-        System.out
-                .println("\"If this nation's going to rise again, someone has to break every chain it hides behind.\"");
+        System.out.println("\"If this nation's going to rise again, someone has to break every chain it hides behind.\"");
         scan.nextLine();
 
         System.out.println("(thunder rolls over the castle-distant shadowy figure watching from a tower)");

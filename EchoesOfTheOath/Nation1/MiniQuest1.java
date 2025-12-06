@@ -44,6 +44,15 @@ public class MiniQuest1 {
 
     private boolean introScene(String name) {
         while (true) {
+            System.out.println("---------------------------------------------------------------");
+            System.out.println("████    ██   ██████   ██████   ██   ██████   ████    ██   ███");
+            System.out.println("██ ██   ██   ██  ██     ██     ██   ██  ██   ██ ██   ██    ██");
+            System.out.println("██  ██  ██   ██████     ██     ██   ██  ██   ██  ██  ██    ██");
+            System.out.println("██   ██ ██   ██  ██     ██     ██   ██  ██   ██   ██ ██    ██");
+            System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████   ████");
+            System.out.println("------------------------Nation of Humanas---------------------");
+            System.out.println("");
+
             System.out.println("(" + name + " walks along the worn dirt path leading to the outskirts of a town)");
             scan.nextLine();
             System.out.println("(the wind carries faint echoes of bells and shouting)");

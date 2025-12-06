@@ -117,8 +117,7 @@ public class Archer extends Character{
 
             System.out.println(i + ". " + skillName + " | Damage: " + damageRange + " | " + status);
         }
-
     }
-
+    
 }
 

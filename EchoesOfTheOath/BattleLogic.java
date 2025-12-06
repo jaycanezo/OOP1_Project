@@ -94,16 +94,16 @@ public class BattleLogic {
 
                 chosen.resetCooldowns();
                 chosen.setHp(chosen.getMaxHp());
-                System.out.println(GREEN + chosen.getName() + "'s HP has been fully restored!" + RESET);
+                System.out.println(chosen.getName() + "'s HP has been fully restored!");
                 scan.nextLine();
 
                 chosen.setLevel(chosen.getLevel() + 1);
                 System.out
-                        .println(GREEN + chosen.getName() + " leveled up to level " + chosen.getLevel() + "!" + RESET);
+                        .println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
                 scan.nextLine();
 
                 chosen.setPotionCount(chosen.getPotionCount() + 5);
-                System.out.println(GREEN + "Reward: 5 Health Potion added to inventory." + RESET);
+                System.out.println("Reward: 5 Health Potion added to inventory.");
                 scan.nextLine();
 
                 System.out.println("Current Level: " + chosen.getLevel());

@@ -11,6 +11,15 @@ public class MiniQuest3 {
         while (restart) {
             int tries = 3;
 
+            System.out.println("---------------------------------------------------------------");
+            System.out.println("████    ██   ██████   ██████   ██   ██████   ████    ██    █████");
+            System.out.println("██ ██   ██   ██  ██     ██     ██   ██  ██   ██ ██   ██   █    ██");
+            System.out.println("██  ██  ██   ██████     ██     ██   ██  ██   ██  ██  ██      ███");
+            System.out.println("██   ██ ██   ██  ██     ██     ██   ██  ██   ██   ██ ██   █    ██");
+            System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████    ████");
+            System.out.println("-------------------------Nation of Demons------------------------");
+            System.out.println("");
+
             System.out.println("\n================================================");
             System.out.println("           TRIAL OF THE BROKEN OATH");
             System.out.println("================================================\n");

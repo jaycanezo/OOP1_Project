@@ -3,7 +3,7 @@ package EchoesOfTheOath.Characters;
 
 public class babyM extends Character{
     public babyM(){
-        super("King Bartholomew Monarch (\"Baby M\")", "HUMANAS NATION 1 - Mini Boss", 1400, 2);
+        super("King Bartholomew Monarch (\"Baby M\")", "HUMANAS < NATION 1 > - MINI BOSS", 1400, 2);
     }
 
     
@@ -25,24 +25,24 @@ public class babyM extends Character{
                 break;
             case 2:
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Feigned Faint!");
-                System.out.println("Baby M lulls his opponent into a false sense of security only to launch a surprise strike" + RESET + "!");
+                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Feigned Faint" + RESET + "!");
+                System.out.println("Baby M lulls his opponent into a false sense of security only to launch a surprise strike.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: Enforced Decree!");
-                System.out.println("The infant King abruptly stops all movement as Someone overrides his own, charging forward with mechanical precision" + RESET + "!");
+                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: Enforced Decree" + RESET + "!");
+                System.out.println("The infant King abruptly stops all movement as Someone overrides his own, charging forward with mechanical precision.");
                 cd[skillNumber - 1] = 3;
                 break;
         }
-
         enemy.takeDamage(dmg);
         reduceCooldowns();
     }
 
 
-    @Override public void takeDamage(int dmg){
+    @Override 
+    public void takeDamage(int dmg){
         super.takeDamage(dmg);
 
         System.out.println(RED + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);

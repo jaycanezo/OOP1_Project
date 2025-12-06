@@ -3,47 +3,46 @@ package EchoesOfTheOath.Characters;
 
 public class Archivist extends Character {
     public Archivist(){
-        super("The Archivist", " || Humanas Nation 1 - Main Boss", 1400, 4);
+        super("The Archivist", "HUMANAS < NATION 1 > - MAIN BOSS", 1400, 4);
     }
 
 
-    @Override public void useSkill(int skillNumber, Character enemy){
+    @Override 
+    public void useSkill(int skillNumber, Character enemy){
         int[] cd = getSkillCooldowns(); // get cooldown array
         int dmg = 0;
-
 
         //for skill defaulting if random skill is on cooldown
         if (cd[skillNumber - 1] > 0 && skillNumber != 1) {
             skillNumber = 1; //defaults to basic atk
         }
 
-
         switch (skillNumber){
             case 1:
-                dmg=random.nextInt((21) + 30 + 20) * getLevel();
+                dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: The Panoptic Eye" + RESET + "!");
                 System.out.println("Projects a pale, shimmering after-image of the target. Instantly drawing blood not at the target, but at its future shadow.");
                 break;
             case 2:
-                dmg=random.nextInt((70) + 50 + 20) * getLevel();
+                dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Temporary Relief" + RESET + "!");
                 System.out.println("The Archivist unleases a powerful attack that strikes them with the force of accumulated, unseen debts.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
-                dmg=random.nextInt((100) + 230 * 4) * getLevel();
+                dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate Skill: Enforced Decree" + RESET + "!");
                 System.out.println("The Archivist summons a devastating storm of spectral scrolls overwhelming and tearing apart his opponent as he seeks to claim them as his final possession.");
                 cd[skillNumber - 1] = 3;
                 break;
-        }
-       
+        }   
         enemy.takeDamage(dmg);
         reduceCooldowns();
     }
 
 
-    @Override public void takeDamage(int dmg){
+    @Override 
+    public void takeDamage(int dmg){
         super.takeDamage(dmg);
 
         System.out.println(RED + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);
