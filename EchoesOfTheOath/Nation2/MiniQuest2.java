@@ -63,7 +63,7 @@ public class MiniQuest2 {
         String hint = "[Hint: You often hear me in a canyon]";
         String correctAnswer = "ECHO";
 
-        System.out.println("You encountered a Riddle Game: The Whsipering Riddle!");
+        System.out.println("You encountered a Riddle Game: The Whispering Riddle!");
         System.out.print("This is an Optional Riddle Game. Press [S] to skip or [Enter] to continue.");
         String skipInput = scanner.nextLine();
 

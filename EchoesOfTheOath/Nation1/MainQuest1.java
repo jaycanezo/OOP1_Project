@@ -506,8 +506,8 @@ public class MainQuest1 {
         System.out.println("You Destroyed the corrupt power network beneath the city.");
         scan.nextLine();
 
-        chosen.setPotionCount(chosen.getPotionCount() + 5);
-        System.out.println("Reward: 5 health potions added to your inventory.");
+        chosen.setPotionCount(chosen.getPotionCount() + 3);
+        System.out.println("Reward: 3 health potions added to your inventory.");
         scan.nextLine();
         System.out.println("Current Level: " + chosen.getLevel());
         System.out.println("Current Potions: " + chosen.getPotionCount());
