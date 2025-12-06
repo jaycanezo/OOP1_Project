@@ -2,7 +2,7 @@ package EchoesOfTheOath.Characters;
 
 public class Elarion extends Character{
     public Elarion(){
-        super("Elarion","DEMON REALM < NATION 3 > - MAIN BOSS", 1400, 12);
+        super("Elarion"," DEMON REALM < NATION 3 > - MAIN BOSS", 1400, 12);
     }
 
     

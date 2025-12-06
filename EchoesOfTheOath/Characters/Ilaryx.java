@@ -2,7 +2,7 @@ package EchoesOfTheOath.Characters;
 
 public class Ilaryx extends Character {
     public Ilaryx(){
-        super("Ilaryx","VEYORA < NATION 2 > - MINI BOSS", 1400, 6);
+        super("Ilaryx"," VEYORA < NATION 2 > - MINI BOSS", 1400, 6);
     }
 
 

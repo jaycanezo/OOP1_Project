@@ -19,7 +19,7 @@ public class MainQuest2 {
         while (true) {
             rootsOfDespair(chosen);
             if (isSkipped) {
-                System.out.println("You have skipped the dialogues");
+                System.out.println("You have skipped the Quest Dialogues, Proceeding forward...");
                 scan.nextLine();
             }
 
@@ -90,10 +90,8 @@ public class MainQuest2 {
         scan.nextLine();
 
         System.out.println("Main Quest Started: \"The Roots of Despair\"");
-        scan.nextLine();
-
         System.out.println("Objective: Reach the Heart of Veyora and confront the Root of Despair");
-        System.out.println("\n(Press ['s'] to skip and [Enter] to continue.)");
+        System.out.println("(Press ['s'] to skip and [Enter] to continue.)");
         if (waitOrSkip())
             return;
 
@@ -268,7 +266,7 @@ public class MainQuest2 {
         if (waitOrSkip())
             return;
 
-        System.out.println("(" + name + " places a hand on the Root's core. Light bursts—a memory.)");
+        System.out.println("(" + name + " places a hand on the Root's core. Light bursts--a memory.)");
         if (waitOrSkip())
             return;
     }
@@ -363,11 +361,12 @@ public class MainQuest2 {
     // ==============================
     private void endQuest(Character chosen) {
         System.out.println("You have finished the Main Quest: 'The Roots of Despair'");
-        System.out.println("Quest Summary: You returned the Tear, confronted illusions, and reached Lunareth.");
-
+        scan.nextLine();
+        System.out.println("Quest Summary: You returned the Tear, confronted illusions, regain your memories, and reached Lunareth.");
+        scan.nextLine();
         chosen.setPotionCount(chosen.getPotionCount() + 3);
         System.out.println("Reward: 3 health potions added to your inventory.");
-
+        scan.nextLine();
         System.out.println("You may now proceed on your journey.");
         clearScreen();
     }
@@ -388,9 +387,12 @@ public class MainQuest2 {
         boolean isSolved = false;
 
         String shuffledWord = shuffleString(correctAnswer);
-        System.out.println("Welcome to the Quest!");
-        System.out.println("Unscramble the word: " + shuffledWord);
-        System.out.println("------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------------------");
+        System.out.println();
+        System.out.println("You Encountered a Scrabble Game!");
+        System.out.println("Unscramble the word: "+ANSI_RED+ shuffledWord + ANSI_RESET +" to bring your memories back!");
+        System.out.println();
+        System.out.println("-----------------------------------------------------------------------------------------");
 
         while (currentAttempts < maxAttempts && !isSolved) {
 
@@ -398,7 +400,8 @@ public class MainQuest2 {
             String userInput = scan.nextLine().trim().toUpperCase();
 
             if(userInput.isEmpty()){
-                System.out.println("Input Cannot be Empty. Please Enter a valid String");
+                System.out.println(ANSI_RED+"Input Cannot be Empty."+ANSI_RESET+" Please Enter a valid String.");
+                System.out.println();
                 continue;
             }
 
@@ -410,6 +413,7 @@ public class MainQuest2 {
                     System.out.print(ANSI_GREEN + c + ANSI_RESET);
                 }
                 System.out.println();
+                System.out.println();
 
             } else {
                 currentAttempts++;
@@ -417,21 +421,28 @@ public class MainQuest2 {
             }
 
             if (!isSolved && currentAttempts >= maxAttempts) {
-                System.out.println("\n--- Mini Game Failed ---");
+                System.out.println("\n--- Scrabble Game Failed ---");
+                scan.nextLine();
                 System.out.println("You have run out of attempts.");
-                System.out.println("The correct answer was: " + correctAnswer);
+                scan.nextLine();
+                System.out.println("The correct answer was: " + ANSI_GREEN +correctAnswer+ ANSI_RESET);
+                scan.nextLine();
+                System.out.println("You may now proceed on your journey.");
+                scan.nextLine();
             } else if (!isSolved) {
-                System.out.println("\nIncorrect. Try again.");
+                System.out.println(ANSI_RED+"\nIncorrect. Try again."+ANSI_RESET);
             }
         }
 
         if (isSolved) {
-            System.out.println("STATUS: Quest Complete!");
+            System.out.println("Scrabble Game Complete!");
             chosen.setLevel(chosen.getLevel() + 1);
+            scan.nextLine();
             System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
             scan.nextLine();
             chosen.setPotionCount(chosen.getPotionCount() + 5);
             System.out.println("Reward: 5 health potions added to your inventory.");
+            scan.nextLine();
             System.out.println("Current Level: " + chosen.getLevel());
             System.out.println("Current Potions: " + chosen.getPotionCount());
             scan.nextLine();

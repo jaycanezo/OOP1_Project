@@ -3,7 +3,7 @@ package EchoesOfTheOath.Characters;
 
 public class babyM extends Character{
     public babyM(){
-        super("King Bartholomew Monarch (\"Baby M\")", "HUMANAS < NATION 1 > - MINI BOSS", 1400, 2);
+        super("King Bartholomew Monarch (\"Baby M\")", " HUMANAS < NATION 1 > - MINI BOSS", 1400, 2);
     }
 
     

@@ -2,7 +2,7 @@ package EchoesOfTheOath.Characters;
 
 public class Lunareth extends Character {
     public Lunareth(){
-        super("Lunareth","VEYORA < NATION 2 > - MAIN BOSS", 1400, 8);
+        super("Lunareth"," VEYORA < NATION 2 > - MAIN BOSS", 1400, 8);
     }
 
 

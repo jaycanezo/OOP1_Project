@@ -52,7 +52,7 @@ public class OOP_Project {
         MiniQuest3 miniQuest3 = new MiniQuest3();
         MainQuest3 mainQuest3 = new MainQuest3();
         Ending ending = new Ending();
-        miniQuest3.BrokenOathTrial();// Nation 3 Mini Quest
+        miniQuest3.BrokenOathTrial(chosen);// Nation 3 Mini Quest
 
         Sarukdal sarukdal = new Sarukdal();// Nation 3 Mini Boss
         BattleLogic.battleLogic(chosen, sarukdal);

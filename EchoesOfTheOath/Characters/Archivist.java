@@ -3,7 +3,7 @@ package EchoesOfTheOath.Characters;
 
 public class Archivist extends Character {
     public Archivist(){
-        super("The Archivist", "HUMANAS < NATION 1 > - MAIN BOSS", 1400, 4);
+        super("The Archivist", " HUMANAS < NATION 1 > - MAIN BOSS", 1400, 4);
     }
 
 

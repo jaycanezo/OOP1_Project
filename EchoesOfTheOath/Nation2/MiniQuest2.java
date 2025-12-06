@@ -19,14 +19,7 @@ public class MiniQuest2 {
 
         // Helper method calls (using the actual helper from the previous solution)
         clearScreen();
-        System.out.println("---------------------------------------------------------------");
-        System.out.println("████    ██   ██████   ██████   ██   ██████   ████    ██    ████");
-        System.out.println("██ ██   ██   ██  ██     ██     ██   ██  ██   ██ ██   ██   ██  ██");
-        System.out.println("██  ██  ██   ██████     ██     ██   ██  ██   ██  ██  ██      ██");
-        System.out.println("██   ██ ██   ██  ██     ██     ██   ██  ██   ██   ██ ██     ██");
-        System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████     █████");
-        System.out.println("----------------------Veyora: Nation of Elves--------------------");
-        System.out.println("");
+        
         // --- Narrative Introduction ---
         System.out.println("(silence. The library crumbles slowly, scrolls burning into motes of light.)");
         scanner.nextLine();
@@ -37,14 +30,18 @@ public class MiniQuest2 {
         scanner.nextLine();
         System.out.println("\"But the echoes... will remain.\""); // This line hints at the riddle answer
         scanner.nextLine();
-
-        clearScreen();
-        System.out.println(
-                "With the fall of The Archivist, new paths unfold before you.\n The lands of Veyora call out -- ancient forests where the elves once thrived, now fractured by war and shadowed by forgotten oaths.");
+        System.out.println("With the fall of The Archivist, new paths unfold before you.\nThe lands of Veyora call out -- ancient forests where the elves once thrived, now fractured by war and shadowed by forgotten oaths.");
         scanner.nextLine();
+        System.out.println();
 
         clearScreen();
-        System.out.println("Continuing the journey you now have arrived at Veyora: \"The Elven Lands\"");
+        System.out.println("---------Continuing the Journey You have now Arrived at:---------");
+        System.out.println("████    ██   ██████   ██████   ██   ██████   ████    ██    ████");
+        System.out.println("██ ██   ██   ██  ██     ██     ██   ██  ██   ██ ██   ██   ██  ██");
+        System.out.println("██  ██  ██   ██████     ██     ██   ██  ██   ██  ██  ██      ██");
+        System.out.println("██   ██ ██   ██  ██     ██     ██   ██  ██   ██   ██ ██     ██");
+        System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████     █████");
+        System.out.println("--------------------Veyora: Nation of Elves----------------------");
         scanner.nextLine();
 
         // --- NEW PLOT POINT INTRODUCING THE RIDDLE ---
@@ -64,19 +61,23 @@ public class MiniQuest2 {
         String correctAnswer = "ECHO";
 
         System.out.println("You encountered a Riddle Game: The Whispering Riddle!");
-        System.out.print("This is an Optional Riddle Game. Press [S] to skip or [Enter] to continue.");
+        System.out.print("This is an Optional Riddle Game. Press [S] to skip or [Enter] to continue: ");
         String skipInput = scanner.nextLine();
 
         while (true) {
-            if (skipInput.equalsIgnoreCase("S")) {
-                System.out.println("");
-                System.out.println("Are you sure you would like to skip the Challenge?");
-                System.out.println("If yes, you will not level up [Y/N]: ");
 
+            // --- SKIP OPTION ---
+            if (skipInput.equalsIgnoreCase("S")) {
+
+                System.out.println("\nAre you sure you would like to skip the Challenge?");
+                System.out.print("If yes, you will not level up [Y/N]: ");
                 String inputSureSkip = scanner.nextLine();
+                System.out.println();
+
                 while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
-                    System.out.println("Invalid input. Please enter Y or N:");
+                    System.out.print("Invalid input. Please enter Y or N:");
                     inputSureSkip = scanner.nextLine();
+                    System.out.println();
                 }
 
                 if (inputSureSkip.equalsIgnoreCase("Y")) {
@@ -84,67 +85,73 @@ public class MiniQuest2 {
                     scanner.nextLine();
                     System.out.println("You may now proceed on your journey.");
                     scanner.nextLine();
-                    break;
-                    // Quest ends here if skipped, execution continues below the while loop
-                }else if (inputSureSkip.equalsIgnoreCase("N")){
-                    System.out.println("Challenge will not be skipped.");
-                    scanner.nextLine();
-                    break;
+                    break;   // Exit whole skip/riddle system
+                } else {
+                    // Player changed their mind → continue to riddle
+                    System.out.println("\nChallenge will not be skipped.");
+                    skipInput = "";   // Important: reset so the riddle path starts
                 }
-            } else {
-                // --- Riddle Loop Logic ---
-                while (attemptsUsed < maxAttempts && !questCompleted) {
-                    System.out.println("\n--------------------------------");
-                    System.out.println("RIDDLE: " + riddle);
-                    scanner.nextLine();
-                    System.out.println(hint);
-                    scanner.nextLine();
-                    System.out.print(
-                            "Attempts remaining: " + (maxAttempts - attemptsUsed) + " | Enter your answer: ");
-                    userAnswer = scanner.nextLine().trim();
-
-                    if(userAnswer.isEmpty()){
-                        System.out.println("Input Cannot be Empty. Please Enter a valid String");
-                        continue;
-                    }
-
-                    if (userAnswer.equalsIgnoreCase(correctAnswer)) {
-                        // --- SUCCESS ---
-                        questCompleted = true;
-                        System.out.println("\n" + ANSI_GREEN
-                                + "Correct! The stone slab dissolves into motes of light." + ANSI_RESET);
-                        scanner.nextLine();
-                        chosen.setLevel(chosen.getLevel() + 1);
-                        chosen.setPotionCount(chosen.getPotionCount() + 3);
-
-                        System.out.println("Reward: 3 health potions added to your inventory.");
-                        scanner.nextLine();
-                        System.out.println(name + " leveled up to level " + chosen.getLevel() + "!");
-                        scanner.nextLine();
-                        System.out.println("Current Potions: " + chosen.getPotionCount());
-                        break;
-                    } else {
-                        // --- FAILURE attempt ---
-                        attemptsUsed++;
-                        System.out.println(ANSI_RED + "Wrong answer." + ANSI_RESET);
-
-                        if (attemptsUsed >= maxAttempts) {
-                            // --- FINAL FAILURE ---
-                            System.out.println(
-                                    "\n" + ANSI_RED + "MINI QUEST FAILED (Max attempts reached)" + ANSI_RESET);
-                            chosen.setPotionCount(chosen.getPotionCount() + 1); // Minor consolation reward
-                            System.out.println("Reward: 1 health potion added to your inventory.");
-                            System.out.println(name + " remains level " + chosen.getLevel() + ".");
-                            System.out.println("Current Potions: " + chosen.getPotionCount());
-                            break;
-                            // Quest ends here
-                        }
-                    }
-                    scanner.nextLine(); // Pause for user to read status
-                }
-                break;
             }
+
+            // --- RIDDLE GAME STARTS HERE ---
+            while (attemptsUsed < maxAttempts && !questCompleted) {
+
+                System.out.println("\n--------------------------------");
+                System.out.println("RIDDLE: " + riddle);
+                System.out.println(hint);
+                System.out.println();
+                System.out.print("Attempts remaining: " + (maxAttempts - attemptsUsed) + 
+                                " | Enter your answer: ");
+                userAnswer = scanner.nextLine().trim();
+
+                if (userAnswer.isEmpty()) {
+                    System.out.println(ANSI_RED+"Input cannot be empty. Try again."+ANSI_RESET);
+                    continue;
+                }
+
+                if (userAnswer.equalsIgnoreCase(correctAnswer)) {
+
+                    // SUCCESS
+                    questCompleted = true;
+                    System.out.println("\n" + ANSI_GREEN +
+                            "Correct! The stone slab dissolves into motes of light." +
+                            ANSI_RESET);
+                    scanner.nextLine();
+                    chosen.setLevel(chosen.getLevel() + 1);
+                    chosen.setPotionCount(chosen.getPotionCount() + 3);
+
+                    System.out.println("Reward: 3 health potions added to your inventory.");
+                    scanner.nextLine();
+                    System.out.println(name + " leveled up to level " + chosen.getLevel() + "!");
+                    System.out.println("Current Potions: " + chosen.getPotionCount());
+                    scanner.nextLine();
+                    break;
+                } else {
+
+                    // WRONG ANSWER
+                    attemptsUsed++;
+                    System.out.println(ANSI_RED + "Wrong answer." + ANSI_RESET);
+
+                    // FAILURE END
+                    if (attemptsUsed >= maxAttempts) {
+                        System.out.println("\n" + ANSI_RED +
+                                "RIDDLE FAILED (Max attempts reached)" +
+                                ANSI_RESET);
+                        scanner.nextLine();
+                        chosen.setPotionCount(chosen.getPotionCount() + 1);
+                        System.out.println("Reward: 1 health potion added.");
+                        scanner.nextLine();
+                        System.out.println(name + " remains level " + chosen.getLevel() + ".");
+                        System.out.println("Current Potions: " + chosen.getPotionCount());
+                        scanner.nextLine();
+                        break;
+                    }
+                }
+            }
+
+            break;
         }
+
 
         // --- Narrative Conclusion and Transition (Setting up the Main Quest) ---
         clearScreen();
@@ -172,7 +179,7 @@ public class MiniQuest2 {
                 "Healer (quietly):\n\"She was once the pride of Lunareth's guard. If you face her... speak before you strike.\"");
         scanner.nextLine();
 
-        System.out.println("(Your surroundings fade to black — faint heartbeat sound.)");
+        System.out.println("(Your surroundings fade to black -- faint heartbeat sound.)");
         scanner.nextLine();
 
         clearScreen();

@@ -2,7 +2,7 @@ package EchoesOfTheOath.Characters;
 
 public class Sarukdal extends Character{
     public Sarukdal(){
-        super("Sarukdal","DEMON REALM < NATION 3 > - MINI BOSS", 1400, 10);
+        super("Sarukdal"," DEMON REALM < NATION 3 > - MINI BOSS", 1400, 10);
     }
 
 

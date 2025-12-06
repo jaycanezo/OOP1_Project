@@ -113,6 +113,7 @@ public class MainQuest1 {
             chosen.setHp(chosen.getLevel() + 1);
             System.out.println("You were successful in " + (successCount + 1) + "/4 Phases.");
             chosen.setLevel(chosen.getLevel() + 1);
+            scan.nextLine();
             System.out.println("You have leveled up to " + chosen.getLevel() + "!");
             scan.nextLine();
         } else {
@@ -236,9 +237,10 @@ public class MainQuest1 {
     // PHASE 1
     // ----------------------------------------------------------
     public int phase1(int strikes) {
-
+        System.out.println("----------------------------------------");
         System.out.println("PHASE 1 - Ashes Beneath the Throne");
         System.out.println("Strikes: " + strikes + "/3");
+        System.out.println("\n----------------------------------------");
         scan.nextLine();
 
         System.out.println("Puzzle: Ledger of Lies");
@@ -275,7 +277,6 @@ public class MainQuest1 {
             System.out.print("Your answer: ");
             ans = getLetterInput();
             System.out.println();
-            System.out.println();
             if (!ans.equalsIgnoreCase("C")) {
                 strikes--;
                 System.out.println("Wrong! Strikes left: " + strikes + "/3");
@@ -310,8 +311,10 @@ public class MainQuest1 {
         System.out.println("(After you uncover the puzzle you now start your descend into the Undercity...)");
         scan.nextLine();
 
+        System.out.println("\n----------------------------------------");
         System.out.println("PHASE 2 - Descent to the Undercity");
         System.out.println("Strikes: " + strikes + "/3");
+        System.out.println("\n----------------------------------------");
         scan.nextLine();
 
         System.out.println("Puzzle: The Broken Waterway Maze");
@@ -369,14 +372,16 @@ public class MainQuest1 {
     // PHASE 3
     // ----------------------------------------------------------
     public int phase3(int strikes) {
-        System.out.println("You escaped the maze and proceeds to The Heart of the Veins");
+        System.out.println("(You escaped the maze and proceeds to The Heart of the Veins)");
         scan.nextLine();
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
+        System.out.println("\n----------------------------------------");
         System.out.println("PHASE 3 - The Heart of the Veins");
         System.out.println("Strikes: " + strikes + "/3");
+        System.out.println("\n----------------------------------------");
         scan.nextLine();
 
         System.out.println("Puzzle: Power Conduit Shutdown Order");
@@ -438,7 +443,7 @@ public class MainQuest1 {
     // ----------------------------------------------------------
     public void phase4() {
 
-        System.out.println("You got out of the Vein's Heart, and saw the citizens gathering");
+        System.out.println("(You got out of the Vein's Heart, and saw the citizens gathering...)");
         scan.nextLine();
 
         System.out.print("\033[H\033[2J");
@@ -462,6 +467,8 @@ public class MainQuest1 {
         System.out.print("B. \"The King lives-but the throne must change.\"");
         scan.nextLine();
         System.out.print("C. \"Rise. Today your voices return.\"");
+        scan.nextLine();
+        System.out.print("D. \"Stand firm. The old order ends tonight.\"\"");
         scan.nextLine();
         // all answers are correct
         System.out.println();
@@ -498,7 +505,6 @@ public class MainQuest1 {
     }
 
     public void finishQuest(Character chosen) {
-        System.out.println();
         System.out.println("You have Finished the quest: The Veins of Humanas!");
 
         scan.nextLine();

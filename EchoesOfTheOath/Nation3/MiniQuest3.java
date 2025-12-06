@@ -1,41 +1,157 @@
 package EchoesOfTheOath.Nation3;
 
+import EchoesOfTheOath.Characters.Character;
 import java.util.*;
 
 public class MiniQuest3 {
+
     Scanner scan = new Scanner(System.in);
 
-    public void BrokenOathTrial() {
+    public void BrokenOathTrial(Character chosen) {
+        String name = chosen.getName();
         boolean restart = true;
 
         while (restart) {
             int tries = 3;
 
-            System.out.println("---------------------------------------------------------------");
+            System.out.println(
+                    "(Lunareth collapses to one knee -- his armor splintering, fragments of light leaking out.)");
+            scan.nextLine();
+            System.out.println("Lunareth (faintly):");
+            System.out.println("\"You were right... I couldn't protect them.\"");
+            System.out.println("\"So I tried to control what was left.\"");
+            scan.nextLine();
+
+            System.out.println(name + ":");
+            System.out.println("\"You don't have to carry it alone anymore.\"");
+            scan.nextLine();
+            System.out.println("Lunareth (smiling weakly):");
+            System.out.println("\"The forest... remembers your name again.\"");
+            scan.nextLine();
+
+            System.out.println(
+                    "(The moonlight fades. Lunareth's body dissolves into silver motes that drift into the tree's heart.)");
+            scan.nextLine();
+            System.out.println("(Internal monologue):");
+            System.out.println("\"The tyrant fell. The guardian returned to the roots.\"");
+            System.out.println("\"And the forest finally slept.\"");
+            scan.nextLine();
+
+            System.out.println(
+                    "(The citadel is now overgrown with living vines. The Healer kneels beside " + name + ".)");
+            scan.nextLine();
+            System.out.println("Healer:");
+            System.out.println("\"He found peace, didn't he?\"");
+            scan.nextLine();
+            System.out.println(name + " (looking at the glowing roots):");
+            System.out.println("\"He found his way back.\"");
+            scan.nextLine();
+
+            System.out.println("(" + name + " opens their palm -- a fragment of Lunareth's bow rests there.)");
+            scan.nextLine();
+            System.out.println("Healer (softly):");
+            System.out.println("\"Then Veyora breathes again.\"");
+            scan.nextLine();
+
+            System.out.println("\"The forest of Veyora stands tall once more.\"");
+            scan.nextLine();
+            System.out.println("\"But the sky above it whispers of storms yet to come.\"");
+            scan.nextLine();
+            System.out.println("\"For in the silence left by Lunareth's fall... something else begins to stir.\"");
+            scan.nextLine();
+
+            System.out.println(name + " stands at the edge of a massive chasm; the sky is a bruised, permanent twilight; black rock and ash cover the land;");
+            System.out.println("on the far side, the Umbral Fortress, a single, colossal obsidian structure, pulses with dark energy.");
+            scan.nextLine();
+            System.out.print("\"The Umbral Fortress.\"");
+            scan.nextLine();
+
+            System.out.println("---------Continuing the Journey You have now Arrived at:----------");
             System.out.println("████    ██   ██████   ██████   ██   ██████   ████    ██    █████");
             System.out.println("██ ██   ██   ██  ██     ██     ██   ██  ██   ██ ██   ██   █    ██");
             System.out.println("██  ██  ██   ██████     ██     ██   ██  ██   ██  ██  ██      ███");
             System.out.println("██   ██ ██   ██  ██     ██     ██   ██  ██   ██   ██ ██   █    ██");
             System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████    ████");
-            System.out.println("-------------------------Nation of Demons------------------------");
-            System.out.println("");
+            System.out.println("------------------------Nation of Demons--------------------------");
+            scan.nextLine();
 
-            System.out.println("\n================================================");
+            System.out.print("\"The air itself is poison. It doesn't just feel cold... it feels empty. Like a void.\"");
+            scan.nextLine();
+            System.out.print("\"This is where it all ended. This is where I fell.\"");
+            scan.nextLine();
+            System.out.println("\"Elarion is here. I can feel him... waiting.\"");
+            scan.nextLine();
+
+            System.out.println("(A flickering, unstable bridge of shadow is the only way across; as "+name+" steps onto it, the ghostly forms of THE ARCHIVIST and LUNARETH appear, their faces strained)");
+            scan.nextLine();
+
+            System.out.println("Spirit of Lunareth:");
+            System.out.println("\"The fortress... it feeds on our broken Oath. Be careful, Echo. The one who guards it... he was the strongest of us.\"");
+            scan.nextLine();
+            
+            System.out.println("Spirit of The Archivist:");
+            System.out.println("\"Sarukdal. Our shield. He never broke. He never bent. What Elarion did to us... it will be nothing compared to what he did to him.\"");
+            scan.nextLine();
+
+            System.out.println("(the spirits fade; "+name+" crosses the chasm and enters the fortress)");
+            scan.nextLine();
+            
+            System.out.println("(The Hall of Broken Oaths; the interior is a maze of shadowy corridors; as "+name+" walks, phantoms of the past play out on the walls—scenes of "+name+" and the three guardians)");
+            scan.nextLine();
+
+            System.out.println("(A phantom scene appears: the four guardians—"+name+", ARCHIVIST, LUNARETH, and a massive, armored SARUKDAL—stand together, preparing for the original sealing)");
+            scan.nextLine();
+
+            System.out.println("Phantom "+name+" (Voice):");
+            System.out.println("\"No matter what, we stand together. The Oath will hold.\"");
+            scan.nextLine();
+            
+            System.out.println("hantom Sarukdal (Voice, deep and certain):");
+            System.out.println("\"I will be the shield. I will not falter. Let the void break against me. I will not fail you.\"");
+            scan.nextLine();
+            
+            System.out.println("(the phantom scene shatters as a new, violent one replaces it: the moment "+name+" was struck down, the Oath shattering, Sarukdal screaming in rage and despair as the shadow consumes him)");
+            scan.nextLine();
+            System.out.println("\"He didn't falter. I did, I was the weak link. My failure… it didn't just break the Oath, it broke him.\"");
+            scan.nextLine();
+            
+            System.out.println("(A deep, grating voice echoes from a chamber ahead)");
+            scan.nextLine();
+            System.out.println("\"TRAITOR. WEAKLING. YOU HAVE RETURNED.\"");
+            scan.nextLine();
+            System.out.println("\"Sarukdal.\"");
+            scan.nextLine();
+
+            System.out.println("Quest Started: The Last Bastion");
+            scan.nextLine();
+            System.out.println("Objective: Navigate the Hall of Broken Oaths and find Sarukdal, the final guardian.");
+            //System.out.println("Press ['s'] to skip, and [Enter] to continue.");
+            scan.nextLine();
+            
+            System.out.println("(The Chasm of Guilt; "+name+" enters a vast chamber; in the center, on a raised dais, kneels SARUKDAL. He is a monstrous being of shadow and armor, his greatshield fused to his body, pulsating with dark energy. He is kneeling before a pulsating dark crystal.)");
+            
+            System.out.println("("+name+" finds the path blocked by a chasm; to cross, the hero must answer shadow-riddles that test their memory of the Oath)");
+            
+            System.out.print("(Darkness consumes the hall.)");
+            scan.nextLine();
+            System.out.print("(A blood-red sigil forms beneath you.)");
+            scan.nextLine();
+            System.out.print("Sarukdal whispers: \"IF YOU REMEMBER NOTHING... THEN YOU DESERVE NOTHING.\"");
+            scan.nextLine();
+
+            System.out.println("================================================");
             System.out.println("           TRIAL OF THE BROKEN OATH");
-            System.out.println("================================================\n");
+            System.out.println("================================================");
 
-            System.out.println("Darkness consumes the hall.");
-            System.out.println("A blood-red sigil forms beneath you.");
-            System.out.println("Sarukdal whispers: \"IF YOU REMEMBER NOTHING… THEN YOU DESERVE NOTHING.\"\n");
-
-            pause();
-
-            // ------------------------- ROUND 1 -------------------------
-            if (!round(
-                    "ROUND 1 — The First Fracture",
+            
+            System.out.println();
+            // ----------------------------- ROUND 1 ---------------------------------
+            if (!round("ROUND 1: The First Fracture",
                     "WHAT HELD THE FOUR OF YOU TOGETHER?",
-                    new String[] { "Power", "Fear of Elarion", "The Oath you swore together" },
-                    'C', // Correct: C
+                    "Power",
+                    "Fear of Elarion",
+                    "The Oath you swore together",
+                    "C",
                     tries)) {
                 tries--;
             }
@@ -44,13 +160,13 @@ public class MiniQuest3 {
                 continue;
             }
 
-            // ------------------------- ROUND 2 -------------------------
-            if (!round(
-                    "ROUND 2 — The Moment of Failure",
+            // ----------------------------- ROUND 2 ---------------------------------
+            if (!round("ROUND 2: The Moment of Failure",
                     "WHY DID HE BREAK?",
-                    new String[] { "Because you failed first", "Because he was too weak",
-                            "Because the void chose him" },
-                    'A', // Correct: A
+                    "Because you failed first",
+                    "Because he was too weak",
+                    "Because the void chose him",
+                    "A",
                     tries)) {
                 tries--;
             }
@@ -59,13 +175,13 @@ public class MiniQuest3 {
                 continue;
             }
 
-            // ------------------------- ROUND 3 -------------------------
-            if (!round(
-                    "ROUND 3 — The Guardian's Burden",
+            // ----------------------------- ROUND 3 ---------------------------------
+            if (!round("ROUND 3: The Guardian's Burden",
                     "WHAT WAS SARUKDAL'S TRUE ROLE?",
-                    new String[] { "To destroy the enemy", "To endure what the others could not",
-                            "To replace the hero" },
-                    'B', // Correct: B
+                    "To destroy the enemy",
+                    "To endure what the others could not",
+                    "To replace the hero",
+                    "B",
                     tries)) {
                 tries--;
             }
@@ -74,12 +190,13 @@ public class MiniQuest3 {
                 continue;
             }
 
-            // ------------------------- FINAL ROUND -------------------------
-            if (!round(
-                    "FINAL ROUND — The Forbidden Question",
+            // ----------------------------- FINAL ROUND -----------------------------
+            if (!round("FINAL ROUND — The Forbidden Question",
                     "WHAT BROKE THE OATH?",
-                    new String[] { "Elarion's power", "The hero's lost memory", "The hero's choice to forget" },
-                    'C', // Correct: C
+                    "Elarion's power",
+                    "The hero's lost memory",
+                    "The hero's choice to forget",
+                    "C",
                     tries)) {
                 tries--;
             }
@@ -88,75 +205,91 @@ public class MiniQuest3 {
                 continue;
             }
 
-            // ------------------------- SUCCESS -------------------------
-            System.out.println("\nSUCCESS — You survived the Trial.");
+            // ----------------------------- SUCCESS ---------------------------------
+            System.out.println("SUCCESS -- You survived the Trial.");
             System.out.println("The shadows bow as the truth is accepted.");
-            System.out.println("A bridge of black stone rises before you.\n");
+            System.out.println("A bridge of black stone rises before you.");
+            scan.nextLine();
+            chosen.setPotionCount(chosen.getPotionCount() + 2);
+            System.out.println("Reward: 2 health potions added to your inventory.");
+            scan.nextLine();
+            System.out.println("Current Level: " + chosen.getLevel());
+            System.out.println("Current Potions: " + chosen.getPotionCount());
+            scan.nextLine();
+            System.out.println("You may now proceed on your journey.");
+            scan.nextLine();
 
             restart = false;
         }
     }
 
-    // =========================================================
-    // ROUND HANDLER — WITH LETTER INPUT + INTEGER BLOCKING
-    // =========================================================
-    private boolean round(String title, String question, String[] options, char correctAnswer, int triesLeft) {
+    // ============================================================================
+    // SIMPLE ROUND HANDLER (String inputs, no arrays)
+    // ============================================================================
+    private boolean round(String title, String question,
+            String optionA, String optionB, String optionC,
+            String correctAnswer, int triesLeft) {
 
         while (true) {
-            System.out.println("\n----------------------------------------");
+
+            System.out.println("----------------------------------------");
             System.out.println(title);
             System.out.println("Tries Left: " + triesLeft);
-            System.out.println("----------------------------------------\n");
+            System.out.println("----------------------------------------");
+            scan.nextLine();
 
-            System.out.println(question + "\n");
+            System.out.println(question);
+            scan.nextLine();
 
-            System.out.println("A. " + options[0]);
-            System.out.println("B. " + options[1]);
-            System.out.println("C. " + options[2]);
+            System.out.print("A. " + optionA);
+            scan.nextLine();
+            System.out.print("B. " + optionB);
+            scan.nextLine();
+            System.out.print("C. " + optionC);
+            scan.nextLine();
 
             System.out.print("\nYour answer (A/B/C): ");
+            String input = scan.nextLine().trim();
 
-            String input = scan.nextLine();
-
-            // If NOT a letter → invalid input, ask again
-            if (input.length() != 1) {
-                System.out.println("Invalid input. Please enter A, B, or C only.");
-                continue;
+            // Validate correct letter
+            while (true) {
+                if (!input.equalsIgnoreCase("A") &&
+                        !input.equalsIgnoreCase("B") &&
+                        !input.equalsIgnoreCase("C")) {
+                    System.out.println("Invalid choice. Please enter A, B, or C only.");
+                    scan.nextLine();
+                    break;
+                }
             }
 
-            char ans = input.charAt(0);
-
-            // Accept only A, B, C letters
-            if (ans != 'A' && ans != 'B' && ans != 'C') {
-                System.out.println("Invalid choice. Please enter A, B, or C only.");
-                continue;
-            }
-
-            // Valid letter input → check correctness
-            if (ans == correctAnswer) {
-                System.out.println("\nCorrect.");
+            // Correct?
+            if (input.equalsIgnoreCase(correctAnswer)) {
+                System.out.println("Correct.");
+                scan.nextLine();
                 return true;
             } else {
-                System.out.println("\nWrong.");
+                System.out.println("Wrong.");
                 System.out.println("The shadows whisper: \"You remember nothing.\"");
+                scan.nextLine();
                 return false;
             }
         }
     }
 
-    // =========================================================
-    // GAME OVER HANDLER
-    // =========================================================
+    // ============================================================================
+    // GAME OVER SCREEN
+    // ============================================================================
     private boolean gameOver() {
+
         System.out.println("\n=======================================");
         System.out.println("                GAME OVER");
-        System.out.println("=======================================\n");
-
+        System.out.println("=======================================");
+        scan.nextLine();
         System.out.println("The sigil explodes in red light.");
-        System.out.println("The shadows engulf you completely.\n");
-
-        System.out.println("Sarukdal roars: \"AND YOU DARE FACE ME WITHOUT MEMORY OR HONOR?\"\n");
-
+        System.out.println("The shadows engulf you completely.");
+        scan.nextLine();
+        System.out.println("Sarukdal roars: \"AND YOU DARE FACE ME WITHOUT MEMORY OR HONOR?\"");
+        scan.nextLine();
         System.out.println("You have forgotten too much.");
         System.out.println("Restarting point: Entrance to the Hall of Broken Oaths\n");
 
@@ -165,17 +298,8 @@ public class MiniQuest3 {
         System.out.print("Choose: ");
 
         int choice = scan.nextInt();
+        scan.nextLine(); // fix newline
+
         return (choice == 1);
     }
-
-    // =========================================================
-    // PAUSE EFFECT
-    // =========================================================
-    private void pause() {
-        try {
-            Thread.sleep(600);
-        } catch (Exception e) {
-        }
-    }
-
 }
