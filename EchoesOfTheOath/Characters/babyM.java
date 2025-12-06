@@ -21,18 +21,18 @@ public class babyM extends Character{
             case 1:
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: Tantrum Toss" + RESET + "!");
-                System.out.println("In a fit of screaming paranoia, the King wildly throws his golden rattle at his opponent.");
+                System.out.println("The infant King shrieks furiously and hurls his golden rattle straight at you.");
                 break;
             case 2:
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Feigned Faint" + RESET + "!");
-                System.out.println("Baby M lulls his opponent into a false sense of security only to launch a surprise strike.");
+                System.out.println("Baby M suddenly collapses, tricking you into lowering your guard before striking you with a vicious surprise attack.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: Enforced Decree" + RESET + "!");
-                System.out.println("The infant King abruptly stops all movement as Someone overrides his own, charging forward with mechanical precision.");
+                System.out.println("The infant King freezes mid-air as if controlled by an unseen force, then hurtles toward you with unstoppable, mechanical precision.");
                 cd[skillNumber - 1] = 3;
                 break;
         }

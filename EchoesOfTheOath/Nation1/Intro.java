@@ -1,11 +1,12 @@
 package EchoesOfTheOath.Nation1;
 
-import java.util.Scanner;
-
 import EchoesOfTheOath.Characters.*;
 import EchoesOfTheOath.Characters.Character;
+import java.util.Scanner;
 
 public class Intro {
+    public static final String BLUE = "\033[34m";
+    public static final String RESET = "\033[0m";
 
     public static Character main(String[] args) throws InterruptedException {
 
@@ -93,8 +94,7 @@ public class Intro {
     private static void storylineIntro(Scanner scan) throws InterruptedException {
         String text = "Long ago, three adventurers-a brave warrior, a swift archer, and a wise mage-" +
                 "traveled across worlds, earning fame for vanquishing great evils. Their bond was unbreakable, " +
-                "their deeds legendary...\n\nUntil one mission brought them face to face with a power unlike any other-"
-                +
+                "their deeds legendary...\n\nUntil one mission brought them face to face with a power unlike any other-" +
                 "a force that had slain even the mightiest heroes.";
 
         for (char c : text.toCharArray()) {
@@ -128,7 +128,7 @@ public class Intro {
         System.out.print("You encountered a powerful foe!");
         scan.nextLine();
 
-        System.out.println("\nWarrior engaged with the powerful foe!");
+        System.out.println(BLUE + "\nWarrior" + RESET + " engaged with the powerful foe!");
         do {
             System.out.println("Press 'D' to display character's information.");
             try {
@@ -165,7 +165,7 @@ public class Intro {
         // ---------------------------
         // ARCHER TRIAL
         // ---------------------------
-        System.out.println("Archer steps in from a distance!");
+        System.out.println(BLUE + "\nArcher" + RESET + " steps in from a distance!");
         do {
             System.out.println("Press 'D' to display character's information.");
             try {
@@ -202,7 +202,7 @@ public class Intro {
         // ---------------------------
         // MAGE TRIAL
         // ---------------------------
-        System.out.println("The Mage steps forward, staff in hand, ready to unleash the power of the elements.");
+        System.out.println(BLUE + "\nMage" + RESET + " steps forward, staff in hand, ready to unleash the power of the elements.");
         do {
             System.out.println("Press 'D' to display character's information.");
             try {

@@ -19,7 +19,7 @@ public class BattleLogic {
         System.out.println(boss.getTitle());
         System.out.println();
 
-        System.out.println("You are now fighting " + RED + boss.getName() + RESET);
+        System.out.println("You are now fighting " + RED + boss.getName() + RESET + "!");
         scan.nextLine();
 
         System.out.println(RED + boss.getName() + RESET);

@@ -7,13 +7,15 @@ public class Boss extends Character{
     }
 
 
-    @Override public void useSkill(int skillNumber, Character enemy){
+    @Override 
+    public void useSkill(int skillNumber, Character enemy){
 
 
     }
 
 
-    @Override public void takeDamage(int dmg){
+    @Override 
+    public void takeDamage(int dmg){
         System.out.println(RED + getName() + RESET + " takes " + RED + dmg + " damage" + RESET + " but remains unfazed!");
     }
 }

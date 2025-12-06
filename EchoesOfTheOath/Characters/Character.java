@@ -1,8 +1,6 @@
 package EchoesOfTheOath.Characters;
 
-
 import java.util.Random;
-
 
 abstract public class Character {
     public Random random = new Random();
@@ -21,6 +19,7 @@ abstract public class Character {
     public final String YELLOW = "\033[33m";   // skill cooldown / caution
     public final String PURPLE = "\033[35m";   // skills / potion
 
+
     public Character(String name, int hp, int level) {
         this.name=name;
         this.hp=hp*level;//====================================================
@@ -28,6 +27,7 @@ abstract public class Character {
         this.level=level;
         this.skillCooldowns = new int[3];
     }
+    
 
     public Character(String name, String title, int hp, int level) {
         this.name=name;
@@ -121,8 +121,8 @@ abstract public class Character {
 
 
     public int[] getSkillCooldowns() {//for the boss
-    return skillCooldowns;
-}
+        return skillCooldowns;
+    }
 
 
     public int getSkillCooldown(int skillNumber) {//for character

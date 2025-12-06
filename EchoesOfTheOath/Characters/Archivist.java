@@ -21,18 +21,18 @@ public class Archivist extends Character {
             case 1:
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: The Panoptic Eye" + RESET + "!");
-                System.out.println("Projects a pale, shimmering after-image of the target. Instantly drawing blood not at the target, but at its future shadow.");
+                System.out.println("A pale, shimmering after-image of you appears, and suddenly you feel a sharp cut—not on you, but on your own future shadow.");
                 break;
             case 2:
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Temporary Relief" + RESET + "!");
-                System.out.println("The Archivist unleases a powerful attack that strikes them with the force of accumulated, unseen debts.");
+                System.out.println("The Archivist strikes you with the crushing force of accumulated, unseen debts, leaving you reeling.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate Skill: Enforced Decree" + RESET + "!");
-                System.out.println("The Archivist summons a devastating storm of spectral scrolls overwhelming and tearing apart his opponent as he seeks to claim them as his final possession.");
+                System.out.println("A storm of spectral scrolls engulfs you, tearing at your body as the Archivist claims you as his final possession.");
                 cd[skillNumber - 1] = 3;
                 break;
         }   

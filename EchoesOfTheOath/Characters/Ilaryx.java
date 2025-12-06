@@ -1,6 +1,5 @@
 package EchoesOfTheOath.Characters;
 
-
 public class Ilaryx extends Character {
     public Ilaryx(){
         super("Ilaryx","VEYORA < NATION 2 > - MINI BOSS", 1400, 6);
@@ -20,18 +19,18 @@ public class Ilaryx extends Character {
             case 1:
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: Quick Shot" + RESET + "!");
-                System.out.println("Ilaryx fires a Double Tap! Two arrows blaze toward the enemy.");
+                System.out.println("Ilaryx fires a Double Tap! Two arrows blaze toward you.");
                 break;
             case 2:
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Hunter's Trap" + RESET + "!");
-                System.out.println("Ilaryx activates Invisible Snare! A hidden defense is placed!");
+                System.out.println("Ilaryx activates an Invisible Snare! You feel the trap closing in around you.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: Arrow of the Silverfang" + RESET + "!");
-                System.out.println("Ilaryx channels silver magic into her bow, preparing one massive, charged shot. Prepare for impact!");
+                System.out.println("Ilaryx channels silver magic into her bow, firing a massive, charged arrow directly at you. Brace yourself!");
                 cd[skillNumber - 1] = 3;
                 break;
         }
@@ -40,7 +39,8 @@ public class Ilaryx extends Character {
     }
 
 
-    @Override public void takeDamage(int dmg){
+    @Override 
+    public void takeDamage(int dmg){
         super.takeDamage(dmg);
 
         System.out.println(RED + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);

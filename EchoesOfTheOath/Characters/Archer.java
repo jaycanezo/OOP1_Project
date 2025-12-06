@@ -1,8 +1,8 @@
 package EchoesOfTheOath.Characters;
 
-
 public class Archer extends Character{
     private boolean[] isUsed = new boolean[3];
+
 
     public Archer(){
         super("Archer", 1300, 1);
@@ -94,7 +94,7 @@ public class Archer extends Character{
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
-            System.out.println("(" + i + ")" + skillName + "\nDamage: " + damageRange + "\n");
+            System.out.println("(" + i + ") " + PURPLE + skillName + RESET + "\nDamage: " + damageRange + "\n");
         }
     }
 

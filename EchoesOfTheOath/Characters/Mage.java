@@ -1,6 +1,5 @@
 package EchoesOfTheOath.Characters;
 
-
 public class Mage extends Character{
     private boolean[] isUsed = new boolean[3];
 
@@ -16,36 +15,32 @@ public class Mage extends Character{
             return;
         }
 
-
         if (!isSkillAvailable(skillNumber)) {
             System.out.println(YELLOW + "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining." + RESET);
             return;
         }
 
-
         int dmg=0;
         switch (skillNumber){
             case 1:
-                dmg=random.nextInt((21)+30+200)*getLevel();
+                dmg = (random.nextInt(550 - 530 + 1) + 530 + 1000) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Fireball" + RESET + "!");
                 System.out.println("You hurl a blazing fireball at your enemy, dealing damage.");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
-                dmg=random.nextInt((70)+50+100)*getLevel();
+                dmg = (random.nextInt(800 - 765 + 1) + 765 + 765) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Heat Surge" + RESET + "!");
                 System.out.println("You unleash a surge of intense flames, striking your enemy with great force.");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
-                dmg=random.nextInt((100)+1400+100)*getLevel();
+                dmg = 1580 * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Astral Cataclysm" + RESET + "!");
                 System.out.println("You summon a massive fiery rock, obliterating everything in the area around your enemy.");
                 setSkillCooldown(3, 3);
                 break;
         }
-
-
         enemy.takeDamage(dmg);
         isUsed[skillNumber-1]=true;
         reduceCooldowns();
@@ -62,12 +57,14 @@ public class Mage extends Character{
     }
 
 
-    @Override public void takeDamage(int dmg){
+    @Override 
+    public void takeDamage(int dmg){
         super.takeDamage(dmg);
 
         System.out.println(BLUE + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);
         System.out.println(BLUE + getName() + RESET + " has " + GREEN + getHp() + " HP remaining!" + RESET);
     }
+
 
     public String getSkillName(int skillNumber) {
         switch(skillNumber) {
@@ -81,9 +78,9 @@ public class Mage extends Character{
 
     public String getSkillDamageRange(int skillNumber) {
         switch(skillNumber) {
-            case 1: return (30*getLevel()) + "-" + (50*getLevel()) + "+" + (200*getLevel());
-            case 2: return (100*getLevel()) + "-" + (300*getLevel()) + "+" + (100*getLevel());
-            case 3: return String.valueOf(1500*getLevel());
+            case 1: return (530*getLevel()) + " - " + (550*getLevel()) + " + " + (1000*getLevel());
+            case 2: return (765*getLevel()) + " - " + (800*getLevel()) + " + " + (765*getLevel());
+            case 3: return String.valueOf(1580*getLevel());
             default: return "0";
         }
     }
@@ -98,9 +95,10 @@ public class Mage extends Character{
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
-            System.out.println("(" + i + ")" + skillName + "\nDamage: " + damageRange + "\n");
+            System.out.println("(" + i + ") " + PURPLE + skillName + RESET + "\nDamage: " + damageRange + "\n");
         }
     }
+
 
     @Override
     public void displaySkills() {

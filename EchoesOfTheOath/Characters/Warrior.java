@@ -57,7 +57,8 @@ public class Warrior extends Character{
     }
 
 
-    @Override public void takeDamage(int dmg){
+    @Override 
+    public void takeDamage(int dmg){
         super.takeDamage(dmg);
        
         System.out.println(BLUE + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);
@@ -92,7 +93,7 @@ public class Warrior extends Character{
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
-            System.out.println("(" + i + ") " + skillName + "\nDamage: " + damageRange + "\n");
+            System.out.println("(" + i + ") " + PURPLE + skillName + RESET + "\nDamage: " + damageRange + "\n");
         }
     }
 
