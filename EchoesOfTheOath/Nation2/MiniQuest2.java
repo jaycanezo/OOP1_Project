@@ -183,22 +183,6 @@ public class MiniQuest2 {
         scanner.nextLine();
 
         clearScreen();
-        System.out.println("You have finished the Mini Quest: Whispers Beneath the Boughs!");
-        scanner.nextLine();
-
-        // Final Quest Summary
-        System.out.println("Quest Summary: ");
-        System.out
-                .println("You arrived in Veyora and found a divided elven land. After overcoming the ancient riddle,");
-        System.out.println("you were led to a Healer who is infected by the 'Root of Despair' and has asked you");
-        System.out.println("to retrieve the 'Tear of Veyora' from the Silverfang Huntress, Ilaryx.");
-        scanner.nextLine();
-
-        System.out.println("Current Level: " + chosen.getLevel());
-        System.out.println("Current Potions: " + chosen.getPotionCount());
-        scanner.nextLine();
-        System.out.println("You may now proceed on your journey.");
-        scanner.nextLine();
 
         // The start of the Ilaryx encounter (transition to Main Quest)
         clearScreen();

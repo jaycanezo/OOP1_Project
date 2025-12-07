@@ -118,8 +118,16 @@ public class MainQuest3 {
                 break;
             }
             while (true) {
-                System.out.println("A chasm opens before you, bridged by three unstable platforms.");
-                System.out.println("1. One path is bathed in a fading Elven light\n2. Another is covered in shimmering Humanas glyphs\n3. And a straight path unmarred by shadows");
+                System.out.print("A chasm opens before you, bridged by three unstable platforms.");
+                scan.nextLine();
+                System.out.print("1. One path is bathed in a fading Elven light");
+                scan.nextLine();
+                System.out.print("2. Another is covered in shimmering Humanas glyphs");
+                scan.nextLine();
+                System.out.print("3. A straight path unmarred by shadows");
+                scan.nextLine();
+
+                System.out.println();
                 System.out.print("\nWhich path would you choose? [1][2][3]: ");
                 input = scan.nextLine();
                 if (input.equalsIgnoreCase("s") || input.equalsIgnoreCase("skip")) {

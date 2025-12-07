@@ -8,9 +8,13 @@ import EchoesOfTheOath.Characters.Character;
 import EchoesOfTheOath.Nation1.*;
 import EchoesOfTheOath.Nation2.*;
 import EchoesOfTheOath.Nation3.*;
+import EchoesOfTheOath.Resources.MusicPlayer;
 
 public class OOP_Project {
     public static void main(String[] args) throws InterruptedException {
+        MusicPlayer bgm = new MusicPlayer();
+        bgm.playMusic("background2.wav");
+
         Scanner scan = new Scanner(System.in);
 
         Character chosen = Intro.main(args);
@@ -52,7 +56,7 @@ public class OOP_Project {
         MiniQuest3 miniQuest3 = new MiniQuest3();
         MainQuest3 mainQuest3 = new MainQuest3();
         Ending ending = new Ending();
-        miniQuest3.BrokenOathTrial(chosen);// Nation 3 Mini Quest
+        miniQuest3.theLastBastion(chosen);// Nation 3 Mini Quest
 
         Sarukdal sarukdal = new Sarukdal();// Nation 3 Mini Boss
         BattleLogic.battleLogic(chosen, sarukdal);

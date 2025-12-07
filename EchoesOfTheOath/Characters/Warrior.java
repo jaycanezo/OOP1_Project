@@ -1,9 +1,10 @@
 package EchoesOfTheOath.Characters;
-
+import EchoesOfTheOath.Resources.MusicPlayer;
 
 public class Warrior extends Character{
     private boolean[] isUsed = new boolean[3];
-
+    MusicPlayer bgm = new MusicPlayer();
+        
     public Warrior(){
         super("Warrior", 1500, 1);
     }
@@ -23,18 +24,21 @@ public class Warrior extends Character{
         int dmg = 0;
         switch (skillNumber) {
             case 1:
+                bgm.playSFX("Slash.wav");
                 dmg = (random.nextInt(45 - 15 + 1) + 15 + 15) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Slash" + RESET + "!");
                 System.out.println("You swing your sword in a swift slash toward your enemy, dealing damage.");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
+                bgm.playSFX("crimsonStrike.wav");
                 dmg = (random.nextInt(90 - 65 + 1) + 65 + 10) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Crimson Strike" + RESET + "!");
                 System.out.println("You perform a heavy, sweeping strike, landing a fierce blow on your enemy.");
                 setSkillCooldown(2, 2);//1-turn cooldown
                 break;
             case 3:
+                bgm.playSFX("bladeQuake.wav");
                 dmg = (random.nextInt(255 - 135 + 1) + 135 + 40) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Blade Quake" + RESET + "!");
                 System.out.println("You unleash devastating strength in a massive ground-splitting attack on your enemy.");

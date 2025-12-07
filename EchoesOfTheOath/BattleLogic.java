@@ -16,10 +16,8 @@ public class BattleLogic {
         final String PURPLE = "\033[35m"; // special skill / potion
 
         System.out.println();
-        System.out.println(boss.getTitle());
-        System.out.println();
 
-        System.out.println("You are now fighting " + RED + boss.getName() + RESET + "!");
+        System.out.println("You are now fighting " + RED + boss.getName() + RESET + "! ||"+boss.getTitle());
         scan.nextLine();
 
         System.out.println(RED + boss.getName() + RESET);

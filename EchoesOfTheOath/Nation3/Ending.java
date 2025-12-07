@@ -35,12 +35,13 @@ public class Ending {
 
         System.out.println("Narration: \"He's... quiet. The void is still there... but it's balanced. By me.\"");
         scan.nextLine();
-        System.out.print(":\"My friends are gone. Their memories... are safe. Inside me.\"");
+        System.out.print("\"My friends are gone. Their memories... are safe. Inside me.\"");
         scan.nextLine();
         System.out.print("\"My journey to remember is over.\"");
         scan.nextLine();
         System.out.println("\"My journey as the Guardian of the Restored Oath... has just begun.\"");
-
+        scan.nextLine();
+        
         System.out.print("\033[H\033[2J"); // clear screen
         System.out.flush();
     }

@@ -100,7 +100,7 @@ public class Intro {
         for (char c : text.toCharArray()) {
             System.out.print(c);
             System.out.flush();
-            Thread.sleep(1);
+            Thread.sleep(100);
         }
 
         scan.nextLine();
