@@ -42,7 +42,7 @@ public class Warrior extends Character{
                 dmg = (random.nextInt(255 - 135 + 1) + 135 + 40) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Blade Quake" + RESET + "!");
                 System.out.println("You unleash devastating strength in a massive ground-splitting attack on your enemy.");
-                setSkillCooldown(3, 3);//2-turn cooldown
+                setSkillCooldown(3, 4);//3-turn cooldown
                 break;
         }
         enemy.takeDamage(dmg);
@@ -103,7 +103,7 @@ public class Warrior extends Character{
 
     @Override
     public void displaySkills() {
-        System.out.println("\n--- " + getName() + "'s Skills ---");
+        System.out.println("--- " + getName() + "'s Skills ---");
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);

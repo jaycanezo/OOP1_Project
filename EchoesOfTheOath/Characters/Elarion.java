@@ -1,6 +1,9 @@
 package EchoesOfTheOath.Characters;
+import EchoesOfTheOath.Resources.MusicPlayer;
 
 public class Elarion extends Character{
+    MusicPlayer bgm = new MusicPlayer();
+
     public Elarion(){
         super("Elarion"," DEMON REALM < NATION 3 > - MAIN BOSS", 1400, 12);
     }
@@ -18,17 +21,20 @@ public class Elarion extends Character{
 
         switch (skillNumber) {
             case 1:
+                bgm.playSFX("ELARION -- Echo Rend.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: Echo Rend" + RESET + "!");
                 System.out.println("Elarion unleashes a wave of distorted echoes.\n");
                 break;
             case 2:
+                bgm.playSFX("ELARION --Memory Shatter.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Memory Shatter" + RESET + "!");
                 System.out.println("Elarion summons glowing memory shards from you and crushes them into a protective shield, forcing you to endure the impact.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
+                bgm.playSFX("ELARION -- The Final Vow.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: The Final Vow" + RESET + "!");
                 System.out.println("A pillar of fate descends from above, engulfing you in blinding light and overwhelming your senses.");

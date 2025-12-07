@@ -1,8 +1,6 @@
 package EchoesOfTheOath.Resources;
 
 import javax.sound.sampled.*;
-
-import java.io.File;
 import java.net.URL;
 
 public class MusicPlayer {
@@ -49,4 +47,11 @@ public class MusicPlayer {
         }
     }
 
+    public void stopMusic() {
+        if (clip != null) {
+            clip.stop();
+            clip.close();  // frees system resources
+            clip = null;
+        }
+    }
 }

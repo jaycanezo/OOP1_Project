@@ -395,7 +395,7 @@ public class MiniQuest1 {
             }
 
             if (turns == 0) {
-                System.out.println("You failed the passcode challenge. Restarting game...");
+                System.out.println("You failed the passcode challenge. Restarting from the beginning...");
                 scan.nextLine();
                 return false;
             }

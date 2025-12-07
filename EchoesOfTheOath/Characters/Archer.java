@@ -1,8 +1,8 @@
 package EchoesOfTheOath.Characters;
-
+import EchoesOfTheOath.Resources.MusicPlayer;
 public class Archer extends Character{
     private boolean[] isUsed = new boolean[3];
-
+    MusicPlayer bgm = new MusicPlayer();
 
     public Archer(){
         super("Archer", 1300, 1);
@@ -23,22 +23,25 @@ public class Archer extends Character{
         int dmg=0;
         switch (skillNumber){
             case 1:
+                bgm.playSFX("Archer-Piercingshot.wav");
                 dmg = (random.nextInt(45 - 15 + 1) + 15 + 25) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Piercing Shot" + RESET + "!");
                 System.out.println("You shoot a swift arrow at your foe.");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
+                bgm.playSFX("Archer-VolleyofNature.wav");
                 dmg = (random.nextInt(95 - 70 + 1) + 70 + 20) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Volley of Nature" + RESET + "!");
                 System.out.println("You fire multiple arrows, raining them down on your enemy.");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
+                bgm.playSFX("Archer-Nature'swrath.wav");
                 dmg = (random.nextInt(230 - 105 + 1) + 105 + 80) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Nature's Wrath" + RESET + "!");
                 System.out.println("You unleash four guiding arrows, striking your enemy with precision.");
-                setSkillCooldown(3, 3);
+                setSkillCooldown(3, 4);
                 break;
         }
         enemy.takeDamage(dmg);
@@ -100,7 +103,7 @@ public class Archer extends Character{
 
     @Override
     public void displaySkills() {
-        System.out.println("\n--- " + getName() + "'s Skills ---");
+        System.out.println("--- " + getName() + "'s Skills ---");
         System.out.println();
 
         for (int i = 1; i <= 3; i++) {

@@ -1,8 +1,9 @@
 package EchoesOfTheOath.Characters;
+import EchoesOfTheOath.Resources.MusicPlayer;
 
 public class Mage extends Character{
     private boolean[] isUsed = new boolean[3];
-
+    MusicPlayer bgm = new MusicPlayer();
 
     public Mage() {
         super("Mage", 1500, 1);
@@ -23,22 +24,25 @@ public class Mage extends Character{
         int dmg=0;
         switch (skillNumber){
             case 1:
+                bgm.playSFX("Mage - Fire ball1.wav");
                 dmg = (random.nextInt(550 - 530 + 1) + 530 + 1000) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Fireball" + RESET + "!");
                 System.out.println("You hurl a blazing fireball at your enemy, dealing damage.");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
+                bgm.playSFX("Mage - Heatfire Surge.wav");
                 dmg = (random.nextInt(800 - 765 + 1) + 765 + 765) * getLevel();
-                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Heat Surge" + RESET + "!");
+                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Heatfire Surge" + RESET + "!");
                 System.out.println("You unleash a surge of intense flames, striking your enemy with great force.");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
+                bgm.playSFX("Mage-Astral Cataclysm.wav");
                 dmg = 1580 * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Astral Cataclysm" + RESET + "!");
                 System.out.println("You summon a massive fiery rock, obliterating everything in the area around your enemy.");
-                setSkillCooldown(3, 3);
+                setSkillCooldown(3, 4);
                 break;
         }
         enemy.takeDamage(dmg);
@@ -70,7 +74,7 @@ public class Mage extends Character{
         switch(skillNumber) {
             case 1: return "Fire Ball";
             case 2: return "Heatfire Surge";
-            case 3: return "Astral";
+            case 3: return "Astral Cataclysm";
             default: return "Unknown Skill";
         }
     }
@@ -102,7 +106,7 @@ public class Mage extends Character{
 
     @Override
     public void displaySkills() {
-        System.out.println("\n--- " + getName() + "'s Skills ---");
+        System.out.println("--- " + getName() + "'s Skills ---");
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
