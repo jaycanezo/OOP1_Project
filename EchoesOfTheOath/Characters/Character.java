@@ -7,6 +7,7 @@ abstract public class Character {
     private String name;
     private String title;
     private int hp;
+    private int baseHp;
     private int maxHp;
     private int level;
     private int potionCount=0;
@@ -21,22 +22,24 @@ abstract public class Character {
 
 
     public Character(String name, int hp, int level) {
-        this.name=name;
-        this.hp=hp*level;//====================================================
-        this.maxHp=hp;
-        this.level=level;
+        this.name = name;
+        this.baseHp = hp;          
+        this.level = level;
+        this.maxHp = baseHp * level;
+        this.hp = maxHp;          
         this.skillCooldowns = new int[3];
     }
-    
 
     public Character(String name, String title, int hp, int level) {
-        this.name=name;
-        this.title=title;
-        this.hp=hp*level;//====================================================
-        this.maxHp=hp;
-        this.level=level;
+        this.name = name;
+        this.title = title;
+        this.baseHp = hp;        
+        this.level = level;
+        this.maxHp = baseHp * level;
+        this.hp = maxHp;
         this.skillCooldowns = new int[3];
     }
+
 
 
     public int getHp() {
@@ -45,7 +48,7 @@ abstract public class Character {
 
 
     public int getMaxHp() {
-        return this.maxHp*level;
+        return this.maxHp;
     }
 
 
@@ -69,13 +72,11 @@ abstract public class Character {
     }
 
 
-    public void setLevel(int level){
-        this.level=level;
-        this.hp = maxHp * level;
+    public void setLevel(int level) {
+        this.level = level;
+        this.maxHp = baseHp * level;
+        this.hp = maxHp; 
     }
-
-
-    public abstract void useSkill(int skillNumber, Character enemy);
 
 
     public String getName(){
@@ -92,25 +93,28 @@ abstract public class Character {
     }
 
 
+    public abstract void useSkill(int skillNumber, Character enemy);
+
+
     public void takeDamage(int dmg){
         if (dmg > 0) {
             hp -= dmg;
             if (hp < 0) hp = 0; // prevent negative HP
         }
         
-        System.out.println(getName() +  " takes " + RED + dmg + " damage!" + RESET);
-        System.out.println(getName() + " has " + GREEN + getHp() + " HP remaining!" + RESET);
+        System.out.println(name +  " takes " + RED + dmg + " damage!" + RESET);
+        System.out.println(name + " has " + GREEN + hp + " HP remaining!" + RESET);
     }
 
 
     public void usePotion() {
         if(potionCount>0){
-            int missingHp = getMaxHp() - getHp();
+            int missingHp = maxHp - hp;
             int healed = (int)(missingHp * 0.30);
-            setHp(Math.min(getHp() + healed, getMaxHp()));
-            System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "HP Potion" + RESET + "! Restores " + GREEN + healed + " HP" + RESET + "!");
+            setHp(Math.min(hp + healed, maxHp));
+            System.out.println(BLUE + name + RESET + " uses " + PURPLE + "HP Potion" + RESET + "! Restores " + GREEN + healed + " HP" + RESET + "!");
             potionCount--;
-            System.out.println(BLUE + getName() + RESET + " has " + GREEN + getHp() + " HP remaining!" + RESET);
+            System.out.println(BLUE + name + RESET + " has " + GREEN + hp + " HP remaining!" + RESET);
             System.out.println(YELLOW + "Potions left: " + potionCount + RESET);
         } else {
             System.out.println(RED + "No potions left!" + RESET);
@@ -153,8 +157,9 @@ abstract public class Character {
         }
     }
 
+
     public void displaySkills() {
-        System.out.println(getName() + " has no skills to display.");
+        System.out.println(name + " has no skills to display.");
     }
 
 }
