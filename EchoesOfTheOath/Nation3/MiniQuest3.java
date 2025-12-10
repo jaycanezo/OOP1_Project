@@ -233,7 +233,7 @@ public class MiniQuest3 {
                     "WHAT WAS SARUKDAL'S TRUE ROLE?",
                     "To destroy the enemy",
                     "To endure what the others could not",
-                    "To replace the hero",
+                    "To replace you",
                     "B",
                     tries)) {
                 tries--;
@@ -247,8 +247,8 @@ public class MiniQuest3 {
             if (!round("FINAL ROUND: The Forbidden Question",
                     "WHAT BROKE THE OATH?",
                     "Elarion's power",
-                    "The hero's lost memory",
-                    "The hero's choice to forget",
+                    "Your lost memory",
+                    "Your choice to forget",
                     "C",
                     tries)) {
                 tries--;
@@ -266,12 +266,6 @@ public class MiniQuest3 {
             chosen.setLevel(chosen.getLevel() + 1);
             System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
             scan.nextLine();
-            System.out.println("Current Level: " + chosen.getLevel());
-            System.out.println("Current Potions: " + chosen.getPotionCount());
-            scan.nextLine();
-            System.out.println("You may now proceed on your journey.");
-            scan.nextLine();
-
             restart = false;
         }
     }
@@ -395,13 +389,24 @@ public class MiniQuest3 {
         System.out.println("You have forgotten too much.");
         System.out.println("Restarting point: Entrance to the Hall of Broken Oaths\n");
 
-        System.out.println("[1] Restart Trial");
-        System.out.println("[2] Exit Trial, Continue the Journey");
-        System.out.print("Choose: ");
+        while (true) {
+            try {
+                System.out.println("[1] Restart Trial");
+                System.out.println("[2] Exit Trial, Continue the Journey");
+                System.out.print("Choose: ");
 
-        int choice = scan.nextInt();
-        scan.nextLine(); // fix newline
+                int choice = scan.nextInt();
+                scan.nextLine(); 
 
-        return (choice == 1);
+                if (choice == 1 || choice == 2) {
+                    return (choice == 1);
+                } else {
+                    System.out.println("Invalid choice. Press 1 or 2 only.");
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid choice. Press 1 or 2 only.");
+                scan.nextLine(); 
+            }
+        }
     }
 }

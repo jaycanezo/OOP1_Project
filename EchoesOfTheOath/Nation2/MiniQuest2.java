@@ -117,13 +117,18 @@ public class MiniQuest2 {
                             "Correct! The stone slab dissolves into motes of light." +
                             ANSI_RESET);
                     scanner.nextLine();
+
                     chosen.setLevel(chosen.getLevel() + 1);
                     chosen.setPotionCount(chosen.getPotionCount() + 3);
 
-                    System.out.println("Reward: 3 health potions added to your inventory.");
-                    scanner.nextLine();
-                    System.out.println(name + " leveled up to level " + chosen.getLevel() + "!");
-                    System.out.println("Current Potions: " + chosen.getPotionCount());
+                    System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!\n");
+
+                    System.out.println("Reward: 3 health potions added to your inventory.\n");
+
+                    System.out.println("Current Level: " + chosen.getLevel());
+                    System.out.println("Current Potions: " + chosen.getPotionCount() + "\n");
+
+                    System.out.println("You may now proceed on your journey.");
                     scanner.nextLine();
                     break;
                 } else {

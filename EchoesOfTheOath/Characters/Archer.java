@@ -63,9 +63,6 @@ public class Archer extends Character{
     @Override 
     public void takeDamage(int dmg){
         super.takeDamage(dmg);
-
-        System.out.println(BLUE + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);
-        System.out.println(BLUE + getName() + RESET + " has " + GREEN + getHp() + " HP remaining!" + RESET);
     }
 
     public String getSkillName(int skillNumber) {
@@ -103,7 +100,7 @@ public class Archer extends Character{
 
     @Override
     public void displaySkills() {
-        System.out.println("--- " + getName() + "'s Skills ---");
+        System.out.println(BLUE + "------------------ " + getName() + "'s Skills ------------------" + RESET);
         System.out.println();
 
         for (int i = 1; i <= 3; i++) {

@@ -97,6 +97,9 @@ abstract public class Character {
             hp -= dmg;
             if (hp < 0) hp = 0; // prevent negative HP
         }
+        
+        System.out.println(getName() +  " takes " + RED + dmg + " damage!" + RESET);
+        System.out.println(getName() + " has " + GREEN + getHp() + " HP remaining!" + RESET);
     }
 
 

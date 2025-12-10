@@ -364,8 +364,8 @@ public class MainQuest2 {
         scan.nextLine();
         System.out.println("Quest Summary: You returned the Tear, confronted illusions, regain your memories, and reached Lunareth.");
         scan.nextLine();
-        chosen.setPotionCount(chosen.getPotionCount() + 3);
-        System.out.println("Reward: 3 health potions added to your inventory.");
+        System.out.println("Current Level: " + chosen.getLevel());
+        System.out.println("Current Potions: " + chosen.getPotionCount());
         scan.nextLine();
         System.out.println("You may now proceed on your journey.");
         clearScreen();
@@ -442,9 +442,6 @@ public class MainQuest2 {
             scan.nextLine();
             chosen.setPotionCount(chosen.getPotionCount() + 5);
             System.out.println("Reward: 5 health potions added to your inventory.");
-            scan.nextLine();
-            System.out.println("Current Level: " + chosen.getLevel());
-            System.out.println("Current Potions: " + chosen.getPotionCount());
             scan.nextLine();
         }
     }

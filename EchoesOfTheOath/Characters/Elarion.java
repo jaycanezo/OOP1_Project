@@ -49,9 +49,6 @@ public class Elarion extends Character{
     @Override 
     public void takeDamage(int dmg){
         super.takeDamage(dmg);
-
-        System.out.println(RED + getName() + RESET + " takes " + RED + dmg + " damage!" + RESET);
-        System.out.println(RED + getName() + RESET + " has " + GREEN + getHp() + " HP remaining!" + RESET);
     }
    
 }
