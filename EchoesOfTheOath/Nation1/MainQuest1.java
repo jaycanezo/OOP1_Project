@@ -67,7 +67,7 @@ public class MainQuest1 {
 
         System.out.println("Quest Started: The Veins of Humanas");
         System.out.println("Objective: Destroy the corrupt power network beneath the city.");
-        System.out.println("Skip function is disbled for this quest.");
+        System.out.println("Skip function is disabled for this quest.");
         scan.nextLine();
 
         // ============================

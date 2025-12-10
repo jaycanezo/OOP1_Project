@@ -261,7 +261,7 @@ public class Intro {
                 scan.nextLine();
 
                 if (choice < 1 || choice > 3) {
-                    System.out.println("\nPlease enter [1] for Warriorr, [2] for Archer or [3] for Mage only.");
+                    System.out.println("\nPlease enter [1] for Warrior, [2] for Archer or [3] for Mage only.");
                     continue;
                 }
             } catch (Exception e) {

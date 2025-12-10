@@ -35,14 +35,14 @@ public class Warrior extends Character{
                 dmg = (random.nextInt(90 - 65 + 1) + 65 + 10) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Crimson Strike" + RESET + "!");
                 System.out.println("You perform a heavy, sweeping strike, landing a fierce blow on your enemy.");
-                setSkillCooldown(2, 2);//1-turn cooldown
+                setSkillCooldown(2, 3);
                 break;
             case 3:
                 bgm.playSFX("bladeQuake.wav");
                 dmg = (random.nextInt(255 - 135 + 1) + 135 + 40) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Blade Quake" + RESET + "!");
                 System.out.println("You unleash devastating strength in a massive ground-splitting attack on your enemy.");
-                setSkillCooldown(3, 4);//3-turn cooldown
+                setSkillCooldown(3, 5);
                 break;
         }
         enemy.takeDamage(dmg);

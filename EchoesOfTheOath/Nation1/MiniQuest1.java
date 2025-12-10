@@ -386,6 +386,7 @@ public class MiniQuest1 {
                 scan.nextLine();
 
                 System.out.println("You may now proceed on your journey.");
+                scan.nextLine();
                 return true;
             } else {
                 System.out.println("Passcode Incorrect, Try again!");

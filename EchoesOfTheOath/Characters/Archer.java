@@ -34,14 +34,14 @@ public class Archer extends Character{
                 dmg = (random.nextInt(95 - 70 + 1) + 70 + 20) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Volley of Nature" + RESET + "!");
                 System.out.println("You fire multiple arrows, raining them down on your enemy.");
-                setSkillCooldown(2, 2);
+                setSkillCooldown(2, 3);
                 break;
             case 3:
                 bgm.playSFX("Archer-Nature'swrath.wav");
                 dmg = (random.nextInt(230 - 105 + 1) + 105 + 80) * getLevel();
                 System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Nature's Wrath" + RESET + "!");
                 System.out.println("You unleash four guiding arrows, striking your enemy with precision.");
-                setSkillCooldown(3, 4);
+                setSkillCooldown(3, 5);
                 break;
         }
         enemy.takeDamage(dmg);
