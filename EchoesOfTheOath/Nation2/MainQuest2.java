@@ -140,7 +140,7 @@ public class MainQuest2 {
 
         System.out.println("Healer:");
         System.out.println("\"Be warned -- the closer you get, the louder the Oath will whisper.\"");
-        System.out.println("\"It remembers you... even if he does not.\"");
+        System.out.println("\"It remembers you... even if you do not.\"");
         if (waitOrSkip())
             return;
 
