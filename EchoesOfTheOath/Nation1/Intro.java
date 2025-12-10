@@ -238,12 +238,12 @@ public class Intro {
     }
 
     private static void storyCutscene(Scanner scan) {
-        System.out.println("Archer: Oh no the Demon is preparing to launch an attack!");
+        System.out.println("Archer: Oh no Elarion is preparing to launch an attack!");
         scan.nextLine();
         System.out.println("Warrior: Lets use our power together");
         scan.nextLine();
         System.out.println(
-                "The heroes then leaped forward the Demon combining their strengths in hopes of defeating the enemy.");
+                "The heroes then leaped forward towards Elarion combining their strengths in hopes of defeating the enemy.");
         scan.nextLine();
     }
 
@@ -306,13 +306,13 @@ public class Intro {
     }
 
     private static void finalDemonScene(Scanner scan, Character chosen) {
-        System.out.println("Demon: You will not defeat me you weaklings! HaHAhaHA");
+        System.out.println("Elarion: You will not defeat me you weaklings! HaHAhaHA");
         scan.nextLine();
-        System.out.println("The Demon uses its Ultimate: \"The Final Vow\"");
+        System.out.println("Elarion uses its Ultimate: \"The Final Vow\"");
         System.out.println();
-        System.out.println("Demon: Your destiny cannot escape the Darkness.");
+        System.out.println("Elarion: Your destiny cannot escape the Darkness.");
         scan.nextLine();
-        System.out.println("The Demon calls down a pillar of fate that engulfs the heroes in Darkness.");
+        System.out.println("Elarion calls down a pillar of fate that engulfs the heroes in Darkness.");
         scan.nextLine();
         System.out.println(chosen.getName() + ": Noooo! I won't let this be the end of us!");
         scan.nextLine();
