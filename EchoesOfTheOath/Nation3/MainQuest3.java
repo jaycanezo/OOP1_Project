@@ -16,170 +16,143 @@ public class MainQuest3 {
         boolean isSuccess = false;
         String input = "";
 
-        while (true) {
-            System.out.println("You land the final blow. Sarukdal falls to one knee.");
-            scan.nextLine();
-            
-            System.out.println("The dark energy cracks and shatters from his armor.");
-            scan.nextLine();
-            System.out.println("The shadow recedes from his eyes, revealing the true guardian beneath.");
-            scan.nextLine();
-            System.out.println("Sarukdal (voice, now quiet and clear, though weak):");
-            System.out.println("\"" + chosen.getName() + "...? You... you came back. You... broke through.\"");
-            scan.nextLine();
-            System.out.println(chosen.getName() + " ( kneeling): ");
-            System.out.println("\"I'm sorry, Sarukdal. I'm so sorry. I failed you.\"");
-            scan.nextLine();
-            System.out.println("Sarukdal (a small, sad smile):");
-            System.out.println("\"No...I failed you. I let the despair...let him...twist my duty. I couldn't hold...\"");
-            scan.nextLine();
-            System.out.println(chosen.getName() + " : ");
-            System.out.println("\"Where is he? Elarion.\"");
-            scan.nextLine();
-            System.out.println("Sarukdal (points upward):");
-            System.out.print("\"The throne...where we swore the Oath. He is...unmaking it.\"");
-            scan.nextLine();
-            System.out.print("\"He's using our own power against the world.\"");
-            scan.nextLine();
-            System.out.println("\"You... must... restore... the... Oath...\"");
-            scan.nextLine();
-            System.out.println("(Sarukdal dissolves into motes of dark and light.)");
-            scan.nextLine();
-            System.out.println("His greatshield clatters to the ground, now cleansed of corruption.");
-            scan.nextLine();
-            System.out.println("Your final memory is restored.");
-            scan.nextLine();
-            System.out.println("\"I remember everything. The sealing. The fall. The reason.\"");
-            scan.nextLine();
-            System.out.println("\"Elarion isn't just a being. He's the shadow we cast.\"");
-            scan.nextLine();
-            System.out.println("\"And I'm the only one left to cast it.\"");
-            scan.nextLine();
-            System.out.println("(The chamber behind Sarukdal opens, revealing a spiraling staircase of fractured light, ascending into pure darkness.)");
-            scan.nextLine();
-            System.out.println("\"The Forgotten Throne. Where we bound him.\"");
-            scan.nextLine();
-            System.out.println("\"Sarukdal said he's 'unmaking' the Oath. I can feel it. The world's energy is draining... siphoning... right to the room above me.\"");
-            scan.nextLine();
-            System.out.print("\"This ends now.\"");
-            scan.nextLine();
-            break;
-        }
-        for (int i = 3; i > 0; i--) {
-            while (true) {
-                System.out.println(YELLOW+"\nMain Quest Started: \"The Unbound Throne\""+RESET);
-                System.out.println("Lives: " + i);
-                System.out.println("Objective: Ascend the labyrinth and confront Elarion in the Forgotten Throne room.");
-                System.out.println(RED+"Final Quest: Skip Function Disabled"+RESET);
-                scan.nextLine();
-                System.out.println("(You are in a void, a maze of floating platforms and broken architecture from Humanas and the Elven lands)");
-                scan.nextLine();
-                System.out.println("(Elarion's voice echoes from everywhere and nowhere.)");
-                scan.nextLine();
-                break;
-            }
-            while (true) {
-                System.out.print("A chasm opens before you, bridged by three unstable platforms.");
-                scan.nextLine();
-                System.out.print("1. One path is bathed in a fading Elven light");
-                scan.nextLine();
-                System.out.print("2. Another is covered in shimmering Humanas glyphs");
-                scan.nextLine();
-                System.out.print("3. A straight path unmarred by shadows");
-                scan.nextLine();
+        System.out.println("You land the final blow. Sarukdal falls to one knee.");
+        scan.nextLine();
+        System.out.println("The dark energy cracks and shatters from his armor.");
+        scan.nextLine();
+        System.out.println("The shadow recedes from his eyes, revealing the true guardian beneath.");
+        scan.nextLine();
+        System.out.println("Sarukdal (voice, now quiet and clear, though weak):");
+        System.out.println("\"" + chosen.getName() + "...? You... you came back. You... broke through.\"");
+        scan.nextLine();
+        System.out.println(chosen.getName() + " ( kneeling): ");
+        System.out.println("\"I'm sorry, Sarukdal. I'm so sorry. I failed you.\"");
+        scan.nextLine();
+        System.out.println("Sarukdal (a small, sad smile):");
+        System.out.println("\"No...I failed you. I let the despair...let him...twist my duty. I couldn't hold...\"");
+        scan.nextLine();
+        System.out.println(chosen.getName() + " : ");
+        System.out.println("\"Where is he? Elarion.\"");
+        scan.nextLine();
+        System.out.println("Sarukdal (points upward):");
+        System.out.print("\"The throne...where we swore the Oath. He is...unmaking it.\"");
+        scan.nextLine();
+        System.out.print("\"He's using our own power against the world.\"");
+        scan.nextLine();
+        System.out.println("\"You... must... restore... the... Oath...\"");
+        scan.nextLine();
+        System.out.println("(Sarukdal dissolves into motes of dark and light.)");
+        scan.nextLine();
+        System.out.println("His greatshield clatters to the ground, now cleansed of corruption.");
+        scan.nextLine();
+        System.out.println("Your final memory is restored.");
+        scan.nextLine();
+        System.out.println("\"I remember everything. The sealing. The fall. The reason.\"");
+        scan.nextLine();
+        System.out.println("\"Elarion isn't just a being. He's the shadow we cast.\"");
+        scan.nextLine();
+        System.out.println("\"And I'm the only one left to cast it.\"");
+        scan.nextLine();
+        System.out.println("(The chamber behind Sarukdal opens, revealing a spiraling staircase of fractured light, ascending into pure darkness.)");
+        scan.nextLine();
+        System.out.println("\"The Forgotten Throne. Where we bound him.\"");
+        scan.nextLine();
+        System.out.println("\"Sarukdal said he's 'unmaking' the Oath. I can feel it. The world's energy is draining... siphoning... right to the room above me.\"");
+        scan.nextLine();
+        System.out.print("\"This ends now.\"");
+        scan.nextLine();
 
-                System.out.println();
-                System.out.print("\nWhich path would you choose? [1][2][3]: ");
-                input = scan.nextLine();
-                if (input.equalsIgnoreCase("s") || input.equalsIgnoreCase("skip")) {
-                    System.out.println("\nCannot skip during a critical path choice.\n");
-                } else if (input.equalsIgnoreCase("1") || input.equalsIgnoreCase("one")) {
-                    System.out.println("\nThe path crumbles. You died.");
-                    if(i>1){
-                        System.out.println(RED + "Restarting the quest..." + RESET);
-                    }
-                    isSuccess = false;
-                    break;
-                } else if (input.equalsIgnoreCase("2") || input.equalsIgnoreCase("two")) {
-                    System.out.println("\nElarion (Voice, calm, amused): ");
-                    System.out.println("\"My favorite guardian. The key to my prison. You came all this way... just to see what you've wrought.\"");
-                    isSuccess = true;
-                    break;
-                } else if (input.equalsIgnoreCase("3") || input.equalsIgnoreCase("three")) {
-                    System.out.println("\nThe path disconnects from the ledge the moment step in. It wasn't broken; it was never attached.");
-                    System.out.println("In this place, safety is the greatest lie.");
-                    if(i>1){
-                        System.out.println(RED + "Restarting the quest..." + RESET);
-                    }
-                    isSuccess = false;
-                    break;
-                } else {
-                    System.out.println("\nUnsure of your footing, you hesitate, and the chasm's instability pulls you down. You died.");
-                    if(i>1){
-                        System.out.println(RED + "Restarting the quest..." + RESET);
-                    }
-                    isSuccess = false;
-                    break;
-                }
-            }
-            if (!isSuccess)
-                continue;
+        for (int i = 3; i > 0; i--) {
+            System.out.println(YELLOW+"\nMain Quest Started: \"The Unbound Throne\""+RESET);
+            System.out.println("Lives: " + i);
+            System.out.println("Objective: Ascend the labyrinth and confront Elarion in the Forgotten Throne room.");
+            System.out.println(RED+"Final Quest: Skip Function Disabled"+RESET);
+            scan.nextLine();
+            System.out.println("(You are in a void, a maze of floating platforms and broken architecture from Humanas and the Elven lands)");
+            scan.nextLine();
+            System.out.println("(Elarion's voice echoes from everywhere and nowhere.)");
+            scan.nextLine();
+            System.out.print("A chasm opens before you, bridged by three unstable platforms.");
+            scan.nextLine();
+            System.out.print("1. One path is bathed in a fading Elven light");
+            scan.nextLine();
+            System.out.print("2. Another is covered in shimmering Humanas glyphs");
+            scan.nextLine();
+            System.out.print("3. A straight path unmarred by shadows");
+            scan.nextLine();
+            System.out.print("\nWhich path would you choose? [1][2][3]: ");
             input = scan.nextLine();
-            while (true) {
-                System.out.println("(As you navigate, you are attacked by shadow phantoms of the townsfolk from the civil war.)");
-                scan.nextLine();
-                System.out.println("Phantom Elf:");
-                System.out.println("\"You let us die!\" ");
-                scan.nextLine();
-                System.out.println("Phantom Human:");
-                System.out.println("\"You abandoned us!\"");
-                scan.nextLine();
-                break;
+            if (input.equalsIgnoreCase("1") || input.equalsIgnoreCase("one")) {
+                System.out.println("\nThe path crumbles. You died.");
+                if(i>1){
+                    System.out.println(RED + "Restarting the quest..." + RESET);
                 }
-            while (true) {
-                System.out.print("Do you feel guilt? [y/n]: ");
-                input = scan.nextLine();
-                if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("yes")) {
-                    System.out.println("\n\"He's using my own memories against me. The people I couldn't save.\"");
-                    scan.nextLine();
-                    System.out.println("Your ascent fails. You cannot escape your past.");
-                    if(i>1){
-                        System.out.println(RED + "Restarting the quest..." + RESET);
-                    }
-                    isSuccess = false;
-                    break;
-                } else if (input.equalsIgnoreCase("n") || input.equalsIgnoreCase("no")) {
-                    System.out.print("\nThe echoes recoil in disbelief.");
-                    scan.nextLine();
-                    System.out.print("\n\"He's using my own memories against me. The people I couldn't save.\"");
-                    scan.nextLine();
-                    System.out.print("\"He's trying to break my will. Just like he broke the others.\"");
-                    scan.nextLine();
-                    System.out.println("\"But I'm not them. Not anymore.\"");
-                    isSuccess = true;
-                    break;
-                } else {
-                    System.out.println("\nYou hesitate, unable to formulate an answer.");
-                    scan.nextLine();
-                    System.out.println("Your ascent fails due to indecision.");
-                    if(i>1){
-                        System.out.println(RED + "Restarting the quest..." + RESET);
-                    }      
-                    isSuccess = false;
-                    break;
+                isSuccess = false;
+                continue;
+            } else if (input.equalsIgnoreCase("2") || input.equalsIgnoreCase("two")) {
+                System.out.println("\nElarion (Voice, calm, amused): ");
+                System.out.println("\"My favorite guardian. The key to my prison. You came all this way... just to see what you've wrought.\"");
+                isSuccess = true;
+            } else if (input.equalsIgnoreCase("3") || input.equalsIgnoreCase("three")) {
+                System.out.println("\nThe path disconnects from the ledge the moment step in. It wasn't broken; it was never attached.");
+                System.out.println("In this place, safety is the greatest lie.");
+                if(i>1){
+                    System.out.println(RED + "Restarting the quest..." + RESET);
                 }
+                isSuccess = false;
+                continue;
+            } else {
+                System.out.println("\nUnsure of your footing, you hesitate, and the chasm's instability pulls you down. You died.");
+                if(i>1){
+                    System.out.println(RED + "Restarting the quest..." + RESET);
+                }
+                isSuccess = false;
+                continue;
+            }
+            input = scan.nextLine();
+            System.out.println("(As you navigate, you are attacked by shadow phantoms of the townsfolk from the civil war.)");
+            scan.nextLine();
+            System.out.println("Phantom Elf:");
+            System.out.println("\"You let us die!\" ");
+            scan.nextLine();
+            System.out.println("Phantom Human:");
+            System.out.println("\"You abandoned us!\"");
+            scan.nextLine();
+            System.out.print("Do you feel guilt? [y/n]: ");
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("yes")) {
+                System.out.println("\n\"He's using my own memories against me. The people I couldn't save.\"");
+                scan.nextLine();
+                System.out.println("Your ascent fails. You cannot escape your past.");
+                if(i>1){
+                    System.out.println(RED + "Restarting the quest..." + RESET);
+                }
+                isSuccess = false;
+                continue;
+            } else if (input.equalsIgnoreCase("n") || input.equalsIgnoreCase("no")) {
+                System.out.print("\nThe echoes recoil in disbelief.");
+                scan.nextLine();
+                System.out.print("\n\"He's using my own memories against me. The people I couldn't save.\"");
+                scan.nextLine();
+                System.out.print("\"He's trying to break my will. Just like he broke the others.\"");
+                scan.nextLine();
+                System.out.println("\"But I'm not them. Not anymore.\"");
+                isSuccess = true;
+            } else {
+                System.out.println("\nYou hesitate, unable to formulate an answer.");
+                scan.nextLine();
+                System.out.println("Your ascent fails due to indecision.");
+                if(i>1){
+                    System.out.println(RED + "Restarting the quest..." + RESET);
+                }      
+                isSuccess = false;
+                continue;
             }
             scan.nextLine();
-            if (!isSuccess)
-                continue;
             System.out.println("(You reach the large, circular platform. A swirling portal of shadow blocks the path forward.)");
-            input = scan.nextLine();
-                if (input.equalsIgnoreCase("s") || input.equalsIgnoreCase("skip")) 
-                    System.out.println("\nCannot skip during a critical event.");
+            scan.nextLine();
             System.out.println("To pass, you must attune your will to the portal's chaotic energy and step through without being consumed.");
-            input = scan.nextLine();
-                if (input.equalsIgnoreCase("s") || input.equalsIgnoreCase("skip")) 
-                    System.out.println("\nCannot skip during a critical event.");
+            scan.nextLine();
             System.out.println("You focus your energy and attempt to stabilize the shift... Rolling for Synchronization" + YELLOW + " (Need 6 or higher)" + RESET + "..." );
             java.util.Random rand = new java.util.Random();
             int syncRoll = rand.nextInt(8) + 1;
@@ -225,7 +198,7 @@ public class MainQuest3 {
             break;
         }
         scan.nextLine();
-        System.out.println("You have finished the quest: \"The Unbound Throne\"!");
+        System.out.println(YELLOW + "You have finished the quest: \"The Unbound Throne\"!" + RESET);
         scan.nextLine();
         System.out.println("Quest Summary:");
         System.out.println("With Sarukdal's spirit finally at peace, the path to the pinnacle of the Umbral Fortress had opened.");
@@ -237,7 +210,7 @@ public class MainQuest3 {
             System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
             scan.nextLine();
         }else{
-            System.out.println("You did not level up.");
+            System.out.println(RED + "You did not level up." + RESET);
             scan.nextLine();
         }
         chosen.setPotionCount(chosen.getPotionCount() + 3);
@@ -246,7 +219,7 @@ public class MainQuest3 {
         System.out.println("Current Potions: " + chosen.getPotionCount());
         scan.nextLine();
         while (true) {
-            System.out.println("You may now proceed on your journey.");
+            System.out.println(GREEN + "You may now proceed on your journey." + RESET);
             input = scan.nextLine();
             if (input.equalsIgnoreCase("s") || input.equalsIgnoreCase("skip"))
                 break;
