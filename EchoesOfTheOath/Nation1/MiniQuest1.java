@@ -6,6 +6,13 @@ import java.util.*;
 public class MiniQuest1 {
     Scanner scan = new Scanner(System.in);
 
+    String RESET = "\033[0m";
+    String RED = "\033[31m";    
+    String YELLOW = "\033[33m";  
+    String BOLD = "\033[1m";
+    String BLUE = "\033[34m";
+    String GREEN = "\033[32m";
+
     public void quest1HumanasQuest(Character chosen) {
         String name = chosen.getName();
         boolean isSkipped = false;
@@ -54,13 +61,13 @@ public class MiniQuest1 {
         System.out.println("\"This must be Humanas...\" ");
         scan.nextLine();
 
-        System.out.println("------------------You Have Just Arrived at:-------------------");
-        System.out.println("████    ██   ██████   ██████   ██   ██████   ████    ██   ███");
+        System.out.println(YELLOW+"------------------You Have Just Arrived at:-------------------"+RESET);
+        System.out.println(BLUE+"████    ██   ██████   ██████   ██   ██████   ████    ██   ███");
         System.out.println("██ ██   ██   ██  ██     ██     ██   ██  ██   ██ ██   ██    ██");
         System.out.println("██  ██  ██   ██████     ██     ██   ██  ██   ██  ██  ██    ██");
         System.out.println("██   ██ ██   ██  ██     ██     ██   ██  ██   ██   ██ ██    ██");
-        System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████   ████");
-        System.out.println("----------------------Nation of Humanas-----------------------");
+        System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████   ████"+RESET);
+        System.out.println(YELLOW+"----------------------Nation of Humanas-----------------------"+RESET);
         scan.nextLine();
 
         System.out.println("\"Once proud, maybe. But now… it looks like it's just trying to survive.\" ");
@@ -143,23 +150,23 @@ public class MiniQuest1 {
             System.out.println("Quest Started: Echoes of a Broken Crown");
             System.out.println(
                     "Objective: Investigate the chapel, help the kid find his mom and uncover what's happening to the townsfolk.");
-            System.out.println("Press ['s'] to skip, and [Enter] to continue.");
+            System.out.println(YELLOW+"Press ['s'] to skip, and [Enter] to continue."+RESET);
             String input = scan.nextLine();
             if (input.equalsIgnoreCase("s")) {
                 System.out.println("");
                 System.out.println("Are you sure you would like to skip the Challenge?");
-                System.out.println("If yes, you will not level up [Y/N]: ");
+                System.out.println(YELLOW+"If yes, you will not level up [Y/N]: "+RESET);
 
                 String inputSureSkip = scan.nextLine();
                 while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
-                    System.out.println("Invalid input. Please enter Y or N:");
+                    System.out.println(RED+"Invalid input. Please enter Y or N:"+RESET);
                     inputSureSkip = scan.nextLine();
                 }
 
                 if (inputSureSkip.equalsIgnoreCase("Y")) {
                     System.out.println("\nYou have skipped the Challenge, you did not level up");
                     scan.nextLine();
-                    System.out.println("You may now proceed on your journey.");
+                    System.out.println(GREEN+"You may now proceed on your journey."+RESET);
                     scan.nextLine();
                     return true;
                 }
@@ -177,125 +184,125 @@ public class MiniQuest1 {
                 + " enters the outskirts of the ruined chapel -- torchlight flickers inside. Distant voices echo.)");
         input = scan.nextLine();
         if (input.equalsIgnoreCase("s")) {
-            System.out.println("");
-            System.out.println("Are you sure you would like to skip the Challenge?");
-            System.out.println("If yes, you will not level up [Y/N]: ");
+                System.out.println("");
+                System.out.println("Are you sure you would like to skip the Challenge?");
+                System.out.println(YELLOW+"If yes, you will not level up [Y/N]: "+RESET);
 
-            String inputSureSkip = scan.nextLine();
-            while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
-                System.out.println("Invalid input. Please enter Y or N:");
-                inputSureSkip = scan.nextLine();
+                String inputSureSkip = scan.nextLine();
+                while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
+                    System.out.println(RED+"Invalid input. Please enter Y or N:"+RESET);
+                    inputSureSkip = scan.nextLine();
+                }
+
+                if (inputSureSkip.equalsIgnoreCase("Y")) {
+                    System.out.println("\nYou have skipped the Challenge, you did not level up");
+                    scan.nextLine();
+                    System.out.println(GREEN+"You may now proceed on your journey."+RESET);
+                    scan.nextLine();
+                    return true;
+                }
+
+                System.out.println();
             }
-
-            if (inputSureSkip.equalsIgnoreCase("Y")) {
-                System.out.println("\nYou have skipped the Challenge, you did not level up");
-                scan.nextLine();
-                System.out.println("You may now proceed on your journey.");
-                scan.nextLine();
-                return true;
-            }
-
-            System.out.println();
-        }
 
         System.out.println("(" + name + " hides behind a broken pillar, listening)");
         input = scan.nextLine();
         if (input.equalsIgnoreCase("s")) {
-            System.out.println("");
-            System.out.println("Are you sure you would like to skip the Challenge?");
-            System.out.println("If yes, you will not level up [Y/N]: ");
+                System.out.println("");
+                System.out.println("Are you sure you would like to skip the Challenge?");
+                System.out.println(YELLOW+"If yes, you will not level up [Y/N]: "+RESET);
 
-            String inputSureSkip = scan.nextLine();
-            while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
-                System.out.println("Invalid input. Please enter Y or N:");
-                inputSureSkip = scan.nextLine();
+                String inputSureSkip = scan.nextLine();
+                while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
+                    System.out.println(RED+"Invalid input. Please enter Y or N:"+RESET);
+                    inputSureSkip = scan.nextLine();
+                }
+
+                if (inputSureSkip.equalsIgnoreCase("Y")) {
+                    System.out.println("\nYou have skipped the Challenge, you did not level up");
+                    scan.nextLine();
+                    System.out.println(GREEN+"You may now proceed on your journey."+RESET);
+                    scan.nextLine();
+                    return true;
+                }
+
+                System.out.println();
             }
-
-            if (inputSureSkip.equalsIgnoreCase("Y")) {
-                System.out.println("\nYou have skipped the Challenge, you did not level up");
-                scan.nextLine();
-                System.out.println("You may now proceed on your journey.");
-                scan.nextLine();
-                return true;
-            }
-
-            System.out.println();
-        }
 
         System.out.println("Guard 1:");
         System.out.println("Another one who couldn't pay, huh? Shame. Could've worked it off at the mines.");
         input = scan.nextLine();
         if (input.equalsIgnoreCase("s")) {
-            System.out.println("");
-            System.out.println("Are you sure you would like to skip the Challenge?");
-            System.out.println("If yes, you will not level up [Y/N]: ");
+                System.out.println("");
+                System.out.println("Are you sure you would like to skip the Challenge?");
+                System.out.println(YELLOW+"If yes, you will not level up [Y/N]: "+RESET);
 
-            String inputSureSkip = scan.nextLine();
-            while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
-                System.out.println("Invalid input. Please enter Y or N:");
-                inputSureSkip = scan.nextLine();
+                String inputSureSkip = scan.nextLine();
+                while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
+                    System.out.println(RED+"Invalid input. Please enter Y or N:"+RESET);
+                    inputSureSkip = scan.nextLine();
+                }
+
+                if (inputSureSkip.equalsIgnoreCase("Y")) {
+                    System.out.println("\nYou have skipped the Challenge, you did not level up");
+                    scan.nextLine();
+                    System.out.println(GREEN+"You may now proceed on your journey."+RESET);
+                    scan.nextLine();
+                    return true;
+                }
+
+                System.out.println();
             }
-
-            if (inputSureSkip.equalsIgnoreCase("Y")) {
-                System.out.println("\nYou have skipped the Challenge, you did not level up");
-                scan.nextLine();
-                System.out.println("You may now proceed on your journey.");
-                scan.nextLine();
-                return true;
-            }
-
-            System.out.println();
-        }
 
         System.out.println("Guard 2 (*snickers):");
         System.out.println("Mines are full anyway. The lord needs examples, not workers.");
         input = scan.nextLine();
         if (input.equalsIgnoreCase("s")) {
-            System.out.println("");
-            System.out.println("Are you sure you would like to skip the Challenge?");
-            System.out.println("If yes, you will not level up [Y/N]: ");
+                System.out.println("");
+                System.out.println("Are you sure you would like to skip the Challenge?");
+                System.out.println(YELLOW+"If yes, you will not level up [Y/N]: "+RESET);
 
-            String inputSureSkip = scan.nextLine();
-            while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
-                System.out.println("Invalid input. Please enter Y or N:");
-                inputSureSkip = scan.nextLine();
+                String inputSureSkip = scan.nextLine();
+                while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
+                    System.out.println(RED+"Invalid input. Please enter Y or N:"+RESET);
+                    inputSureSkip = scan.nextLine();
+                }
+
+                if (inputSureSkip.equalsIgnoreCase("Y")) {
+                    System.out.println("\nYou have skipped the Challenge, you did not level up");
+                    scan.nextLine();
+                    System.out.println(GREEN+"You may now proceed on your journey."+RESET);
+                    scan.nextLine();
+                    return true;
+                }
+
+                System.out.println();
             }
-
-            if (inputSureSkip.equalsIgnoreCase("Y")) {
-                System.out.println("\nYou have skipped the Challenge, you did not level up");
-                scan.nextLine();
-                System.out.println("You may now proceed on your journey.");
-                scan.nextLine();
-                return true;
-            }
-
-            System.out.println();
-        }
 
         System.out.println("Guard 1:");
         System.out.println("Ha. Maybe the others will learn next time. Fear is cheaper than mercy.");
         input = scan.nextLine();
         if (input.equalsIgnoreCase("s")) {
-            System.out.println("");
-            System.out.println("Are you sure you would like to skip the Challenge?");
-            System.out.println("If yes, you will not level up [Y/N]: ");
+                System.out.println("");
+                System.out.println("Are you sure you would like to skip the Challenge?");
+                System.out.println(YELLOW+"If yes, you will not level up [Y/N]: "+RESET);
 
-            String inputSureSkip = scan.nextLine();
-            while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
-                System.out.println("Invalid input. Please enter Y or N:");
-                inputSureSkip = scan.nextLine();
+                String inputSureSkip = scan.nextLine();
+                while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
+                    System.out.println(RED+"Invalid input. Please enter Y or N:"+RESET);
+                    inputSureSkip = scan.nextLine();
+                }
+
+                if (inputSureSkip.equalsIgnoreCase("Y")) {
+                    System.out.println("\nYou have skipped the Challenge, you did not level up");
+                    scan.nextLine();
+                    System.out.println(GREEN+"You may now proceed on your journey."+RESET);
+                    scan.nextLine();
+                    return true;
+                }
+
+                System.out.println();
             }
-
-            if (inputSureSkip.equalsIgnoreCase("Y")) {
-                System.out.println("\nYou have skipped the Challenge, you did not level up");
-                scan.nextLine();
-                System.out.println("You may now proceed on your journey.");
-                scan.nextLine();
-                return true;
-            }
-
-            System.out.println();
-        }
 
         System.out.println("(Internal monologue):");
         System.out.println("\"Fear's cheaper than mercy.\"");
@@ -303,52 +310,51 @@ public class MiniQuest1 {
                 "\"Those words... they sting. Like I've heard them before--just from the other side of the sword.\"");
         input = scan.nextLine();
         if (input.equalsIgnoreCase("s")) {
-            System.out.println("");
-            System.out.println("Are you sure you would like to skip the Challenge?");
-            System.out.println("If yes, you will not level up [Y/N]: ");
+                System.out.println("");
+                System.out.println("Are you sure you would like to skip the Challenge?");
+                System.out.println(YELLOW+"If yes, you will not level up [Y/N]: "+RESET);
 
-            String inputSureSkip = scan.nextLine();
-            while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
-                System.out.println("Invalid input. Please enter Y or N:");
-                inputSureSkip = scan.nextLine();
+                String inputSureSkip = scan.nextLine();
+                while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
+                    System.out.println(RED+"Invalid input. Please enter Y or N:"+RESET);
+                    inputSureSkip = scan.nextLine();
+                }
+
+                if (inputSureSkip.equalsIgnoreCase("Y")) {
+                    System.out.println("\nYou have skipped the Challenge, you did not level up");
+                    scan.nextLine();
+                    System.out.println(GREEN+"You may now proceed on your journey."+RESET);
+                    scan.nextLine();
+                    return true;
+                }
+
+                System.out.println();
             }
-
-            if (inputSureSkip.equalsIgnoreCase("Y")) {
-                System.out.println("\nYou have skipped the Challenge, you did not level up");
-                scan.nextLine();
-                System.out.println("You may now proceed on your journey.");
-                scan.nextLine();
-                return true;
-            }
-
-            System.out.println();
-        }
 
         System.out.println("(" + name + " creeps closer, spots villagers locked inside; quietly, " + name
                 + " tries to decrypt the passcode in the lock.)");
         input = scan.nextLine();
         if (input.equalsIgnoreCase("s")) {
-            System.out.println("");
-            System.out.println("Are you sure you would like to skip the Challenge?");
-            System.out.println("If yes, you will not level up [Y/N]: ");
+                System.out.println("");
+                System.out.println("Are you sure you would like to skip the Challenge?");
+                System.out.println(YELLOW+"If yes, you will not level up [Y/N]: "+RESET);
 
-            String inputSureSkip = scan.nextLine();
-            while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
-                System.out.println("Invalid input. Please enter Y or N:");
-                inputSureSkip = scan.nextLine();
+                String inputSureSkip = scan.nextLine();
+                while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
+                    System.out.println(RED+"Invalid input. Please enter Y or N:"+RESET);
+                    inputSureSkip = scan.nextLine();
+                }
+
+                if (inputSureSkip.equalsIgnoreCase("Y")) {
+                    System.out.println("\nYou have skipped the Challenge, you did not level up");
+                    scan.nextLine();
+                    System.out.println(GREEN+"You may now proceed on your journey."+RESET);
+                    scan.nextLine();
+                    return true;
+                }
+
                 System.out.println();
             }
-
-            if (inputSureSkip.equalsIgnoreCase("Y")) {
-                System.out.println("You have skipped the Challenge, you did not level up");
-                scan.nextLine();
-                System.out.println("You may now proceed on your journey.");
-                scan.nextLine();
-                return true;
-            }
-
-            System.out.println();
-        }
 
         return false;
     }
@@ -361,42 +367,42 @@ public class MiniQuest1 {
         while (turns != 0) {
             while (true) {
                 try {
-                    System.out.print("Decrypting Lock... Enter a random number from [1-4]: ");
+                    System.out.print(YELLOW+"Decrypting Lock... Enter a random number from [1-4]: "+RESET);
                     password = scan.nextInt();
                     scan.nextLine();
                     if (password < 1 || password > 4) {
-                        System.out.println("Invalid! Only enter numbers from 1 to 4.\n");
+                        System.out.println(RED+"Invalid! Only enter numbers from 1 to 4.\n"+RESET);
                         continue;
                     }
 
                     break;
                 } catch (InputMismatchException e) {
-                    System.out.println("Input Invalid. Only enter integers from 1 to 4");
+                    System.out.println(RED+"Input Invalid. Only enter integers from 1 to 4"+RESET);
                     System.out.println();
                     scan.nextLine();
                 }
             }
 
             if (password == randomPass) {
-                System.out.println("Passcode Correct, Lock opens!");
+                System.out.println(GREEN+"Passcode Correct, Lock opens!"+RESET);
                 scan.nextLine();
 
                 chosen.setLevel(chosen.getLevel() + 1);
                 System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
                 scan.nextLine();
 
-                System.out.println("You may now proceed on your journey.");
+                System.out.println(GREEN+"You may now proceed on your journey."+RESET);
                 scan.nextLine();
                 return true;
             } else {
-                System.out.println("Passcode Incorrect, Try again!");
+                System.out.println(RED+"Passcode Incorrect, Try again!"+RESET);
                 turns--;
                 System.out.println("Turns left: " + turns + ", once 0 return back to the beginning of the quest.");
                 System.out.println();
             }
 
             if (turns == 0) {
-                System.out.println("You failed the passcode challenge. Restarting from the beginning...");
+                System.out.println(RED+"You failed the passcode challenge. Restarting from the beginning..."+RESET);
                 scan.nextLine();
                 return false;
             }
@@ -518,7 +524,7 @@ public class MiniQuest1 {
 
     public void finishQuest(Character chosen, String name) {
         System.out.println();
-        System.out.println("You have Finished the quest: Echoes of the broken Crown!");
+        System.out.println(GREEN+"You have Finished the quest: Echoes of the broken Crown!"+RESET);
 
         scan.nextLine();
         System.out.println("Quest Summary:");
@@ -532,7 +538,7 @@ public class MiniQuest1 {
         System.out.println("Current Level: " + chosen.getLevel());
         System.out.println("Current Potions: " + chosen.getPotionCount());
         scan.nextLine();
-        System.out.println("You may now proceed on your journey.");
+        System.out.println(GREEN+"You may now proceed on your journey."+RESET);
         scan.nextLine();
 
         System.out.print("\033[H\033[2J");

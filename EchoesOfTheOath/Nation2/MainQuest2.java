@@ -7,6 +7,7 @@ public class MainQuest2 {
     Scanner scan = new Scanner(System.in);
     boolean isSkipped = false;
     
+    public static final String YELLOW = "\033[33m";
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -20,7 +21,7 @@ public class MainQuest2 {
         while (true) {
             rootsOfDespair(chosen);
             if (isSkipped) {
-                System.out.println("You have skipped the Quest Dialogues, Proceeding forward...");
+                System.out.println(YELLOW+"You have skipped the Quest Dialogues, Proceeding forward..."+ANSI_RESET);
                 scan.nextLine();
             }
 
@@ -92,7 +93,7 @@ public class MainQuest2 {
 
         System.out.println("Main Quest Started: \"The Roots of Despair\"");
         System.out.println("Objective: Reach the Heart of Veyora and confront the Root of Despair");
-        System.out.println("(Press ['s'] to skip and [Enter] to continue.)");
+        System.out.println(YELLOW+"(Press ['s'] to skip and [Enter] to continue.)"+ANSI_RESET);
         if (waitOrSkip())
             return;
 
@@ -361,14 +362,14 @@ public class MainQuest2 {
     // END QUEST + REWARDS
     // ==============================
     public void endQuest(Character chosen) {
-        System.out.println("You have finished the Main Quest: 'The Roots of Despair'");
+        System.out.println(YELLOW+"You have finished the Main Quest: 'The Roots of Despair'"+ANSI_RESET);
         scan.nextLine();
         System.out.println("Quest Summary: You returned the Tear, confronted illusions, regain your memories, and reached Lunareth.");
         scan.nextLine();
         System.out.println("Current Level: " + chosen.getLevel());
         System.out.println("Current Potions: " + chosen.getPotionCount());
         scan.nextLine();
-        System.out.println("You may now proceed on your journey.");
+        System.out.println(ANSI_GREEN+"You may now proceed on your journey."+ANSI_RESET);
         clearScreen();
     }
 

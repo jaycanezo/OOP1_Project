@@ -7,6 +7,12 @@ public class MiniQuest3 {
     Scanner scan = new Scanner(System.in);
     boolean isSkipped = false;
 
+    String RESET = "\033[0m";
+    String RED = "\033[31m";    
+    String YELLOW = "\033[33m";  
+    String BOLD = "\033[1m";
+    String GREEN = "\033[32m";
+
     public void theLastBastion(Character chosen) {
         String name = chosen.getName();
         intro(chosen);
@@ -14,7 +20,7 @@ public class MiniQuest3 {
         while (true) {
             questStart(chosen);
             if (isSkipped) {
-                System.out.println("You have skipped the Quest Dialogues, Proceeding forward...");
+                System.out.println(YELLOW+"You have skipped the Quest Dialogues, Proceeding forward..."+RESET);
                 scan.nextLine();
             }
 
@@ -92,13 +98,13 @@ public class MiniQuest3 {
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        System.out.println("---------Continuing the Journey You have now Arrived at:----------");
-        System.out.println("████    ██   ██████   ██████   ██   ██████   ████    ██    █████");
+        System.out.println(YELLOW+"---------Continuing the Journey You have now Arrived at:----------"+RESET);
+        System.out.println(RED+"████    ██   ██████   ██████   ██   ██████   ████    ██    █████");
         System.out.println("██ ██   ██   ██  ██     ██     ██   ██  ██   ██ ██   ██   █    ██");
         System.out.println("██  ██  ██   ██████     ██     ██   ██  ██   ██  ██  ██      ███");
         System.out.println("██   ██ ██   ██  ██     ██     ██   ██  ██   ██   ██ ██   █    ██");
-        System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████    ████");
-        System.out.println("------------------------Nation of Demons--------------------------");
+        System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████    ████"+RESET);
+        System.out.println(YELLOW+"------------------------Nation of Demons--------------------------"+RESET);
         scan.nextLine();
 
         System.out.print("\"The air itself is poison. It doesn't just feel cold... it feels empty. Like a void.\"");
@@ -163,7 +169,7 @@ public class MiniQuest3 {
         System.out.println("Quest Started: The Last Bastion");
         scan.nextLine();
         System.out.println("Objective: Navigate the Hall of Broken Oaths and find Sarukdal, the final guardian.");
-        System.out.println("Press ['s'] to skip, and [Enter] to continue.");
+        System.out.println(YELLOW+"Press ['s'] to skip, and [Enter] to continue."+RESET);
         if (waitOrSkip())
             return;
 
@@ -259,7 +265,7 @@ public class MiniQuest3 {
             }
 
             // ----------------------------- SUCCESS ---------------------------------
-            System.out.println("SUCCESS -- You survived the Trial.");
+            System.out.println(GREEN+"SUCCESS -- You survived the Trial."+RESET);
             System.out.println("The shadows bow as the truth is accepted.");
             System.out.println("A bridge of black stone rises before you.");
             scan.nextLine();
@@ -275,7 +281,7 @@ public class MiniQuest3 {
         System.out.println("(a bridge of solid shadow forms; the hero crosses)");
         scan.nextLine();
 
-        System.out.println("You have finished the quest: The Last Bastion!");
+        System.out.println(YELLOW+"You have finished the quest: The Last Bastion!"+RESET);
         scan.nextLine();
         System.out.println("Quest Summary");
         System.out.println("You have navigated the fortress and found Sarukdal. ");
@@ -289,7 +295,7 @@ public class MiniQuest3 {
         System.out.println("Current Level: " + chosen.getLevel());
         System.out.println("Current Potions: " + chosen.getPotionCount());
         scan.nextLine();
-        System.out.println("You may now proceed on your journey.");
+        System.out.println(GREEN+"You may now proceed on your journey."+RESET);
         scan.nextLine();
 
         System.out.println(
@@ -353,19 +359,19 @@ public class MiniQuest3 {
                     !input.equalsIgnoreCase("B") &&
                     !input.equalsIgnoreCase("C")) {
 
-                System.out.println("Invalid choice. Please enter A, B, or C only.");
+                System.out.println(RED+"Invalid choice. Please enter A, B, or C only."+RESET);
                 System.out.print("Your answer (A/B/C): ");
                 input = scan.nextLine().trim();
             }
 
             // Correct?
             if (input.equalsIgnoreCase(correctAnswer)) {
-                System.out.println("Correct.");
+                System.out.println(GREEN+"Correct."+RESET);
                 scan.nextLine();
                 return true;
             } else {
-                System.out.println("Wrong.");
-                System.out.println("The shadows whisper: \"You remember nothing.\"");
+                System.out.println(RED+"Wrong.");
+                System.out.println("The shadows whisper: \"You remember nothing.\""+RESET);
                 scan.nextLine();
                 return false;
             }
@@ -377,9 +383,9 @@ public class MiniQuest3 {
     // ============================================================================
     public boolean gameOver() {
 
-        System.out.println("\n=======================================");
+        System.out.println(RED+"\n=======================================");
         System.out.println("                GAME OVER");
-        System.out.println("=======================================");
+        System.out.println("======================================="+RESET);
         scan.nextLine();
         System.out.println("The sigil explodes in red light.");
         System.out.println("The shadows engulf you completely.");
@@ -401,10 +407,10 @@ public class MiniQuest3 {
                 if (choice == 1 || choice == 2) {
                     return (choice == 1);
                 } else {
-                    System.out.println("Invalid choice. Press 1 or 2 only.");
+                    System.out.println(RED+"Invalid choice. Press 1 or 2 only."+RESET);
                 }
             } catch (Exception e) {
-                System.out.println("Invalid choice. Press 1 or 2 only.");
+                System.out.println(RED+"Invalid choice. Press 1 or 2 only."+RESET);
                 scan.nextLine(); 
             }
         }

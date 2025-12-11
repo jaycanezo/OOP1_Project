@@ -123,7 +123,7 @@ public class BattleLogic {
                     System.out.println(RED + "You have used all your retries." + RESET);
                     System.out.println(RED + "GAME OVER. The journey ends here." + RESET);
                     scan.close();
-                    return; // End entire game
+                    System.exit(0); // End entire game
                 }
 
                 while (true) {
@@ -142,7 +142,7 @@ public class BattleLogic {
                     } else if (retryChoice.equalsIgnoreCase("n")) {
                         System.out.println(RED + "Game Over. Thank you for playing!" + RESET);
                         scan.close();
-                        return;
+                        System.exit(0);
                     } else {
                         System.out.println(YELLOW + "Invalid choice! Please type only 'y' or 'n'." + RESET);
                     }

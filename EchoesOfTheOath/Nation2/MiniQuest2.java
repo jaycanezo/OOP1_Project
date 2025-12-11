@@ -9,10 +9,12 @@ public class MiniQuest2 {
         int attemptsUsed = 0;
         int maxAttempts = 3;
         boolean questCompleted = false;
+        
+        String YELLOW = "\033[33m";
 
-        final String ANSI_RESET = "\u001B[0m";
-        final String ANSI_GREEN = "\u001B[32m";
-        final String ANSI_RED = "\u001B[31m";
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_GREEN = "\u001B[32m";
+        String ANSI_RED = "\u001B[31m";
 
         String name = chosen.getName();
         String userAnswer;
@@ -35,13 +37,13 @@ public class MiniQuest2 {
         System.out.println();
 
         clearScreen();
-        System.out.println("---------Continuing the Journey You have now Arrived at:---------");
-        System.out.println("████    ██   ██████   ██████   ██   ██████   ████    ██    ████");
+        System.out.println(YELLOW+"---------Continuing the Journey You have now Arrived at:---------"+ANSI_RESET);
+        System.out.println(ANSI_GREEN+"████    ██   ██████   ██████   ██   ██████   ████    ██    ████");
         System.out.println("██ ██   ██   ██  ██     ██     ██   ██  ██   ██ ██   ██   ██  ██");
         System.out.println("██  ██  ██   ██████     ██     ██   ██  ██   ██  ██  ██      ██");
         System.out.println("██   ██ ██   ██  ██     ██     ██   ██  ██   ██   ██ ██     ██");
-        System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████     █████");
-        System.out.println("--------------------Veyora: Nation of Elves----------------------");
+        System.out.println("██    ████   ██  ██     ██     ██   ██████   ██    ████     █████"+ANSI_RESET);
+        System.out.println(YELLOW+"--------------------Veyora: Nation of Elves----------------------"+ANSI_RESET);
         scanner.nextLine();
 
         // --- NEW PLOT POINT INTRODUCING THE RIDDLE ---
@@ -70,12 +72,12 @@ public class MiniQuest2 {
             if (skipInput.equalsIgnoreCase("S")) {
 
                 System.out.println("\nAre you sure you would like to skip the Challenge?");
-                System.out.print("If yes, you will not level up [Y/N]: ");
+                System.out.print(YELLOW+"If yes, you will not level up [Y/N]: "+ANSI_RESET);
                 String inputSureSkip = scanner.nextLine();
                 System.out.println();
 
                 while (!inputSureSkip.equalsIgnoreCase("Y") && !inputSureSkip.equalsIgnoreCase("N")) {
-                    System.out.print("Invalid input. Please enter Y or N:");
+                    System.out.print(ANSI_RED+"Invalid input. Please enter Y or N:"+ANSI_RESET);
                     inputSureSkip = scanner.nextLine();
                     System.out.println();
                 }
@@ -83,7 +85,7 @@ public class MiniQuest2 {
                 if (inputSureSkip.equalsIgnoreCase("Y")) {
                     System.out.println("\nYou have skipped the Challenge, you did not level up");
                     scanner.nextLine();
-                    System.out.println("You may now proceed on your journey.");
+                    System.out.println(ANSI_GREEN+"You may now proceed on your journey."+ANSI_RESET);
                     scanner.nextLine();
                     break;   // Exit whole skip/riddle system
                 } else {

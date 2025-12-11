@@ -5,6 +5,13 @@ import java.util.*;
 
 public class MainQuest1 {
 
+    String RESET = "\033[0m";
+    String RED = "\033[31m";    
+    String YELLOW = "\033[33m";  
+    String BOLD = "\033[1m";
+    String BLUE = "\033[34m";
+    String GREEN = "\033[32m";
+
     static Scanner scan = new Scanner(System.in);
 
     // =====================================================
@@ -111,14 +118,14 @@ public class MainQuest1 {
         // ============================
         if (successCount == 3) {
             chosen.setHp(chosen.getLevel() + 1);
-            System.out.println("You were successful in " + (successCount + 1) + "/4 Phases.");
+            System.out.println(GREEN+"You were successful in " + (successCount + 1) + "/4 Phases."+RESET);
             chosen.setLevel(chosen.getLevel() + 1);
             scan.nextLine();
             System.out.println("You have leveled up to " + chosen.getLevel() + "!");
             scan.nextLine();
         } else {
             System.out.println(
-                    "You did not levelup because you were only successful in " + (successCount + 1) + "/4 Phases.");
+                    RED+"You did not levelup because you were only successful in " + (successCount + 1) + "/4 Phases."+RESET);
         }
 
         finishQuest(chosen);
@@ -206,13 +213,13 @@ public class MainQuest1 {
     }
 
     public boolean checkSkip() {
-        System.out.println("Press ['s'] to skip the dialogues, and [Enter] to continue.");
+        System.out.println(YELLOW+"Press ['s'] to skip the dialogues, and [Enter] to continue."+RESET);
         String input = scan.nextLine();
         return input.equalsIgnoreCase("s");
     }
 
     public void storyJump() {
-        System.out.println("\nSkipping all remaining story dialogue...\n");
+        System.out.println(YELLOW+"\nSkipping all remaining story dialogue...\n"+RESET);
     }
 
     // ==========================================================
@@ -228,7 +235,7 @@ public class MainQuest1 {
                     input.equalsIgnoreCase("D")) {
                 return input;
             } else {
-                System.out.print("Invalid. Enter A, B, C, or D: ");
+                System.out.print(RED+"Invalid. Enter A, B, C, or D: "+RESET);
             }
         }
     }
@@ -282,7 +289,7 @@ public class MainQuest1 {
             System.out.println();
             if (!ans.equalsIgnoreCase("C")) {
                 strikes--;
-                System.out.println("Wrong! Strikes left: " + strikes + "/3");
+                System.out.println(RED+"Wrong! Strikes left: " + strikes + "/3"+RESET);
                 System.out.println();
                 if (strikes == 0) {
                     break; // exit because no strikes left
@@ -292,7 +299,7 @@ public class MainQuest1 {
             }
 
             // correct answer
-            System.out.println("Correct!");
+            System.out.println(GREEN+"Correct!"+RESET);
             System.out.println();
             break;
         }
@@ -353,7 +360,7 @@ public class MainQuest1 {
             System.out.println();
             if (!ans.equalsIgnoreCase("C")) {
                 strikes--;
-                System.out.println("Wrong! Strikes left: " + strikes + "/3");
+                System.out.println(RED+"Wrong! Strikes left: " + strikes + "/3"+RESET);
                 System.out.println();
                 if (strikes == 0) {
                     break; // exit because no strikes left
@@ -363,7 +370,7 @@ public class MainQuest1 {
             }
 
             // correct answer
-            System.out.println("Correct!");
+            System.out.println(GREEN+"Correct!"+RESET);
             System.out.println();
             break;
         }
@@ -423,7 +430,7 @@ public class MainQuest1 {
             System.out.println();
             if (!ans.equalsIgnoreCase("B")) {
                 strikes--;
-                System.out.println("Wrong! Strikes left: " + strikes + "/3");
+                System.out.println(RED+"Wrong! Strikes left: " + strikes + "/3"+RESET);
                 System.out.println();
                 if (strikes == 0) {
                     break; // exit because no strikes left
@@ -433,7 +440,7 @@ public class MainQuest1 {
             }
 
             // correct answer
-            System.out.println("Correct!");
+            System.out.println(GREEN+"Correct!"+RESET);
             System.out.println();
             break;
         }
@@ -481,7 +488,7 @@ public class MainQuest1 {
         getLetterInput();
 
         System.out.println();
-        System.out.println("And the crowd listens.");
+        System.out.println(YELLOW+"And the crowd listens."+RESET);
         scan.nextLine();
     }
 
@@ -494,7 +501,7 @@ public class MainQuest1 {
         System.out.println("Current Level: " + chosen.getLevel());
         System.out.println("Current Potions: " + chosen.getPotionCount());
         scan.nextLine();
-        System.out.println("You may now proceed on your journey.");
+        System.out.println(GREEN+"You may now proceed on your journey."+RESET);
         scan.nextLine();
     }
 
@@ -505,12 +512,12 @@ public class MainQuest1 {
         System.out.println("Current Level: " + chosen.getLevel());
         System.out.println("Current Potions: " + chosen.getPotionCount());
         scan.nextLine();
-        System.out.println("You may now proceed on your journey.");
+        System.out.println(GREEN+"You may now proceed on your journey."+RESET);
         scan.nextLine();
     }
 
     public void finishQuest(Character chosen) {
-        System.out.println("You have Finished the quest: The Veins of Humanas!");
+        System.out.println(YELLOW+"You have Finished the quest: The Veins of Humanas!"+RESET);
 
         scan.nextLine();
         System.out.println("Quest Summary:");
@@ -523,7 +530,7 @@ public class MainQuest1 {
         System.out.println("Current Level: " + chosen.getLevel());
         System.out.println("Current Potions: " + chosen.getPotionCount());
         scan.nextLine();
-        System.out.println("You may now proceed on your journey.");
+        System.out.println(GREEN+"You may now proceed on your journey."+RESET);
         scan.nextLine();
 
         System.out.print("\033[H\033[2J");

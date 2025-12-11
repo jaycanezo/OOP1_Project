@@ -7,6 +7,8 @@ import java.util.Scanner;
 public class Intro {
     public static final String BLUE = "\033[34m";
     public static final String RESET = "\033[0m";
+    public static final String PURPLE = "\033[35m";
+    public static final String GREEN = "\033[32m";
 
     public static Character main(String[] args) throws InterruptedException {
 
@@ -28,7 +30,6 @@ public class Intro {
         try {
             runCharacterTrial(scan);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -58,7 +59,7 @@ public class Intro {
     // -------------------------------------------------------------
 
     public static void displayGameIntro(Scanner scan) {
-        System.out.println("██████████   ██████████   ████    ████   ████████████   ██████████   ██████████");
+        System.out.println(BLUE+"██████████   ██████████   ████    ████   ████████████   ██████████   ██████████");
         System.out.println("██████████   ██████████   ████    ████   ████████████   ██████████   ██████████");
         System.out.println("████         ████         ████    ████   ████    ████   ████         ████      ");
         System.out.println("████         ████         ████    ████   ████    ████   ████         ████      ");
@@ -67,15 +68,15 @@ public class Intro {
         System.out.println("████         ████         ████    ████   ████    ████   ████               ████");
         System.out.println("████         ████         ████    ████   ████    ████   ████               ████");
         System.out.println("██████████   ██████████   ████    ████   ████████████   ██████████   ██████████");
-        System.out.println("██████████   ██████████   ████    ████   ████████████   ██████████   ██████████");
+        System.out.println("██████████   ██████████   ████    ████   ████████████   ██████████   ██████████"+RESET);
         System.out.println();
-        System.out.println("██████████████   ████████████   █  █████████████   ███       ███   ████████████");
+        System.out.println(PURPLE+"██████████████   ████████████   █  █████████████   ███       ███   ████████████");
         System.out.println("███        ███   ███            █       ███        ███       ███   ███         ");
         System.out.println("███        ███   ████████████   █       ███        █████████████   ████████████");
         System.out.println("███        ███   ███            █       ███        ███       ███   ███         ");
-        System.out.println("██████████████   ███            █       ███        ███       ███   ████████████");
+        System.out.println("██████████████   ███            █       ███        ███       ███   ████████████"+RESET);
         System.out.println();
-        System.out.println("█████████████████   █████████████████   ███████████████████   █████       █████");
+        System.out.println(BLUE+"█████████████████   █████████████████   ███████████████████   █████       █████");
         System.out.println("█████████████████   █████████████████   ███████████████████   █████       █████");
         System.out.println("████         ████   ████         ████           ████          █████       █████");
         System.out.println("████         ████   ████         ████           ████          █████       █████");
@@ -84,8 +85,8 @@ public class Intro {
         System.out.println("████         ████   ████         ████           ████          █████       █████");
         System.out.println("████         ████   ████         ████           ████          █████       █████");
         System.out.println("█████████████████   ████         ████           ████          █████       █████");
-        System.out.println("█████████████████   ████         ████           ████          █████       █████");
-        System.out.println("-----------------------Press Enter to Start the Game!--------------------------");
+        System.out.println("█████████████████   ████         ████           ████          █████       █████"+RESET);
+        System.out.println(GREEN+"-----------------------Press Enter to Start the Game!--------------------------"+RESET);
 
         scan.nextLine();
         clearScreen();
