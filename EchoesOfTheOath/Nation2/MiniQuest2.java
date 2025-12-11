@@ -200,7 +200,7 @@ public class MiniQuest2 {
     }
 
     // You need this helper method defined in your Game class
-    private void clearScreen() {
+    public void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }

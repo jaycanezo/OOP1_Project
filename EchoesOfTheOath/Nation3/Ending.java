@@ -7,8 +7,7 @@ public class Ending {
     Scanner scan = new Scanner(System.in);
 
     public void endingScene(Character chosen) {
-        System.out
-                .println("(Silence. The cast stops. The two mirror forms--you and your shadow--stare at each other.)");
+        System.out.println("(Silence. The cast stops. The two mirror forms--you and your shadow--stare at each other.)");
         scan.nextLine();
         System.out.println("Elarion (voice, now a terrified whisper):");
         System.out.println("\"What... what are you doing? Let go! You will destroy us both!\"");

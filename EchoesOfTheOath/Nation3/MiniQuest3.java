@@ -4,8 +4,8 @@ import EchoesOfTheOath.Characters.Character;
 import java.util.*;
 
 public class MiniQuest3 {
-    private boolean isSkipped = false;
     Scanner scan = new Scanner(System.in);
+    boolean isSkipped = false;
 
     public void theLastBastion(Character chosen) {
         String name = chosen.getName();
@@ -24,7 +24,7 @@ public class MiniQuest3 {
         }
     }
 
-    private boolean waitOrSkip() {
+    public boolean waitOrSkip() {
         String input = scan.nextLine();
         if (input.equalsIgnoreCase("s")) {
             isSkipped = true;
@@ -322,7 +322,7 @@ public class MiniQuest3 {
     // ============================================================================
     // SIMPLE ROUND HANDLER (String inputs, no arrays)
     // ============================================================================
-    private boolean round(String title, String question,
+    public boolean round(String title, String question,
             String optionA, String optionB, String optionC,
             String correctAnswer, int triesLeft) {
 
@@ -375,7 +375,7 @@ public class MiniQuest3 {
     // ============================================================================
     // GAME OVER SCREEN
     // ============================================================================
-    private boolean gameOver() {
+    public boolean gameOver() {
 
         System.out.println("\n=======================================");
         System.out.println("                GAME OVER");

@@ -4,8 +4,9 @@ import EchoesOfTheOath.Characters.Character;
 import java.util.*;
 
 public class MainQuest2 {
-    private Scanner scan = new Scanner(System.in);
-    private boolean isSkipped = false;
+    Scanner scan = new Scanner(System.in);
+    boolean isSkipped = false;
+    
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -36,7 +37,7 @@ public class MainQuest2 {
     // ==============================
     // UNIVERSAL SKIP / WAIT METHOD
     // ==============================
-    private boolean waitOrSkip() {
+    public boolean waitOrSkip() {
         String input = scan.nextLine();
         if (input.equalsIgnoreCase("s")) {
             isSkipped = true;
@@ -49,7 +50,7 @@ public class MainQuest2 {
     // SCENES (NO STORY ARRAYS)
     // ==============================
 
-    private void rootsOfDespair(Character chosen) {
+    public void rootsOfDespair(Character chosen) {
         String name = chosen.getName();
 
         System.out.println("(Ilaryx kneels, eyes clear but full of guilt. " + name + " approaches.)");
@@ -271,7 +272,7 @@ public class MainQuest2 {
             return;
     }
 
-    private void sceneCitadel(Character chosen) {
+    public void sceneCitadel(Character chosen) {
         String name = chosen.getName();
 
         System.out.println("(Flashback: " + name + ", Lunareth, Sarukdal, and the Archivist stand beneath the stars.)");
@@ -359,7 +360,7 @@ public class MainQuest2 {
     // ==============================
     // END QUEST + REWARDS
     // ==============================
-    private void endQuest(Character chosen) {
+    public void endQuest(Character chosen) {
         System.out.println("You have finished the Main Quest: 'The Roots of Despair'");
         scan.nextLine();
         System.out.println("Quest Summary: You returned the Tear, confronted illusions, regain your memories, and reached Lunareth.");
@@ -372,7 +373,7 @@ public class MainQuest2 {
     }
 
     // ==============================
-    private void clearScreen() {
+    public void clearScreen() {
         System.out.print("\033[H\033[2J"); // clear screen
         System.out.flush();
     }
@@ -446,7 +447,7 @@ public class MainQuest2 {
         }
     }
 
-    private static void printColoredFeedback(String input, String answer) {
+    public static void printColoredFeedback(String input, String answer) {
         System.out.print("Feedback: ");
         // Loop through the user's input
         for (int i = 0; i < input.length(); i++) {
@@ -474,7 +475,7 @@ public class MainQuest2 {
     /**
      * Helper method to shuffle the string for Step 1
      */
-    private static String shuffleString(String input) {
+    public static String shuffleString(String input) {
         char[] chars = input.toCharArray();
         Random rand = new Random();
 

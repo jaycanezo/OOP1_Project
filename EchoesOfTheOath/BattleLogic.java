@@ -8,12 +8,12 @@ public class BattleLogic {
 
         Scanner scan = new Scanner(System.in);
 
-        final String RESET = "\033[0m";
-        final String RED = "\033[31m"; // enemy / damage / low HP
-        final String GREEN = "\033[32m"; // ready skill / good HP
-        final String BLUE = "\033[34m"; // player name
-        final String YELLOW = "\033[33m"; // skill cooldown / caution
-        final String PURPLE = "\033[35m"; // special skill / potion
+        String RESET = "\033[0m";
+        String RED = "\033[31m"; // enemy / damage / low HP
+        String GREEN = "\033[32m"; // ready skill / good HP
+        String BLUE = "\033[34m"; // player name
+        String YELLOW = "\033[33m"; // skill cooldown / caution
+        String PURPLE = "\033[35m"; // special skill / potion
 
         System.out.println();
 
@@ -28,15 +28,15 @@ public class BattleLogic {
         System.out.println("HP: " + chosen.getMaxHp() + " | Level: "+ chosen.getLevel());
         scan.nextLine();
 
-        int retryCount = 0; // ADDED CODE JACK
-        final int MAX_RETRIES = 4; // ADDED CODE JACK
+        int retryCount = 0; 
+        final int MAX_RETRIES = 4;  
 
         while (boss.getHp() > 0) {
 
             // ---------------- USER TURN ----------------
             boolean validAction = false;
             while (!validAction) {
-                chosen.displaySkills(); // ADDED CODE JACK
+                chosen.displaySkills(); 
 
                 System.out.println();
                 System.out.println(RED + boss.getName() + "'s Current HP: " + RESET + boss.getHp() + "/" + boss.getMaxHp());
@@ -96,8 +96,7 @@ public class BattleLogic {
                 scan.nextLine();
 
                 chosen.setLevel(chosen.getLevel() + 1);
-                System.out
-                        .println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
+                System.out.println(chosen.getName() + " leveled up to level " + chosen.getLevel() + "!");
                 scan.nextLine();
 
                 chosen.setPotionCount(chosen.getPotionCount() + 5);

@@ -4,6 +4,11 @@ import EchoesOfTheOath.Characters.Character;
 import java.util.*;
 
 public class MainQuest3 {
+    String RESET = "\033[0m";
+    String RED = "\033[31m";    
+    String YELLOW = "\033[33m";  
+    String BOLD = "\033[1m";
+
     Scanner scan = new Scanner(System.in);
 
     public void theUnboundThroneQuest(Character chosen) { // Nation 3 Main Quest
@@ -217,11 +222,11 @@ public class MainQuest3 {
             input = scan.nextLine();
                 if (input.equalsIgnoreCase("s") || input.equalsIgnoreCase("skip")) 
                     System.out.println("\nCannot skip during a critical event.");
-            System.out.println("You focus your energy and attempt to stabilize the shift... Rolling for **Synchronization** (Need 6 or higher)...");
+            System.out.println("You focus your energy and attempt to stabilize the shift... Rolling for Synchronization" + YELLOW + " (Need 6 or higher)" + RESET + "..." );
             java.util.Random rand = new java.util.Random();
             int syncRoll = rand.nextInt(8) + 1;
             scan.nextLine();
-            System.out.println("Your Synchronization Roll: " + syncRoll);
+            System.out.println(BOLD + "Your Synchronization Roll: " + syncRoll + RESET);
             scan.nextLine();
             if (syncRoll < 6) {
                 System.out.println("The shadow portal rejects your attempt!");
@@ -238,7 +243,7 @@ public class MainQuest3 {
                 scan.nextLine();
                 System.out.print("\"I am not running anymore.\"");
                 scan.nextLine();
-                System.out.println("Restarting the quest...");
+                System.out.println(RED + "Restarting the quest..." + RESET);
                 isSuccess = false;
                 continue;
             } else if (syncRoll >= 6) {

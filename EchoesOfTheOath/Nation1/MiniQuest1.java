@@ -42,7 +42,7 @@ public class MiniQuest1 {
         nextMorningScene(name);
     }
 
-    private boolean introScene(String name) {
+    public boolean introScene(String name) {
         System.out.println("(" + name + " walks along the worn dirt path leading to the outskirts of a town)");
         scan.nextLine();
         System.out.println("(the wind carries faint echoes of bells and shouting)");
@@ -70,7 +70,7 @@ public class MiniQuest1 {
                 + " steps through the gates; villagers move quickly, avoiding eye contact; a guard leans lazily by a post, glaring)");
         scan.nextLine();
         System.out.println("Guard:");
-        System.out.println("You there. Traveler. What business brings you to Vensvale huh?");
+        System.out.println("\"You there. Traveler. What business brings you to Vensvale huh?");
         scan.nextLine();
 
         System.out.println(name + ":");
@@ -170,7 +170,7 @@ public class MiniQuest1 {
         }
     }
 
-    private boolean chapelSneakScene(String name) {
+    public boolean chapelSneakScene(String name) {
         String input;
 
         System.out.println("(" + name
@@ -353,7 +353,7 @@ public class MiniQuest1 {
         return false;
     }
 
-    private boolean passcodeChallenge(Character chosen) {
+    public boolean passcodeChallenge(Character chosen) {
         int turns = 3;
         int password = 0;
         int randomPass = new Random().nextInt(4) + 1;
@@ -405,7 +405,7 @@ public class MiniQuest1 {
         return false;
     }
 
-    private void imprisonedRescueScene(String name) {
+    public void imprisonedRescueScene(String name) {
         String input;
 
         System.out.println("Imprisoned Woman:");
@@ -516,7 +516,7 @@ public class MiniQuest1 {
         System.out.flush();
     }
 
-    private void finishQuest(Character chosen, String name) {
+    public void finishQuest(Character chosen, String name) {
         System.out.println();
         System.out.println("You have Finished the quest: Echoes of the broken Crown!");
 
@@ -539,7 +539,7 @@ public class MiniQuest1 {
         System.out.flush();
     }
 
-    private void nextMorningScene(String name) {
+    public void nextMorningScene(String name) {
         System.out.println(
                 "(the next morning dawns--sunlight leaks through the cracked stained glass of the castle courtyard)");
         scan.nextLine();

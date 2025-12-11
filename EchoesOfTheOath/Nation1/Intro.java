@@ -57,7 +57,7 @@ public class Intro {
     // METHODS SECTION
     // -------------------------------------------------------------
 
-    private static void displayGameIntro(Scanner scan) {
+    public static void displayGameIntro(Scanner scan) {
         System.out.println("██████████   ██████████   ████    ████   ████████████   ██████████   ██████████");
         System.out.println("██████████   ██████████   ████    ████   ████████████   ██████████   ██████████");
         System.out.println("████         ████         ████    ████   ████    ████   ████         ████      ");
@@ -91,7 +91,7 @@ public class Intro {
         clearScreen();
     }
 
-    private static void storylineIntro(Scanner scan) throws InterruptedException {
+    public static void storylineIntro(Scanner scan) throws InterruptedException {
         String text = "Long ago, three adventurers-a brave warrior, a swift archer, and a wise mage-" +
                 "traveled across worlds, earning fame for vanquishing great evils. Their bond was unbreakable, " +
                 "their deeds legendary...\n\nUntil one mission brought them face to face with a power unlike any other-" +
@@ -237,7 +237,7 @@ public class Intro {
         scan.nextLine();
     }
 
-    private static void storyCutscene(Scanner scan) {
+    public static void storyCutscene(Scanner scan) {
         System.out.println("Archer: Oh no Elarion is preparing to launch an attack!");
         scan.nextLine();
         System.out.println("Warrior: Lets use our power together");
@@ -247,7 +247,7 @@ public class Intro {
         scan.nextLine();
     }
 
-    private static Character chooseCharacter(Scanner scan) {
+    public static Character chooseCharacter(Scanner scan) {
         Character chosen = null;
         int choice = 0;
 
@@ -287,7 +287,7 @@ public class Intro {
         return chosen;
     }
 
-    private static String askPlayerName(Scanner scan) {
+    public static String askPlayerName(Scanner scan) {
         String playerName;
 
         while (true) {
@@ -305,7 +305,7 @@ public class Intro {
         return playerName;
     }
 
-    private static void finalDemonScene(Scanner scan, Character chosen) {
+    public static void finalDemonScene(Scanner scan, Character chosen) {
         System.out.println("Elarion: You will not defeat me you weaklings! HaHAhaHA");
         scan.nextLine();
         System.out.println("Elarion uses its Ultimate: \"The Final Vow\"");
@@ -320,7 +320,7 @@ public class Intro {
         scan.nextLine();
     }
 
-    private static void clearScreen() {
+    public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
