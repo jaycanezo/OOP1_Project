@@ -2,7 +2,7 @@ package EchoesOfTheOath.Characters;
 import EchoesOfTheOath.Resources.MusicPlayer;
 
 public class Mage extends Character{
-    private boolean[] isUsed = new boolean[3];
+    boolean[] isUsed = new boolean[3];
     MusicPlayer bgm = new MusicPlayer();
 
     public Mage() {

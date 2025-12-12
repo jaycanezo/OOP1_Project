@@ -9,7 +9,6 @@ public class MiniQuest1 {
     String RESET = "\033[0m";
     String RED = "\033[31m";    
     String YELLOW = "\033[33m";  
-    String BOLD = "\033[1m";
     String BLUE = "\033[34m";
     String GREEN = "\033[32m";
 

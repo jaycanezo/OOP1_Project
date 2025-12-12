@@ -4,6 +4,13 @@ import EchoesOfTheOath.Characters.Character;
 import java.util.*;
 
 public class Ending {
+    public String RESET = "\033[0m";
+    public String RED = "\033[31m";      // enemy / damage
+    public String GREEN = "\033[32m";    // ready skill / HP
+    public String BLUE = "\033[34m";     // player name
+    public String YELLOW = "\033[33m";   // skill cooldown / caution
+    public String PURPLE = "\033[35m";   // skills 
+
     Scanner scan = new Scanner(System.in);
 
     public void endingScene(Character chosen) {
@@ -40,8 +47,19 @@ public class Ending {
         scan.nextLine();
         System.out.println("\"My journey as the Guardian of the Restored Oath... has just begun.\"");
         scan.nextLine();
-        
+
         System.out.print("\033[H\033[2J"); // clear screen
         System.out.flush();
+
+        System.out.println(PURPLE + "---------------------------------------------------------" + RESET);
+        System.out.println(BLUE + "██████   ██  ██   █████     █████   ████    ██   █████");
+        System.out.println("  ██     ██  ██   ██        ██      ██ ██   ██   ██   ██");
+        System.out.println("  ██     ██████   █████     █████   ██  ██  ██   ██    ██");
+        System.out.println("  ██     ██  ██   ██        ██      ██   ██ ██   ██   ██");
+        System.out.println("  ██     ██  ██   █████     █████   ██    ████   █████" + RESET);
+        System.out.println(PURPLE + "---------------------------------------------------------" + RESET);
+        System.out.println("");
+        System.out.println("Mythspire Developers");
+        System.out.println("2025 All Rights Reserved");
     }
 }

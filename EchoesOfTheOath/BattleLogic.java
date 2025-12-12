@@ -70,8 +70,7 @@ public class BattleLogic {
                         scan.nextLine();
                         validAction = true;
                     } else {
-                        System.out.println(YELLOW + "Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice)
-                                + " turn(s) remaining." + RESET);
+                        System.out.println(YELLOW + "Skill is on cooldown! " + chosen.getSkillCooldown(skillChoice) + " turn(s) remaining." + RESET);
                         System.out.println("Choose another action.");
                         scan.nextLine();
                     }
@@ -127,8 +126,7 @@ public class BattleLogic {
                 }
 
                 while (true) {
-                    System.out.print("Would you like to try again? (" + YELLOW + (MAX_RETRIES - retryCount) + RESET
-                            + " retries left) (y/n): ");
+                    System.out.print("Would you like to try again? (" + YELLOW + (MAX_RETRIES - retryCount) + RESET + " retries left) (y/n): ");
                     String retryChoice = scan.next();
 
                     if (retryChoice.equalsIgnoreCase("y")) {

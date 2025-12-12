@@ -22,9 +22,9 @@ public class Intro {
         Archer archer = new Archer();
         Mage mage = new Mage();
 
-        warrior.setLevel(11);
-        archer.setLevel(11);
-        mage.setLevel(11);
+        warrior.setLevel(12);
+        archer.setLevel(12);
+        mage.setLevel(12);
 
         // Trials
         try {
@@ -101,7 +101,7 @@ public class Intro {
         for (char c : text.toCharArray()) {
             System.out.print(c);
             System.out.flush();
-            Thread.sleep(1);
+            Thread.sleep(60);
         }
 
         scan.nextLine();
@@ -117,9 +117,9 @@ public class Intro {
         Boss boss = new Boss();
 
         // SET LEVEL (as in your original code)
-        warrior.setLevel(11);
-        archer.setLevel(11);
-        mage.setLevel(11);
+        warrior.setLevel(12);
+        archer.setLevel(12);
+        mage.setLevel(12);
 
         String input = "";
 

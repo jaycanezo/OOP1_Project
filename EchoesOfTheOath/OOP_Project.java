@@ -1,14 +1,12 @@
 package EchoesOfTheOath;
 
-import java.util.Scanner;
-
 import EchoesOfTheOath.Characters.*;
 import EchoesOfTheOath.Characters.Character;
-
 import EchoesOfTheOath.Nation1.*;
 import EchoesOfTheOath.Nation2.*;
 import EchoesOfTheOath.Nation3.*;
 import EchoesOfTheOath.Resources.MusicPlayer;
+import java.util.Scanner;
 
 public class OOP_Project {
     public static void main(String[] args) throws InterruptedException {
@@ -18,8 +16,6 @@ public class OOP_Project {
         Scanner scan = new Scanner(System.in);
 
         Character chosen = Intro.main(args);
-
-        Storyline storyline = new Storyline();
 
         bgm.stopMusic();
 

@@ -99,7 +99,8 @@ abstract public class Character {
     public void takeDamage(int dmg){
         if (dmg > 0) {
             hp -= dmg;
-            if (hp < 0) hp = 0; // prevent negative HP
+            if (hp < 0) 
+                hp = 0; // prevent negative HP
         }
         
         System.out.println(name +  " takes " + RED + dmg + " damage!" + RESET);
