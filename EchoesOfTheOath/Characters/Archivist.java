@@ -10,9 +10,10 @@ public class Archivist extends Character {
 
 
     @Override 
-    public void useSkill(int skillNumber, Character enemy){
+    public String useSkill(int skillNumber, Character enemy){
         int[] cd = getSkillCooldowns(); // get cooldown array
         int dmg = 0;
+        StringBuilder msg = new StringBuilder();
 
         //for skill defaulting if random skill is on cooldown
         if (cd[skillNumber - 1] > 0 && skillNumber != 1) {
@@ -23,31 +24,27 @@ public class Archivist extends Character {
             case 1:
                 bgm.playSFX("Archivist-The panoptic eye.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: The Panoptic Eye" + RESET + "!");
-                System.out.println("A pale, shimmering after-image of you appears, and suddenly you feel a sharp cut—not on you, but on your own future shadow.");
+                msg.append(getName()).append(" uses Basic Skill: The Panoptic Eye!\n")
+                .append("A pale, shimmering after-image of you appears, and suddenly you feel a sharp cut—not on you, but on your own future shadow.");
                 break;
             case 2:
                 bgm.playSFX("Archivist-Temporary Relief.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Temporary Relief" + RESET + "!");
-                System.out.println("The Archivist strikes you with the crushing force of accumulated, unseen debts, leaving you reeling.");
+                msg.append(getName()).append(" uses Advanced Skill: Temporary Relief!\n")
+                .append("The Archivist strikes you with the crushing force of accumulated, unseen debts, leaving you reeling.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
                 bgm.playSFX("Archivist-The complete indictment.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate Skill: The Complete Indictment" + RESET + "!");
-                System.out.println("A storm of spectral scrolls engulfs you, tearing at your body as the Archivist claims you as his final possession.");
+                msg.append(getName()).append(" Ultimate Skill: The Complete Indictment!\n")
+                .append("A storm of spectral scrolls engulfs you, tearing at your body as the Archivist claims you as his final possession.");
                 cd[skillNumber - 1] = 3;
                 break;
         }   
         enemy.takeDamage(dmg);
         reduceCooldowns();
-    }
 
-
-    @Override 
-    public void takeDamage(int dmg){
-        super.takeDamage(dmg);
+        return msg.toString();
     }
 }

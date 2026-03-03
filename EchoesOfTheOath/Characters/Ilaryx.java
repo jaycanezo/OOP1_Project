@@ -10,9 +10,10 @@ public class Ilaryx extends Character {
 
 
     @Override
-    public void useSkill(int skillNumber, Character enemy) {
+    public String useSkill(int skillNumber, Character enemy) {
         int[] cd = getSkillCooldowns();
         int dmg = 0;
+        StringBuilder msg = new StringBuilder();
 
         if (cd[skillNumber - 1] > 0 && skillNumber != 1) {
             skillNumber = 1;
@@ -22,32 +23,34 @@ public class Ilaryx extends Character {
             case 1:
                 bgm.playSFX("ILARYX quickshot_noisles.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: Quick Shot" + RESET + "!");
-                System.out.println("Ilaryx fires a Double Tap! Two arrows blaze toward you.");
+                msg.append(getName()+ " uses Basic Skill: Quick Shot!\n");
+                msg.append("Ilaryx fires a Double Tap! Two arrows blaze toward you.");
                 break;
             case 2:
                 bgm.playSFX("ILARYX hunters trap_noisles.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Hunter's Trap" + RESET + "!");
-                System.out.println("Ilaryx activates an Invisible Snare! You feel the trap closing in around you.");
+                msg.append(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Hunter's Trap" + RESET + "!");
+                msg.append("Ilaryx activates an Invisible Snare! You feel the trap closing in around you.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
                 bgm.playSFX("ILARYX Arrow of the Silverfang_noisles.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: Arrow of the Silverfang" + RESET + "!");
-                System.out.println("Ilaryx channels silver magic into her bow, firing a massive, charged arrow directly at you. Brace yourself!");
+                msg.append(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: Arrow of the Silverfang" + RESET + "!");
+                msg.append("Ilaryx channels silver magic into her bow, firing a massive, charged arrow directly at you. Brace yourself!");
                 cd[skillNumber - 1] = 3;
                 break;
         }
         enemy.takeDamage(dmg);
         reduceCooldowns();
+
+        return msg.toString();
     }
 
 
-    @Override 
+    /*@Override 
     public void takeDamage(int dmg){
         super.takeDamage(dmg);
-    }
+    }*/
    
 }

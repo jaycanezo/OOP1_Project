@@ -1,72 +1,80 @@
 package EchoesOfTheOath.Characters;
-import EchoesOfTheOath.Resources.MusicPlayer;
-public class Archer extends Character{
-    boolean[] isUsed = new boolean[3];
-    MusicPlayer bgm = new MusicPlayer();
 
-    public Archer(){
+import EchoesOfTheOath.Resources.MusicPlayer;
+
+public class Archer extends Character {
+
+    private boolean[] isUsed = new boolean[3];
+    private MusicPlayer bgm = new MusicPlayer();
+
+    public Archer() {
         super("Archer", 1300, 1);
     }
 
-
+    // ---------------- USE SKILL ----------------
+    // Returns a String describing what happened for the GUI to display
     @Override
-    public void useSkill(int skillNumber, Character enemy){
-        if(skillNumber<1||skillNumber>3){
-            return;
-        }
+    public String useSkill(int skillNumber, Character enemy) {
+        if (skillNumber < 1 || skillNumber > 3) return "Invalid skill number.\n";
 
         if (!isSkillAvailable(skillNumber)) {
-            System.out.println(YELLOW + "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining." + RESET);
-            return;
+            return "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining.\n";
         }
 
-        int dmg=0;
-        switch (skillNumber){
+        int dmg = 0;
+        StringBuilder message = new StringBuilder();
+
+        switch (skillNumber) {
             case 1:
                 bgm.playSFX("Archer-Piercingshot.wav");
                 dmg = (random.nextInt(45 - 15 + 1) + 15 + 25) * getLevel();
-                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Piercing Shot" + RESET + "!");
-                System.out.println("You shoot a swift arrow at your foe.");
+                message.append(getName()).append(" uses Basic Skill: Piercing Shot!\n")
+                       .append("You shoot a swift arrow at your foe.\n");
                 setSkillCooldown(1, 0);
                 break;
+
             case 2:
                 bgm.playSFX("Archer-VolleyofNature.wav");
                 dmg = (random.nextInt(95 - 70 + 1) + 70 + 20) * getLevel();
-                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Volley of Nature" + RESET + "!");
-                System.out.println("You fire multiple arrows, raining them down on your enemy.");
+                message.append(getName()).append(" uses Advanced Skill: Volley of Nature!\n")
+                       .append("You fire multiple arrows, raining them down on your enemy.\n");
                 setSkillCooldown(2, 3);
                 break;
+
             case 3:
                 bgm.playSFX("Archer-Nature'swrath.wav");
                 dmg = (random.nextInt(230 - 105 + 1) + 105 + 80) * getLevel();
-                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Nature's Wrath" + RESET + "!");
-                System.out.println("You unleash four guiding arrows, striking your enemy with precision.");
+                message.append(getName()).append(" uses Ultimate: Nature's Wrath!\n")
+                       .append("You unleash four guiding arrows, striking your enemy with precision.\n");
                 setSkillCooldown(3, 5);
                 break;
         }
+
         enemy.takeDamage(dmg);
-        isUsed[skillNumber-1]=true;
+        isUsed[skillNumber - 1] = true;
         reduceCooldowns();
+
+        message.append(enemy.getName()).append(" took ").append(dmg).append(" damage!\n");
+        return message.toString();
     }
 
+    // ---------------- POTION ----------------
+    @Override
+    public String usePotion() {
+        if (getPotionCount() <= 0) return "No potions left!\n";
+        setPotionCount(getPotionCount() - 1);
+        setHp(getMaxHp());
+        return getName() + " used a potion and restored HP to full!\n";
+    }
 
-    public boolean allSkillsUsed(){
-        for(boolean used:isUsed){
-            if (!used){
-                return false;
-            }
-        }
+    public boolean allSkillsUsed() {
+        for (boolean used : isUsed) if (!used) return false;
         return true;
     }
 
-
-    @Override 
-    public void takeDamage(int dmg){
-        super.takeDamage(dmg);
-    }
-
+    // ---------------- SKILL INFO ----------------
     public String getSkillName(int skillNumber) {
-        switch(skillNumber) {
+        switch (skillNumber) {
             case 1: return "Piercing Shot";
             case 2: return "Volley of Nature";
             case 3: return "Nature's Wrath";
@@ -74,50 +82,42 @@ public class Archer extends Character{
         }
     }
 
-
     public String getSkillDamageRange(int skillNumber) {
-        switch(skillNumber) {
-            case 1: return (15*getLevel()) + " - " + (45*getLevel()) + " + " + (25*getLevel());
-            case 2: return (70*getLevel()) + " - " + (95*getLevel()) + " + " + (20*getLevel());
-            case 3: return (105*getLevel()) + " - " + (230*getLevel()) + " + " + (80*getLevel());
+        switch (skillNumber) {
+            case 1: return (15 * getLevel()) + " - " + (45 * getLevel()) + " + " + (25 * getLevel());
+            case 2: return (70 * getLevel()) + " - " + (95 * getLevel()) + " + " + (20 * getLevel());
+            case 3: return (105 * getLevel()) + " - " + (230 * getLevel()) + " + " + (80 * getLevel());
             default: return "0";
         }
     }
 
+    public String displayCharacterInfo() {
+        StringBuilder msg = new StringBuilder();
 
-    public void displayCharacterInfo() {
-        System.out.println("\nSwift and precise, Archers strike from afar with deadly accuracy. Masters of the bow, they can pierce armor, control the battlefield, and rain destruction upon enemies before they can even draw near.");
-        System.out.println();
+        msg.append("\nWielders of ancient knowledge, Mages command the elements and arcane forces. Fragile in body but unmatched in power, they bend magic at will to devastate their enemies from a distance.\n");
 
-        System.out.println("SKILLS:");
+        msg.append("SKILLS:\n");
        
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
-            System.out.println("(" + i + ") " + PURPLE + skillName + RESET + "\nDamage: " + damageRange + "\n");
+            msg.append("(" + i + ") " + PURPLE + skillName + RESET + "\nDamage: " + damageRange + "\n");
         }
+
+        return msg.toString();
     }
 
+    // ---------------- SKILL DISPLAY FOR GUI ----------------
     @Override
-    public void displaySkills() {
-        System.out.println(BLUE + "------------------ " + getName() + "'s Skills ------------------" + RESET);
-        System.out.println();
-
+    public String displaySkills() {
+        StringBuilder msg = new StringBuilder();
         for (int i = 1; i <= 3; i++) {
-            String skillName = getSkillName(i);
-            String damageRange = getSkillDamageRange(i);
-            int cooldown = getSkillCooldown(i);
-            String status;
-
-            if (isSkillAvailable(i)) {
-                status = GREEN + "Ready" + RESET;
-            } else {
-                status = YELLOW + "Cooldown: " + cooldown + " turn(s)" + RESET;
-            }
-
-            System.out.println(i + ". " + skillName + " | Damage: " + damageRange + " | " + status);
+            msg.append(i).append(". ").append(getSkillName(i))
+               .append(" | Damage: ").append(getSkillDamageRange(i))
+               .append(" | Cooldown: ").append(getSkillCooldown(i)).append("\n");
         }
+        return msg.toString();
     }
-    
+
 }
 

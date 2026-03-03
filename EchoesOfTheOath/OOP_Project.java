@@ -6,10 +6,14 @@ import EchoesOfTheOath.Nation1.*;
 import EchoesOfTheOath.Nation2.*;
 import EchoesOfTheOath.Nation3.*;
 import EchoesOfTheOath.Resources.MusicPlayer;
+import EchoesOfTheOath.UI.GameWindow;
+
 import java.util.Scanner;
 
 public class OOP_Project {
     public static void main(String[] args) throws InterruptedException {
+        new GameWindow();
+        
         MusicPlayer bgm = new MusicPlayer();
         bgm.playMusic("intro_bgm.wav");
 
@@ -32,7 +36,7 @@ public class OOP_Project {
 
         bgm.playMusic("nation1_fight_bgm.wav");
         babyM babyM = new babyM();// Nation 1 Mini Boss
-        BattleLogic.battleLogic(chosen, babyM);
+        //BattleLogic.battleLogic(chosen, babyM);
         bgm.stopMusic();
 
         bgm.playMusic("nation1_bgm2.wav");
@@ -41,7 +45,7 @@ public class OOP_Project {
 
         bgm.playMusic("nation1_fight_bgm2.wav");
         Archivist archivist = new Archivist();// Nation 1 Main Boss
-        BattleLogic.battleLogic(chosen, archivist);
+        //BattleLogic.battleLogic(chosen, archivist);
         bgm.stopMusic();
 
         
@@ -56,7 +60,7 @@ public class OOP_Project {
 
         bgm.playMusic("nation2_fight_bgm.wav");
         Ilaryx ilaryx = new Ilaryx();// Nation 2 Mini Boss
-        BattleLogic.battleLogic(chosen, ilaryx);
+        //BattleLogic.BattleLogic(chosen, ilaryx);
         bgm.stopMusic();
 
         bgm.playMusic("nation2_bgm2.wav");
@@ -65,7 +69,7 @@ public class OOP_Project {
 
         bgm.playMusic("nation2_fight_bgm.wav");
         Lunareth lunareth = new Lunareth();// Nation 2 Main Boss
-        BattleLogic.battleLogic(chosen, lunareth);
+        //BattleLogic.battleLogic(chosen, lunareth);
         bgm.stopMusic();
 
         // ============================================================NATION
@@ -79,7 +83,7 @@ public class OOP_Project {
 
         bgm.playMusic("nation3_fight_bgm.wav");
         Sarukdal sarukdal = new Sarukdal();// Nation 3 Mini Boss
-        BattleLogic.battleLogic(chosen, sarukdal);
+        //BattleLogic.battleLogic(chosen, sarukdal);
         bgm.stopMusic();
 
         bgm.playMusic("nation3_bgm.wav");
@@ -88,7 +92,7 @@ public class OOP_Project {
 
         bgm.playMusic("nation3_fight_bgm2.wav");
         Elarion elarion = new Elarion();// Nation 3 Main Boss
-        BattleLogic.battleLogic(chosen, elarion);
+        //BattleLogic.battleLogic(chosen, elarion);
         bgm.stopMusic();
 
         bgm.playMusic("ending_bgm.wav");

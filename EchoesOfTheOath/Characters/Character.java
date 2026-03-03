@@ -93,32 +93,32 @@ abstract public class Character {
     }
 
 
-    public abstract void useSkill(int skillNumber, Character enemy);
+    public abstract String useSkill(int skillNumber, Character enemy);
 
 
-    public void takeDamage(int dmg){
+    public String takeDamage(int dmg){
         if (dmg > 0) {
             hp -= dmg;
             if (hp < 0) 
                 hp = 0; // prevent negative HP
         }
         
-        System.out.println(name +  " takes " + RED + dmg + " damage!" + RESET);
-        System.out.println(name + " has " + GREEN + hp + " HP remaining!" + RESET);
+        return name +  " takes " + RED + dmg + " damage!" + RESET + "\n" + name + " has " + GREEN + hp + " HP remaining!" + RESET;
     }
 
 
-    public void usePotion() {
+    public String usePotion() {
         if(potionCount>0){
             int missingHp = maxHp - hp;
             int healed = (int)(missingHp * 0.30);
             setHp(Math.min(hp + healed, maxHp));
-            System.out.println(BLUE + name + RESET + " uses " + PURPLE + "HP Potion" + RESET + "! Restores " + GREEN + healed + " HP" + RESET + "!");
             potionCount--;
-            System.out.println(BLUE + name + RESET + " has " + GREEN + hp + " HP remaining!" + RESET);
-            System.out.println(YELLOW + "Potions left: " + potionCount + RESET);
+
+            return BLUE + name + RESET + " uses " + PURPLE + "HP Potion" + RESET + "! Restores " + GREEN + healed + " HP" + RESET + "!\n"
+            +BLUE + name + RESET + " has " + GREEN + hp + " HP remaining!" + RESET
+            + YELLOW + "Potions left: " + potionCount + RESET;
         } else {
-            System.out.println(RED + "No potions left!" + RESET);
+            return RED + "No potions left!" + RESET;
         }
     }
 
@@ -159,8 +159,8 @@ abstract public class Character {
     }
 
 
-    public void displaySkills() {
-        System.out.println(name + " has no skills to display.");
+    public String displaySkills() {
+        return name + " has no skills to display.";
     }
 
 }

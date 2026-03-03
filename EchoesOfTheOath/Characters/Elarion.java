@@ -10,9 +10,10 @@ public class Elarion extends Character{
 
     
     @Override
-    public void useSkill(int skillNumber, Character enemy) {
+    public String useSkill(int skillNumber, Character enemy) {
         int[] cd = getSkillCooldowns(); // get cooldown array
         int dmg = 0;
+        StringBuilder msg = new StringBuilder();
 
         //for skill defaulting if random skill is on cooldown
         if (cd[skillNumber - 1] > 0 && skillNumber != 1) {
@@ -23,14 +24,14 @@ public class Elarion extends Character{
             case 1:
                 bgm.playSFX("ELARION -- Echo Rend.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: Echo Rend" + RESET + "!");
-                System.out.println("Elarion unleashes a wave of distorted echoes.\n");
+                msg.append(getName() + " uses  Basic Skill: Echo Rend!\n");
+                msg.append("Elarion unleashes a wave of distorted echoes.\n");
                 break;
             case 2:
                 bgm.playSFX("ELARION --Memory Shatter.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Memory Shatter" + RESET + "!");
-                System.out.println("Elarion summons glowing memory shards from you and crushes them into a protective shield, forcing you to endure the impact.");
+                msg.append(getName() + " uses Advanced Skill: Memory Shatter!\n");
+                msg.append("Elarion summons glowing memory shards from you and crushes them into a protective shield, forcing you to endure the impact.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
@@ -43,13 +44,14 @@ public class Elarion extends Character{
         }
         enemy.takeDamage(dmg);
         reduceCooldowns();
+        return msg.toString();
     }
 
 
-    @Override 
+    /*@Override 
     public void takeDamage(int dmg){
         super.takeDamage(dmg);
-    }
+    }*/
    
 }
 

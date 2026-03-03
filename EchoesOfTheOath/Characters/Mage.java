@@ -11,43 +11,47 @@ public class Mage extends Character{
 
 
     @Override
-    public void useSkill(int skillNumber, Character enemy){
+    public String useSkill(int skillNumber, Character enemy){
         if(skillNumber<1||skillNumber>3){
-            return;
+            return "Invalid Skill display.\n";
         }
 
         if (!isSkillAvailable(skillNumber)) {
-            System.out.println(YELLOW + "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining." + RESET);
-            return;
+            return "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining." + RESET;
         }
 
         int dmg=0;
+        StringBuilder msg = new StringBuilder();
+        
         switch (skillNumber){
             case 1:
                 bgm.playSFX("Mage - Fire ball1.wav");
                 dmg = (random.nextInt(550 - 530 + 1) + 530 + 1000) * getLevel();
-                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Fireball" + RESET + "!");
-                System.out.println("You hurl a blazing fireball at your enemy, dealing damage.");
+                msg.append(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Fireball" + RESET + "!");
+                msg.append("You hurl a blazing fireball at your enemy, dealing damage.");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 bgm.playSFX("Mage - Heatfire Surge.wav");
                 dmg = (random.nextInt(800 - 765 + 1) + 765 + 765) * getLevel();
-                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Heatfire Surge" + RESET + "!");
-                System.out.println("You unleash a surge of intense flames, striking your enemy with great force.");
+                msg.append(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Heatfire Surge" + RESET + "!");
+                msg.append("You unleash a surge of intense flames, striking your enemy with great force.");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 bgm.playSFX("Mage-Astral Cataclysm.wav");
                 dmg = 1580 * getLevel();
-                System.out.println(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Astral Cataclysm" + RESET + "!");
-                System.out.println("You summon a massive fiery rock, obliterating everything in the area around your enemy.");
+                msg.append(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Astral Cataclysm" + RESET + "!");
+                msg.append("You summon a massive fiery rock, obliterating everything in the area around your enemy.");
                 setSkillCooldown(3, 4);
                 break;
         }
         enemy.takeDamage(dmg);
         isUsed[skillNumber-1]=true;
         reduceCooldowns();
+
+        msg.append(enemy.getName()).append(" took ").append(dmg).append(" damage!\n");
+        return msg.toString();
     }
 
 
@@ -61,10 +65,10 @@ public class Mage extends Character{
     }
 
 
-    @Override 
+    /*@Override 
     public void takeDamage(int dmg){
         super.takeDamage(dmg);
-    }
+    }*/
 
 
     public String getSkillName(int skillNumber) {
@@ -87,37 +91,32 @@ public class Mage extends Character{
     }
 
 
-    public void displayCharacterInfo() {
-        System.out.println("\nWielders of ancient knowledge, Mages command the elements and arcane forces. Fragile in body but unmatched in power, they bend magic at will to devastate their enemies from a distance.");
-        System.out.println();
+    public String displayCharacterInfo() {
+        StringBuilder msg = new StringBuilder();
 
-        System.out.println("SKILLS:");
+        msg.append("\nWielders of ancient knowledge, Mages command the elements and arcane forces. Fragile in body but unmatched in power, they bend magic at will to devastate their enemies from a distance.\n");
+
+        msg.append("SKILLS:\n");
        
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
-            System.out.println("(" + i + ") " + PURPLE + skillName + RESET + "\nDamage: " + damageRange + "\n");
+            msg.append("(" + i + ") " + PURPLE + skillName + RESET + "\nDamage: " + damageRange + "\n");
         }
+
+        return msg.toString();
     }
 
 
     @Override
-    public void displaySkills() {
-        System.out.println(BLUE+"------------------ " + getName() + "'s Skills ------------------"+RESET);
+    public String displaySkills() {
+        StringBuilder msg = new StringBuilder();
         for (int i = 1; i <= 3; i++) {
-            String skillName = getSkillName(i);
-            String damageRange = getSkillDamageRange(i);
-            int cooldown = getSkillCooldown(i);
-            String status;
-
-            if (isSkillAvailable(i)) {
-                status = GREEN + "Ready" + RESET;
-            } else {
-                status = YELLOW + "Cooldown: " + cooldown + " turn(s)" + RESET;
-            }
-
-            System.out.println(i + ". " + skillName + " | Damage: " + damageRange + " | " + status);
+            msg.append(i).append(". ").append(getSkillName(i))
+               .append(" | Damage: ").append(getSkillDamageRange(i))
+               .append(" | Cooldown: ").append(getSkillCooldown(i)).append("\n");
         }
+        return msg.toString();
     }
 
 }

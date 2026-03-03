@@ -10,10 +10,10 @@ public class Sarukdal extends Character{
 
 
     @Override
-    public void useSkill(int skillNumber, Character enemy) {
+    public String useSkill(int skillNumber, Character enemy) {
         int[] cd = getSkillCooldowns(); // get cooldown array
         int dmg = 0;
-
+        StringBuilder msg = new StringBuilder();
         //for skill defaulting if random skill is on cooldown
         if (cd[skillNumber - 1] > 0 && skillNumber != 1) {
             skillNumber = 1; //defaults to basic atk
@@ -23,33 +23,35 @@ public class Sarukdal extends Character{
             case 1:
                 bgm.playSFX("SARUKDAL -- Warden’s Grasp.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Basic Skill: Warden's Grasp" + RESET + "!");
-                System.out.println("Sarukdal hurls spectral chains at you, attempting to seize you.");
+                msg.append(getName()+ " uses Basic Skill: Warden's Grasp!\n");
+                msg.append("Sarukdal hurls spectral chains at you, attempting to seize you.");
                 break;
             case 2:
                 bgm.playSFX("SARUKDAL -- Abyssal Lament.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Abyssal Lament" + RESET + "!");
-                System.out.println("Dark flames spread across the battlefield, scorching everything around you.");
+                msg.append(getName()+ " uses Advanced Skill: Abyssal Lament!\n");
+                msg.append("Dark flames spread across the battlefield, scorching everything around you.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
                 bgm.playSFX("SARUKDAL -- Judgement of the Forsaken.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: Judgment of the Forsaken" + RESET + "!");
-                System.out.println("Glowing fire blades descend from the sky, targeting you with devastating force.");
+                msg.append(getName() + " uses Ultimate: Judgment of the Forsaken!\n");
+                msg.append("Glowing fire blades descend from the sky, targeting you with devastating force.");
                 cd[skillNumber - 1] = 3;
                 break;
         }
         enemy.takeDamage(dmg);
         reduceCooldowns();
+
+        return msg.toString();
     }
 
 
-    @Override 
+    /*@Override 
     public void takeDamage(int dmg){
         super.takeDamage(dmg);
-    }
+    }*/
    
 }
 
