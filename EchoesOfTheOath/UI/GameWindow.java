@@ -1,7 +1,7 @@
 package EchoesOfTheOath.UI;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class GameWindow {
 
@@ -42,7 +42,10 @@ public class GameWindow {
             case "start":
                 start.startScreenMusic();
                 break;
-        
+            case "game":
+                container.getComponent(1).requestFocusInWindow(); 
+                start.stopMusic();
+                break;
             default:
                 start.stopMusic();
                 break;

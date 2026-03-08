@@ -6,8 +6,6 @@ import EchoesOfTheOath.Nation1.*;
 import EchoesOfTheOath.Nation2.*;
 import EchoesOfTheOath.Nation3.*;
 import EchoesOfTheOath.UI.*;
-import EchoesOfTheOath.UI.MusicPlayer;
-
 import java.util.Scanner;
 
 public class OOP_Project {
