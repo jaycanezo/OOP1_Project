@@ -1,23 +1,53 @@
 package EchoesOfTheOath.UI;
 
 import javax.swing.*;
-
 import java.awt.*;
 
-public class GameWindow extends JFrame {
+public class GameWindow {
+
+    JFrame window;
+    CardLayout cardLayout;
+    JPanel container;
+
+    StartScreen start;
 
     public GameWindow() {
-        setTitle("Echoes of the Oath");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // center screen
-        setLayout(new BorderLayout());
 
-        JLabel label = new JLabel("Echoes of the Oath", SwingConstants.CENTER);
-        label.setFont(new Font("Arial", Font.BOLD, 30));
+        window = new JFrame("Echoes of the Oath");
+        window.setSize(1080,720);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        add(new BattlePanel());
+        cardLayout = new CardLayout();
+        container = new JPanel(cardLayout);
 
-        setVisible(true);
+        // create screens
+        start = new StartScreen(this);
+        GamePanel game = new GamePanel(this);
+
+        // add screens
+        container.add(start, "start");
+        container.add(game, "game");
+
+        window.add(container);
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+
+        showScreen("start");
+    }
+
+    public void showScreen(String name){
+        cardLayout.show(container, name);
+        
+        switch (name) {
+            case "start":
+                start.startScreenMusic();
+                break;
+        
+            default:
+                start.stopMusic();
+                break;
+        }
+        
+
     }
 }

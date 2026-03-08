@@ -1,5 +1,5 @@
 package EchoesOfTheOath.Characters;
-import EchoesOfTheOath.Resources.MusicPlayer;
+import EchoesOfTheOath.UI.MusicPlayer;
 
 public class Elarion extends Character{
     MusicPlayer bgm = new MusicPlayer();

@@ -5,8 +5,8 @@ import EchoesOfTheOath.Characters.Character;
 import EchoesOfTheOath.Nation1.*;
 import EchoesOfTheOath.Nation2.*;
 import EchoesOfTheOath.Nation3.*;
-import EchoesOfTheOath.Resources.MusicPlayer;
-import EchoesOfTheOath.UI.GameWindow;
+import EchoesOfTheOath.UI.*;
+import EchoesOfTheOath.UI.MusicPlayer;
 
 import java.util.Scanner;
 
@@ -15,7 +15,7 @@ public class OOP_Project {
         new GameWindow();
         
         MusicPlayer bgm = new MusicPlayer();
-        bgm.playMusic("intro_bgm.wav");
+
 
         Scanner scan = new Scanner(System.in);
 

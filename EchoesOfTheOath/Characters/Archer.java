@@ -1,6 +1,6 @@
 package EchoesOfTheOath.Characters;
 
-import EchoesOfTheOath.Resources.MusicPlayer;
+import EchoesOfTheOath.UI.MusicPlayer;
 
 public class Archer extends Character {
 

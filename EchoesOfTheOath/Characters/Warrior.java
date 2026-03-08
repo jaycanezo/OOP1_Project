@@ -1,5 +1,5 @@
 package EchoesOfTheOath.Characters;
-import EchoesOfTheOath.Resources.MusicPlayer;
+import EchoesOfTheOath.UI.MusicPlayer;
 
 public class Warrior extends Character{
     boolean[] isUsed = new boolean[3];

@@ -1,5 +1,5 @@
 package EchoesOfTheOath.Characters;
-import EchoesOfTheOath.Resources.MusicPlayer;
+import EchoesOfTheOath.UI.MusicPlayer;
 
 public class Sarukdal extends Character{
     MusicPlayer bgm = new MusicPlayer();

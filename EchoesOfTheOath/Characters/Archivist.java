@@ -1,5 +1,5 @@
 package EchoesOfTheOath.Characters;
-import EchoesOfTheOath.Resources.MusicPlayer;
+import EchoesOfTheOath.UI.MusicPlayer;
 
 public class Archivist extends Character {
     MusicPlayer bgm = new MusicPlayer();

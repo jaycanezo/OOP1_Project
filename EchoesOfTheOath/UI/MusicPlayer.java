@@ -1,4 +1,4 @@
-package EchoesOfTheOath.Resources;
+package EchoesOfTheOath.UI;
 
 import javax.sound.sampled.*;
 import java.net.URL;
