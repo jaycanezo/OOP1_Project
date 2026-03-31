@@ -2,6 +2,7 @@ package EchoesOfTheOath.UI;
 
 import java.awt.*;
 import javax.swing.*;
+import EchoesOfTheOath.Characters.Character;
 
 public class GameWindow {
 
@@ -9,7 +10,21 @@ public class GameWindow {
     CardLayout cardLayout;
     JPanel container;
 
-    StartScreen start;
+    IntroPanel intro;
+    StartPanel start;
+    StoryPanel story;
+    CharacterSelectPanel charSelect;
+
+    private Character chosenCharacter;
+
+    public void setChosenCharacter(Character chosenCharacter) {
+        this.chosenCharacter = chosenCharacter;
+    }
+
+    public Character getChosenCharacter(){
+        return this.chosenCharacter;
+    }
+
 
     public GameWindow() {
 
@@ -21,12 +36,16 @@ public class GameWindow {
         container = new JPanel(cardLayout);
 
         // create screens
-        start = new StartScreen(this);
-        GamePanel game = new GamePanel(this);
+        start = new StartPanel(this);
+        intro = new IntroPanel(this);
+        story = new StoryPanel(this);
+        charSelect = new CharacterSelectPanel(this);
 
         // add screens
         container.add(start, "start");
-        container.add(game, "game");
+        container.add(intro, "intro");
+        container.add(charSelect, "charSelect");
+        container.add(story, "story");
 
         window.add(container);
         window.setLocationRelativeTo(null);
@@ -38,12 +57,21 @@ public class GameWindow {
     public void showScreen(String name){
         cardLayout.show(container, name);
         
+        if(name.equals("story")){
+            story.loadSelectedCharacter();
+        }
+
         switch (name) {
             case "start":
                 start.startScreenMusic();
                 break;
-            case "game":
+            case "intro":
                 container.getComponent(1).requestFocusInWindow(); 
+                start.stopMusic();
+                break;
+                
+            case "story":
+                container.getComponent(2).requestFocusInWindow(); 
                 start.stopMusic();
                 break;
             default:

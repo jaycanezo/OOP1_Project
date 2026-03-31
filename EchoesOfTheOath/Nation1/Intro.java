@@ -92,7 +92,7 @@ public class Intro {
         clearScreen();
     }
 
-    public static void storylineIntro(Scanner scan) throws InterruptedException {
+    public static String storylineIntro(Scanner scan) throws InterruptedException {
         String text = "Long ago, three adventurers-a brave warrior, a swift archer, and a wise mage-" +
                 "traveled across worlds, earning fame for vanquishing great evils. Their bond was unbreakable, " +
                 "their deeds legendary...\n\nUntil one mission brought them face to face with a power unlike any other-" +
@@ -106,6 +106,7 @@ public class Intro {
 
         scan.nextLine();
         System.out.println();
+        return text;
     }
 
     public static void runCharacterTrial(Scanner scan) throws Exception {

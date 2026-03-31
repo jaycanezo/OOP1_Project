@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-public class StartScreen extends JPanel {
+public class StartPanel extends JPanel {
 
     GameWindow game;
     MusicPlayer bgm;
@@ -15,7 +15,7 @@ public class StartScreen extends JPanel {
 
     Timer animationTimer;
 
-    public StartScreen(GameWindow game) {
+    public StartPanel(GameWindow game) {
         this.game = game;
         setFocusable(true);
         requestFocusInWindow();
@@ -39,7 +39,7 @@ public class StartScreen extends JPanel {
         addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    game.showScreen("game");
+                    game.showScreen("intro");
                 }
             }
         });

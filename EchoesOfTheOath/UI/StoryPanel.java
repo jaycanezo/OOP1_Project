@@ -7,8 +7,10 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import EchoesOfTheOath.Characters.*;
+import EchoesOfTheOath.Characters.Character;
 
-public class GamePanel extends JPanel {
+public class StoryPanel extends JPanel {
 
     private GameWindow game;
     private Image background;
@@ -16,12 +18,12 @@ public class GamePanel extends JPanel {
     private int currentMap = 1;
     private String dialogue = "Welcome, Player. Use WASD to explore.";
 
-    public GamePanel(GameWindow game) {
+    public StoryPanel(GameWindow game) {
         this.game = game;
         this.setFocusable(true);
         setBackground(Color.darkGray);
 
-        loadResources();
+        loadSelectedCharacter();
 
         Timer animationTimer = new Timer(150, e -> {
             characterSprite.update();
@@ -37,8 +39,15 @@ public class GamePanel extends JPanel {
         });
     }
 
-    private void loadResources() {
-        characterSprite = new Sprite("/EchoesOfTheOath/Resources/character.png", 1002, 835, 12);
+    void loadSelectedCharacter() {
+        Character chosen = game.getChosenCharacter();
+        if(chosen instanceof Warrior) {
+            characterSprite = new Sprite("/EchoesOfTheOath/Resources/Warrior.png", 523, 477, 1);
+        } else if(chosen instanceof Archer) {
+            characterSprite = new Sprite("/EchoesOfTheOath/Resources/Archer.png", 515, 484, 1);
+        } else if(chosen instanceof Mage) {
+            characterSprite = new Sprite("/EchoesOfTheOath/Resources/Mage.png", 500, 500, 1);
+        }
         updateBackground();
     }
 
