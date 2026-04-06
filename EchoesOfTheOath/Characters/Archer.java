@@ -8,7 +8,7 @@ public class Archer extends Character {
     private MusicPlayer bgm = new MusicPlayer();
 
     public Archer() {
-        super("Archer", 1300, 1);
+        super("Archer", 1300, 1, "Archer");
     }
 
     // ---------------- USE SKILL ----------------
@@ -73,6 +73,7 @@ public class Archer extends Character {
     }
 
     // ---------------- SKILL INFO ----------------
+    @Override
     public String getSkillName(int skillNumber) {
         switch (skillNumber) {
             case 1: return "Piercing Shot";
@@ -82,11 +83,22 @@ public class Archer extends Character {
         }
     }
 
+    @Override
     public String getSkillDamageRange(int skillNumber) {
+        int lvl = getLevel();
         switch (skillNumber) {
-            case 1: return (15 * getLevel()) + " - " + (45 * getLevel()) + " + " + (25 * getLevel());
-            case 2: return (70 * getLevel()) + " - " + (95 * getLevel()) + " + " + (20 * getLevel());
-            case 3: return (105 * getLevel()) + " - " + (230 * getLevel()) + " + " + (80 * getLevel());
+            case 1: 
+                int min1 = (15 * lvl) + (25 * lvl) + getSkill1Bonus();
+                int max1 = (45 * lvl) + (25 * lvl) + getSkill1Bonus();
+                return min1 + " - " + max1;
+            case 2: 
+                int min2 = (70 * lvl) + (20 * lvl) + getSkill2Bonus();
+                int max2 = (95 * lvl) + (20 * lvl) + getSkill2Bonus();
+                return min2 + " - " + max2;
+            case 3: 
+                int min3 = (105 * lvl) + (80 * lvl) + getSkill3Bonus();
+                int max3 = (230 * lvl) + (80 * lvl) + getSkill3Bonus();
+                return min3 + " - " + max3;
             default: return "0";
         }
     }

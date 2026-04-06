@@ -6,7 +6,7 @@ public class Mage extends Character{
     MusicPlayer bgm = new MusicPlayer();
 
     public Mage() {
-        super("Mage", 1500, 1);
+        super("Mage", 1500, 1, "Mage");
     }
 
 
@@ -70,7 +70,7 @@ public class Mage extends Character{
         super.takeDamage(dmg);
     }*/
 
-
+    @Override
     public String getSkillName(int skillNumber) {
         switch(skillNumber) {
             case 1: return "Fire Ball";
@@ -80,12 +80,20 @@ public class Mage extends Character{
         }
     }
 
-
+    @Override
     public String getSkillDamageRange(int skillNumber) {
+        int lvl = getLevel();
         switch(skillNumber) {
-            case 1: return (530*getLevel()) + " - " + (550*getLevel()) + " + " + (1000*getLevel());
-            case 2: return (765*getLevel()) + " - " + (800*getLevel()) + " + " + (765*getLevel());
-            case 3: return String.valueOf(1580*getLevel());
+            case 1: 
+                int min1 = (530 * lvl) + (1000 * lvl) + getSkill1Bonus();
+                int max1 = (550 * lvl) + (1000 * lvl) + getSkill1Bonus();
+                return min1 + " - " + max1;
+            case 2: 
+                int min2 = (765 * lvl) + (765 * lvl) + getSkill2Bonus();
+                int max2 = (800 * lvl) + (765 * lvl) + getSkill2Bonus();
+                return min2 + " - " + max2;
+            case 3: 
+                return String.valueOf((1580 * lvl) + getSkill3Bonus());
             default: return "0";
         }
     }

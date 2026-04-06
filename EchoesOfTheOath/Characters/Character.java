@@ -1,6 +1,7 @@
 package EchoesOfTheOath.Characters;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.Random; 
 
 abstract public class Character {
     public Random random = new Random();
@@ -10,8 +11,16 @@ abstract public class Character {
     private int baseHp;
     private int maxHp;
     private int level;
+    private String classType;
     private int potionCount=0;
     private int[] skillCooldowns;
+    private double gold = 1000; 
+    private int skill1Bonus = 0;
+    private int skill2Bonus = 0;
+    private int skill3Bonus = 0;
+
+    public ArrayList<Item> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
 
     public String RESET = "\033[0m";
     public String RED = "\033[31m";      // enemy / damage
@@ -21,12 +30,13 @@ abstract public class Character {
     public String PURPLE = "\033[35m";   // skills 
 
 
-    public Character(String name, int hp, int level) {
+    public Character(String name, int hp, int level, String classType) {
         this.name = name;
         this.baseHp = hp;          
         this.level = level;
         this.maxHp = baseHp * level;
-        this.hp = maxHp;          
+        this.hp = maxHp;   
+        this.classType = classType;       
         this.skillCooldowns = new int[3];
     }
 
@@ -39,8 +49,6 @@ abstract public class Character {
         this.hp = maxHp;
         this.skillCooldowns = new int[3];
     }
-
-
 
     public int getHp() {
         return this.hp;
@@ -56,21 +64,57 @@ abstract public class Character {
         return this.level;
     }
 
+    public String getClassType() {
+        return this.classType;
+    }
 
     public int getPotionCount() {
         return this.potionCount;
     }
 
+    public double getGold() {
+        return this.gold;
+    }
+
+    public int getSkill1Bonus() {
+        return skill1Bonus;
+    }
+
+    public int getSkill2Bonus() {
+        return skill2Bonus;
+    }
+
+    public int getSkill3Bonus() {
+        return skill3Bonus;
+    }
+
+    public void addSkill1Bonus(int amount) {
+        this.skill1Bonus += amount;
+        if (this.skill1Bonus < 0) this.skill1Bonus = 0; 
+    }
+
+    public void addSkill2Bonus(int amount) {
+        this.skill2Bonus += amount;
+        if (this.skill2Bonus < 0) this.skill2Bonus = 0; 
+    }
+
+    public void addSkill3Bonus(int amount) {
+        this.skill3Bonus += amount;
+        if (this.skill3Bonus < 0) this.skill3Bonus = 0; 
+    }
 
     public void setPotionCount(int potionCount) {
         this.potionCount = potionCount;
     }
 
-
-    public void setHp(int hp){
-        this.hp = hp;
+    public void setHp(int newHp){
+        this.hp = Math.min(newHp, maxHp);
+        if (this.hp < 0) this.hp = 0;
     }
 
+    public void setGold(double gold) {
+        this.gold = gold;
+    }
 
     public void setLevel(int level) {
         this.level = level;
@@ -163,6 +207,13 @@ abstract public class Character {
         return name + " has no skills to display.";
     }
 
+    public String getSkillName(int skillNumber) {
+        return "Unknown Skill";
+    }
+
+    public String getSkillDamageRange(int skillNumber) {
+        return "Unknown Damage Range";
+    }   
 }
 
 

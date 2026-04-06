@@ -1,11 +1,10 @@
 package EchoesOfTheOath.UI;
 
-import javax.swing.*;
+import EchoesOfTheOath.Characters.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import EchoesOfTheOath.Characters.*;
-import EchoesOfTheOath.Characters.Character;
+import javax.swing.*;
 
 /**
  * IntroPanel handles the cinematic opening of the game.
@@ -100,7 +99,7 @@ public class IntroPanel extends JPanel {
         bottomContainer.setBackground(new Color(15, 15, 15));
 
         textArea = new JTextArea("");
-        textArea.setFont(new Font("Serif", Font.BOLD, 26));
+        textArea.setFont(new Font("Monospaced", Font.BOLD, 22));
         textArea.setForeground(new Color(1f, 1f, 1f, 0f)); // Start transparent
         textArea.setBackground(Color.BLACK);
         textArea.setLineWrap(true);
@@ -112,7 +111,7 @@ public class IntroPanel extends JPanel {
         // 4. Create Skill Buttons (Hidden during story)
         buttonPanel = new JPanel(new GridLayout(3, 1, 10, 10));
         buttonPanel.setOpaque(false);
-        buttonPanel.setVisible(false); 
+        buttonPanel.setVisible(false);
         
         for (int i = 1; i <= 3; i++) {
             JButton btn = new JButton("Skill " + i);

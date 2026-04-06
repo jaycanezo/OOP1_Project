@@ -3,7 +3,7 @@ package EchoesOfTheOath.Characters;
 public class Boss extends Character{
 
     public Boss(){
-        super("Elarion", 1_000_000, 1);
+        super("Elarion", "The Dark Lord",1_000_000, 1);
     }
 
 
