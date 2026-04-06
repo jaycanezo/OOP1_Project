@@ -14,6 +14,7 @@ public class GameWindow {
     StartPanel start;
     StoryPanel story;
     CharacterSelectPanel charSelect;
+    BattlePanel battle;
 
     private Character chosenCharacter;
 
@@ -40,12 +41,14 @@ public class GameWindow {
         intro = new IntroPanel(this);
         story = new StoryPanel(this);
         charSelect = new CharacterSelectPanel(this);
+        battle = new BattlePanel(this);
 
         // add screens
         container.add(start, "start");
         container.add(intro, "intro");
         container.add(charSelect, "charSelect");
         container.add(story, "story");
+        container.add(battle, "battle");
 
         window.add(container);
         window.setLocationRelativeTo(null);
@@ -59,6 +62,10 @@ public class GameWindow {
         
         if(name.equals("story")){
             story.loadSelectedCharacter();
+        }
+
+        if (name.equals("battle")) {
+            battle.loadBattleData(); // This fills in the 'null' player
         }
 
         switch (name) {

@@ -1,5 +1,5 @@
 package EchoesOfTheOath.Characters;
-import EchoesOfTheOath.UI.MusicPlayer;
+import EchoesOfTheOath.UI.*;
 
 public class Warrior extends Character{
     boolean[] isUsed = new boolean[3];
@@ -7,6 +7,13 @@ public class Warrior extends Character{
         
     public Warrior(){
         super("Warrior", 1500, 1, "Warrior");
+        this.idleSprite = new Sprite("/EchoesOfTheOath/Resources/Warrior.png", 523, 477, 1);
+        
+        this.skill1Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Warrior_Slash.png", 128, 128, 9)};
+        this.skill2Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Warrior_CrimsonStrike.png", 128, 128, 7)};
+        this.skill3Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Warrior_BladeQuake1.png", 256, 128, 14),
+                                        new Sprite("/EchoesOfTheOath/Resources/Warrior_BladeQuake2.png", 256, 128, 11)
+        };
     }
 
 
@@ -111,7 +118,7 @@ public class Warrior extends Character{
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
-            msg.append("(" + i + ") " + PURPLE + skillName + RESET + "\nDamage: " + damageRange + "\n");
+            msg.append("(" + i + ") " + skillName + "\nDamage: " + damageRange + "\n");
         }
 
         return msg.toString();

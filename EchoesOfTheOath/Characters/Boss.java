@@ -1,9 +1,11 @@
 package EchoesOfTheOath.Characters;
+import EchoesOfTheOath.UI.*;
 
 public class Boss extends Character{
 
     public Boss(){
         super("Elarion", "The Dark Lord",1_000_000, 1);
+        this.idleSprite = new Sprite("/EchoesOfTheOath/Resources/Elarion.png", 517, 483, 1);
     }
 
 

@@ -37,8 +37,8 @@ public class Elarion extends Character{
             case 3:
                 bgm.playSFX("ELARION -- The Final Vow.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
-                System.out.println(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: The Final Vow" + RESET + "!");
-                System.out.println("A pillar of fate descends from above, engulfing you in blinding light and overwhelming your senses.");
+                msg.append(getName() + " uses "  + "Ultimate: The Final Vow!");
+                msg.append("A pillar of fate descends from above, engulfing you in blinding light and overwhelming your senses.");
                 cd[skillNumber - 1] = 3;
                 break;
         }

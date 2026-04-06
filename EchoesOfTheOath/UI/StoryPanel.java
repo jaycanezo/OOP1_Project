@@ -18,7 +18,29 @@ public class StoryPanel extends JPanel {
     private Image background;
     private Sprite characterSprite;
     private int currentMap = 1;
-    private String dialogue = "Welcome, Player.";
+    private String dialogue = "Use Enter to progress, I to open inventory, P to visit the shop.";
+    private String[] nation1Dialogues = {
+        "Humanas. From a distance, the walls look strong. Up close, they're just holding up a graveyard.",
+        "Gates are broken. Guards look half-starved. This isn't a kingdom; it's a cage.",
+        "Whatever you're looking for, traveler, we don't have it. Food's gone. Gold's gone. Move on.",
+        "Where is everyone? The streets are dead.",
+        "Hiding. Collectors are making their rounds. If you want to keep that gear, stay out of the light. They take everything to the castle for the ‘King’s blessing.’",
+        "The King's blessing. In a place this miserable, that sounds like a threat.",
+        "Beautiful, isn't it? A golden boy for a leaden kingdom",
+        "Why is a golden child standing in the middle of a slum?",
+        "That's King Bartholomew. Or at least, the version they want us to see. Every coin stolen from these streets goes into that castle to keep him 'happy.'",
+        "A child king who never grows up... and steals from his own people. I need to see him for myself.",
+        "The Chapel is just a counting house now. But it's the only path that leads to the castle.",
+        "You aren't on the guest list, traveler.",
+        "I'm not here for a party. I'm here to talk to the King.",
+        "The King doesn't 'talk.' He decides. And according to the records, your life is currently in arrears.",
+        "The decree is signed. Clear the debt.",
+        "You've caused a lot of damage upstairs. My ledger hasn't been this messy in centuries.",
+        "The King is a puppet. You've been using a child to bleed this city dry.",
+        "I don't use anyone. I record. If a King chooses to let his fear dictate the law, I simply write it down.",
+        "The records demand completion! You cannot run from a debt you've already signed!"
+    };
+    private int nation1Index = 0;
 
     // GAME STATES
     private final int PLAY_STATE = 0;
@@ -80,6 +102,28 @@ public class StoryPanel extends JPanel {
 
     public void handleInput(int keyCode) {
         this.requestFocusInWindow();
+
+        this.requestFocusInWindow();
+    
+    // Only progress story if we are in the normal PLAY_STATE
+        if (gameState == PLAY_STATE && keyCode == KeyEvent.VK_ENTER) {
+            nation1Index++;
+
+            if (nation1Index < nation1Dialogues.length) {
+                dialogue = nation1Dialogues[nation1Index]; // Show next line
+            } else {
+                // ALL TEXT FINISHED: Switch to Battle
+                dialogue = "Transitioning to battle...";
+                
+                // Add a small delay for a smoother transition
+                Timer transitionDelay = new Timer(1000, e -> {
+                    game.showScreen("battle"); // Ensure "battle" is registered in GameWindow
+                });
+                transitionDelay.setRepeats(false);
+                transitionDelay.start();
+            }
+        }
+
         if (keyCode == KeyEvent.VK_I) {
             // Toggle Inventory
             gameState = (gameState == INVENTORY_STATE) ? PLAY_STATE : INVENTORY_STATE;

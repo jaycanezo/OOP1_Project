@@ -1,5 +1,5 @@
 package EchoesOfTheOath.Characters;
-import EchoesOfTheOath.UI.MusicPlayer;
+import EchoesOfTheOath.UI.*;
 
 public class Mage extends Character{
     boolean[] isUsed = new boolean[3];
@@ -7,6 +7,13 @@ public class Mage extends Character{
 
     public Mage() {
         super("Mage", 1500, 1, "Mage");
+        this.idleSprite = new Sprite("/EchoesOfTheOath/Resources/Mage.png", 500, 500, 1);
+        this.skill1Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Mage_Fireball.png", 128, 128, 7)};
+        this.skill2Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Mage_HeatfireSurge.png", 128, 128, 12)};
+        this.skill3Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Mage_AstralCataclysm1.png", 192, 128, 12),
+                                        new Sprite("/EchoesOfTheOath/Resources/Mage_AstralCataclysm2.png", 128, 128, 15),
+                                        new Sprite("/EchoesOfTheOath/Resources/Mage_AstralCataclysm3.png", 128, 128, 7)
+        };
     }
 
 
@@ -17,7 +24,7 @@ public class Mage extends Character{
         }
 
         if (!isSkillAvailable(skillNumber)) {
-            return "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining." + RESET;
+            return "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining.";
         }
 
         int dmg=0;
@@ -27,21 +34,21 @@ public class Mage extends Character{
             case 1:
                 bgm.playSFX("Mage - Fire ball1.wav");
                 dmg = (random.nextInt(550 - 530 + 1) + 530 + 1000) * getLevel();
-                msg.append(BLUE + getName() + RESET + " uses " + PURPLE + "Basic Skill: Fireball" + RESET + "!");
+                msg.append(getName() + " uses Basic Skill: Fireball!");
                 msg.append("You hurl a blazing fireball at your enemy, dealing damage.");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 bgm.playSFX("Mage - Heatfire Surge.wav");
                 dmg = (random.nextInt(800 - 765 + 1) + 765 + 765) * getLevel();
-                msg.append(BLUE + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Heatfire Surge" + RESET + "!");
+                msg.append(getName() + " uses Advanced Skill: Heatfire Surge!");
                 msg.append("You unleash a surge of intense flames, striking your enemy with great force.");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 bgm.playSFX("Mage-Astral Cataclysm.wav");
                 dmg = 1580 * getLevel();
-                msg.append(BLUE + getName() + RESET + " uses " + PURPLE + "Ultimate: Astral Cataclysm" + RESET + "!");
+                msg.append(getName() + " uses " + "Ultimate: Astral Cataclysm!");
                 msg.append("You summon a massive fiery rock, obliterating everything in the area around your enemy.");
                 setSkillCooldown(3, 4);
                 break;
@@ -109,7 +116,7 @@ public class Mage extends Character{
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
-            msg.append("(" + i + ") " + PURPLE + skillName + RESET + "\nDamage: " + damageRange + "\n");
+            msg.append("(" + i + ") " + skillName + "\nDamage: " + damageRange + "\n");
         }
 
         return msg.toString();

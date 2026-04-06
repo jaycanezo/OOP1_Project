@@ -1,7 +1,8 @@
 package EchoesOfTheOath.Characters;
-
+import EchoesOfTheOath.UI.*;
 import java.util.ArrayList;
 import java.util.Random; 
+
 
 abstract public class Character {
     public Random random = new Random();
@@ -22,13 +23,8 @@ abstract public class Character {
     public ArrayList<Item> inventory = new ArrayList<>();
     public final int maxInventorySize = 20;
 
-    public String RESET = "\033[0m";
-    public String RED = "\033[31m";      // enemy / damage
-    public String GREEN = "\033[32m";    // ready skill / HP
-    public String BLUE = "\033[34m";     // player name
-    public String YELLOW = "\033[33m";   // skill cooldown / caution
-    public String PURPLE = "\033[35m";   // skills 
-
+    protected Sprite idleSprite;
+    protected Sprite[] skill1Sprite, skill2Sprite, skill3Sprite;
 
     public Character(String name, int hp, int level, String classType) {
         this.name = name;
@@ -147,7 +143,7 @@ abstract public class Character {
                 hp = 0; // prevent negative HP
         }
         
-        return name +  " takes " + RED + dmg + " damage!" + RESET + "\n" + name + " has " + GREEN + hp + " HP remaining!" + RESET;
+        return name +  " takes " + dmg + " damage!\n" + name + " has "  + hp + " HP remaining!";
     }
 
 
@@ -158,11 +154,11 @@ abstract public class Character {
             setHp(Math.min(hp + healed, maxHp));
             potionCount--;
 
-            return BLUE + name + RESET + " uses " + PURPLE + "HP Potion" + RESET + "! Restores " + GREEN + healed + " HP" + RESET + "!\n"
-            +BLUE + name + RESET + " has " + GREEN + hp + " HP remaining!" + RESET
-            + YELLOW + "Potions left: " + potionCount + RESET;
+            return name + " uses " + "HP Potion" + "! Restores " + healed + " HP" + "!\n"
+            +name + " has " + hp + " HP remaining!" + ""
+            + "Potions left: " + potionCount + "";
         } else {
-            return RED + "No potions left!" + RESET;
+            return "No potions left!";
         }
     }
 
@@ -214,6 +210,38 @@ abstract public class Character {
     public String getSkillDamageRange(int skillNumber) {
         return "Unknown Damage Range";
     }   
+
+    public Sprite getIdleSprite(){
+        return idleSprite;      
+    }
+
+    public Sprite[] getSkillSprite(int skillNumber){
+        switch(skillNumber){
+            case 1: return skill1Sprite;
+            case 2: return skill2Sprite;
+            case 3: return skill3Sprite;
+            default: return null;
+        }
+    }
+
+    public void updateAnimations(){
+        if(idleSprite != null) idleSprite.update();
+        if(skill1Sprite != null) {
+            for (Sprite frame : skill1Sprite) {
+                frame.update();
+            }
+        }
+        if(skill2Sprite != null) {
+            for (Sprite frame : skill2Sprite) {
+                frame.update();
+            }
+        }
+        if(skill3Sprite != null) {
+            for (Sprite frame : skill3Sprite) {
+                frame.update();
+            }
+        }
+    }
 }
 
 

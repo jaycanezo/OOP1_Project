@@ -1,11 +1,15 @@
 package EchoesOfTheOath.Characters;
-import EchoesOfTheOath.UI.MusicPlayer;
+import EchoesOfTheOath.UI.*;
 
 public class babyM extends Character{
     MusicPlayer bgm = new MusicPlayer();
 
     public babyM(){
         super("King Bartholomew Monarch (\"Baby M\")", " HUMANAS < NATION 1 > - MINI BOSS", 1400, 2);
+        this.idleSprite = new Sprite("/EchoesOfTheOath/Resources/BabyM.png", 862, 725, 1);
+        this.skill1Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/BabyM_TantrumToss.png", 128, 128, 12)};
+        this.skill2Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/BabyM_FeignedFaint.png", 128, 128, 11)};
+        this.skill3Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/BabyM_EnforcedDecree.png", 192, 128, 9)};
     }
 
     

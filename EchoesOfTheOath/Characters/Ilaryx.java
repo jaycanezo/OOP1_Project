@@ -29,14 +29,14 @@ public class Ilaryx extends Character {
             case 2:
                 bgm.playSFX("ILARYX hunters trap_noisles.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
-                msg.append(RED + getName() + RESET + " uses " + PURPLE + "Advanced Skill: Hunter's Trap" + RESET + "!");
+                msg.append(getName() + " uses Advanced Skill: Hunter's Trap!");
                 msg.append("Ilaryx activates an Invisible Snare! You feel the trap closing in around you.");
                 cd[skillNumber - 1] = 2;
                 break;
             case 3:
                 bgm.playSFX("ILARYX Arrow of the Silverfang_noisles.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
-                msg.append(RED + getName() + RESET + " uses " + PURPLE + "Ultimate: Arrow of the Silverfang" + RESET + "!");
+                msg.append(getName() + " uses Ultimate: Arrow of the Silverfang!");
                 msg.append("Ilaryx channels silver magic into her bow, firing a massive, charged arrow directly at you. Brace yourself!");
                 cd[skillNumber - 1] = 3;
                 break;

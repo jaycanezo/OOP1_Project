@@ -1,6 +1,8 @@
 package EchoesOfTheOath.UI;
 
 import EchoesOfTheOath.Characters.*;
+import EchoesOfTheOath.Characters.Character;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -11,7 +13,6 @@ import javax.swing.*;
  * It transitions from a story typewriter effect to an interactive trial.
  */
 public class IntroPanel extends JPanel {
-
     private GameWindow game;
     private JTextArea textArea;
     private JPanel splitScreen;
@@ -38,7 +39,7 @@ public class IntroPanel extends JPanel {
     // Sprite and Visual variables
     private BattleSidePanel heroSide;
     private BattleSidePanel enemySide;
-    private Sprite warriorSprite, archerSprite, mageSprite, bossSprite, slashSprite, CrimsonStrikeSprite, BladeQuake1Sprite, BladeQuake2Sprite, fireballSprite, heatfireSurgeSprite, astralCataclysm1Sprite, astralCataclysm2Sprite, astralCataclysm3Sprite;
+    private Sprite currentHeroSprite, currentEnemySprite;
 
     public IntroPanel(GameWindow game) {
         this.game = game;
@@ -68,23 +69,10 @@ public class IntroPanel extends JPanel {
     private void setupComponents() {
         // 1. Initialize all Sprites using your Sprite class
         // Note: Ensure these paths match your resource folder exactly.
-        warriorSprite = new Sprite("/EchoesOfTheOath/Resources/Warrior_Sprite.png", 1280, 720, 160);
-        archerSprite = new Sprite("/EchoesOfTheOath/Resources/Archer.png", 515, 484, 1);
-        mageSprite = new Sprite("/EchoesOfTheOath/Resources/Mage.png", 500, 500, 1);
-        bossSprite = new Sprite("/EchoesOfTheOath/Resources/placeholder.png", 400, 400, 1); 
-        slashSprite = new Sprite("/EchoesOfTheOath/Resources/SlashEffect.png", 128, 128, 9);
-        CrimsonStrikeSprite = new Sprite("/EchoesOfTheOath/Resources/CrimsonStrikeEffect.png", 128, 128, 7);
-        BladeQuake1Sprite = new Sprite("/EchoesOfTheOath/Resources/BladeQuake1Effect.png", 256, 128, 14);
-        BladeQuake2Sprite = new Sprite("/EchoesOfTheOath/Resources/BladeQuake2Effect.png", 256, 128, 11);
-        fireballSprite = new Sprite("/EchoesOfTheOath/Resources/FireBallEffect.png", 128, 128, 7);
-        heatfireSurgeSprite = new Sprite("/EchoesOfTheOath/Resources/HeatfireSurgeEffect.png", 128, 128, 12);
-        astralCataclysm1Sprite = new Sprite("/EchoesOfTheOath/Resources/AstralCataclysm1Effect.png", 192, 128, 12);
-        astralCataclysm2Sprite = new Sprite("/EchoesOfTheOath/Resources/AstralCataclysm2Effect.png", 128, 128, 15);
-        astralCataclysm3Sprite = new Sprite("/EchoesOfTheOath/Resources/AstralCataclysm3Effect.png", 128, 128, 7);
 
         // Instantiate custom panels that draw sprites
-        heroSide = new BattleSidePanel(warriorSprite, 50, 50, 450, 450);
-        enemySide = new BattleSidePanel(bossSprite, 50, 50, 450, 450);
+        heroSide = new BattleSidePanel(warrior, 50, 50, 450, 450);
+        enemySide = new BattleSidePanel(boss, 50, 50, 450, 450);
 
         splitScreen = new JPanel(new GridLayout(1, 2)); 
         splitScreen.setOpaque(false);
@@ -105,7 +93,7 @@ public class IntroPanel extends JPanel {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
-        textArea.setMargin(new Insets(30, 40, 30, 40));
+        textArea.setMargin(new Insets(15, 40, 30, 40));
         bottomContainer.add(textArea, BorderLayout.CENTER);
 
         // 4. Create Skill Buttons (Hidden during story)
@@ -140,19 +128,10 @@ public class IntroPanel extends JPanel {
             }
 
             // Update all sprites so they are ready when shown
-            warriorSprite.update();
-            archerSprite.update();
-            mageSprite.update();
-            bossSprite.update();
-            slashSprite.update();
-            CrimsonStrikeSprite.update();
-            BladeQuake1Sprite.update();
-            BladeQuake2Sprite.update();
-            fireballSprite.update();
-            heatfireSurgeSprite.update();
-            astralCataclysm1Sprite.update();
-            astralCataclysm2Sprite.update();
-            astralCataclysm3Sprite.update();
+            warrior.updateAnimations();
+            archer.updateAnimations();
+            mage.updateAnimations();
+            boss.updateAnimations();
             // Refresh visuals
             repaint();
         });
@@ -172,19 +151,10 @@ public class IntroPanel extends JPanel {
         
         // Re-start timer at a slightly slower pace for general animation
         animationTimer = new Timer(100, e -> {
-            warriorSprite.update();
-            archerSprite.update();
-            mageSprite.update();
-            bossSprite.update();
-            slashSprite.update();
-            CrimsonStrikeSprite.update();
-            BladeQuake1Sprite.update();
-            BladeQuake2Sprite.update();
-            fireballSprite.update();
-            heatfireSurgeSprite.update();
-            astralCataclysm1Sprite.update();
-            astralCataclysm2Sprite.update();
-            astralCataclysm3Sprite.update();
+            warrior.updateAnimations();
+            archer.updateAnimations();
+            mage.updateAnimations();
+            boss.updateAnimations();
             repaint();
         });
         animationTimer.start();
@@ -193,75 +163,68 @@ public class IntroPanel extends JPanel {
     }
 
     private void handleTrialAction(int skillNum) {
-        // Logic adapted from your console character trial
+        Character activeHero = null;
+
+        // 1. Determine who is currently attacking
         if (!warrior.allSkillsUsed()) {
-            warrior.useSkill(skillNum, boss);
+            activeHero = warrior;
+        } else if (!archer.allSkillsUsed()) {
+            activeHero = archer;
+        } else if (!mage.allSkillsUsed()) {
+            activeHero = mage;
+        }
 
-            if(skillNum == 1) {
-                enemySide.playEffect(slashSprite, 50, 50, 450, 450); // Play slash effect on hero side
-            } else if (skillNum ==2) {
-                enemySide.playEffect(CrimsonStrikeSprite, 50, 50, 450, 450); // Play Crimson Strike effect on hero side
-            } else if(skillNum ==3) {
-                heroSide.playEffect(BladeQuake1Sprite, 50, 50, 450, 450); // Play Crimson Strike effect on enemy side
+        // 2. Safety check: if no one has turns left, exit
+        if (activeHero == null) return;
 
-                Timer delay = new Timer(500, e -> {
-                    enemySide.playEffect(BladeQuake2Sprite, 50, 50, 450, 450); // Play Blade Quake effect on enemy side
-                });
-                delay.setRepeats(false);
-                delay.start();
+        // 3. Play the visual effects owned by the character
+        if (activeHero.isSkillAvailable(skillNum)) {
+        Sprite[] effects = activeHero.getSkillSprite(skillNum);
+        
+        if (effects != null) {
+                for (int i = 0; i < effects.length; i++) {
+                    final Sprite s = effects[i];
+                    Timer t = new Timer(i * 400, e -> {
+                        enemySide.playEffect(s, 50, 50, 450, 450);
+                    });
+                    t.setRepeats(false);
+                    t.start();
+                }
             }
+        }
 
-            textArea.setText("Warrior uses Skill " + skillNum + "!");
-            if (warrior.allSkillsUsed()) {
+        // 4. Run the actual battle logic
+        String result = activeHero.useSkill(skillNum, boss);
+        textArea.setText(result); // Display the return string from your Character class
+
+        // 5. Handle character swapping visually
+        // Inside handleTrialAction in IntroPanel.java
+        if (activeHero == warrior && warrior.allSkillsUsed()) {
+            // Create a 1.5-second delay before switching to Archer
+            Timer delay = new Timer(1500, e -> {
                 textArea.append("\nWarrior has finished. Archer, take aim!");
-                heroSide.setSprite(archerSprite); // Swap sprite to Archer
-            }
+                heroSide.setOwner(archer); 
+            });
+            delay.setRepeats(false);
+            delay.start();
         } 
-        else if (!archer.allSkillsUsed()) {
-            archer.useSkill(skillNum, boss);
-
-
-
-            textArea.setText("Archer uses Skill " + skillNum + "!");
-            if (archer.allSkillsUsed()) {
+        else if (activeHero == archer && archer.allSkillsUsed()) {
+            // Create a 1.5-second delay before switching to Mage
+            Timer delay = new Timer(1500, e -> {
                 textArea.append("\nArcher has finished. Mage, unleash your mana!");
-                heroSide.setSprite(mageSprite); // Swap sprite to Mage
-            }
+                heroSide.setOwner(mage);
+            });
+            delay.setRepeats(false);
+            delay.start();
         } 
-        else if (!mage.allSkillsUsed()) {
-            mage.useSkill(skillNum, boss);
-
-            if(skillNum == 1) {
-                enemySide.playEffect(fireballSprite, 50, 50, 450, 450); // Play slash effect on hero side
-            } else if (skillNum ==2) {
-                enemySide.playEffect(heatfireSurgeSprite, 50, 50, 450, 450); // Play Crimson Strike effect on hero side
-            } else if(skillNum ==3) {
-                enemySide.playEffect(astralCataclysm1Sprite, 50, 50, 450, 450); // Play Crimson Strike effect on enemy side
-
-                Timer delay = new Timer(800, e -> {
-                    enemySide.playEffect(astralCataclysm2Sprite, 50, 50, 450, 450); // Play Blade Quake effect on enemy side
-                });
-
-                delay.setRepeats(false);
-                delay.start();
-
-                Timer delay2 = new Timer(1600, e -> {
-                    enemySide.playEffect(astralCataclysm3Sprite, 50, 50, 450, 450); // Play Blade Quake effect on enemy side
-                });
-                
-                delay2.setRepeats(false);
-                delay2.start();
-            }
-
-            textArea.setText("Mage uses Skill " + skillNum + "!");
-            if (mage.allSkillsUsed()) {
-                // All trials done, move to next scene
-                Timer delay = new Timer(3000, e -> {
-                    game.showScreen("charSelect"); // Transition to story or next scene
-                });
-                delay.setRepeats(false);
-                delay.start();
-            }
+        else if (activeHero == mage && mage.allSkillsUsed()) {
+            // Create a longer delay for the final boss death/transition
+            Timer delay = new Timer(2000, e -> {
+                if (animationTimer != null) animationTimer.stop();
+                game.showScreen("charSelect");
+            });
+            delay.setRepeats(false);
+            delay.start();
         }
     }
 
@@ -278,18 +241,21 @@ public class IntroPanel extends JPanel {
     }
 
     private class BattleSidePanel extends JPanel {
-        private Sprite currentSprite;
+        private Character owner;
         // Use a List to hold multiple effects at once
         private java.util.List<ActiveEffect> activeEffects = new java.util.ArrayList<>();
         private int x, y, w, h;
 
-        public BattleSidePanel(Sprite s, int x, int y, int w, int h) {
-            this.currentSprite = s;
+        public BattleSidePanel(Character owner, int x, int y, int w, int h) {
+            this.owner = owner;
             this.x = x; this.y = y; this.w = w; this.h = h;
             this.setOpaque(false);
         }
 
-        public void setSprite(Sprite s) { this.currentSprite = s; }
+        public void setOwner(Character owner) { 
+            this.owner = owner; 
+            repaint();
+        }
 
         // Updated playEffect adds to the list instead of overwriting
         public void playEffect(Sprite effect, int ex, int ey, int ew, int eh) {
@@ -309,12 +275,14 @@ public class IntroPanel extends JPanel {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             // 1. Draw Character
-            if (currentSprite != null && currentSprite.isLoaded()) {
-                g.drawImage(currentSprite.getCurrentFrame(), x, y, w, h, null);
+            if (owner != null && owner.getIdleSprite() != null) {
+                Sprite s = owner.getIdleSprite();
+                if (s.isLoaded()) {
+                    g.drawImage(s.getCurrentFrame(), x, y, w, h, null);
+                }
             }
             // 2. Draw ALL active effects in the list
-            for (int i = 0; i < activeEffects.size(); i++) {
-                ActiveEffect ae = activeEffects.get(i);
+            for (ActiveEffect ae : activeEffects) {
                 if (ae.sprite != null && ae.sprite.isLoaded()) {
                     g.drawImage(ae.sprite.getCurrentFrame(), ae.x, ae.y, ae.w, ae.h, null);
                 }

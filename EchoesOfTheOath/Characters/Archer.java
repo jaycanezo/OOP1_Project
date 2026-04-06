@@ -1,6 +1,5 @@
 package EchoesOfTheOath.Characters;
-
-import EchoesOfTheOath.UI.MusicPlayer;
+import EchoesOfTheOath.UI.*;
 
 public class Archer extends Character {
 
@@ -9,6 +8,10 @@ public class Archer extends Character {
 
     public Archer() {
         super("Archer", 1300, 1, "Archer");
+        this.idleSprite = new Sprite("/EchoesOfTheOath/Resources/Archer.png", 515, 480, 1);
+        this.skill1Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Archer_Piercingshot.png", 500, 500, 4)};
+        this.skill2Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Archer_VolleyOfNature.png", 320, 395, 8)};
+        this.skill3Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Archer_Nature'sWrath.png", 192, 128, 12),};
     }
 
     // ---------------- USE SKILL ----------------
@@ -26,7 +29,7 @@ public class Archer extends Character {
 
         switch (skillNumber) {
             case 1:
-                bgm.playSFX("Archer-Piercingshot.wav");
+                bgm.playSFX("Archer_Piercingshot.wav");
                 dmg = (random.nextInt(45 - 15 + 1) + 15 + 25) * getLevel();
                 message.append(getName()).append(" uses Basic Skill: Piercing Shot!\n")
                        .append("You shoot a swift arrow at your foe.\n");
@@ -34,7 +37,7 @@ public class Archer extends Character {
                 break;
 
             case 2:
-                bgm.playSFX("Archer-VolleyofNature.wav");
+                bgm.playSFX("Archer_VolleyofNature.wav");
                 dmg = (random.nextInt(95 - 70 + 1) + 70 + 20) * getLevel();
                 message.append(getName()).append(" uses Advanced Skill: Volley of Nature!\n")
                        .append("You fire multiple arrows, raining them down on your enemy.\n");
@@ -42,7 +45,7 @@ public class Archer extends Character {
                 break;
 
             case 3:
-                bgm.playSFX("Archer-Nature'swrath.wav");
+                bgm.playSFX("Archer_Nature'swrath.wav");
                 dmg = (random.nextInt(230 - 105 + 1) + 105 + 80) * getLevel();
                 message.append(getName()).append(" uses Ultimate: Nature's Wrath!\n")
                        .append("You unleash four guiding arrows, striking your enemy with precision.\n");
@@ -113,7 +116,7 @@ public class Archer extends Character {
         for (int i = 1; i <= 3; i++) {
             String skillName = getSkillName(i);
             String damageRange = getSkillDamageRange(i);
-            msg.append("(" + i + ") " + PURPLE + skillName + RESET + "\nDamage: " + damageRange + "\n");
+            msg.append("(" + i + ") " + skillName + "\nDamage: " + damageRange + "\n");
         }
 
         return msg.toString();
