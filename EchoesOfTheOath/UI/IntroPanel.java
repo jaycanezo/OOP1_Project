@@ -2,7 +2,6 @@ package EchoesOfTheOath.UI;
 
 import EchoesOfTheOath.Characters.*;
 import EchoesOfTheOath.Characters.Character;
-
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -158,6 +157,8 @@ public class IntroPanel extends JPanel {
             repaint();
         });
         animationTimer.start();
+        heroSide.updateEffects(); 
+        enemySide.updateEffects();
         
         revalidate();
     }
@@ -257,6 +258,14 @@ public class IntroPanel extends JPanel {
             repaint();
         }
 
+        public void updateEffects() {
+            for (ActiveEffect ae : activeEffects) {
+                if (ae.sprite != null) {
+                    ae.sprite.update(); // Moves the effect to its next animation frame
+                }
+            }
+        }
+    
         // Updated playEffect adds to the list instead of overwriting
         public void playEffect(Sprite effect, int ex, int ey, int ew, int eh) {
             ActiveEffect newEffect = new ActiveEffect(effect, ex, ey, ew, eh);

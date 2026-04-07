@@ -338,15 +338,17 @@ public class StoryPanel extends JPanel {
             g2.drawString("NAME: " + player.getName(), sx + 20, sy + 40);
             g2.drawString("CLASS:  " + player.getClassType(), sx + 20, sy + 60);
             g2.drawString("LVL:  " + player.getLevel(), sx + 20, sy + 80);
-            drawSidebarHPBar(g2, sx + 20, sy + 110, player);
-            
-            g2.drawString("SKILLS:", sx + 20, sy + 180);
+            g2.drawString("GOLD:  " + player.getGold(), sx + 20, sy + 100);
+            g2.drawString("HP:  ", sx + 20, sy + 120);
+            drawSidebarHPBar(g2, sx + 20, sy + 130, player);
+
+            g2.drawString("SKILLS:", sx + 20, sy + 200);
             String skillName = player.getSkillName(1);
-            if (skillName != null) g2.drawString(skillName + " [" + player.getSkillDamageRange(1) + "]", sx + 20, sy + 200);
+            if (skillName != null) g2.drawString(skillName + " [" + player.getSkillDamageRange(1) + "]", sx + 20, sy + 220);
             skillName = player.getSkillName(2);
-            if (skillName != null) g2.drawString(skillName + " [" + player.getSkillDamageRange(2) + "]", sx + 20, sy + 220);
+            if (skillName != null) g2.drawString(skillName + " [" + player.getSkillDamageRange(2) + "]", sx + 20, sy + 240);
             skillName = player.getSkillName(3);
-            if (skillName != null) g2.drawString(skillName + " [" + player.getSkillDamageRange(3) + "]", sx + 20, sy + 240);
+            if (skillName != null) g2.drawString(skillName + " [" + player.getSkillDamageRange(3) + "]", sx + 20, sy + 260);
 
             // RIGHT WINDOW: ITEMS
             int ix = 300, iy = 50, iw = 250, ih = 400;

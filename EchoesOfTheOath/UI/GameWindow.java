@@ -1,8 +1,8 @@
 package EchoesOfTheOath.UI;
 
+import EchoesOfTheOath.Characters.Character;
 import java.awt.*;
 import javax.swing.*;
-import EchoesOfTheOath.Characters.Character;
 
 public class GameWindow {
 
@@ -66,6 +66,7 @@ public class GameWindow {
 
         if (name.equals("battle")) {
             battle.loadBattleData(); // This fills in the 'null' player
+            battle.requestFocusInWindow();
         }
 
         switch (name) {

@@ -32,23 +32,23 @@ public class Mage extends Character{
         
         switch (skillNumber){
             case 1:
-                bgm.playSFX("Mage - Fire ball1.wav");
+                bgm.playSFX("Mage_Fire_ball.wav");
                 dmg = (random.nextInt(550 - 530 + 1) + 530 + 1000) * getLevel();
-                msg.append(getName() + " uses Basic Skill: Fireball!");
-                msg.append("You hurl a blazing fireball at your enemy, dealing damage.");
+                msg.append(getName() + " uses Basic Skill: Fireball! ");
+                msg.append("You hurl a blazing fireball at your enemy, dealing damage.\n");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
-                bgm.playSFX("Mage - Heatfire Surge.wav");
+                bgm.playSFX("Mage_Heatfire_Surge.wav");
                 dmg = (random.nextInt(800 - 765 + 1) + 765 + 765) * getLevel();
-                msg.append(getName() + " uses Advanced Skill: Heatfire Surge!");
+                msg.append(getName() + " uses Advanced Skill: Heatfire Surge!\n");
                 msg.append("You unleash a surge of intense flames, striking your enemy with great force.");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
-                bgm.playSFX("Mage-Astral Cataclysm.wav");
+                bgm.playSFX("Mage_Astral_Cataclysm.wav");
                 dmg = 1580 * getLevel();
-                msg.append(getName() + " uses " + "Ultimate: Astral Cataclysm!");
+                msg.append(getName() + " uses " + "Ultimate: Astral Cataclysm!\n");
                 msg.append("You summon a massive fiery rock, obliterating everything in the area around your enemy.");
                 setSkillCooldown(3, 4);
                 break;

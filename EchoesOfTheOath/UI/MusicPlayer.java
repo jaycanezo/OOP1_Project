@@ -1,7 +1,7 @@
 package EchoesOfTheOath.UI;
 
-import javax.sound.sampled.*;
 import java.net.URL;
+import javax.sound.sampled.*;
 
 public class MusicPlayer {
 
@@ -28,23 +28,27 @@ public class MusicPlayer {
     }
 
     public void playSFX(String fileName) {
-        try {
-            URL url = getClass().getResource("/EchoesOfTheOath/Resources/" + fileName);
+        new Thread(() -> {
+            try {
+                URL url = getClass().getResource("/EchoesOfTheOath/Resources/" + fileName);
+                if (url == null) return;
 
-            if (url == null) {
-                System.out.println("SFX file not found: " + fileName);
-                return;
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+                Clip sfxClip = AudioSystem.getClip();
+                sfxClip.open(audioIn);
+                
+                // Automatically release system resources when the sound ends
+                sfxClip.addLineListener(event -> {
+                    if (event.getType() == LineEvent.Type.STOP) {
+                        sfxClip.close();
+                    }
+                });
+
+                sfxClip.start();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
-            Clip sfxClip = AudioSystem.getClip();
-            sfxClip.open(audioIn);
-
-            sfxClip.start(); // Play once (no loop)
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }).start();
     }
 
     public void stopMusic() {
