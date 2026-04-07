@@ -3,8 +3,8 @@ package EchoesOfTheOath.UI;
 import EchoesOfTheOath.Characters.*;
 import EchoesOfTheOath.Characters.Character;
 import java.awt.*;
-import javax.swing.*;
 import java.awt.event.KeyEvent;
+import javax.swing.*;
 
 public class BattlePanel extends JPanel {
     
@@ -23,6 +23,7 @@ public class BattlePanel extends JPanel {
     private final int INVENTORY_STATE = 1;
     private int currentBattleState = BATTLE_STATE;
     private int slotCol = 0, slotRow = 0;
+    private int scrollOffset = 0;
 
     public BattlePanel(GameWindow game) {
         this.game = game;
@@ -93,7 +94,7 @@ public class BattlePanel extends JPanel {
             g2.setColor(new Color(0, 0, 0, 150));
             g2.fillRect(0, 0, getWidth(), getHeight());
             
-            drawGridWindow(g2, "BATTLE INVENTORY", player.inventory);
+            drawGridWindow(g2, "INVENTORY", player.inventory);
         }
     }
 
@@ -427,7 +428,6 @@ public class BattlePanel extends JPanel {
         g2.setColor(Color.WHITE);
         g2.setStroke(new BasicStroke(2));
         g2.drawRoundRect(x, y, w, h, 20, 20);
-        g2.drawString(title + " | Use W/S to Scroll", x + 20, y + 30);
 
         // 2. SET CLIPPING: This prevents items from drawing outside the box
         Shape oldClip = g2.getClip();
