@@ -128,7 +128,7 @@ public class StoryPanel extends JPanel {
             // Toggle Inventory
             gameState = (gameState == INVENTORY_STATE) ? PLAY_STATE : INVENTORY_STATE;
             resetCursor();
-        } else if (keyCode == KeyEvent.VK_P) {
+        } else if (keyCode == KeyEvent.VK_S) {
             // Toggle Shop
             gameState = (gameState == SHOP_STATE) ? PLAY_STATE : SHOP_STATE;
             resetCursor();

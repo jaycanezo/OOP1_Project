@@ -11,7 +11,7 @@ public class Archer extends Character {
         this.idleSprite = new Sprite("/EchoesOfTheOath/Resources/Archer.png", 515, 480, 1);
         this.skill1Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Archer_Piercingshot.png", 500, 500, 4)};
         this.skill2Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Archer_VolleyOfNature.png", 320, 395, 8)};
-        this.skill3Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Archer_NaturesWrath.png", 213, 426, 12),};
+        this.skill3Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/Archer_NaturesWrath.png", 214, 427, 12),};
     }
 
     // ---------------- USE SKILL ----------------

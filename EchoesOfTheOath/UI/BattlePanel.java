@@ -312,7 +312,7 @@ public class BattlePanel extends JPanel {
             logArea.setText("Victory! The Infant King has been defeated.");
             animationTimer.stop();
             JOptionPane.showMessageDialog(this, "Victory!");
-            game.showScreen("story"); // Return to story
+            game.showScreen("newStory"); // Return to story
             return true;
         }
         if (player.getHp() <= 0) {
@@ -415,7 +415,7 @@ public class BattlePanel extends JPanel {
                 ((JButton)btns[2]).setText(player.getSkillName(3));
             }
             
-            logArea.setText("Challenge accepted, " + player.getName() + "!");
+            logArea.setText("Battle begins! Defeat, " + enemy.getName() + "!");
             repaint();
         }
     }

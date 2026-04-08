@@ -94,7 +94,7 @@ public class CharacterSelectPanel extends JPanel {
             game.setChosenCharacter(tempChosen); 
             
             // Move to the story
-            game.showScreen("story");
+            game.showScreen("newStory");
         }
     }
 }

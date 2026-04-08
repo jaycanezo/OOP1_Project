@@ -15,7 +15,8 @@ public class GameWindow {
     StoryPanel story;
     CharacterSelectPanel charSelect;
     BattlePanel battle;
-
+    NewStoryPanel newStory;
+    
     private Character chosenCharacter;
 
     public void setChosenCharacter(Character chosenCharacter) {
@@ -42,6 +43,7 @@ public class GameWindow {
         story = new StoryPanel(this);
         charSelect = new CharacterSelectPanel(this);
         battle = new BattlePanel(this);
+        newStory = new NewStoryPanel(this);
 
         // add screens
         container.add(start, "start");
@@ -49,6 +51,7 @@ public class GameWindow {
         container.add(charSelect, "charSelect");
         container.add(story, "story");
         container.add(battle, "battle");
+        container.add(newStory, "newStory");
 
         window.add(container);
         window.setLocationRelativeTo(null);
@@ -60,6 +63,10 @@ public class GameWindow {
     public void showScreen(String name){
         cardLayout.show(container, name);
         
+        if(name.equals("newStory")){
+            newStory.loadSelectedHero();
+        }
+
         if(name.equals("story")){
             story.loadSelectedCharacter();
         }
