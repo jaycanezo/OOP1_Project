@@ -7,6 +7,7 @@ public class Sprite {
 
     private BufferedImage[] frames;
     private int currentFrame = 0;
+    private boolean loops = true;
 
     /**
      * Loads a sprite sheet and slices it into frames automatically.
@@ -42,10 +43,24 @@ public class Sprite {
         }
     }
 
+    public void setLooping(boolean loops) {
+        this.loops = loops;
+    }
+
     /** Advance to the next frame (call this on a Timer tick) */
     public void update() {
-        if (frames == null) return;
-        currentFrame = (currentFrame + 1) % frames.length;
+        if (frames == null || frames.length <= 1) return;
+
+        if (currentFrame < frames.length - 1) {
+            currentFrame++;
+        } else {
+            if (loops) {
+                currentFrame = 0; // Reset to start if looping
+            } else {
+                // Stay on the last frame if not looping
+                currentFrame = frames.length - 1; 
+            }
+        }
     }
 
     /** Get the current frame image to draw */

@@ -1,11 +1,16 @@
 package EchoesOfTheOath.Characters;
 import EchoesOfTheOath.UI.MusicPlayer;
+import EchoesOfTheOath.UI.Sprite;
 
 public class Archivist extends Character {
     MusicPlayer bgm = new MusicPlayer();
 
     public Archivist(){
         super("The Archivist", " HUMANAS < NATION 1 > - MAIN BOSS", 1400, 4);
+        this.idleSprite = new Sprite("/EchoesOfTheOath/Resources/Archivist.png", 400, 400, 1);
+        this.skill1Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/archivist_skill1.png", 151, 187, 12)};
+        this.skill2Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/archivist_skill2.png", 93, 42, 11)};
+        this.skill3Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/archivist_skill3.png", 308, 66, 9)};
     }
 
 

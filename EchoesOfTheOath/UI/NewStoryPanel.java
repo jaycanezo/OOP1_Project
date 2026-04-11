@@ -10,11 +10,11 @@ import javax.swing.*;
 
 public class NewStoryPanel extends JPanel {
     private GameWindow game;
-    private Image currentBackground;
+    private Sprite currentBackground;
     private Sprite playerSprite;
     private Sprite npcSprite; 
-    private java.util.Map<String, Npc> npcRegistry = new java.util.HashMap<>();
-    private java.util.Map<String, Image> backgroundRegistry = new java.util.HashMap<>();
+    private java.util.Map<String, Character> npcRegistry = new java.util.HashMap<>();
+    private java.util.Map<String, Sprite> backgroundRegistry = new java.util.HashMap<>();
     
     private String currentSpeaker = ""; 
     private String[] dialogueText = {
@@ -55,7 +55,48 @@ public class NewStoryPanel extends JPanel {
         "\"Whatever is in that crown is using him like a conduit.\"",
         "“The decree is signed. Clear the debt.”",
         "(The Hero draws their weapon as the shadows solidify into tall, faceless sentinels.)",
-        "(The shadows melt back into the floor. The red glow leaves the child’s eyes, and he collapses back into the pillows, looking small and exhausted. The attendants have vanished into the dark corners of the room.)"
+        "(The shadows melt back into the floor. The red glow leaves the child’s eyes, and he collapses back into the pillows, looking small and exhausted. The attendants have vanished into the dark corners of the room.)",
+        "“He’s just a kid. He didn't even know he was fighting.”",
+        "(The Hero reaches into the crib. The boy doesn't pull away; he just stares, confused. The Hero’s pendant pulses with a cold, warning light.)",
+        "\"The 'King' is an empty shell. He wasn't the one signing those death warrants.\"",
+        "\"The Attendants weren't looking at the boy for orders—they were looking at the shadows behind the throne.\"",
+        "“The library. The Gatekeeper mentioned a place where the 'debts' are kept.”",
+        "“If the King isn't the one pulling the strings, then I’ve been hunting the wrong man.”",
+        "(The Hero looks at a trail of black ink leading from the base of the throne toward a heavy, reinforced trapdoor in the floor.)",
+        "\"The records. Every coin, every soul, every drop of blood... it all leads down there.\"",
+        "\"To the one who keeps the books.\"",
+        " “Your oath was to protect the innocent… find the one who stole his voice.”",
+        "(A single candle flickers in the distance, revealing a pair of unblinking eyes watching the Hero...)",
+        "(The Hero goes down a tight spiral staircase. The walls are stained with black ink that seems to pulse. The sound of a scratching quill fills the air, echoing like a heartbeat.)",
+        "(A massive, cold vault. Rows of scrolls stretch into the dark. The Archivist sits behind a desk of stacked parchment. He doesn't move; only his eyes follow the Hero.)",
+        "“You’ve caused a lot of damage upstairs. My ledger hasn't been this messy in centuries.”",
+        "“The King is a puppet. You’ve been using a child to bleed this city dry.”",
+        "“I don't use anyone. I record. If a King chooses to let his fear dictate the law, I simply write it down. The people of Humanas are a collection of debts. I am the only one who ensures they aren't forgotten.”",
+        "“At the cost of their lives? That’s not a record. It’s a prison.”",
+        "“Truth is a weight most can't carry. You should know that better than anyone, Wanderer. Your own story is nothing but torn pages and broken promises.”",
+        "(The Hero winces. A flash of white light hits their mind: two shadows standing beside them—an archer, a mage—and a looming darkness that swallowed them both. The Hero grips their head.)",
+        "The others... where are they? Why does it feel like I left something behind?”",
+        "“Forgetfulness is a mercy. But the ink remembers. Let’s see what yours says about your ending.”",
+        "(The Archivist stands, his robes unfurling like thousands of sharp scrolls. The Hero is panting, leaning on their weapon.)",
+        "“The records demand completion! You cannot run from a debt you’ve already signed!”",
+        "(A scroll flies past the Hero’s face. For a split second, they see a word written in glowing light: *ELARION*.)",
+        "“That name... I’ve heard it before. In the dream. We were supposed to... we were supposed to bind it.”",
+        "(The Hero’s pendant glows with a violent, flickering light. A voice, distant and distorted, echoes in their mind.)",
+        "“We vow to bind the darkness... within ourselves...”",
+        "“The oath... it’s not just a story. It’s why I’m here. I didn't just survive. I failed.”",
+        "(The Hero’s weapon ignites with a raw, unstable energy. They lung forward, driving the blade through the center of the Archivist’s desk and into his chest.)",
+        "(The library begins to dissolve into ash. The scrolls turn into black flakes that drift toward the ceiling.)",
+        "“You think... freeing them... changes anything? You only broke... one link... in a chain... you helped forge.”",
+        "“Maybe. But I’m the one who’s going to break the rest.”",
+        "(The Archivist vanishes. The Hero picks up a single blank page. Their hand is shaking.)",
+        "\"The library is gone, but the weight in my chest is heavier than ever.\"",
+        "\"I saw faces in those scrolls. Faces I should know. An archer... a mage...\"",
+        "\"Whatever we promised to do, we didn't finish it. This nation was just the start.\"",
+        "(The Hero looks up. The sun shines through the rubble. Far off in the distance, across the sea, a purple forest glows on the horizon.)",
+        "“Veyora. The Elves. If the fragments of what I lost are there... I have to find them.”",
+        "(The screen fades to black as the Hero walks toward the light.)",
+        "",
+
     };
     private int lineIndex = 0;
     
@@ -66,17 +107,24 @@ public class NewStoryPanel extends JPanel {
         this.game = game;
         
         // 1. Initialize Registries
+        // Correct concrete instantiation
         npcRegistry.put("Guard", new Npc1()); 
         npcRegistry.put("Informant", new Npc2()); 
         npcRegistry.put("Attendant", new Npc3());
+        npcRegistry.put("Archivist", new Archivist());
 
-        loadBG("nation1_bg1.png");
-        loadBG("nation1_bg2.png");
-        loadBG("nation1_bg3.png");
-        loadBG("nation1_bg4.png");
-        loadBG("nation1_bg5.png");
-        loadBG("nation1_bg6.png");
-        loadBG("nation1_bg6.1.png");
+        loadBG("nation1_bg1.png", 1920, 1080, 1);
+        loadBG("nation1_bg2.png", 1920, 1080, 1);
+        loadBG("nation1_bg3.png", 1920, 1080, 1);
+        loadBG("nation1_bg4.png", 1920, 1080, 1);
+        loadBG("nation1_bg5.png", 1920, 1080, 1);
+        loadBG("nation1_bg6.png", 1920, 1080, 1);
+        loadBG("nation1_bg6.1.png", 1920, 1080, 1);
+        loadBG("nation1_bg7.png", 1920, 1080, 1);
+        loadBG("nation1_bg8.png", 1920, 1080, 1);
+        loadBG("nation1_bg8.1.png", 1920, 1080, 1);
+        loadBG("nation1_bg8.2.png", 1920, 1080, 30);
+        loadBG("nation1_storyline1.png", 1920, 1080, 7);
 
         this.setFocusable(true);
         this.setLayout(null); 
@@ -85,6 +133,8 @@ public class NewStoryPanel extends JPanel {
         Timer animationTimer = new Timer(100, e -> {
             if (playerSprite != null) playerSprite.update();
             if (npcSprite != null) npcSprite.update();
+
+            if (currentBackground != null) currentBackground.update();
             repaint();
         });
         animationTimer.start();
@@ -107,11 +157,27 @@ public class NewStoryPanel extends JPanel {
         });
     }
 
-    private void loadBG(String name) {
+    private void loadBG(String name, int frameWidth, int frameHeight, int frameCount) {
         try {
-            Image img = new ImageIcon(getClass().getResource("/EchoesOfTheOath/Resources/" + name)).getImage();
-            backgroundRegistry.put(name, img);
-        } catch (Exception e) { System.out.println("Error pre-loading: " + name); }
+            // Construct the full path
+            String path = "/EchoesOfTheOath/Resources/" + name;
+            
+            // Create a new Sprite object
+            // Assuming your standard window size is 1920x1080 and it's a 1-frame image
+            Sprite bgSprite = new Sprite(path, frameWidth, frameHeight, frameCount);
+
+            if(name.equals("nation1_bg8.2.png")) {
+                bgSprite.setLooping(false);
+            }
+            
+            if (bgSprite.isLoaded()) {
+                backgroundRegistry.put(name, bgSprite);
+            } else {
+                System.out.println("Failed to load Sprite: " + name);
+            }
+        } catch (Exception e) { 
+            System.out.println("Error pre-loading: " + name); 
+        }
     }
 
     public void loadSelectedHero() {
@@ -119,11 +185,23 @@ public class NewStoryPanel extends JPanel {
         if (chosen != null) {
             this.playerSprite = chosen.getIdleSprite();
         }
-        setBackgroundImage("nation1_bg1.png"); 
+
+        setBackgroundImage("nation1_bg1.png");
+
+        if(lineIndex == 37) {
+            setBackgroundImage("nation1_bg6.png");
+        }
+
+        if(lineIndex == 59) {
+            setBackgroundImage("nation1_bg8.png");
+        }
+
+
         this.showPlayer = true; // Ensure player is visible at start
     }
 
     public void setBackgroundImage(String fileName) {
+        // Look up the Sprite from the new registry
         this.currentBackground = backgroundRegistry.get(fileName);
         repaint();
     }
@@ -134,8 +212,11 @@ public class NewStoryPanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         // 1. DRAW BACKGROUND FIRST
-        if (currentBackground != null) {
-            g2.drawImage(currentBackground, 0, 0, getWidth(), getHeight(), null);
+            if (currentBackground != null) {
+            BufferedImage frame = currentBackground.getCurrentFrame();
+            if (frame != null) {
+                g2.drawImage(frame, 0, 0, getWidth(), getHeight(), null);
+            }
         }
 
         String heroName = (game.getChosenCharacter() != null) ? game.getChosenCharacter().getName() : "";
@@ -214,11 +295,6 @@ public class NewStoryPanel extends JPanel {
     private void progressStory() {
         lineIndex++; 
 
-        if (lineIndex == 35) {
-            game.showScreen("battle");
-            return;
-        }
-
         if(lineIndex >= dialogueText.length) {
             game.showScreen("battle");
             return; 
@@ -285,20 +361,20 @@ public class NewStoryPanel extends JPanel {
                 updateScene(game.getChosenCharacter().getName(), false);
                 currentSpeaker = "";
                 break;
-            case 25:
+            case 26:
                 setBackgroundImage("nation1_bg6.png");
                 break;
-            case 26:
+            case 27:
                 updateScene("Attendant", true);
                 currentSpeaker = "Attendant";
                 break;
-            case 27:
+            case 28:
                 currentSpeaker = game.getChosenCharacter().getName();
                 break;
-            case 28:
+            case 29:
                 currentSpeaker = "Attendant";
                 break;
-            case 29:
+            case 30:
                 currentSpeaker = game.getChosenCharacter().getName();
                 break;
             case 31:
@@ -310,15 +386,106 @@ public class NewStoryPanel extends JPanel {
                 showNPC = false;
                 break;
             case 33:
+                showPlayer = true;
+                break;
+            case 36:
                 setBackgroundImage("nation1_bg6.png");
-                updateScene(game.getChosenCharacter().getName(), false);
+                currentSpeaker = "Attendant";
+                showNPC = true;
+                break;
+            case 37:
+                //game.showScreen("battle");
+                currentSpeaker = game.getChosenCharacter().getName();
+                showNPC = false;
+                break;
+            case 38:
+                setBackgroundImage("nation1_bg6.png");
                 currentSpeaker = "";
                 break;
-            case 34:
-                currentSpeaker = "Attendant";
-                break;
-            case 35:
+            case 39:
                 currentSpeaker = game.getChosenCharacter().getName();
+                break;
+            case 40:
+                setBackgroundImage("nation1_bg6.1.png");
+                currentSpeaker = "";
+                break;
+            case 42:
+                setBackgroundImage("nation1_bg6.png");
+                currentSpeaker = game.getChosenCharacter().getName();
+                break;
+            case 45:
+                currentSpeaker ="";
+                break;
+            case 48:
+                setBackgroundImage("nation1_bg8.2.png");
+                showPlayer = false;
+                break;
+            case 49:
+                setBackgroundImage("nation1_bg7.png");
+                showPlayer = true;
+                break;
+            case 50:
+                setBackgroundImage("nation1_bg8.png");
+                break;
+            case 51:
+                updateScene("Archivist", true);
+                currentSpeaker = "Archivist";
+                showPlayer = true;
+                break;
+            case 52:
+                currentSpeaker = game.getChosenCharacter().getName();
+                break;
+            case 53:
+                currentSpeaker = "Archivist";
+                break;
+            case 54:
+                currentSpeaker = game.getChosenCharacter().getName();
+                break;
+            case 55:
+                currentSpeaker = "Archivist";
+                break;
+            case 56:
+                setBackgroundImage("nation1_storyline1.png");
+                showNPC = false;
+                showPlayer = false;
+                break;
+            case 57:
+                setBackgroundImage("nation1_bg8.png");
+                currentSpeaker = game.getChosenCharacter().getName();
+                showPlayer = true;
+                showNPC = true;
+                break;
+            case 58:
+                currentSpeaker = "Archivist";
+                break;
+            case 59:
+                game.showScreen("battle");
+                showPlayer = true;
+                showNPC = true;
+                break;
+            case 60:
+                currentSpeaker = "Archivist";
+                break;
+            case 61:
+                currentSpeaker = "";
+                break;
+            case 62:
+                currentSpeaker = game.getChosenCharacter().getName();
+                break;
+            case 63:
+                currentSpeaker = "";
+                break;
+            case 65:
+                currentSpeaker = game.getChosenCharacter().getName();
+                break;
+            case 68:
+                currentSpeaker = "Archivist";
+                break;
+            case 69:
+                currentSpeaker = game.getChosenCharacter().getName();
+                break;
+            case 70:
+                showNPC=false;
                 break;
         }
         repaint();
