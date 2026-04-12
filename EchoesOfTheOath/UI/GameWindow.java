@@ -18,6 +18,7 @@ public class GameWindow {
     NewStoryPanel newStory;
     
     private Character chosenCharacter;
+    private MusicPlayer bgm = new MusicPlayer();
 
     public void setChosenCharacter(Character chosenCharacter) {
         this.chosenCharacter = chosenCharacter;
@@ -27,6 +28,9 @@ public class GameWindow {
         return this.chosenCharacter;
     }
 
+    public MusicPlayer getBgm() {
+        return this.bgm;
+    }
 
     public GameWindow() {
 
@@ -63,37 +67,33 @@ public class GameWindow {
     public void showScreen(String name){
         cardLayout.show(container, name);
         
-        if(name.equals("newStory")){
-            newStory.loadSelectedHero();
-        }
-
-        if(name.equals("story")){
-            story.loadSelectedCharacter();
-        }
-
-        if (name.equals("battle")) {
-            battle.loadBattleData(); // This fills in the 'null' player
-            battle.requestFocusInWindow();
-        }
-
         switch (name) {
             case "start":
-                start.startScreenMusic();
+                bgm.playMusic("intro_bgm.WAV");
                 break;
+
             case "intro":
                 container.getComponent(1).requestFocusInWindow(); 
-                start.stopMusic();
+                break;
+
+            case "newStory":
+                // If moving from Start to Story, swap the music
+                bgm.stopMusic(); 
+                bgm.playMusic("nation1_bgm1.WAV");
+                newStory.loadSelectedHero();
+                break;
+
+            case "battle":
+                // When battle starts, switch to battle music
+                bgm.stopMusic();
+                bgm.playMusic("nation1_fight_bgm1.WAV");
+                battle.loadBattleData();
+                battle.requestFocusInWindow();
                 break;
                 
-            case "story":
-                container.getComponent(2).requestFocusInWindow(); 
-                start.stopMusic();
-                break;
-            default:
-                start.stopMusic();
+            case "charSelect":
+                // Perhaps keep the intro music or play something calm
                 break;
         }
-        
-
     }
 }

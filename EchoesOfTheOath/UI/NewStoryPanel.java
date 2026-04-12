@@ -105,7 +105,6 @@ public class NewStoryPanel extends JPanel {
 
     public NewStoryPanel(GameWindow game) {
         this.game = game;
-        
         // 1. Initialize Registries
         // Correct concrete instantiation
         npcRegistry.put("Guard", new Npc1()); 
@@ -251,16 +250,16 @@ public class NewStoryPanel extends JPanel {
     private void drawDialogueBox(Graphics2D g2) {
         int boxX = 50, boxY = getHeight() - 220, boxW = getWidth() - 100, boxH = 180;
 
-        g2.setColor(new Color(0, 0, 0, 200)); 
+        g2.setColor(new Color(181, 153, 110, 200)); 
         g2.fillRoundRect(boxX, boxY, boxW, boxH, 20, 20);
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke(3));
         g2.drawRoundRect(boxX, boxY, boxW, boxH, 20, 20);
 
         if (!currentSpeaker.trim().isEmpty()) { 
-            g2.setColor(new Color(50, 50, 150)); 
+            g2.setColor(new Color(111, 78, 55)); 
             g2.fillRect(boxX + 20, boxY - 30, 200, 40);
-            g2.setColor(Color.WHITE);
+            g2.setColor(Color.BLACK);
             g2.drawRect(boxX + 20, boxY - 30, 200, 40);
             g2.setFont(new Font("Serif", Font.BOLD, 22));
             g2.drawString(currentSpeaker, boxX + 40, boxY - 2);
@@ -293,6 +292,7 @@ public class NewStoryPanel extends JPanel {
     }
     
     private void progressStory() {
+        MusicPlayer bgm = new MusicPlayer();
         lineIndex++; 
 
         if(lineIndex >= dialogueText.length) {
@@ -301,12 +301,23 @@ public class NewStoryPanel extends JPanel {
         }
         
         switch (lineIndex) {
+            case 0:
+                bgm.stopMusic();
+                bgm.playMusic("nation1_bgm.WAV");
+                break;
+            case 1:
+                bgm.playSFX("nation1_sfx1.wav");
+                break;
             case 2:
                 setBackgroundImage("nation1_bg2.png");
                 currentSpeaker = ""; // Narrator
                 break;
+            case 4:
+                bgm.playSFX("nation1_sfx1.wav");
+                break;
             case 5:
                 updateScene("Guard", true);
+                bgm.playSFX("nation1_sfx2.wav");
                 currentSpeaker = "";
                 break;
             case 6:
@@ -323,6 +334,7 @@ public class NewStoryPanel extends JPanel {
                 break;
             case 10:
                 setBackgroundImage("nation1_bg3.png");
+                bgm.playSFX("nation1_sfx1.wav");
                 this.showNPC = false;
                 currentSpeaker = "";
                 break;
@@ -356,10 +368,18 @@ public class NewStoryPanel extends JPanel {
             case 20:
                 currentSpeaker = " ";
                 break;
+            case 22:
+                bgm.playSFX("nation1_sfx3.wav");
+                break;
             case 23:
                 setBackgroundImage("nation1_bg5.png");
+                game.getBgm().stopMusic();
+                game.getBgm().playMusic("nation1_bgm2.WAV");
                 updateScene(game.getChosenCharacter().getName(), false);
                 currentSpeaker = "";
+                break;
+            case 25:
+                bgm.playSFX("nation1_sfx4.wav");
                 break;
             case 26:
                 setBackgroundImage("nation1_bg6.png");

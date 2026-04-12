@@ -7,21 +7,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 
-/**
- * IntroPanel handles the cinematic opening of the game.
- * It transitions from a story typewriter effect to an interactive trial.
- */
 public class IntroPanel extends JPanel {
     private GameWindow game;
     private JTextArea textArea;
     private JPanel splitScreen;
     private JPanel buttonPanel;
     
-    // State Management: Determines if we are reading story or fighting
     private enum State { STORY, TRIAL }
     private State currentState = State.STORY;
 
-    // Animation & Typewriter variables
     private String fullDialogue = "Long ago, three adventurers—a brave warrior, a swift archer, and a wise mage—" +
                                   "traveled across worlds, earning fame for vanquishing great evils. " +
                                   "Their bond was unbreakable, their deeds legendary...";
@@ -29,24 +23,22 @@ public class IntroPanel extends JPanel {
     private float alpha = 0.0f;
     private Timer animationTimer;
 
-    // Character Objects from your Trial logic
     private Warrior warrior = new Warrior();
     private Archer archer = new Archer();
     private Mage mage = new Mage();
     private Boss boss = new Boss();
 
-    // Sprite and Visual variables
     private BattleSidePanel heroSide;
     private BattleSidePanel enemySide;
-    private Sprite currentHeroSprite, currentEnemySprite;
+    private Sprite background;
 
     public IntroPanel(GameWindow game) {
         this.game = game;
-        this.setBackground(Color.BLACK);
+        this.setOpaque(false); // Critical for custom background
         this.setLayout(new BorderLayout());
         this.setFocusable(true);
+        background = new Sprite("/EchoesOfTheOath/Resources/intro_bg.png", 426, 240, 121);
 
-        // Set character levels as per original console code
         warrior.setLevel(12);
         archer.setLevel(12);
         mage.setLevel(12);
@@ -54,7 +46,6 @@ public class IntroPanel extends JPanel {
         setupComponents();
         startAnimation();
 
-        // Key Listener to skip the intro or progress text
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -65,11 +56,16 @@ public class IntroPanel extends JPanel {
         });
     }
 
-    private void setupComponents() {
-        // 1. Initialize all Sprites using your Sprite class
-        // Note: Ensure these paths match your resource folder exactly.
+    // MAIN BACKGROUND DRAWING GOES HERE
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (background != null && background.isLoaded()) {
+            g.drawImage(background.getCurrentFrame(), 0, 0, getWidth(), getHeight(), null);
+        }
+    }
 
-        // Instantiate custom panels that draw sprites
+    private void setupComponents() {
         heroSide = new BattleSidePanel(warrior, 50, 50, 450, 450);
         enemySide = new BattleSidePanel(boss, 50, 50, 450, 450);
 
@@ -80,22 +76,30 @@ public class IntroPanel extends JPanel {
         splitScreen.add(enemySide);
         add(splitScreen, BorderLayout.CENTER);
 
-        // 3. Create the Dialogue Box (South)
-        JPanel bottomContainer = new JPanel(new BorderLayout());
+        JPanel bottomContainer = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                // Draw a solid dark box here to act as a "shield" 
+                // This prevents the character sprites from bleeding into the text area
+                g.setColor(new Color(0, 0, 0, 180)); 
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        bottomContainer.setOpaque(false); // We are painting the background manually now
         bottomContainer.setPreferredSize(new Dimension(1080, 250));
-        bottomContainer.setBackground(new Color(15, 15, 15));
 
         textArea = new JTextArea("");
+        textArea.setOpaque(false);
+        textArea.setEditable(false);
+        textArea.setFocusable(false);
         textArea.setFont(new Font("Monospaced", Font.BOLD, 22));
-        textArea.setForeground(new Color(1f, 1f, 1f, 0f)); // Start transparent
-        textArea.setBackground(Color.BLACK);
+        textArea.setBackground(new Color(0, 0, 0, 0)); 
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
         textArea.setMargin(new Insets(15, 40, 30, 40));
         bottomContainer.add(textArea, BorderLayout.CENTER);
 
-        // 4. Create Skill Buttons (Hidden during story)
         buttonPanel = new JPanel(new GridLayout(3, 1, 10, 10));
         buttonPanel.setOpaque(false);
         buttonPanel.setVisible(false);
@@ -107,31 +111,37 @@ public class IntroPanel extends JPanel {
             buttonPanel.add(btn);
         }
         bottomContainer.add(buttonPanel, BorderLayout.EAST);
-
         add(bottomContainer, BorderLayout.SOUTH);
     }
 
     private void startAnimation() {
-        // The core loop for typewriter, fading, and sprite updates
-        animationTimer = new Timer(40, e -> {
-            // Typewriter logic
-            if (charIndex < fullDialogue.length()) {
-                textArea.append(String.valueOf(fullDialogue.charAt(charIndex)));
-                charIndex++;
-            }
-
-            // Global Fade logic
-            if (alpha < 1.0f) {
-                alpha += 0.02f;
-                textArea.setForeground(new Color(1f, 1f, 1f, Math.min(alpha, 1.0f)));
-            }
-
-            // Update all sprites so they are ready when shown
+        // 50ms (20 FPS) is good for background and UI stability
+        animationTimer = new Timer(50, e -> {
+            // Always update background and characters
+            if (background != null) background.update();
             warrior.updateAnimations();
             archer.updateAnimations();
             mage.updateAnimations();
             boss.updateAnimations();
-            // Refresh visuals
+
+            // Typewriter only during Story
+            if (currentState == State.STORY) {
+                if (charIndex < fullDialogue.length()) {
+                    textArea.append(String.valueOf(fullDialogue.charAt(charIndex)));
+                    charIndex++;
+                }
+                if (alpha < 1.0f) {
+                    alpha += 0.02f;
+                    textArea.setForeground(new Color(1f, 1f, 1f, Math.min(alpha, 1.0f)));
+                }
+            }
+            
+            // Update BattleSidePanels if they are visible
+            if (currentState == State.TRIAL) {
+                heroSide.updateEffects();
+                enemySide.updateEffects();
+            }
+
             repaint();
         });
         animationTimer.start();
@@ -139,7 +149,6 @@ public class IntroPanel extends JPanel {
 
     private void switchToTrial() {
         // Instantly finish story and show battle components
-        if (animationTimer != null) animationTimer.stop();
         currentState = State.TRIAL;
         
         textArea.setText("The trial begins! Witness the power of the heroes.");
@@ -148,19 +157,13 @@ public class IntroPanel extends JPanel {
         splitScreen.setVisible(true);
         buttonPanel.setVisible(true);
         
-        // Re-start timer at a slightly slower pace for general animation
-        animationTimer = new Timer(100, e -> {
-            warrior.updateAnimations();
-            archer.updateAnimations();
-            mage.updateAnimations();
-            boss.updateAnimations();
-            repaint();
-        });
-        animationTimer.start();
+        // START NEW TIMER
+        
         heroSide.updateEffects(); 
         enemySide.updateEffects();
         
         revalidate();
+        repaint();
     }
 
     private void handleTrialAction(int skillNum) {
@@ -197,6 +200,7 @@ public class IntroPanel extends JPanel {
         // 4. Run the actual battle logic
         String result = activeHero.useSkill(skillNum, boss);
         textArea.setText(result); // Display the return string from your Character class
+        textArea.getParent().repaint();
 
         // 5. Handle character swapping visually
         // Inside handleTrialAction in IntroPanel.java
@@ -243,7 +247,6 @@ public class IntroPanel extends JPanel {
 
     private class BattleSidePanel extends JPanel {
         private Character owner;
-        // Use a List to hold multiple effects at once
         private java.util.List<ActiveEffect> activeEffects = new java.util.ArrayList<>();
         private int x, y, w, h;
 
@@ -253,29 +256,18 @@ public class IntroPanel extends JPanel {
             this.setOpaque(false);
         }
 
-        public void setOwner(Character owner) { 
-            this.owner = owner; 
-            repaint();
-        }
+        public void setOwner(Character owner) { this.owner = owner; repaint(); }
 
         public void updateEffects() {
             for (ActiveEffect ae : activeEffects) {
-                if (ae.sprite != null) {
-                    ae.sprite.update(); // Moves the effect to its next animation frame
-                }
+                if (ae.sprite != null) ae.sprite.update();
             }
         }
     
-        // Updated playEffect adds to the list instead of overwriting
         public void playEffect(Sprite effect, int ex, int ey, int ew, int eh) {
             ActiveEffect newEffect = new ActiveEffect(effect, ex, ey, ew, eh);
             activeEffects.add(newEffect);
-            
-            // Remove THIS specific effect after 600ms
-            Timer t = new Timer(600, e -> { 
-                activeEffects.remove(newEffect); 
-                repaint(); 
-            });
+            Timer t = new Timer(600, e -> { activeEffects.remove(newEffect); repaint(); });
             t.setRepeats(false);
             t.start();
         }
@@ -283,14 +275,14 @@ public class IntroPanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            // 1. Draw Character
+            // REMOVED BACKGROUND DRAWING FROM HERE TO PREVENT DOUBLE BACKGROUNDS
+            
             if (owner != null && owner.getIdleSprite() != null) {
                 Sprite s = owner.getIdleSprite();
                 if (s.isLoaded()) {
                     g.drawImage(s.getCurrentFrame(), x, y, w, h, null);
                 }
             }
-            // 2. Draw ALL active effects in the list
             for (ActiveEffect ae : activeEffects) {
                 if (ae.sprite != null && ae.sprite.isLoaded()) {
                     g.drawImage(ae.sprite.getCurrentFrame(), ae.x, ae.y, ae.w, ae.h, null);

@@ -6,9 +6,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 public class StartPanel extends JPanel {
-
     GameWindow game;
-    MusicPlayer bgm;
 
     // Replace raw spriteSheet + frames[] with a single Sprite object
     Sprite titleSprite;
@@ -19,8 +17,6 @@ public class StartPanel extends JPanel {
         this.game = game;
         setFocusable(true);
         requestFocusInWindow();
-
-        bgm = new MusicPlayer();
 
         // --- Adjust frameWidth, frameHeight, frameCount to match YOUR sheet ---
         titleSprite = new Sprite(
@@ -68,7 +64,4 @@ public class StartPanel extends JPanel {
         g.setFont(new Font("Serif", Font.BOLD, 25));
         g.drawString("Press ENTER to Start", 400, 540);
     }
-
-    public void startScreenMusic() { bgm.playMusic("intro_bgm.wav"); }
-    public void stopMusic()        { bgm.stopMusic(); }
 }
