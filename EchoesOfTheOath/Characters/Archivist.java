@@ -1,55 +1,51 @@
 package EchoesOfTheOath.Characters;
-import EchoesOfTheOath.UI.MusicPlayer;
-import EchoesOfTheOath.UI.Sprite;
+import EchoesOfTheOath.UI.*;
 
 public class Archivist extends Character {
-    MusicPlayer bgm = new MusicPlayer();
+    private MusicPlayer bgm = new MusicPlayer();
 
-    public Archivist(){
+    public Archivist() {
         super("The Archivist", " HUMANAS < NATION 1 > - MAIN BOSS", 1400, 4);
-        this.idleSprite = new Sprite("/EchoesOfTheOath/Resources/Archivist.png", 400, 400, 1);
-        this.skill1Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/archivist_skill1.png", 151, 187, 12)};
-        this.skill2Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/archivist_skill2.png", 93, 42, 11)};
-        this.skill3Sprite = new Sprite[]{new Sprite("/EchoesOfTheOath/Resources/archivist_skill3.png", 308, 66, 9)};
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Archivist.png", 400, 400, 1));
+        
+        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/archivist_skill1.png", 151, 187, 12)};
+        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/archivist_skill2.png", 93, 42, 11)};
+        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/archivist_skill3.png", 308, 66, 9)};
+        setSkillSprites(s1, s2, s3);
     }
 
-
     @Override 
-    public String useSkill(int skillNumber, Character enemy){
-        int[] cd = getSkillCooldowns(); // get cooldown array
+    public String useSkill(int skillNumber, Character enemy) {
+        if (!isSkillAvailable(skillNumber) && skillNumber != 1) skillNumber = 1;
+
         int dmg = 0;
         StringBuilder msg = new StringBuilder();
 
-        //for skill defaulting if random skill is on cooldown
-        if (cd[skillNumber - 1] > 0 && skillNumber != 1) {
-            skillNumber = 1; //defaults to basic atk
-        }
-
-        switch (skillNumber){
+        switch (skillNumber) {
             case 1:
                 bgm.playSFX("Archivist-The panoptic eye.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: The Panoptic Eye!\n")
-                .append("A pale, shimmering after-image of you appears, and suddenly you feel a sharp cut—not on you, but on your own future shadow.");
+                   .append("A shimmering after-image appears, and you feel a sharp cut on your shadow.");
+                setSkillCooldown(1, 0);
                 break;
             case 2:
                 bgm.playSFX("Archivist-Temporary Relief.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Temporary Relief!\n")
-                .append("The Archivist strikes you with the crushing force of accumulated, unseen debts, leaving you reeling.");
-                cd[skillNumber - 1] = 2;
+                   .append("The Archivist strikes you with the crushing force of unseen debts.");
+                setSkillCooldown(2, 2);
                 break;
             case 3:
                 bgm.playSFX("Archivist-The complete indictment.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 msg.append(getName()).append(" Ultimate Skill: The Complete Indictment!\n")
-                .append("A storm of spectral scrolls engulfs you, tearing at your body as the Archivist claims you as his final possession.");
-                cd[skillNumber - 1] = 3;
+                   .append("A storm of spectral scrolls engulfs you, tearing at your body.");
+                setSkillCooldown(3, 3);
                 break;
         }   
         enemy.takeDamage(dmg);
         reduceCooldowns();
-
         return msg.toString();
     }
 }

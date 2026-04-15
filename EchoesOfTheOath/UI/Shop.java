@@ -57,11 +57,11 @@ public class Shop {
     public String buyItem(int index, Character player) {
         if (index < stock.size()) {
             Item item = stock.get(index);
-            if (player.getGold() >= item.price) {
-                if (player.inventory.size() < player.maxInventorySize) {
-                    player.setGold(player.getGold() - item.price);
-                    player.inventory.add(item);
-                    return "You bought " + item.name + "!";
+            if (player.getGold() >= item.getPrice()) {
+                if (player.getInventory().size() < player.maxInventorySize) {
+                    player.setGold(player.getGold() - item.getPrice());
+                    player.getInventory().add(item);
+                    return "You bought " + item.getName() + "!";
                 } else {
                     return "Your inventory is full!";
                 }

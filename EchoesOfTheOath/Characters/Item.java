@@ -4,12 +4,12 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 public class Item {
-    public String name;
-    public BufferedImage image;
-    public String description;
-    public int price;
-    public String[] dialogueLines;
-    public boolean isConsumable;
+    private final String name;
+    private final BufferedImage image;
+    private final String description;
+    private final int price;
+    private final String[] dialogueLines;
+    private final boolean isConsumable;
 
     public Item(String name, String desc, String imagePath, int price, String[] lines, boolean isConsumable) {
         this.name = name;
@@ -17,16 +17,23 @@ public class Item {
         this.price = price;
         this.dialogueLines = lines;
         this.isConsumable = isConsumable;
+        BufferedImage img = null;
         try {
-            this.image = ImageIO.read(getClass().getResource("/EchoesOfTheOath/Resources/" + imagePath));
+            img = ImageIO.read(getClass().getResource("/EchoesOfTheOath/Resources/" + imagePath));
         } catch (Exception e) {
             System.err.println("Could not load: " + imagePath);
         }
+        this.image = img;
     }
+
+    public String getName() { return name; }
+    public BufferedImage getImage() { return image; }
+    public String getDescription() { return description; }
+    public int getPrice() { return price; }
+    public boolean isConsumable() { return isConsumable; }
 
     public String getRandomLine() {
         if (dialogueLines == null || dialogueLines.length == 0) return "...";
-        int index = (int)(Math.random() * dialogueLines.length);
-        return dialogueLines[index];
+        return dialogueLines[(int)(Math.random() * dialogueLines.length)];
     }
 }

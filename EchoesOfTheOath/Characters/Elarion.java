@@ -1,57 +1,51 @@
 package EchoesOfTheOath.Characters;
-import EchoesOfTheOath.UI.MusicPlayer;
+import EchoesOfTheOath.UI.*;
 
-public class Elarion extends Character{
-    MusicPlayer bgm = new MusicPlayer();
+public class Elarion extends Character {
+    private MusicPlayer bgm = new MusicPlayer();
 
-    public Elarion(){
-        super("Elarion"," DEMON REALM < NATION 3 > - MAIN BOSS", 1400, 12);
+    public Elarion() {
+        super("Elarion", " DEMON REALM < NATION 3 > - MAIN BOSS", 1400, 12);
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Elarion.png", 517, 483, 1));
+        
+        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Elarion_Skill1.png", 128, 128, 8)};
+        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Elarion_Skill2.png", 128, 128, 8)};
+        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/Elarion_Skill3.png", 128, 128, 8)};
+        setSkillSprites(s1, s2, s3);
     }
 
-    
     @Override
     public String useSkill(int skillNumber, Character enemy) {
-        int[] cd = getSkillCooldowns(); // get cooldown array
+        if (!isSkillAvailable(skillNumber) && skillNumber != 1) skillNumber = 1;
+
         int dmg = 0;
         StringBuilder msg = new StringBuilder();
-
-        //for skill defaulting if random skill is on cooldown
-        if (cd[skillNumber - 1] > 0 && skillNumber != 1) {
-            skillNumber = 1; //defaults to basic atk
-        }
 
         switch (skillNumber) {
             case 1:
                 bgm.playSFX("ELARION -- Echo Rend.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
-                msg.append(getName() + " uses  Basic Skill: Echo Rend!\n");
-                msg.append("Elarion unleashes a wave of distorted echoes.\n");
+                msg.append(getName()).append(" uses Basic Skill: Echo Rend!\n")
+                   .append("Elarion unleashes a wave of distorted echoes.");
+                setSkillCooldown(1, 0);
                 break;
             case 2:
                 bgm.playSFX("ELARION --Memory Shatter.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
-                msg.append(getName() + " uses Advanced Skill: Memory Shatter!\n");
-                msg.append("Elarion summons glowing memory shards from you and crushes them into a protective shield, forcing you to endure the impact.");
-                cd[skillNumber - 1] = 2;
+                msg.append(getName()).append(" uses Advanced Skill: Memory Shatter!\n")
+                   .append("Elarion summons and crushes memory shards into a shield.");
+                setSkillCooldown(2, 2);
                 break;
             case 3:
                 bgm.playSFX("ELARION -- The Final Vow.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
-                msg.append(getName() + " uses "  + "Ultimate: The Final Vow!");
-                msg.append("A pillar of fate descends from above, engulfing you in blinding light and overwhelming your senses.");
-                cd[skillNumber - 1] = 3;
+                msg.append(getName()).append(" uses Ultimate: The Final Vow!\n")
+                   .append("A pillar of fate engulfs you in blinding, overwhelming light.");
+                setSkillCooldown(3, 3);
                 break;
         }
         enemy.takeDamage(dmg);
         reduceCooldowns();
         return msg.toString();
     }
-
-
-    /*@Override 
-    public void takeDamage(int dmg){
-        super.takeDamage(dmg);
-    }*/
-   
 }
-

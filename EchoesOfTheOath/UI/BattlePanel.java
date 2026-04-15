@@ -4,15 +4,14 @@ import EchoesOfTheOath.Characters.*;
 import EchoesOfTheOath.Characters.Character;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.*;
 
 public class BattlePanel extends JPanel {
-    
     private GameWindow game;
     private Character player;
     private Character enemy;
 
-    // UI Components
     private JProgressBar playerHpBar, enemyHpBar;
     private JTextArea logArea;
     private JPanel buttonPanel;
@@ -27,50 +26,14 @@ public class BattlePanel extends JPanel {
 
     public BattlePanel(GameWindow game) {
         this.game = game;
-        this.enemy = new babyM(); 
-        this.player = game.getChosenCharacter(); 
-
         this.setBackground(Color.BLACK);
         this.setLayout(new BorderLayout());
-
         this.setFocusable(true); 
+
         this.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                int code = e.getKeyCode();
-
-                if (code == KeyEvent.VK_I) {
-                    currentBattleState = (currentBattleState == INVENTORY_STATE) ? BATTLE_STATE : INVENTORY_STATE;
-                    BattlePanel.this.requestFocusInWindow(); // Ensure focus remains
-                    repaint();
-                    return;
-                }
-
-                if (currentBattleState == INVENTORY_STATE) {
-                    // Use the list size to prevent moving to empty slots
-                    int maxIndex = player.inventory.size() - 1;
-
-                    if (code == KeyEvent.VK_W && slotRow > 0) {
-                        slotRow--;
-                    } else if (code == KeyEvent.VK_S) {
-                        // Only move down if there's an item in the next row
-                        if ((slotRow + 1) * 2 + slotCol <= maxIndex) slotRow++;
-                    } else if (code == KeyEvent.VK_A && slotCol > 0) {
-                        slotCol--;
-                    } else if (code == KeyEvent.VK_D && slotCol < 1) {
-                        // Only move right if there's an item there
-                        if (slotRow * 2 + 1 <= maxIndex) slotCol++;
-                    }
-
-                    if (code == KeyEvent.VK_ENTER) {
-                        int index = slotCol + (slotRow * 2);
-                        if (index < player.inventory.size()) {
-                            useItemInBattle(player.inventory.get(index), index);
-                            currentBattleState = BATTLE_STATE;
-                        }
-                    }
-                    repaint(); // CRITICAL: This updates the yellow box position
-                }
+                handleKeyInput(e);
             }
         });
 
@@ -79,81 +42,178 @@ public class BattlePanel extends JPanel {
         startAnimation();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g); 
+    public void loadBattleData() {
+        this.player = game.getChosenCharacter();
+        this.enemy = game.getCurrentBoss();
+
+        if (player != null && enemy != null) {
+            player.resetCooldowns();
+            playerHpBar.setMaximum(player.getMaxHp());
+            playerHpBar.setValue(player.getHp());
+            playerHpBar.setString(player.getHp() + " / " + player.getMaxHp());
+
+            enemyHpBar.setMaximum(enemy.getMaxHp());
+            enemyHpBar.setValue(enemy.getHp());
+            enemyHpBar.setString(enemy.getHp() + " / " + enemy.getMaxHp());
+
+            playerSide.setOwner(player);
+            enemySide.setOwner(enemy);
+            
+            refreshSkillButtons();
+            
+            logArea.setText("The path is blocked by " + enemy.getName() + "!");
+            repaint();
+        }
+    }
+
+    private void playerTurn(int skillNum) {
+        if (!player.isSkillAvailable(skillNum)) {
+            logArea.setText(player.getSkillName(skillNum) + " is on cooldown!");
+            return;
+        }
+
+        disableButtons(true);
+        
+        Sprite[] effects = player.getSkillSprite(skillNum);
+        if (effects != null) {
+            for (Sprite s : effects) enemySide.playEffect(s, 50, 50, 400, 400);
+        }
+
+        String result = player.useSkill(skillNum, enemy);
+        logArea.setText(result);
+        refreshStatus();
+
+        if (checkGameOver()) return;
+
+        Timer delay = new Timer(1500, e -> enemyTurn());
+        delay.setRepeats(false);
+        delay.start();
+    }
+
+    private void enemyTurn() {
+        int randomSkill = (int)(Math.random() * 3) + 1;
+        
+        Sprite[] effects = enemy.getSkillSprite(randomSkill);
+        if (effects != null) {
+            for (Sprite s : effects) playerSide.playEffect(s, 50, 50, 400, 400);
+        }
+
+        String result = enemy.useSkill(randomSkill, player);
+        logArea.append("\n" + result);
+        
+        player.reduceCooldowns(); 
+        refreshStatus();
+
+        if (!checkGameOver()) {
+            disableButtons(false); 
+        }
+    }
+
+    private boolean checkGameOver() {
+        if (enemy.getHp() <= 0) {
+            logArea.setText("Victory! " + enemy.getName() + " falls.");
+            animationTimer.stop();
+            game.advanceStoryProgress(); 
+            JOptionPane.showMessageDialog(this, "Victory!");
+            game.showScreen("story"); 
+            return true;
+        }
+        if (player.getHp() <= 0) {
+            animationTimer.stop();
+            game.showScreen("gameover"); 
+            return true;
+        }
+        
+        return false;
+    }
+
+    private void handleKeyInput(KeyEvent e) {
+        int code = e.getKeyCode();
+
+        if (code == KeyEvent.VK_I || (code == KeyEvent.VK_ESCAPE && currentBattleState == INVENTORY_STATE)) {
+            currentBattleState = (currentBattleState == INVENTORY_STATE) ? BATTLE_STATE : INVENTORY_STATE;
+            slotCol = 0; slotRow = 0; scrollOffset = 0; 
+            repaint();
+            return;
+        }
+
+        if (currentBattleState == INVENTORY_STATE) {
+            ArrayList<Item> inv = player.getInventory();
+            int cols = 5;
+
+            if (code == KeyEvent.VK_W && slotRow > 0) slotRow--;
+            else if (code == KeyEvent.VK_S && (slotRow + 1) * cols < inv.size()) slotRow++;
+            else if (code == KeyEvent.VK_A && slotCol > 0) slotCol--;
+            else if (code == KeyEvent.VK_D && slotCol < cols - 1) slotCol++;
+
+            if (code == KeyEvent.VK_ENTER && !inv.isEmpty()) {
+                int index = slotCol + (slotRow * cols);
+                if (index < inv.size()) {
+                    useItemInBattle(inv.get(index), index);
+                    currentBattleState = BATTLE_STATE;
+                }
+            }
+            repaint();
+        }
     }
 
     @Override
     protected void paintChildren(Graphics g) {
         super.paintChildren(g); 
-        
-        // ADD THIS CHECK: Only draw if player and their inventory actually exist
-        if (currentBattleState == INVENTORY_STATE && player != null && player.inventory != null) {
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setColor(new Color(0, 0, 0, 150));
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        if (currentBattleState == INVENTORY_STATE && player != null) {
+            g2.setColor(new Color(0, 0, 0, 180)); 
             g2.fillRect(0, 0, getWidth(), getHeight());
-            
-            drawGridWindow(g2, "INVENTORY", player.inventory);
+            MenuRenderer.drawInventory(g2, player, slotCol, slotRow, scrollOffset);
         }
     }
 
     private void useItemInBattle(Item item, int index) {
         disableButtons(true);
-    
-        if (item.name.equals("Potion")) player.setHp(player.getHp() + 50);
-        else if (item.name.equals("Bread")) player.setHp(player.getHp() + 30);
-        else if (item.name.equals("Latte")) player.setHp(player.getHp() + 45);
-        else if (item.name.equals("Matcha")) player.addSkill1Bonus(20);
-        else if (item.name.equals("Bread")) player.setHp(player.getHp() + 30);
-        else if (item.name.equals("Wine") || item.name.equals("Milk")) player.setHp(player.getHp() - 20);
-
-        String message = player.getName() + " used " + item.name + "!\n" + item.getRandomLine();
-        logArea.setText(message);
-
-        // Remove if it's a consumable
-        if (item.isConsumable) {
-            player.inventory.remove(index);
+        String flavorText = InventoryManager.useItem(item, player);
+        logArea.setText(player.getName() + " used " + item.getName() + "!");
+        logArea.append("\n" + flavorText);
+        if (item.isConsumable()) { 
+            player.getInventory().remove(index); 
         }
-
-        refreshStatus();    
-        disableButtons(false);
+        refreshStatus();   
+        if (checkGameOver()) return;
+        Timer delay = new Timer(1500, e -> {
+            enemyTurn();
+            this.requestFocusInWindow(); 
+        });
+        delay.setRepeats(false);
+        delay.start();
     }
 
     private void setupVisuals() {
-        // Split screen for sprites like the Intro
         JPanel splitScreen = new JPanel(new GridLayout(1, 2));
         splitScreen.setOpaque(false);
-
-        playerSide = new BattleSidePanel(player, 50, 50, 400, 400);
-        enemySide = new BattleSidePanel(enemy, 50, 50, 400, 400);
-
+        playerSide = new BattleSidePanel(null, 50, 50, 400, 400);
+        enemySide = new BattleSidePanel(null, 50, 50, 400, 400);
         splitScreen.add(playerSide);
         splitScreen.add(enemySide);
         add(splitScreen, BorderLayout.CENTER);
     }
 
     private void setupUI() {
-        // --- TOP: HP Progress Bars ---
         JPanel topPanel = new JPanel(new GridLayout(1, 2, 20, 0));
         topPanel.setOpaque(false);
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 
-        playerHpBar = createHPBar(player);
-        enemyHpBar = createHPBar(enemy);
+        playerHpBar = createHPBar();
+        enemyHpBar = createHPBar();
 
-        String playerName = (player != null) ? player.getName() : "Hero"; 
-        topPanel.add(createLabeledBar(playerName, playerHpBar));
-        topPanel.add(createLabeledBar(enemy.getName(), enemyHpBar));
+        topPanel.add(createLabeledBar("PLAYER", playerHpBar));
+        topPanel.add(createLabeledBar("ENEMY", enemyHpBar));
         add(topPanel, BorderLayout.NORTH);
 
-        // --- BOTTOM: Controls & Logs ---
         JPanel bottomContainer = new JPanel(new BorderLayout());
         bottomContainer.setPreferredSize(new Dimension(1080, 200));
         bottomContainer.setBackground(new Color(20, 20, 20));
 
-        // 1. STYLE THE LOG AREA (Like the Trial)
-        logArea = new JTextArea("The battle begins! Your turn.");
+        logArea = new JTextArea("The battle begins!");
         logArea.setFont(new Font("Monospaced", Font.BOLD, 18));
         logArea.setForeground(Color.WHITE);
         logArea.setBackground(Color.BLACK);
@@ -162,10 +222,9 @@ public class BattlePanel extends JPanel {
         logArea.setWrapStyleWord(true);
         logArea.setMargin(new Insets(10, 10, 10, 10));
 
-        // 2. ADD TO SCROLLPANE (So text doesn't disappear if it's too long)
         JScrollPane scrollPane = new JScrollPane(logArea);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        bottomContainer.add(scrollPane, BorderLayout.CENTER); // <--- ADDED THIS
+        bottomContainer.add(scrollPane, BorderLayout.CENTER);
 
         buttonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         buttonPanel.setOpaque(false);
@@ -175,31 +234,22 @@ public class BattlePanel extends JPanel {
         addButton("Ultimate", 3);
         
         bottomContainer.add(buttonPanel, BorderLayout.EAST);
-        
-        // 3. ATTACH TO PANEL
-        add(bottomContainer, BorderLayout.SOUTH); // <--- ADDED THIS
+        add(bottomContainer, BorderLayout.SOUTH);
     }
 
     private void addButton(String text, int skillNum) {
-        JButton btn = new JButton(text);
-        btn.setFocusable(false);
-        
+        SkillButton btn = new SkillButton(text, skillNum); 
         btn.addActionListener(e -> {
             playerTurn(skillNum);
-            BattlePanel.this.requestFocusInWindow();
+            this.requestFocusInWindow();
         });
         buttonPanel.add(btn);
     }
 
-    private JProgressBar createHPBar(Character c) {
-        // Default values if character isn't loaded yet
-        int max = (c != null) ? c.getMaxHp() : 100; 
-        int current = (c != null) ? c.getHp() : 100;
-
-        JProgressBar bar = new JProgressBar(0, max);
-        bar.setValue(current);
+    private JProgressBar createHPBar() {
+        JProgressBar bar = new JProgressBar(0, 100);
         bar.setForeground(Color.GREEN);
-        bar.setBackground(Color.RED);
+        bar.setBackground(new Color(60, 0, 0));
         bar.setStringPainted(true);
         return bar;
     }
@@ -209,6 +259,7 @@ public class BattlePanel extends JPanel {
         p.setOpaque(false);
         JLabel lbl = new JLabel(name);
         lbl.setForeground(Color.WHITE);
+        lbl.setFont(new Font("Monospaced", Font.BOLD, 14));
         p.add(lbl, BorderLayout.NORTH);
         p.add(bar, BorderLayout.CENTER);
         return p;
@@ -218,110 +269,38 @@ public class BattlePanel extends JPanel {
         animationTimer = new Timer(50, e -> {
             if (player != null) player.updateAnimations();
             if (enemy != null) enemy.updateAnimations();
-
             if (playerSide != null) playerSide.updateEffects(); 
             if (enemySide != null) enemySide.updateEffects();
-            
             repaint();
         });
         animationTimer.start();
     }
 
-    private void playerTurn(int skillNum) {
-        if (!player.isSkillAvailable(skillNum)) {
-            logArea.setText("Skill is on cooldown!");
-            return;
-        }
-
-        disableButtons(true);
-        
-        // 1. Play Player Effect on Enemy
-        Sprite[] effects = player.getSkillSprite(skillNum);
-        if (effects != null) {
-            for (Sprite s : effects) enemySide.playEffect(s, 50, 50, 400, 400);
-        }
-
-        // 2. Battle Logic
-        String result = player.useSkill(skillNum, enemy);
-        logArea.setText(result);
-        refreshStatus();
-
-        if (checkGameOver()) return;
-
-        // 3. Delay before Enemy Turn
-        Timer delay = new Timer(1500, e -> enemyTurn());
-        delay.setRepeats(false);
-        delay.start();
-    }
-
-    private void enemyTurn() {
-        int randomSkill = (int)(Math.random() * 3) + 1;
-        try {
-            Sprite[] effects = enemy.getSkillSprite(randomSkill);
-            if (effects != null) {
-                for (Sprite s : effects) playerSide.playEffect(s, 50, 50, 400, 400);
-            }
-            String result = enemy.useSkill(randomSkill, player);
-            logArea.append("\n" + result);
-            refreshStatus();
-            if (checkGameOver()) return;
-        } catch (Exception e) {
-            System.err.println("Error during enemy turn: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            disableButtons(false); 
-        }
-    }
-
     private void refreshStatus() {
-    // 1. Update Player Bar
-        int currentHP = player.getHp();
-        int maxHP = player.getMaxHp();
-        playerHpBar.setMaximum(maxHP);
-        playerHpBar.setValue(currentHP);
-        playerHpBar.setString(currentHP + " / " + maxHP); // Shows text on the bar
+        if (player == null || enemy == null) return;
+        
+        playerHpBar.setMaximum(player.getMaxHp());
+        playerHpBar.setValue(player.getHp());
+        playerHpBar.setString(player.getHp() + " / " + player.getMaxHp());
 
-        // 2. Update Enemy Bar
-        int eCurrentHP = enemy.getHp();
-        int eMaxHP = enemy.getMaxHp();
-        enemyHpBar.setMaximum(eMaxHP);
-        enemyHpBar.setValue(eCurrentHP);
-        enemyHpBar.setString(eCurrentHP + " / " + eMaxHP);
-
-        // 3. Dynamic Color Logic
-        // Changes to Red if health is below 30%
-        if (currentHP < (maxHP * 0.3)) {
-            playerHpBar.setForeground(Color.ORANGE);
-        } else {
-            playerHpBar.setForeground(Color.GREEN);
-        }
-        playerHpBar.setBackground(new Color(60, 0, 0));
-        if (eCurrentHP < (eMaxHP * 0.3)) {
-            enemyHpBar.setForeground(Color.ORANGE);
-        } else {
-            enemyHpBar.setForeground(Color.GREEN);
-        }
-        enemyHpBar.setBackground(new Color(60, 0, 0));
-        // Force the UI to refresh these specific components
-        playerHpBar.repaint();
-        enemyHpBar.repaint();
+        enemyHpBar.setMaximum(enemy.getMaxHp());
+        enemyHpBar.setValue(enemy.getHp());
+        enemyHpBar.setString(enemy.getHp() + " / " + enemy.getMaxHp());
+        
+        playerHpBar.setForeground(player.getHp() < player.getMaxHp() * 0.3 ? Color.RED : Color.GREEN);
+        enemyHpBar.setForeground(enemy.getHp() < enemy.getMaxHp() * 0.3 ? Color.RED : Color.GREEN);
+        
+        refreshSkillButtons(); 
     }
 
-    private boolean checkGameOver() {
-        if (enemy.getHp() <= 0) {
-            logArea.setText("Victory! The Infant King has been defeated.");
-            animationTimer.stop();
-            JOptionPane.showMessageDialog(this, "Victory!");
-            game.showScreen("newStory"); // Return to story
-            return true;
+    private void refreshSkillButtons() {
+        Component[] btns = buttonPanel.getComponents();
+        for (int i = 0; i < btns.length; i++) {
+            if (btns[i] instanceof JButton btn && player != null) {
+                btn.setText(player.getSkillName(i + 1));
+                btn.setEnabled(player.getSkillCooldown(i + 1) == 0);
+            }
         }
-        if (player.getHp() <= 0) {
-            logArea.setText("You have fallen in battle...");
-            JOptionPane.showMessageDialog(this, "Game Over");
-            System.exit(0);
-            return true;
-        }
-        return false;
     }
 
     private void disableButtons(boolean disable) {
@@ -340,7 +319,6 @@ public class BattlePanel extends JPanel {
 
     private class BattleSidePanel extends JPanel {
         private Character owner;
-        // Use a List to hold multiple effects at once
         private java.util.List<ActiveEffect> activeEffects = new java.util.ArrayList<>();
         private int x, y, w, h;
 
@@ -350,29 +328,16 @@ public class BattlePanel extends JPanel {
             this.setOpaque(false);
         }
 
-        public void setOwner(Character owner) { 
-            this.owner = owner; 
-            repaint();
-        }
+        public void setOwner(Character owner) { this.owner = owner; repaint(); }
 
         public void updateEffects() {
-            for (ActiveEffect ae : activeEffects) {
-                if (ae.sprite != null) {
-                    ae.sprite.update(); // This moves the effect to the next frame
-                }
-            }
+            for (ActiveEffect ae : activeEffects) if (ae.sprite != null) ae.sprite.update();
         }
 
-        // Updated playEffect adds to the list instead of overwriting
         public void playEffect(Sprite effect, int ex, int ey, int ew, int eh) {
             ActiveEffect newEffect = new ActiveEffect(effect, ex, ey, ew, eh);
             activeEffects.add(newEffect);
-            
-            // Remove THIS specific effect after 600ms
-            Timer t = new Timer(1200, e -> { 
-                activeEffects.remove(newEffect); 
-                repaint(); 
-            });
+            Timer t = new Timer(1200, e -> { activeEffects.remove(newEffect); repaint(); });
             t.setRepeats(false);
             t.start();
         }
@@ -380,14 +345,10 @@ public class BattlePanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            // 1. Draw Character
             if (owner != null && owner.getIdleSprite() != null) {
                 Sprite s = owner.getIdleSprite();
-                if (s.isLoaded()) {
-                    g.drawImage(s.getCurrentFrame(), x, y, w, h, null);
-                }
+                if (s.isLoaded()) g.drawImage(s.getCurrentFrame(), x, y, w, h, null);
             }
-            // 2. Draw ALL active effects in the list
             for (ActiveEffect ae : activeEffects) {
                 if (ae.sprite != null && ae.sprite.isLoaded()) {
                     g.drawImage(ae.sprite.getCurrentFrame(), ae.x, ae.y, ae.w, ae.h, null);
@@ -396,70 +357,42 @@ public class BattlePanel extends JPanel {
         }
     }
 
-    public void loadBattleData() {
-        this.player = game.getChosenCharacter();
-        if (player != null) {
-            // Update HP Bar
-            playerHpBar.setMaximum(player.getMaxHp());
-            playerHpBar.setValue(player.getHp());
-            playerHpBar.setString(player.getHp() + " / " + player.getMaxHp());
+    private class SkillButton extends JButton {
+        private int skillNum;
 
-            // Update Sprite
-            playerSide.setOwner(player);
-            
-            // Update Buttons with real skill names
-            Component[] btns = buttonPanel.getComponents();
-            if (btns.length >= 3) {
-                ((JButton)btns[0]).setText(player.getSkillName(1));
-                ((JButton)btns[1]).setText(player.getSkillName(2));
-                ((JButton)btns[2]).setText(player.getSkillName(3));
-            }
-            
-            logArea.setText("Battle begins! Defeat, " + enemy.getName() + "!");
-            repaint();
+        public SkillButton(String text, int skillNum) {
+            super(text);
+            this.skillNum = skillNum;
+            setFocusable(false);
+            setFont(new Font("Serif", Font.BOLD, 18));
+            setContentAreaFilled(false);
+            setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+            setForeground(Color.WHITE);
         }
-    }
 
-    private void drawGridWindow(Graphics2D g2, String title, java.util.ArrayList<Item> list) {
-        // 1. Draw Background Box (Increased height to fit items better)
-        int x = 200, y = 80, w = 680, h = 420; 
-        g2.setColor(new Color(20, 20, 20, 250)); 
-        g2.fillRoundRect(x, y, w, h, 20, 20);
-        g2.setColor(Color.WHITE);
-        g2.setStroke(new BasicStroke(2));
-        g2.drawRoundRect(x, y, w, h, 20, 20);
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // 2. SET CLIPPING: This prevents items from drawing outside the box
-        Shape oldClip = g2.getClip();
-        g2.setClip(new Rectangle(x + 10, y + 40, w - 20, h - 60));
+            if (getModel().isPressed()) g2.setColor(new Color(60, 60, 60));
+            else if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80));
+            else g2.setColor(new Color(40, 40, 40));
+            g2.fillRect(0, 0, getWidth(), getHeight());
 
-        // 3. Draw Items with Scrolling Logic
-        if (list != null) {
-            // We only want to show about 4 rows at a time
-            int maxVisibleRows = 4; 
-            
-            for (int i = 0; i < list.size(); i++) {
-                int row = i / 2;
-                int col = i % 2;
-                
-                // Only draw if the row is within the current scroll view
-                if (row >= scrollOffset && row < scrollOffset + maxVisibleRows) {
-                    int dx = x + 150 + (col * 200); // Spread out columns more
-                    int dy = y + 60 + ((row - scrollOffset) * 90); // Adjusted for scroll
-                    
-                    g2.drawImage(list.get(i).image, dx, dy, 64, 64, null);
-                    
-                    // Draw selection cursor
-                    if (slotCol == col && slotRow == row) {
-                        g2.setColor(Color.YELLOW);
-                        g2.setStroke(new BasicStroke(3));
-                        g2.drawRect(dx, dy, 64, 64);
-                    }
-                }
+            super.paintComponent(g);
+            int cd = player.getSkillCooldown(skillNum);
+            if (cd > 0) {
+                g2.setColor(new Color(0, 0, 0, 200));
+                g2.fillRect(0, 0, getWidth(), getHeight());
+                g2.setColor(Color.YELLOW);
+                g2.setFont(new Font("Serif", Font.BOLD, 28));
+                String text = String.valueOf(cd);
+                FontMetrics fm = g2.getFontMetrics();
+                int tx = (getWidth() - fm.stringWidth(text)) / 2;
+                int ty = (getHeight() + fm.getAscent()) / 2 - 4;
+                g2.drawString(text, tx, ty);
             }
         }
-        
-        // Reset clip so other UI elements (like HP bars) can draw normally
-        g2.setClip(oldClip);
     }
 }

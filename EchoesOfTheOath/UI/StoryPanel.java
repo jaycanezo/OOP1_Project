@@ -6,69 +6,52 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.net.URL;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class StoryPanel extends JPanel {
-    private int scrollOffset = 0;
-    private final int MAX_VISIBLE_ROWS = 4;
     private GameWindow game;
-    private Image background;
-    private Sprite characterSprite;
-    private int currentMap = 1;
-    private String dialogue = "Use Enter to progress, I to open inventory, P to visit the shop.";
-    private String[] nation1Dialogues = {
-        "Humanas. From a distance, the walls look strong. Up close, they're just holding up a graveyard.",
-        "Gates are broken. Guards look half-starved. This isn't a kingdom; it's a cage.",
-        "Whatever you're looking for, traveler, we don't have it. Food's gone. Gold's gone. Move on.",
-        "Where is everyone? The streets are dead.",
-        "Hiding. Collectors are making their rounds. If you want to keep that gear, stay out of the light. They take everything to the castle for the ‘King’s blessing.’",
-        "The King's blessing. In a place this miserable, that sounds like a threat.",
-        "Beautiful, isn't it? A golden boy for a leaden kingdom",
-        "Why is a golden child standing in the middle of a slum?",
-        "That's King Bartholomew. Or at least, the version they want us to see. Every coin stolen from these streets goes into that castle to keep him 'happy.'",
-        "A child king who never grows up... and steals from his own people. I need to see him for myself.",
-        "The Chapel is just a counting house now. But it's the only path that leads to the castle.",
-        "You aren't on the guest list, traveler.",
-        "I'm not here for a party. I'm here to talk to the King.",
-        "The King doesn't 'talk.' He decides. And according to the records, your life is currently in arrears.",
-        "The decree is signed. Clear the debt.",
-        "You've caused a lot of damage upstairs. My ledger hasn't been this messy in centuries.",
-        "The King is a puppet. You've been using a child to bleed this city dry.",
-        "I don't use anyone. I record. If a King chooses to let his fear dictate the law, I simply write it down.",
-        "The records demand completion! You cannot run from a debt you've already signed!"
-    };
-    private int nation1Index = 0;
-
-    // GAME STATES
-    private final int PLAY_STATE = 0;
-    private final int INVENTORY_STATE = 1;
-    private final int SHOP_STATE = 2;
-    private final int SUB_MENU_STATE = 3;
-    private int gameState = PLAY_STATE;
-
-    // CURSOR LOGIC
-    private int slotCol = 0;
-    private int slotRow = 0;
-    private int subMenuCursor = 0; 
-
+    private Character player;
+    private int optionsCursor = 0;
     private Shop gameShop = new Shop();
-
+    private Npc npcManager = new Npc();
+    private boolean showPlayer = false;
+    private boolean showNPC = false;
+    private Sprite currentBackground;
+    private Sprite playerSprite, npcSprite;
+    private String currentSpeaker = "";
+    private int lineIndex = 0;
+    private final int PLAY_STATE = 0, INVENTORY_STATE = 1, SHOP_STATE = 2, SUB_MENU_STATE = 3, OPTIONS_STATE = 4;
+    private int gameState = PLAY_STATE;
+    private int slotCol = 0, slotRow = 0, subMenuCursor = 0, scrollOffset = 0;
+    private java.util.Map<String, Sprite> backgroundRegistry = new java.util.HashMap<>();
+    private String[] dialogueText;
+    private int currentNation = 1;
+   
     public StoryPanel(GameWindow game) {
         this.game = game;
         this.setFocusable(true);
-        this.requestFocusInWindow();
-        setBackground(Color.darkGray);
+        this.setLayout(null);
+        setNation(1);
 
-        loadSelectedCharacter();
-
-        Timer animationTimer = new Timer(150, e -> {
-            if (characterSprite != null) {
-                characterSprite.update();
-                repaint();
-            }
+        loadBG("nation1_bg1.png", 1920, 1080, 1);
+        loadBG("nation1_bg2.png", 1920, 1080, 1);
+        loadBG("nation1_bg3.png", 1920, 1080, 1);
+        loadBG("nation1_bg4.png", 1920, 1080, 1);
+        loadBG("nation1_bg5.png", 1920, 1080, 1);
+        loadBG("nation1_bg6.png", 1920, 1080, 1);
+        loadBG("nation1_bg6.1.png", 1920, 1080, 1);
+        loadBG("nation1_bg7.png", 1920, 1080, 1);
+        loadBG("nation1_bg8.png", 1920, 1080, 1);
+        loadBG("nation1_bg8.1.png", 1920, 1080, 1);
+        loadBG("nation1_bg8.2.png", 1920, 1080, 30);
+        loadBG("nation1_storyline1.png", 1920, 1080, 7);
+        
+        Timer animationTimer = new Timer(100, e -> {
+            if (playerSprite != null) playerSprite.update();
+            if (npcSprite != null) npcSprite.update();
+            if (currentBackground != null) currentBackground.update();
+            repaint();
         });
         animationTimer.start();
 
@@ -80,353 +63,347 @@ public class StoryPanel extends JPanel {
         });
     }
 
-    void loadSelectedCharacter() {
-        Character chosen = game.getChosenCharacter();
-        if (chosen instanceof Warrior) {
-            characterSprite = new Sprite("/EchoesOfTheOath/Resources/Warrior.png", 523, 477, 1);
-        } else if (chosen instanceof Archer) {
-            characterSprite = new Sprite("/EchoesOfTheOath/Resources/Archer.png", 515, 484, 1);
-        } else if (chosen instanceof Mage) {
-            characterSprite = new Sprite("/EchoesOfTheOath/Resources/Mage.png", 500, 500, 1);
+    public void setNation(int nationNumber) {
+        this.currentNation = nationNumber;
+        this.dialogueText = DialogueManager.getNationDialogue(nationNumber);
+        resetStory();
+    }
+
+    public void resetStory() {
+        this.lineIndex = 0;
+        this.currentSpeaker = "";
+        repaint();
+    }
+
+    public int getLineIndex() {
+        return this.lineIndex;
+    }
+
+    public void loadSelectedHero() {
+        this.player = game.getChosenCharacter();
+        if (this.player != null) { 
+            this.playerSprite = this.player.getIdleSprite(); 
         }
-        updateBackground();
-    }
-
-    private void updateBackground() {
-        try {
-            String path = "/EchoesOfTheOath/Resources/" + currentMap + ".jpg";
-            URL url = getClass().getResource(path);
-            if (url != null) background = ImageIO.read(url);
-        } catch (Exception e) { e.printStackTrace(); }
-    }
-
-    public void handleInput(int keyCode) {
-        this.requestFocusInWindow();
-
-        this.requestFocusInWindow();
-    
-    // Only progress story if we are in the normal PLAY_STATE
-        if (gameState == PLAY_STATE && keyCode == KeyEvent.VK_ENTER) {
-            nation1Index++;
-
-            if (nation1Index < nation1Dialogues.length) {
-                dialogue = nation1Dialogues[nation1Index]; // Show next line
+        if (currentNation == 1) {
+            if (lineIndex >= 59) {
+                setBackgroundImage("nation1_bg8.png");
+            } else if (lineIndex >= 37) {
+                setBackgroundImage("nation1_bg6.png");
             } else {
-                // ALL TEXT FINISHED: Switch to Battle
-                dialogue = "Transitioning to battle...";
-                
-                // Add a small delay for a smoother transition
-                Timer transitionDelay = new Timer(1000, e -> {
-                    game.showScreen("battle"); // Ensure "battle" is registered in GameWindow
-                });
-                transitionDelay.setRepeats(false);
-                transitionDelay.start();
+                setBackgroundImage("nation1_bg1.png");
             }
         }
-
-        if (keyCode == KeyEvent.VK_I) {
-            // Toggle Inventory
-            gameState = (gameState == INVENTORY_STATE) ? PLAY_STATE : INVENTORY_STATE;
-            resetCursor();
-        } else if (keyCode == KeyEvent.VK_S) {
-            // Toggle Shop
-            gameState = (gameState == SHOP_STATE) ? PLAY_STATE : SHOP_STATE;
-            resetCursor();
-        }
-
-        if (gameState == SUB_MENU_STATE) {
-            handleSubMenuInput(keyCode);    
-        } else if (gameState == INVENTORY_STATE || gameState == SHOP_STATE) {
-            handleGridMovement(keyCode);    
-        } else {
-            handleMapMovement(keyCode);         
-        }
-        repaint();      
+        this.showPlayer = true;
     }
 
-    private void handleMapMovement(int keyCode) {
-        if (keyCode == KeyEvent.VK_D) currentMap = Math.min(4, currentMap + 1);
-        else if (keyCode == KeyEvent.VK_A) currentMap = Math.max(1, currentMap - 1);
-        updateBackground();
-    }
-
-    private void handleGridMovement(int keyCode) {
-        ArrayList<Item> currentList = (gameState == INVENTORY_STATE) 
-                                    ? game.getChosenCharacter().inventory 
-                                    : gameShop.getStock();
-        
-        int cols = (gameState == SHOP_STATE) ? 5 : 2; 
-        
-        int nextCol = slotCol;
-        int nextRow = slotRow;
-
-        // 2. Handle Directional Input using the 'cols' variable
-        if (keyCode == KeyEvent.VK_W && slotRow > 0) nextRow--;
-        else if (keyCode == KeyEvent.VK_S) nextRow++; 
-        else if (keyCode == KeyEvent.VK_A && slotCol > 0) nextCol--;
-        else if (keyCode == KeyEvent.VK_D && slotCol < (cols - 1)) nextCol++;
-
-        int targetIndex = nextCol + (nextRow * cols);
-
-        // 3. Validation and Scrolling
-        if (targetIndex < currentList.size()) {
-            slotCol = nextCol;
-            slotRow = nextRow;
-            
-            // Only inventory usually needs scrolling
-            if (gameState == INVENTORY_STATE) {
-                if (slotRow < scrollOffset) {
-                    scrollOffset = slotRow;
-                } else if (slotRow >= scrollOffset + MAX_VISIBLE_ROWS) {
-                    scrollOffset = slotRow - MAX_VISIBLE_ROWS + 1;
-                }
-            }
-
-            Item selected = currentList.get(targetIndex);
-            dialogue = (gameState == SHOP_STATE) 
-                    ? selected.description + " | " + selected.price + " Gold" 
-                    : selected.description;
-        }
-
-        // 4. Action Input (Buying or Sub-menu)
-        if (keyCode == KeyEvent.VK_ENTER) {
-            int finalIndex = slotCol + (slotRow * cols); // Use 'cols' here too!
-            
-            if (gameState == SHOP_STATE) {
-                dialogue = gameShop.buyItem(finalIndex, game.getChosenCharacter());
-            } else if (gameState == INVENTORY_STATE && !currentList.isEmpty()) {
-                gameState = SUB_MENU_STATE;
-                subMenuCursor = 0;
-            }
-        }
-    }
-
-    private void handleSubMenuInput(int keyCode) {
-        if (keyCode == KeyEvent.VK_W && subMenuCursor > 0) subMenuCursor--;
-        else if (keyCode == KeyEvent.VK_S && subMenuCursor < 2) subMenuCursor++;
-        
-        if (keyCode == KeyEvent.VK_ESCAPE) gameState = INVENTORY_STATE;
-        
-        if (keyCode == KeyEvent.VK_ENTER) {
-            executeAction();
-        }
-    }
-
-    private void executeAction() {
-        Character player = game.getChosenCharacter();
-        ArrayList<Item> inv = player.inventory;
-        int index = slotCol + (slotRow * 2);
-        
-        if (index >= inv.size()) return; // Safety check
-        Item selected = inv.get(index);
-
-        if (subMenuCursor == 0) { // Interact/Consume
-            dialogue = selected.name + ": " + selected.getRandomLine();
-            
-            // Health Logic using setters
-            if (selected.name.equals("Wine") || selected.name.equals("Milk")) player.setHp(player.getHp() - 20);
-            else if (selected.name.equals("Potion")) player.setHp(player.getHp() + 50);
-            else if (selected.name.equals("Bread")) player.setHp(player.getHp() + 30);
-            else if (selected.name.equals("Shrimp")) player.setHp(player.getHp() + 20);
-            else if (selected.name.equals("Cinnamon")) player.setHp(player.getHp() + 25);
-            else if (selected.name.equals("Latte")) player.setHp(player.getHp() + 45);
-            else if (selected.name.equals("Pudding")) player.setHp(player.getHp() + 20);
-            else if (selected.name.equals("Matcha")) player.addSkill1Bonus(20);
-            else if (selected.name.equals("Clock")) dialogue = String.format("Clock: It's %d:%02d %s.", (int)(Math.random()*12)+1, (int)(Math.random()*60), (Math.random()>0.5?"AM":"PM"));
-
-            if (selected.isConsumable) inv.remove(index);
-        } 
-        else if (subMenuCursor == 1) { // Sell
-            if (selected.name.equals("Father")) dialogue = "Selling your Father is prohibited.";
-            else { 
-                player.setGold(player.getGold() + (selected.price / 2)); 
-                inv.remove(index); 
-                dialogue = "Sold " + selected.name + " for " + (selected.price/2) + "G.";
+    private void handleInput(int code) {
+        if (gameState == PLAY_STATE) {
+            if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_ENTER) progressStory();
+            if (code == KeyEvent.VK_I) { gameState = INVENTORY_STATE; resetCursor(); }
+            if (code == KeyEvent.VK_P) { gameState = SHOP_STATE; resetCursor(); }
+            if (code == KeyEvent.VK_O || code == KeyEvent.VK_ESCAPE) { 
+                gameState = OPTIONS_STATE; 
+                optionsCursor = 0; 
             }
         } 
-        else if (subMenuCursor == 2) { // Delete
-            inv.remove(index);
-            dialogue = "Discarded " + selected.name;
+        else if (gameState == OPTIONS_STATE) {
+            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) optionsCursor = (optionsCursor > 0) ? optionsCursor - 1 : 2;
+            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) optionsCursor = (optionsCursor < 2) ? optionsCursor + 1 : 0;
+            if (code == KeyEvent.VK_ESCAPE || code == KeyEvent.VK_O) gameState = PLAY_STATE;
+            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) executeOptionsAction();
         }
-        
-        gameState = INVENTORY_STATE;
-        ensureCursorSafety(inv);
+        else {
+            if (code == KeyEvent.VK_I) {
+                gameState = (gameState == INVENTORY_STATE) ? PLAY_STATE : INVENTORY_STATE;
+                resetCursor();
+            }
+            else if (code == KeyEvent.VK_P) {
+                gameState = (gameState == SHOP_STATE) ? PLAY_STATE : SHOP_STATE;
+                resetCursor();
+            }
+            else if (code == KeyEvent.VK_ESCAPE) {
+                gameState = PLAY_STATE;
+            }
+            else if (gameState == SUB_MENU_STATE) { 
+                handleSubMenuInput(code); 
+            } 
+            else {
+                handleGridMovement(code); 
+            }
+        }
+        repaint();
     }
 
-    private void ensureCursorSafety(ArrayList<Item> inv) {
-        if (inv.isEmpty()) {
-            slotCol = 0; slotRow = 0;
-        } else {
-            int lastIndex = inv.size() - 1;
-            if ((slotCol + (slotRow * 2)) >= inv.size()) {
-                slotCol = lastIndex % 2;
-                slotRow = lastIndex / 2;
+    private void executeOptionsAction() {
+        switch (optionsCursor) {
+            case 0 -> { 
+                gameState = PLAY_STATE; 
+                game.loadGame(); 
+            }
+            case 1 -> { 
+                game.autosave(); 
+                game.showScreen("start"); 
+            }
+            case 2 -> { 
+                game.autosave(); 
+                System.exit(0); 
             }
         }
     }
 
-    private void resetCursor() { slotCol = 0; slotRow = 0; subMenuCursor = 0; }
+    private void progressStory() {
+        MusicPlayer bgm = game.getBgm();
+        lineIndex++;
+        if (dialogueText == null || lineIndex >= dialogueText.length) { 
+            game.showScreen("battle"); 
+            return; 
+        }
+
+        if (currentNation == 1) {
+            switch (lineIndex) {
+                case 0: bgm.stopMusic(); bgm.playMusic("nation1_bgm.WAV"); break;
+                case 1: bgm.playSFX("nation1_sfx1.wav"); break;
+                case 2: setBackgroundImage("nation1_bg2.png"); currentSpeaker = ""; break;
+                case 4: bgm.playSFX("nation1_sfx1.wav"); break;
+                case 5: updateScene("Guard", true); bgm.playSFX("nation1_sfx2.wav"); currentSpeaker = ""; break;
+                case 6: updateScene("Guard", true); break;
+                case 7: currentSpeaker = player.getName(); break;
+                case 8: updateScene("Guard", true); break;
+                case 9:  currentSpeaker = ""; break;
+                case 10: setBackgroundImage("nation1_bg3.png"); bgm.playSFX("nation1_sfx1.wav"); this.showNPC = false; currentSpeaker = ""; break;
+                case 11: updateScene("Informant", true); currentSpeaker = ""; break; 
+                case 12: currentSpeaker = "Informant"; break;
+                case 13: currentSpeaker = player.getName(); break;
+                case 14: currentSpeaker = "Informant"; break;
+                case 15: currentSpeaker = player.getName(); break;
+                case 16: currentSpeaker = "Informant"; break;
+                case 17: setBackgroundImage("nation1_bg4.png"); this.showNPC = false; currentSpeaker = " "; break;
+                case 18: updateScene(player.getName(), false); break;
+                case 20: currentSpeaker = " "; break;
+                case 22: bgm.playSFX("nation1_sfx3.wav"); break;
+                case 23: setBackgroundImage("nation1_bg5.png"); bgm.stopMusic(); bgm.playMusic("nation1_bgm2.WAV"); updateScene(player.getName(), false); currentSpeaker = ""; break;
+                case 25: bgm.playSFX("nation1_sfx4.wav"); break;
+                case 26: setBackgroundImage("nation1_bg6.png"); break;
+                case 27: updateScene("Attendant", true); currentSpeaker = "Attendant"; break;
+                case 28: currentSpeaker = player.getName(); break;
+                case 29: currentSpeaker = "Attendant"; break;
+                case 30: currentSpeaker = player.getName(); break;
+                case 31: currentSpeaker = "Attendant"; break;
+                case 32: setBackgroundImage("nation1_bg6.1.png"); showPlayer = false; showNPC = false; break;
+                case 33: showPlayer = true; break;
+                case 36: setBackgroundImage("nation1_bg6.png"); currentSpeaker = "Attendant"; showNPC = true; break;
+                case 37: currentSpeaker = player.getName(); showNPC = false; break;
+                case 38: setBackgroundImage("nation1_bg6.png"); currentSpeaker = ""; break;
+                case 39: currentSpeaker = player.getName(); break;
+                case 40: setBackgroundImage("nation1_bg6.1.png"); currentSpeaker = ""; break;
+                case 42: setBackgroundImage("nation1_bg6.png"); currentSpeaker = player.getName(); break;
+                case 45: currentSpeaker =""; break;
+                case 48: setBackgroundImage("nation1_bg8.2.png"); showPlayer = false; break;
+                case 49: setBackgroundImage("nation1_bg7.png"); showPlayer = true; break;
+                case 50: setBackgroundImage("nation1_bg8.png"); break;
+                case 51: updateScene("Archivist", true); currentSpeaker = "Archivist"; showPlayer = true; break;
+                case 52: currentSpeaker = player.getName(); break;
+                case 53: currentSpeaker = "Archivist"; break;
+                case 54: currentSpeaker = player.getName(); break;
+                case 55: currentSpeaker = "Archivist"; break;
+                case 56: setBackgroundImage("nation1_storyline1.png"); showNPC = false; showPlayer = false; break;
+                case 57: setBackgroundImage("nation1_bg8.png"); currentSpeaker = player.getName(); showPlayer = true; showNPC = true; break;
+                case 58: currentSpeaker = "Archivist"; break;
+                case 59: game.showScreen("battle"); showPlayer = true; showNPC = true; break;
+                case 60: currentSpeaker = "Archivist"; break;
+                case 61: currentSpeaker = ""; break; 
+                case 62: currentSpeaker = player.getName(); break;
+                case 63: currentSpeaker = ""; break;
+                case 65: currentSpeaker = player.getName(); break;
+                case 68: currentSpeaker = "Archivist"; break;
+                case 69: currentSpeaker = player.getName(); break;
+                case 70: showNPC=false; break;
+            }
+        }
+        repaint();
+    }
+
+    private void updateScene(String speaker, boolean isNPC) {
+        this.currentSpeaker = speaker;
+        if (isNPC) {
+            Character npcData = npcManager.get(speaker);
+            if (npcData != null) {
+                this.npcSprite = npcData.getIdleSprite();
+                this.showNPC = true;
+            }
+        } else { this.showNPC = false; }
+        this.showPlayer = true;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // 1. Draw Background & Character (Always visible)
-        if (background != null) g2.drawImage(background, 0, 0, 600, 500, null);
-        
-        g2.setColor(new Color(25, 25, 25)); // Sidebar
-        g2.fillRect(600, 0, 480, 500);
-
-        if (characterSprite != null) {
-            BufferedImage frame = characterSprite.getCurrentFrame();
-            if (frame != null) g2.drawImage(frame, 740, 150, 200, 200, null);
+        if (currentBackground != null && currentBackground.isLoaded()) {
+            g2.drawImage(currentBackground.getCurrentFrame(), 0, 0, getWidth(), getHeight(), null);
         }
 
-        // 2. THE FIX: Drawing the Menus
-        if (gameState == INVENTORY_STATE || gameState == SUB_MENU_STATE) {
-            // This triggers your new 2-window logic
-            drawGridWindow(g2, "INVENTORY", game.getChosenCharacter().inventory);
-        } else if (gameState == SHOP_STATE) {
-            // This triggers your new solid Shop logic
-            drawGridWindow(g2, "SHOP", gameShop.getStock());
-        }
-
-        // 3. Sub-menu and Dialogue (Always on top)
-        if (gameState == SUB_MENU_STATE) drawSubMenu(g2);
-
-        g2.setColor(new Color(30, 30, 30)); // Dialogue Box
-        g2.fillRect(0, 500, 1080, 220);
-        g2.setColor(Color.WHITE);
-        drawWrappedText(g2, dialogue, 50, 545, 980);
-    }
-
-    private void drawGridWindow(Graphics2D g2, String title, ArrayList<Item> list) {
-        Character player = game.getChosenCharacter();
-        // SAFETY: If character isn't loaded yet, don't crash
         if (player == null) return;
+        String heroName = player.getName();
 
-        if (gameState == SHOP_STATE) {
-            // --- SHOP: FULL SOLID WINDOW ---
-            int x = 50, y = 50, w = 500, h = 400;
-            g2.setColor(new Color(20, 20, 20)); 
-            g2.fillRoundRect(x, y, w, h, 20, 20);
-            g2.setColor(Color.WHITE);
-            g2.drawRoundRect(x, y, w, h, 20, 20);
-            g2.drawString("SHOP | Gold: " + player.getGold(), x + 20, y + 30);
+        if (showPlayer && playerSprite != null) {
+            drawCharacter(g2, playerSprite, 50, getHeight() - 550, 450, 450, currentSpeaker.equals(heroName));
+        }
+        if (showNPC && npcSprite != null) {
+            boolean npcIsTalking = !currentSpeaker.equals(heroName) && !currentSpeaker.trim().isEmpty();
+            drawCharacter(g2, npcSprite, getWidth() - 500, getHeight() - 550, 450, 450, npcIsTalking);
+        }
 
-            if (list != null) {
-                for (int i = 0; i < list.size(); i++) {
-                    int slotX = x + 20 + (i % 5 * 85);
-                    int slotY = y + 50 + (i / 5 * 85);
-                    g2.drawImage(list.get(i).image, slotX, slotY, 64, 64, null);
-                    if (slotCol == (i % 5) && slotRow == (i / 5)) {
-                        g2.setColor(Color.YELLOW);
-                        g2.drawRect(slotX, slotY, 64, 64);
-                    }
-                }
+        if (gameState == PLAY_STATE) {
+            drawDialogueBox(g2);
+        } else if (gameState == INVENTORY_STATE || gameState == SUB_MENU_STATE) {
+            MenuRenderer.drawInventory(g2, player, slotCol, slotRow, scrollOffset);
+            drawDialogueBox(g2);
+            if (gameState == SUB_MENU_STATE) {
+                MenuRenderer.drawSubMenu(g2, subMenuCursor); 
             }
-        } else {
-            // --- INVENTORY: SPLIT SOLID WINDOWS ---
-            // LEFT WINDOW: STATS
-            int sx = 50, sy = 50, sw = 240, sh = 400;
-            g2.setColor(new Color(30, 30, 30)); 
-            g2.fillRoundRect(sx, sy, sw, sh, 20, 20);
-            g2.setColor(Color.WHITE);
-            g2.drawRoundRect(sx, sy, sw, sh, 20, 20);
-            
-            g2.drawString("NAME: " + player.getName(), sx + 20, sy + 40);
-            g2.drawString("CLASS:  " + player.getClassType(), sx + 20, sy + 60);
-            g2.drawString("LVL:  " + player.getLevel(), sx + 20, sy + 80);
-            g2.drawString("GOLD:  " + player.getGold(), sx + 20, sy + 100);
-            g2.drawString("HP:  ", sx + 20, sy + 120);
-            drawSidebarHPBar(g2, sx + 20, sy + 130, player);
-
-            g2.drawString("SKILLS:", sx + 20, sy + 200);
-            String skillName = player.getSkillName(1);
-            if (skillName != null) g2.drawString(skillName + " [" + player.getSkillDamageRange(1) + "]", sx + 20, sy + 220);
-            skillName = player.getSkillName(2);
-            if (skillName != null) g2.drawString(skillName + " [" + player.getSkillDamageRange(2) + "]", sx + 20, sy + 240);
-            skillName = player.getSkillName(3);
-            if (skillName != null) g2.drawString(skillName + " [" + player.getSkillDamageRange(3) + "]", sx + 20, sy + 260);
-
-            // RIGHT WINDOW: ITEMS
-            int ix = 300, iy = 50, iw = 250, ih = 400;
-            g2.setColor(new Color(20, 20, 20)); 
-            g2.fillRoundRect(ix, iy, iw, ih, 20, 20);
-            g2.setColor(Color.WHITE);
-            g2.drawRoundRect(ix, iy, iw, ih, 20, 20);
-
-            if (list != null) {
-                for (int i = 0; i < list.size(); i++) {
-                    int row = i / 2;
-                    int col = i % 2;
-                    if (row >= scrollOffset && row < scrollOffset + 4) {
-                        int dx = ix + 30 + (col * 90);
-                        int dy = iy + 30 + ((row - scrollOffset) * 90);
-                        g2.drawImage(list.get(i).image, dx, dy, 64, 64, null);
-                        if (slotCol == col && slotRow == row) {
-                            g2.setColor(Color.YELLOW);
-                            g2.drawRect(dx, dy, 64, 64);
-                        }
-                    }
-                }
-            }
+        } else if (gameState == SHOP_STATE) {
+            MenuRenderer.drawShop(g2, (int)player.getGold(), gameShop.getStock(), slotCol, slotRow);
+            drawDialogueBox(g2);
+        }
+        if (gameState == OPTIONS_STATE) {
+            MenuRenderer.drawOptionsOverlay(g2, optionsCursor);
         }
     }
 
-    private void drawSidebarHPBar(Graphics2D g2, int x, int y, Character p) {
-        int barMaxWidth = 180; // Keep it smaller than the 240px window
-        int barHeight = 15;
-        double maxHP = p.getMaxHp(); 
-        double percent = Math.min(p.getHp() / maxHP, 1.0);
-
-        g2.setColor(Color.DARK_GRAY);
-        g2.fillRect(x, y, barMaxWidth, barHeight);
-        
-        g2.setColor(percent > 0.3 ? Color.GREEN : Color.RED);
-        g2.fillRect(x, y, (int)(barMaxWidth * percent), barHeight);
-        
-        g2.setColor(Color.WHITE);
-        g2.drawRect(x, y, barMaxWidth, barHeight);
-        g2.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        g2.drawString(p.getHp() + "/" + (int)maxHP, x, y + 30);
+    private void drawCharacter(Graphics2D g2, Sprite s, int x, int y, int w, int h, boolean isSpeaking) {
+        BufferedImage frame = s.getCurrentFrame();
+        if (frame != null) {
+            float alpha = isSpeaking ? 1.0f : 0.5f; 
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            g2.drawImage(frame, x, y, w, h, null);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f)); 
+        }
     }
 
-    private void drawSubMenu(Graphics2D g2) {
-        int x = 520, y = 150, w = 160, h = 115;
-        g2.setColor(new Color(0, 0, 0, 245));
-        g2.fillRoundRect(x, y, w, h, 15, 15);
-        g2.setColor(Color.WHITE);
-        g2.drawRoundRect(x + 5, y + 5, w - 10, h - 10, 10, 10);
-        g2.drawString("Interact", x + 40, y + 35);
-        g2.drawString("Sell", x + 40, y + 65);
-        g2.drawString("Delete", x + 40, y + 95);
-        
-        g2.setColor(Color.YELLOW);
-        g2.drawString(">", x + 20, y + 35 + (subMenuCursor * 30));
+    private void drawDialogueBox(Graphics2D g2) {
+        int boxX = 50, boxY = getHeight() - 220, boxW = getWidth() - 100, boxH = 180;
+        g2.setColor(new Color(181, 153, 110, 255)); 
+        g2.fillRoundRect(boxX, boxY, boxW, boxH, 20, 20);
+        g2.setColor(Color.BLACK);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(boxX, boxY, boxW, boxH, 20, 20);
+
+        if (!currentSpeaker.trim().isEmpty()) { 
+            g2.setColor(new Color(111, 78, 55, 255)); 
+            g2.fillRect(boxX + 20, boxY - 30, 200, 40);
+            g2.setColor(Color.BLACK);
+            g2.drawRect(boxX + 20, boxY - 30, 200, 40);
+            g2.setFont(new Font("Serif", Font.BOLD, 22));
+            g2.drawString(currentSpeaker, boxX + 40, boxY - 2);
+        }
+        g2.setColor(Color.BLACK);
+        g2.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        if (lineIndex < dialogueText.length) {
+            drawWrappedText(g2, dialogueText[lineIndex], boxX + 40, boxY + 50, boxW - 80);
+        }
     }
 
-    private void drawWrappedText(Graphics2D g2, String text, int x, int y, int maxWidth) {
+    private void handleGridMovement(int keyCode) {
+        ArrayList<Item> currentList = (gameState == INVENTORY_STATE) ? player.getInventory() : gameShop.getStock();
+        int cols = 5;
+        if (keyCode == KeyEvent.VK_W && slotRow > 0) slotRow--;
+        else if (keyCode == KeyEvent.VK_S && (slotRow + 1) * cols < currentList.size()) {
+            slotRow++;
+            if (slotRow >= scrollOffset + 3) scrollOffset++;
+        }
+        else if (keyCode == KeyEvent.VK_A && slotCol > 0) slotCol--;
+        else if (keyCode == KeyEvent.VK_D && slotCol < cols - 1) slotCol++;
+
+        if (keyCode == KeyEvent.VK_ENTER && !currentList.isEmpty()) {
+            if (gameState == SHOP_STATE) {
+                String result = gameShop.buyItem(slotCol + (slotRow * cols), player);
+                dialogueText[lineIndex] = result;
+            } else gameState = SUB_MENU_STATE;
+        } else updateHoverDescription();
+    }
+
+    private void updateHoverDescription() {
+        ArrayList<Item> list = (gameState == INVENTORY_STATE) ? player.getInventory() : gameShop.getStock();
+        int cols = (gameState == SHOP_STATE) ? 5 : 3;
+        int index = slotCol + (slotRow * cols);
+        
+        if (index >= 0 && index < list.size()) {
+            Item item = list.get(index);
+            String info = item.getName() + ": " + item.getDescription();
+            if (gameState == SHOP_STATE) info += " | Price: " + item.getPrice() + "G";
+            dialogueText[lineIndex] = info;
+        }
+    }
+
+    private void handleSubMenuInput(int code) {
+        if (code == KeyEvent.VK_W && subMenuCursor > 0) subMenuCursor--;
+        if (code == KeyEvent.VK_S && subMenuCursor < 2) subMenuCursor++;
+        if (code == KeyEvent.VK_ENTER) executeAction();
+        if (code == KeyEvent.VK_ESCAPE) gameState = INVENTORY_STATE;
+    }
+
+    private void executeAction() {
+        int index = slotCol + (slotRow * 2);
+        ArrayList<Item> inv = player.getInventory();
+        if (index >= inv.size()) return;
+        Item selected = inv.get(index);
+
+        if (subMenuCursor == 0) { 
+            dialogueText[lineIndex] = InventoryManager.useItem(selected, player);
+            if (selected.isConsumable()) inv.remove(index);
+        } else if (subMenuCursor == 1) {
+            dialogueText[lineIndex] = InventoryManager.sellItem(selected, player);
+            if (!selected.getName().equals("Father")) inv.remove(index);
+        } else if (subMenuCursor == 2) { 
+            inv.remove(index);
+            dialogueText[lineIndex] = "Discarded " + selected.getName();
+        }
+        gameState = INVENTORY_STATE;
+        repaint();
+    }
+
+    private void resetCursor() { slotCol = 0; slotRow = 0; subMenuCursor = 0; scrollOffset = 0; }
+
+    private void setBackgroundImage(String file) { this.currentBackground = backgroundRegistry.get(file); repaint(); }
+
+    private void loadBG(String name, int frameWidth, int frameHeight, int frameCount) {
+        try {
+            String path = "/EchoesOfTheOath/Resources/" + name;
+            Sprite bgSprite = new Sprite(path, frameWidth, frameHeight, frameCount);
+
+            if(name.equals("nation1_bg8.2.png")) {
+                bgSprite.setLooping(false);
+            }
+            
+            if (bgSprite.isLoaded()) {
+                backgroundRegistry.put(name, bgSprite);
+            } else {
+                System.out.println("Failed to load Sprite: " + name);
+            }
+        } catch (Exception e) { 
+            System.out.println("Error pre-loading: " + name); 
+        }
+    }
+
+    private void drawWrappedText(Graphics2D g2, String line, int x, int y, int maxWidth) {
         g2.setFont(new Font("Monospaced", Font.BOLD, 22));
         FontMetrics fm = g2.getFontMetrics();
-        String[] words = text.split(" ");
+        String[] words = line.split(" ");
         StringBuilder currentLine = new StringBuilder();
         int lineHeight = fm.getHeight();
         int drawY = y;
 
         for (String word : words) {
-            // Check if adding the next word exceeds the box width
             if (fm.stringWidth(currentLine.toString() + word) < maxWidth) {
                 currentLine.append(word).append(" ");
             } else {
-                // Draw current line and start a new one
                 g2.drawString(currentLine.toString(), x, drawY);
                 drawY += lineHeight;
                 currentLine = new StringBuilder(word).append(" ");
             }
         }
-        // Draw the very last line
         g2.drawString(currentLine.toString(), x, drawY);
     }
 }
