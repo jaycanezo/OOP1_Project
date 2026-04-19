@@ -34,21 +34,21 @@ public class Warrior extends Character {
                 dmg = ((random.nextInt(45 - 15 + 1) + 15 + 15) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Basic Skill: Slash!\n")
                    .append("You swing your sword in a swift slash toward your enemy.");
-                setSkillCooldown(1, 0);
+                setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("crimsonStrike.wav");
                 dmg = ((random.nextInt(90 - 65 + 1) + 65 + 10) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Advanced Skill: Crimson Strike!\n")
                    .append("You perform a heavy, sweeping strike, landing a fierce blow.");
-                setSkillCooldown(2, 3);
+                setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("bladeQuake.wav");
                 dmg = ((random.nextInt(255 - 135 + 1) + 135 + 40) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Ultimate: Blade Quake!\n")
                    .append("You unleash devastating strength in a massive ground-splitting attack.");
-                setSkillCooldown(3, 5);
+                setSkillCooldown(3, getSkillMaxCooldown(skillNumber));
                 break;
         }
         

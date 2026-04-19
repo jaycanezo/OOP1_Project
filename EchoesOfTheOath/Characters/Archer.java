@@ -31,21 +31,21 @@ public class Archer extends Character {
                 dmg = ((random.nextInt(45 - 15 + 1) + 15 + 25) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Basic Skill: Piercing Shot!\n")
                    .append("You shoot a swift arrow at your foe.");
-                setSkillCooldown(1, 0);
+                setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("Archer_VolleyofNature.wav");
                 dmg = ((random.nextInt(95 - 70 + 1) + 70 + 20) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Advanced Skill: Volley of Nature!\n")
                    .append("You fire multiple arrows, raining them down on your enemy.");
-                setSkillCooldown(2, 3);
+                setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("Archer_Nature'swrath.wav");
                 dmg = ((random.nextInt(230 - 105 + 1) + 105 + 80) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Ultimate: Nature's Wrath!\n")
                    .append("You unleash four guiding arrows, striking your enemy with precision.");
-                setSkillCooldown(3, 5);
+                setSkillCooldown(3, getSkillMaxCooldown(skillNumber));
                 break;
         }
 

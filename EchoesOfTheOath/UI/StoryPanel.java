@@ -192,7 +192,7 @@ public class StoryPanel extends JPanel {
                 case 32: setBackgroundImage("nation1_bg6.1.png"); showPlayer = false; showNPC = false; break;
                 case 33: showPlayer = true; break;
                 case 36: setBackgroundImage("nation1_bg6.png"); currentSpeaker = "Attendant"; showNPC = true; break;
-                case 37: currentSpeaker = player.getName(); showNPC = false; break;
+                case 37: game.showScreen("battle"); currentSpeaker = player.getName(); showNPC = false; break;
                 case 38: setBackgroundImage("nation1_bg6.png"); currentSpeaker = ""; break;
                 case 39: currentSpeaker = player.getName(); break;
                 case 40: setBackgroundImage("nation1_bg6.1.png"); currentSpeaker = ""; break;

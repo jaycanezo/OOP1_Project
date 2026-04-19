@@ -44,6 +44,7 @@ public class GameWindow {
         this.bgm = new MusicPlayer();
         window = new JFrame("Echoes of the Oath");
         window.setSize(1080,720);
+        window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         cardLayout = new CardLayout();

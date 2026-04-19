@@ -6,7 +6,7 @@ public class Mage extends Character {
 
     public Mage() {
         super("Mage", 1500, 1, "Mage");
-        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Mage.png", 500, 500, 1));
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Mage.png", 200, 200, 25));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Mage_Fireball.png", 128, 128, 7)};
         Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Mage_HeatfireSurge.png", 128, 128, 12)};
@@ -35,21 +35,21 @@ public class Mage extends Character {
                 dmg = ((random.nextInt(550 - 530 + 1) + 530 + 1000) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Basic Skill: Fireball!\n")
                    .append("You hurl a blazing fireball at your enemy.");
-                setSkillCooldown(1, 0);
+                setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("Mage_Heatfire_Surge.wav");
                 dmg = ((random.nextInt(800 - 765 + 1) + 765 + 765) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Advanced Skill: Heatfire Surge!\n")
                    .append("You unleash a surge of intense flames.");
-                setSkillCooldown(2, 2);
+                setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("Mage_Astral_Cataclysm.wav");
                 dmg = (1580 * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Ultimate: Astral Cataclysm!\n")
                    .append("You summon a massive fiery rock from the heavens.");
-                setSkillCooldown(3, 4);
+                setSkillCooldown(3, getSkillMaxCooldown(skillNumber));
                 break;
         }
 

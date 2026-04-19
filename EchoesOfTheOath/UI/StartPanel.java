@@ -15,7 +15,7 @@ public class StartPanel extends JPanel {
     public StartPanel(GameWindow game) {
         this.game = game;
         this.setFocusable(true);
-        this.setLayout(new GridBagLayout());
+        this.setLayout(null);
 
         titleSprite = new Sprite(
             "/EchoesOfTheOath/Resources/StartScreen.png",
@@ -41,14 +41,11 @@ public class StartPanel extends JPanel {
 
     private void setupMenu() {
         buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.setOpaque(false); // Make sure we see the sprite behind
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.insets = new Insets(10, 0, 10, 0);
+        buttonPanel.setOpaque(true); // Make sure we see the sprite behind
 
-        JButton newGameBtn = createMenuButton("New Game");
-        JButton continueBtn = createMenuButton("Continue");
-        JButton exitBtn = createMenuButton("Exit");
+        JButton newGameBtn = createMenuButton("New Game", 440, 400);
+        JButton continueBtn = createMenuButton("Continue", 440, 450);
+        JButton exitBtn = createMenuButton("Exit", 440, 500);
 
         File saveFile = new File("autosave.txt");
         if (!saveFile.exists()) {
@@ -60,21 +57,20 @@ public class StartPanel extends JPanel {
         continueBtn.addActionListener(e -> game.loadGame());
         exitBtn.addActionListener(e -> System.exit(0));
 
-        gbc.gridy = 0; buttonPanel.add(newGameBtn, gbc);
-        gbc.gridy = 1; buttonPanel.add(continueBtn, gbc);
-        gbc.gridy = 2; buttonPanel.add(exitBtn, gbc);
-
-        add(buttonPanel);
+        add(newGameBtn);
+        add(continueBtn);
+        add(exitBtn);
     }
 
-    private JButton createMenuButton(String text) {
+    private JButton createMenuButton(String text, int x, int y) {
         JButton btn = new JButton(text);
         btn.setFont(new Font("Serif", Font.BOLD, 28));
         btn.setForeground(Color.WHITE);
         btn.setContentAreaFilled(false);
         btn.setBorderPainted(false);
         btn.setFocusable(false);
-    
+        btn.setBounds(x, y, 200, 50);
+
         btn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) { btn.setForeground(new Color(255, 215, 0)); }
             public void mouseExited(MouseEvent e) { 

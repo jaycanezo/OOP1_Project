@@ -36,6 +36,7 @@ public class IntroPanel extends JPanel {
         this.setFocusable(true);
         background = new Sprite("/EchoesOfTheOath/Resources/intro_bg.png", 426, 240, 121);
 
+        
         warrior.setLevel(12);
         archer.setLevel(12);
         mage.setLevel(12);
@@ -93,36 +94,43 @@ public class IntroPanel extends JPanel {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
+                // Your custom box drawing logic
                 g2.setColor(Color.BLACK); 
-                g2.fillRect(0, 0, getWidth(), getHeight());
+                g2.fillRoundRect(50, 10, getWidth()-100, getHeight()-20, 20, 20);
                 g2.setColor(new Color(181, 153, 110));
                 g2.setStroke(new BasicStroke(3)); 
-                g2.drawLine(0, 0, getWidth(), 0);
+                g2.drawRoundRect(50, 10, getWidth()-100, getHeight()-20, 20, 20);
             }
         };
-        bottomContainer.setOpaque(true);
-        bottomContainer.setBackground(Color.BLACK);
-        bottomContainer.setPreferredSize(new Dimension(1080, 250));
+        bottomContainer.setPreferredSize(new Dimension(1040, 250));
+        bottomContainer.setOpaque(false);
+        bottomContainer.setFocusable(false); //
 
+
+        // 1. Setup the Text Area for the Center
         textArea = new JTextArea("");
         textArea.setOpaque(false);
         textArea.setEditable(false);
         textArea.setFocusable(false);
         textArea.setFont(new Font("Monospaced", Font.BOLD, 22));
-        textArea.setBackground(new Color(0, 0, 0, 0)); 
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setMargin(new Insets(15, 40, 30, 40));
+        // Adjust margins to make room for the buttons below
+        textArea.setMargin(new Insets(15, 80, 10, 80)); 
         bottomContainer.add(textArea, BorderLayout.CENTER);
 
-        buttonPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+        // 2. Setup the Button Panel for the South (NO WRAPPER)
+        buttonPanel = new JPanel(new GridLayout(1, 3, 5, 0)); // 1 row, 3 columns
         buttonPanel.setOpaque(false);
         buttonPanel.setVisible(false);
+        // Add an EmptyBorder to give the buttons some "room" from the box edges
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 0, 50)); 
+
         buttonPanel.add(new SkillButton("Skill 1", 1));
         buttonPanel.add(new SkillButton("Skill 2", 2));
         buttonPanel.add(new SkillButton("Skill 3", 3));
 
-        bottomContainer.add(buttonPanel, BorderLayout.EAST);
+        bottomContainer.add(buttonPanel, BorderLayout.NORTH);
         add(bottomContainer, BorderLayout.SOUTH);
     }
 
@@ -161,6 +169,9 @@ public class IntroPanel extends JPanel {
         textArea.setForeground(Color.WHITE);
         splitScreen.setVisible(true);
         buttonPanel.setVisible(true);
+
+        refreshTrialButtons();
+
         revalidate();
         repaint();
     }
@@ -189,7 +200,6 @@ public class IntroPanel extends JPanel {
             return; 
         }
 
-        activeHero.reduceCooldowns();
         refreshTrialButtons();
         textArea.setText(result);
 
@@ -245,6 +255,7 @@ public class IntroPanel extends JPanel {
             setFocusable(false);
             setFont(new Font("Serif", Font.BOLD, 18));
             setContentAreaFilled(false);
+            setBorderPainted(false);
             setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
             setForeground(Color.WHITE);
             
@@ -258,6 +269,8 @@ public class IntroPanel extends JPanel {
             Character activeHero = getActiveHero();
             if (activeHero != null) {
                 setEnabled(activeHero.getSkillCooldown(skillNum) == 0);
+
+                setForeground(new Color(175, 238, 171));
             }
         }
 
@@ -266,10 +279,19 @@ public class IntroPanel extends JPanel {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            if (getModel().isPressed()) g2.setColor(new Color(60, 60, 60));
-            else if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80));
-            else g2.setColor(new Color(40, 40, 40));
-            g2.fillRect(0, 0, getWidth(), getHeight());
+            if (getModel().isPressed()){ 
+                g2.setColor(new Color(60, 60, 60));
+            } else if (getModel().isRollover()){
+                g2.setColor(new Color(80, 80, 80));
+            } else {
+                g2.setColor(new Color(40, 40, 40));
+            }
+            g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
+            
+            g2.setColor(new Color(181, 153, 110));
+            g2.setStroke(new BasicStroke(2));
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+            
 
             super.paintComponent(g);
 
@@ -278,10 +300,14 @@ public class IntroPanel extends JPanel {
                 int cd = activeHero.getSkillCooldown(skillNum);
                 if (cd > 0) {
                     g2.setColor(new Color(0, 0, 0, 200));
-                    g2.fillRect(0, 0, getWidth(), getHeight());
+                    g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
 
-                    g2.setColor(Color.YELLOW);
-                    g2.setFont(new Font("Serif", Font.BOLD, 32));
+                    g2.setColor(new Color(181, 153, 110));
+                    g2.setStroke(new BasicStroke(2));
+                    g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+
+                    g2.setColor(new Color(249, 152, 155));
+                    g2.setFont(new Font("Serif", Font.BOLD, 24));
                     String text = String.valueOf(cd);
                     FontMetrics fm = g2.getFontMetrics();
                     int tx = (getWidth() - fm.stringWidth(text)) / 2;

@@ -59,10 +59,13 @@ abstract public class Character {
         }
         return 0;
     }
+
     public int[] getSkillCooldowns() { return skillCooldowns; }
+
     public int getSkillCooldown(int skillNumber) {
         return skillCooldowns[skillNumber - 1];
     }
+
     public int getSkillMaxCooldown(int skillNumber) {
         return switch(skillNumber) {
             case 1 -> 0; 

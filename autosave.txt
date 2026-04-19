@@ -1,0 +1,4 @@
+Nation:1
+CharacterClass:Mage
+Level:1
+Gold:1000.0
