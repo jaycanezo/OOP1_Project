@@ -69,8 +69,8 @@ abstract public class Character {
     public int getSkillMaxCooldown(int skillNumber) {
         return switch(skillNumber) {
             case 1 -> 0; 
-            case 2 -> 2; 
-            case 3 -> 4;
+            case 2 -> 3; 
+            case 3 -> 5;
             default -> 0;
         };
     }

@@ -24,6 +24,19 @@ public class BattlePanel extends JPanel {
     private int slotCol = 0, slotRow = 0;
     private int scrollOffset = 0;
 
+    private Sprite background; // Current active background
+    private int currentLevel = 0; // Local index to match GameWindow's boss index
+
+    // Array of paths matching the boss sequence in GameWindow
+    private final String[] backgroundPaths = {
+        "/EchoesOfTheOath/Resources/nation1_bg6.png",
+        "/EchoesOfTheOath/Resources/nation2_bg8.png",
+        "/EchoesOfTheOath/Resources/battle_bg_Ilaryx.png",
+        "/EchoesOfTheOath/Resources/battle_bg_Lunareth.png",
+        "/EchoesOfTheOath/Resources/battle_bg_Sarukdal.png",
+        "/EchoesOfTheOath/Resources/battle_bg_Elarion.png"
+    };
+
     public BattlePanel(GameWindow game) {
         this.game = game;
         this.setBackground(Color.BLACK);
@@ -45,13 +58,26 @@ public class BattlePanel extends JPanel {
     public void loadBattleData() {
         this.player = game.getChosenCharacter();
         this.enemy = game.getCurrentBoss();
+        
+        // Sync local level with GameWindow's boss index
+        // Since GameWindow increments this index, we use it to select the BG
+        int bossIndex = 0; // Default
+        try {
+            // Reflection or a public getter in GameWindow for the current index is best
+            // For now, we load based on the enemy name or currentBossIndex
+            this.background = new Sprite(backgroundPaths[game.getBossIndex()], 1920, 1080, 1);
+        } catch (Exception e) {
+            this.background = null; // Fallback to black if file missing
+        }
 
         if (player != null && enemy != null) {
             player.resetCooldowns();
             playerHpBar.setMaximum(player.getMaxHp());
             playerHpBar.setValue(player.getHp());
             playerHpBar.setString(player.getHp() + " / " + player.getMaxHp());
+            playerHpBar.setMaximum(player.getMaxHp());
 
+            enemyHpBar.setMaximum(enemy.getMaxHp());
             enemyHpBar.setMaximum(enemy.getMaxHp());
             enemyHpBar.setValue(enemy.getHp());
             enemyHpBar.setString(enemy.getHp() + " / " + enemy.getMaxHp());
@@ -158,6 +184,31 @@ public class BattlePanel extends JPanel {
     }
 
     @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+
+        // 1. Draw the SINGLE background first
+        if (background != null && background.isLoaded()) {
+            g.drawImage(background.getCurrentFrame(), 0, 0, getWidth(), getHeight(), null);
+        }
+
+        // 2. Draw the Characters at fixed positions
+        if (player != null && player.getIdleSprite() != null) {
+            Sprite s = player.getIdleSprite();
+            if (s.isLoaded()) {
+                g.drawImage(s.getCurrentFrame(), 100, getHeight() - 580, 400, 400, null);
+            }
+        }
+        if (enemy != null && enemy.getIdleSprite() != null) {
+            Sprite s = enemy.getIdleSprite();
+            if (s.isLoaded()) {
+                g.drawImage(s.getCurrentFrame(), getWidth() - 500, getHeight() - 580, 400, 400, null);
+            }
+        }
+    }
+
+    @Override
     protected void paintChildren(Graphics g) {
         super.paintChildren(g); 
         Graphics2D g2 = (Graphics2D) g;
@@ -209,31 +260,49 @@ public class BattlePanel extends JPanel {
         topPanel.add(createLabeledBar("ENEMY", enemyHpBar));
         add(topPanel, BorderLayout.NORTH);
 
-        JPanel bottomContainer = new JPanel(new BorderLayout());
-        bottomContainer.setPreferredSize(new Dimension(1080, 200));
-        bottomContainer.setBackground(new Color(20, 20, 20));
+        JPanel bottomContainer = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                // Draw the black rounded box
+                g2.setColor(Color.BLACK); 
+                g2.fillRoundRect(50, 10, getWidth()-100, getHeight()-20, 20, 20);
+                
+                // Draw the light brown "vintage" border
+                g2.setColor(new Color(181, 153, 110));
+                g2.setStroke(new BasicStroke(3)); 
+                g2.drawRoundRect(50, 10, getWidth()-100, getHeight()-20, 20, 20);
+            }
+        };
+        bottomContainer.setPreferredSize(new Dimension(1040, 250));
+        bottomContainer.setOpaque(false); // Ensure we see the main background
 
+        // Update logArea (JTextArea) transparency and margins
         logArea = new JTextArea("The battle begins!");
-        logArea.setFont(new Font("Monospaced", Font.BOLD, 18));
-        logArea.setForeground(Color.WHITE);
-        logArea.setBackground(Color.BLACK);
+        logArea.setOpaque(false);
         logArea.setEditable(false);
+        logArea.setFocusable(false);
+        logArea.setFont(new Font("Monospaced", Font.BOLD, 22));
+        logArea.setForeground(Color.WHITE);
         logArea.setLineWrap(true);
         logArea.setWrapStyleWord(true);
-        logArea.setMargin(new Insets(10, 10, 10, 10));
+        logArea.setMargin(new Insets(15, 80, 10, 80)); // Matching IntroPanel margins
 
-        JScrollPane scrollPane = new JScrollPane(logArea);
-        scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        bottomContainer.add(scrollPane, BorderLayout.CENTER);
-
-        buttonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
+        // Switch Skill buttons to a horizontal 1x3 grid
+        buttonPanel = new JPanel(new GridLayout(1, 3, 5, 0)); 
         buttonPanel.setOpaque(false);
-        
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 0, 50)); // Padding
+
         addButton("Skill 1", 1);
         addButton("Skill 2", 2);
         addButton("Ultimate", 3);
+
+        // Layout the box: Buttons on top, Text in the middle
+        bottomContainer.add(buttonPanel, BorderLayout.NORTH);
+        bottomContainer.add(logArea, BorderLayout.CENTER);
         
-        bottomContainer.add(buttonPanel, BorderLayout.EAST);
         add(bottomContainer, BorderLayout.SOUTH);
     }
 
@@ -344,11 +413,9 @@ public class BattlePanel extends JPanel {
 
         @Override
         protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if (owner != null && owner.getIdleSprite() != null) {
-                Sprite s = owner.getIdleSprite();
-                if (s.isLoaded()) g.drawImage(s.getCurrentFrame(), x, y, w, h, null);
-            }
+            // DO NOT call super.paintComponent(g) - we need this layer transparent
+            
+            // Draw ONLY the skill effects (slashes, fireballs, etc.)
             for (ActiveEffect ae : activeEffects) {
                 if (ae.sprite != null && ae.sprite.isLoaded()) {
                     g.drawImage(ae.sprite.getCurrentFrame(), ae.x, ae.y, ae.w, ae.h, null);
@@ -366,8 +433,7 @@ public class BattlePanel extends JPanel {
             setFocusable(false);
             setFont(new Font("Serif", Font.BOLD, 18));
             setContentAreaFilled(false);
-            setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-            setForeground(Color.WHITE);
+            setBorderPainted(false); // Crucial for custom round painting
         }
 
         @Override
@@ -375,23 +441,36 @@ public class BattlePanel extends JPanel {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+            // Background logic
             if (getModel().isPressed()) g2.setColor(new Color(60, 60, 60));
             else if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80));
             else g2.setColor(new Color(40, 40, 40));
-            g2.fillRect(0, 0, getWidth(), getHeight());
+            
+            g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
+            
+            // Brown Border
+            g2.setColor(new Color(181, 153, 110));
+            g2.setStroke(new BasicStroke(2));
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+
+            // Update text color based on cooldown state
+            if (player != null && player.getSkillCooldown(skillNum) == 0) {
+                setForeground(new Color(175, 238, 171)); // Light Green
+            }
 
             super.paintComponent(g);
-            int cd = player.getSkillCooldown(skillNum);
+
+            // Cooldown overlay
+            int cd = (player != null) ? player.getSkillCooldown(skillNum) : 0;
             if (cd > 0) {
                 g2.setColor(new Color(0, 0, 0, 200));
-                g2.fillRect(0, 0, getWidth(), getHeight());
-                g2.setColor(Color.YELLOW);
-                g2.setFont(new Font("Serif", Font.BOLD, 28));
+                g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
+
+                g2.setColor(new Color(249, 152, 155)); // Light Red text
+                g2.setFont(new Font("Serif", Font.BOLD, 24));
                 String text = String.valueOf(cd);
                 FontMetrics fm = g2.getFontMetrics();
-                int tx = (getWidth() - fm.stringWidth(text)) / 2;
-                int ty = (getHeight() + fm.getAscent()) / 2 - 4;
-                g2.drawString(text, tx, ty);
+                g2.drawString(text, (getWidth() - fm.stringWidth(text)) / 2, (getHeight() + fm.getAscent()) / 2 - 4);
             }
         }
     }

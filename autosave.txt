@@ -1,4 +1,4 @@
 Nation:1
-CharacterClass:Mage
+CharacterClass:Warrior
 Level:1
 Gold:1000.0

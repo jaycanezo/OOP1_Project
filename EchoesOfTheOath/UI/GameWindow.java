@@ -86,6 +86,10 @@ public class GameWindow {
         return bosses[currentBossIndex]; 
     }
 
+    public int getBossIndex() {
+        return this.currentBossIndex;
+    }
+
     public void advanceStoryProgress() {
         if (currentBossIndex < bosses.length - 1) {
             currentBossIndex++;

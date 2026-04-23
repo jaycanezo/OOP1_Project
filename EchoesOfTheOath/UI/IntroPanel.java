@@ -297,7 +297,7 @@ public class IntroPanel extends JPanel {
 
             Character activeHero = getActiveHero();
             if (activeHero != null) {
-                int cd = activeHero.getSkillCooldown(skillNum);
+                int cd = (activeHero != null) ? activeHero.getSkillCooldown(skillNum) : 0;
                 if (cd > 0) {
                     g2.setColor(new Color(0, 0, 0, 200));
                     g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
