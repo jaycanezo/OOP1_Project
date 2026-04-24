@@ -1,4 +1,4 @@
 Nation:1
-CharacterClass:Warrior
+CharacterClass:Archer
 Level:1
 Gold:1000.0
