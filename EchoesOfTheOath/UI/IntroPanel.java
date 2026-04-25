@@ -307,8 +307,8 @@ public class IntroPanel extends JPanel {
                     g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
 
                     g2.setColor(new Color(249, 152, 155));
-                    g2.setFont(new Font("Serif", Font.BOLD, 24));
-                    String text = String.valueOf(cd);
+                    g2.setFont(new Font("Serif", Font.BOLD, 18));
+                    String text = "Cooldown: " + String.valueOf(cd) + " turn(s)";
                     FontMetrics fm = g2.getFontMetrics();
                     int tx = (getWidth() - fm.stringWidth(text)) / 2;
                     int ty = (getHeight() + fm.getAscent()) / 2 - 4;
