@@ -23,14 +23,14 @@ public class BattlePanel extends JPanel {
     private int currentBattleState = BATTLE_STATE;
     private int slotCol = 0, slotRow = 0;
     private int scrollOffset = 0;
-
+    private boolean isPlayerTurn = true;
     private Sprite background; // Current active background
     private int currentLevel = 0; // Local index to match GameWindow's boss index
 
     // Array of paths matching the boss sequence in GameWindow
     private final String[] backgroundPaths = {
         "/EchoesOfTheOath/Resources/nation1_bg6.png",
-        "/EchoesOfTheOath/Resources/nation2_bg8.png",
+        "/EchoesOfTheOath/Resources/nation1_bg8.png",
         "/EchoesOfTheOath/Resources/battle_bg_Ilaryx.png",
         "/EchoesOfTheOath/Resources/battle_bg_Lunareth.png",
         "/EchoesOfTheOath/Resources/battle_bg_Sarukdal.png",
@@ -58,10 +58,10 @@ public class BattlePanel extends JPanel {
     public void loadBattleData() {
         this.player = game.getChosenCharacter();
         this.enemy = game.getCurrentBoss();
+        this.isPlayerTurn = true;
         
         // Sync local level with GameWindow's boss index
         // Since GameWindow increments this index, we use it to select the BG
-        int bossIndex = 0; // Default
         try {
             // Reflection or a public getter in GameWindow for the current index is best
             // For now, we load based on the enemy name or currentBossIndex
@@ -71,34 +71,40 @@ public class BattlePanel extends JPanel {
         }
 
         if (player != null && enemy != null) {
+            // Reset player state
             player.resetCooldowns();
+            
+            
+            // EXPLICITLY set the bar to the current HP (full)
             playerHpBar.setMaximum(player.getMaxHp());
             playerHpBar.setValue(player.getHp());
             playerHpBar.setString(player.getHp() + " / " + player.getMaxHp());
-            playerHpBar.setMaximum(player.getMaxHp());
 
             enemyHpBar.setMaximum(enemy.getMaxHp());
-            enemyHpBar.setMaximum(enemy.getMaxHp());
-            enemyHpBar.setValue(enemy.getHp());
+            enemyHpBar.setValue(enemy.getHp()); // Fresh enemy starts at Max HP
             enemyHpBar.setString(enemy.getHp() + " / " + enemy.getMaxHp());
 
             playerSide.setOwner(player);
             enemySide.setOwner(enemy);
             
+            disableButtons(false); 
             refreshSkillButtons();
-            
-            logArea.setText("The path is blocked by " + enemy.getName() + "!");
             repaint();
         }
     }
 
     private void playerTurn(int skillNum) {
-        if (!player.isSkillAvailable(skillNum)) {
-            logArea.setText(player.getSkillName(skillNum) + " is on cooldown!");
+        // 1. Hard check: If it's not the turn or button is disabled, STOP
+        if (!isPlayerTurn || !player.isSkillAvailable(skillNum)) {
+            if (!player.isSkillAvailable(skillNum)) {
+                logArea.setText(player.getSkillName(skillNum) + " is on cooldown!");
+            }
             return;
         }
 
-        disableButtons(true);
+        // 2. Lock the turn immediately
+        isPlayerTurn = false;
+        disableButtons(true); 
         
         Sprite[] effects = player.getSkillSprite(skillNum);
         if (effects != null) {
@@ -111,28 +117,35 @@ public class BattlePanel extends JPanel {
 
         if (checkGameOver()) return;
 
-        Timer delay = new Timer(1500, e -> enemyTurn());
+        Timer delay = new Timer(2000, e -> enemyTurn());
         delay.setRepeats(false);
         delay.start();
     }
 
     private void enemyTurn() {
         int randomSkill = (int)(Math.random() * 3) + 1;
-        
+        logArea.append("\n" + enemy.getName() + " prepares to strike!");
+
         Sprite[] effects = enemy.getSkillSprite(randomSkill);
         if (effects != null) {
             for (Sprite s : effects) playerSide.playEffect(s, 50, 50, 400, 400);
         }
 
-        String result = enemy.useSkill(randomSkill, player);
-        logArea.append("\n" + result);
-        
-        player.reduceCooldowns(); 
-        refreshStatus();
+        Timer actionDelay = new Timer(1500, e -> {
+            String result = enemy.useSkill(randomSkill, player);
+            logArea.append("\n" + result);
+            
+            player.reduceCooldowns(); 
+            refreshStatus();
 
-        if (!checkGameOver()) {
-            disableButtons(false); 
-        }
+            if (!checkGameOver()) {
+                isPlayerTurn = true; // TURN IS NOW TRANSFERRED BACK
+                disableButtons(false); 
+                this.requestFocusInWindow();
+            }
+        });
+        actionDelay.setRepeats(false);
+        actionDelay.start();
     }
 
     private boolean checkGameOver() {
@@ -140,6 +153,7 @@ public class BattlePanel extends JPanel {
             logArea.setText("Victory! " + enemy.getName() + " falls.");
             animationTimer.stop();
             game.advanceStoryProgress(); 
+            game.story.nextLine();
             JOptionPane.showMessageDialog(this, "Victory!");
             game.showScreen("story"); 
             return true;
@@ -366,15 +380,35 @@ public class BattlePanel extends JPanel {
         Component[] btns = buttonPanel.getComponents();
         for (int i = 0; i < btns.length; i++) {
             if (btns[i] instanceof JButton btn && player != null) {
-                btn.setText(player.getSkillName(i + 1));
-                btn.setEnabled(player.getSkillCooldown(i + 1) == 0);
+                int skillIdx = i + 1;
+                btn.setText(player.getSkillName(skillIdx));
+                
+                int cd = player.getSkillCooldown(skillIdx);
+                
+                // Only enable if it's the player's turn AND no cooldown
+                boolean canUse = (isPlayerTurn && cd == 0);
+                btn.setEnabled(canUse);
+                
+                if (!isPlayerTurn || cd > 0) {
+                    btn.setForeground(Color.GRAY); //
+                } else {
+                    btn.setForeground(new Color(175, 238, 171)); //
+                }
             }
         }
     }
 
     private void disableButtons(boolean disable) {
         for (Component c : buttonPanel.getComponents()) {
-            c.setEnabled(!disable);
+            if (c instanceof JButton btn) {
+                btn.setEnabled(!disable);
+                if (disable) {
+                    btn.setForeground(Color.GRAY); // Visual feedback for disabled
+                } else {
+                    // This will be handled by refreshSkillButtons, but we can set a default here
+                    btn.setForeground(new Color(175, 238, 171)); // Light Green
+                }
+            }
         }
     }
 

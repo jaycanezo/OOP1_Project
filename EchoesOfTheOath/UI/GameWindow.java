@@ -83,7 +83,15 @@ public class GameWindow {
     }
 
     public Character getCurrentBoss() { 
-        return bosses[currentBossIndex]; 
+        return switch (currentBossIndex) {
+            case 0 -> new babyM();
+            case 1 -> new Archivist();
+            case 2 -> new Ilaryx();
+            case 3 -> new Lunareth();
+            case 4 -> new Sarukdal();
+            case 5 -> new Elarion();
+            default -> new babyM();
+        };
     }
 
     public int getBossIndex() {
@@ -93,11 +101,15 @@ public class GameWindow {
     public void advanceStoryProgress() {
         if (currentBossIndex < bosses.length - 1) {
             currentBossIndex++;
+            
             if (currentBossIndex % 2 == 0) {
                 int nationNumber = (currentBossIndex / 2) + 1;
                 story.setNation(nationNumber); 
             } else {
-                story.resetStory();
+                // We are still in the same nation, just after a boss.
+                // Do NOT call resetStory() if you want to keep the lineIndex.
+                // Instead, just clear the speaker to refresh the UI.
+                story.resetStory(); 
             }
         }
     }

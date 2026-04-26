@@ -70,7 +70,6 @@ public class StoryPanel extends JPanel {
     }
 
     public void resetStory() {
-        this.lineIndex = 0;
         this.currentSpeaker = "";
         repaint();
     }
@@ -405,5 +404,11 @@ public class StoryPanel extends JPanel {
             }
         }
         g2.drawString(currentLine.toString(), x, drawY);
+    }
+
+    public void nextLine() {
+        this.lineIndex++; 
+        this.currentSpeaker = ""; // Clear speaker to avoid leftover names
+        repaint(); 
     }
 }
