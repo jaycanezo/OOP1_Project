@@ -1,6 +1,6 @@
 Nation:1
-BossIndex:1
-LineIndex:37
+BossIndex:0
+LineIndex:0
 CharacterClass:Mage
 Level:1
 Gold:1000.0
