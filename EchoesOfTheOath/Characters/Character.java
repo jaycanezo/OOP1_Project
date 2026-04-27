@@ -40,19 +40,50 @@ abstract public class Character {
         this.hp = maxHp;
     }
 
-    public int getHp() { return this.hp; }
-    public int getMaxHp() { return this.maxHp; }
-    public int getLevel() { return this.level; }
-    public String getClassType() { return this.classType; }
-    public double getGold() { return this.gold; }
-    public String getName() { return name; }
-    public String getTitle() { return title; }
-    public Sprite getIdleSprite() { return idleSprite; }
-    public String getSkillName(int skillNumber) { return "Unknown Skill"; }
-    public String getSkillDamageRange(int skillNumber) { return "Unknown Damage Range"; }  
+    public int getHp() { 
+        return this.hp; 
+    }
+
+    public int getMaxHp() { 
+        return this.maxHp; 
+    }
+
+    public int getLevel() { 
+        return this.level; 
+    }
+
+    public String getClassType() { 
+        return this.classType; 
+    }
+
+    public double getGold() { 
+        return this.gold; 
+    }
+
+    public String getName() { 
+        return name; 
+    }
+
+    public String getTitle() { 
+        return title; 
+    }
+
+    public Sprite getIdleSprite() { 
+        return idleSprite; 
+    }
+    
+    public String getSkillName(int skillNumber) { 
+        return "Unknown Skill"; 
+    }
+
+    public String getSkillDamageRange(int skillNumber) { 
+        return "Unknown Damage Range"; 
+    }  
+
     public ArrayList<Item> getInventory() {
         return this.inventory;
     }
+
     public int getSkillBonus(int skillSlot) {
         if (skillSlot >= 1 && skillSlot <= 3) {
             return this.skillBonuses[skillSlot - 1];
@@ -60,7 +91,9 @@ abstract public class Character {
         return 0;
     }
 
-    public int[] getSkillCooldowns() { return skillCooldowns; }
+    public int[] getSkillCooldowns() { 
+        return skillCooldowns; 
+    }
 
     public int getSkillCooldown(int skillNumber) {
         return skillCooldowns[skillNumber - 1];
@@ -74,6 +107,7 @@ abstract public class Character {
             default -> 0;
         };
     }
+
     public Sprite[] getSkillSprite(int skillNumber){
         return switch(skillNumber){
             case 1 -> skill1Sprite;
@@ -83,21 +117,33 @@ abstract public class Character {
         };
     }
 
-    public void setIdleSprite(Sprite s) { this.idleSprite = s; }
-    public void setGold(double gold) { this.gold = gold; }
-    public void setName(String name){ this.name = name; }
+    public void setIdleSprite(Sprite s) { 
+        this.idleSprite = s; 
+    }
+
+    public void setGold(double gold) { 
+        this.gold = gold; 
+    }
+
+    public void setName(String name){ 
+        this.name = name; 
+    }
+
     public void setLevel(int level) {
         this.level = level;
         this.maxHp = baseHp * level;
         this.hp = maxHp; 
     }
+
     public void setHp(int newHp){
         this.hp = Math.min(newHp, maxHp);
         if (this.hp < 0) this.hp = 0;
     }
+
     public void setSkillCooldown(int skillNumber, int turns) {
         skillCooldowns[skillNumber - 1] = turns;
     }
+
     public void setSkillSprites(Sprite[] s1, Sprite[] s2, Sprite[] s3) {
         this.skill1Sprite = s1;
         this.skill2Sprite = s2;
@@ -110,14 +156,18 @@ abstract public class Character {
             if (this.skillBonuses[skillSlot - 1] < 0) this.skillBonuses[skillSlot - 1] = 0;
         }
     }
+
     public void markSkillUsed(int skillSlot) {
         if (skillSlot >= 1 && skillSlot <= 3) isUsed[skillSlot - 1] = true;
     }
+
     public boolean allSkillsUsed() {
         for (boolean used : isUsed) if (!used) return false;
         return true;
     }
+
     public abstract String useSkill(int skillNumber, Character enemy);
+
     public String takeDamage(int dmg){
         if (dmg > 0) {
             hp -= dmg;
@@ -125,9 +175,11 @@ abstract public class Character {
         }
         return name +  " takes " + dmg + " damage!\n" + name + " has "  + hp + " HP remaining!";
     }
+
     public boolean isSkillAvailable(int skillNumber) {
         return skillCooldowns[skillNumber - 1] == 0;
     }
+    
     public void reduceCooldowns() {
         for (int i = 0; i < skillCooldowns.length; i++) {
             if (skillCooldowns[i] > 0) {
@@ -135,21 +187,27 @@ abstract public class Character {
             }
         }
     }
+
     public void resetCooldowns() {
         for (int i = 0; i < skillCooldowns.length; i++) {
             skillCooldowns[i] = 0;
         }
     }
+
     public void updateAnimations(){
         if(idleSprite != null) idleSprite.update();
         updateSpriteArray(skill1Sprite);
         updateSpriteArray(skill2Sprite);
         updateSpriteArray(skill3Sprite);
     }
+
     private void updateSpriteArray(Sprite[] s) {
         if (s != null) { for (Sprite frame : s) frame.update(); }
     }
-    public String displaySkills() { return name + " has no skills to display."; }
+
+    public String displaySkills() { 
+        return name + " has no skills to display."; 
+    }
 }
 
 

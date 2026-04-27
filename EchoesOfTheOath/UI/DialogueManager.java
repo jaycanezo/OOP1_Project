@@ -89,9 +89,16 @@ public class DialogueManager {
                 "“Veyora. The Elves. If the fragments of what I lost are there... I have to find them.”",
                 "(The screen fades to black as the Hero walks toward the light.)"
             };
-            case 2 -> new String[] { "placeholder dialogue...", "To be continued..." };
-            case 3 -> new String[] { "placeholder dialogue...", "To be continued..." };
-            default -> new String[] { "End of the road for now." };
+
+            case 2 -> new String[] { 
+                "placeholder dialogue...", "To be continued..." 
+            };
+
+            case 3 -> new String[] { 
+                "placeholder dialogue...", "To be continued..." 
+            };
+
+            default -> new String[] { "" };
         };
     }
 }

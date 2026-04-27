@@ -26,21 +26,21 @@ public class Elarion extends Character {
                 bgm.playSFX("ELARION -- Echo Rend.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: Echo Rend!\n")
-                   .append("Elarion unleashes a wave of distorted echoes.");
+                   .append("Elarion unleashes a wave of distorted echoes, leaving you disoriented!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 bgm.playSFX("ELARION --Memory Shatter.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Memory Shatter!\n")
-                   .append("Elarion summons and crushes memory shards into a shield.");
+                   .append("Elarion summons glowing memory shards from you and crushes them into a protective shield, forcing you to endure the impact!");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 bgm.playSFX("ELARION -- The Final Vow.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 msg.append(getName()).append(" uses Ultimate: The Final Vow!\n")
-                   .append("A pillar of fate engulfs you in blinding, overwhelming light.");
+                   .append("A pillar of fate descends from above, engulfing you in blinding light and overwhelming your senses!");
                 setSkillCooldown(3, 3);
                 break;
         }

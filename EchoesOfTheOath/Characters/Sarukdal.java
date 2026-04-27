@@ -16,7 +16,8 @@ public class Sarukdal extends Character {
 
     @Override
     public String useSkill(int skillNumber, Character enemy) {
-        if (!isSkillAvailable(skillNumber) && skillNumber != 1) skillNumber = 1;
+        if (!isSkillAvailable(skillNumber) && skillNumber != 1) 
+            skillNumber = 1;
 
         int dmg = 0;
         StringBuilder msg = new StringBuilder();
@@ -26,21 +27,21 @@ public class Sarukdal extends Character {
                 bgm.playSFX("SARUKDAL -- Warden’s Grasp.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: Warden's Grasp!\n")
-                   .append("Sarukdal hurls spectral chains at you, attempting to seize you.");
+                   .append("Sarukdal hurls spectral chains at you, attempting to seize you!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 bgm.playSFX("SARUKDAL -- Abyssal Lament.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Abyssal Lament!\n")
-                   .append("Dark flames spread across the battlefield, scorching everything.");
+                   .append("Dark flames spread across the battlefield, scorching everything around you!");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 bgm.playSFX("SARUKDAL -- Judgement of the Forsaken.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 msg.append(getName()).append(" uses Ultimate: Judgment of the Forsaken!\n")
-                   .append("Glowing fire blades descend from the sky with devastating force.");
+                   .append("Glowing fire blades descend from the sky, targeting you with devastating force!");
                 setSkillCooldown(3, 3);
                 break;
         }

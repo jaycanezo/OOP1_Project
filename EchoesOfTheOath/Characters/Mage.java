@@ -20,7 +20,9 @@ public class Mage extends Character {
 
     @Override
     public String useSkill(int skillNumber, Character enemy) {
-        if (skillNumber < 1 || skillNumber > 3) return "Invalid Skill.\n";
+        if (skillNumber < 1 || skillNumber > 3) 
+            return "Invalid Skill.\n";
+        
         if (!isSkillAvailable(skillNumber)) {
             return "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining.";
         }
@@ -34,21 +36,21 @@ public class Mage extends Character {
                 bgm.playSFX("Mage_Fire_ball.wav");
                 dmg = ((random.nextInt(550 - 530 + 1) + 530 + 1000) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Basic Skill: Fireball!\n")
-                   .append("You hurl a blazing fireball at your enemy.");
+                   .append("You hurl a blazing fireball at your enemy, dealing damage!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("Mage_Heatfire_Surge.wav");
                 dmg = ((random.nextInt(800 - 765 + 1) + 765 + 765) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Advanced Skill: Heatfire Surge!\n")
-                   .append("You unleash a surge of intense flames.");
+                   .append("You unleash a surge of intense flames, striking your enemy with great force!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("Mage_Astral_Cataclysm.wav");
                 dmg = (1580 * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Ultimate: Astral Cataclysm!\n")
-                   .append("You summon a massive fiery rock from the heavens.");
+                   .append("You summon a massive fiery rock from the heavens, obliterating everything in the area around your enemy!");
                 setSkillCooldown(3, getSkillMaxCooldown(skillNumber));
                 break;
         }
@@ -80,22 +82,6 @@ public class Mage extends Character {
             case 3 -> String.valueOf(1580*lvl + b);
             default -> "0";
         };
-    }
-
-    public String displayCharacterInfo() {
-        StringBuilder msg = new StringBuilder();
-
-        msg.append("\nWielders of ancient knowledge, Mages command the elements and arcane forces. Fragile in body but unmatched in power, they bend magic at will to devastate their enemies from a distance.\n");
-
-        msg.append("SKILLS:\n");
-       
-        for (int i = 1; i <= 3; i++) {
-            String skillName = getSkillName(i);
-            String damageRange = getSkillDamageRange(i);
-            msg.append("(" + i + ") " + skillName + "\nDamage: " + damageRange + "\n");
-        }
-
-        return msg.toString();
     }
 
     @Override

@@ -25,6 +25,7 @@ public class Npc {
                 return ""; 
             }
         };
+        
         npcChar.setIdleSprite(new Sprite(resPath, width, height, 1));
         registry.put(name, npcChar);
     }
