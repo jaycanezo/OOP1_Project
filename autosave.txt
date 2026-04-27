@@ -1,4 +1,7 @@
 Nation:1
+BossIndex:1
+LineIndex:37
 CharacterClass:Mage
 Level:1
 Gold:1000.0
+HP:1500

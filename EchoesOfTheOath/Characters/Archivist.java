@@ -16,7 +16,8 @@ public class Archivist extends Character {
 
     @Override 
     public String useSkill(int skillNumber, Character enemy) {
-        if (!isSkillAvailable(skillNumber) && skillNumber != 1) skillNumber = 1;
+        if (!isSkillAvailable(skillNumber) && skillNumber != 1) 
+            skillNumber = 1;
 
         int dmg = 0;
         StringBuilder msg = new StringBuilder();
@@ -26,21 +27,21 @@ public class Archivist extends Character {
                 bgm.playSFX("Archivist-The panoptic eye.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: The Panoptic Eye!\n")
-                   .append("A shimmering after-image appears, and you feel a sharp cut on your shadow.");
+                   .append("A pale, shimmering after-image of you appears, and suddenly you feel a sharp cut—not on you, but on your own future shadow!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 bgm.playSFX("Archivist-Temporary Relief.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Temporary Relief!\n")
-                   .append("The Archivist strikes you with the crushing force of unseen debts.");
+                   .append("The Archivist strikes you with the crushing force of accumulated, unseen debts, leaving you reeling!");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 bgm.playSFX("Archivist-The complete indictment.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 msg.append(getName()).append(" Ultimate Skill: The Complete Indictment!\n")
-                   .append("A storm of spectral scrolls engulfs you, tearing at your body.");
+                   .append("A storm of spectral scrolls engulfs you, tearing at your body as the Archivist claims you as his final possession!");
                 setSkillCooldown(3, 3);
                 break;
         }   

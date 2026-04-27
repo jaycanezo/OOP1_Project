@@ -11,6 +11,7 @@ public class StartPanel extends JPanel {
     Sprite titleSprite;
     Timer animationTimer;
     JPanel buttonPanel;
+    JButton continueBtn; 
 
     public StartPanel(GameWindow game) {
         this.game = game;
@@ -41,19 +42,19 @@ public class StartPanel extends JPanel {
 
     private void setupMenu() {
         buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.setOpaque(true); // Make sure we see the sprite behind
+        buttonPanel.setOpaque(true);
 
         JButton newGameBtn = createMenuButton("New Game", 440, 400);
-        JButton continueBtn = createMenuButton("Continue", 440, 450);
+        continueBtn = createMenuButton("Continue", 440, 450); 
         JButton exitBtn = createMenuButton("Exit", 440, 500);
 
-        File saveFile = new File("autosave.txt");
-        if (!saveFile.exists()) {
-            continueBtn.setEnabled(false);
-            continueBtn.setForeground(Color.GRAY);
-        }
+        refreshMenu(); 
 
-        newGameBtn.addActionListener(e -> game.showScreen("intro"));
+        newGameBtn.addActionListener(e -> {
+            game.resetForNewGame(); 
+            game.showScreen("intro");
+        });
+
         continueBtn.addActionListener(e -> game.loadGame());
         exitBtn.addActionListener(e -> System.exit(0));
 
@@ -62,9 +63,21 @@ public class StartPanel extends JPanel {
         add(exitBtn);
     }
 
+    public void refreshMenu() {
+        File saveFile = new File("autosave.txt");
+        if (!saveFile.exists()) {
+            continueBtn.setEnabled(false);
+            continueBtn.setForeground(Color.GRAY);
+        } else {
+            continueBtn.setEnabled(true);
+            continueBtn.setForeground(Color.WHITE);
+        }
+    }
+
     private JButton createMenuButton(String text, int x, int y) {
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Serif", Font.BOLD, 28));
+
+        btn.setFont(new Font("Georgia", Font.PLAIN, 28));
         btn.setForeground(Color.WHITE);
         btn.setContentAreaFilled(false);
         btn.setBorderPainted(false);
@@ -72,12 +85,19 @@ public class StartPanel extends JPanel {
         btn.setBounds(x, y, 200, 50);
 
         btn.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btn.setForeground(new Color(255, 215, 0)); }
+            public void mouseEntered(MouseEvent e) { 
+                btn.setForeground(new Color(255, 215, 0)); 
+            }
+
             public void mouseExited(MouseEvent e) { 
-                if (btn.isEnabled()) btn.setForeground(Color.WHITE);
-                else btn.setForeground(Color.GRAY);
+                if (btn.isEnabled()){
+                    btn.setForeground(Color.WHITE);
+                }else {
+                    btn.setForeground(Color.GRAY);
+                }
             }
         });
+
         return btn;
     }
 

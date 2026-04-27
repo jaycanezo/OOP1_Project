@@ -13,7 +13,10 @@ public class IntroPanel extends JPanel {
     private JPanel splitScreen;
     private JPanel buttonPanel;
     
-    private enum State { STORY, TRIAL }
+    private enum State { 
+        STORY, TRIAL 
+    }
+
     private State currentState = State.STORY;
     private String fullDialogue = DialogueManager.getIntroDialogue();
     private int charIndex = 0;
@@ -36,13 +39,13 @@ public class IntroPanel extends JPanel {
         this.setFocusable(true);
         background = new Sprite("/EchoesOfTheOath/Resources/intro_bg.png", 426, 240, 121);
 
-        
         warrior.setLevel(12);
         archer.setLevel(12);
         mage.setLevel(12);
 
         setupComponents();
         startAnimation();
+        
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -51,6 +54,34 @@ public class IntroPanel extends JPanel {
                 }
             }
         });
+    }
+
+    public void resetIntro() {
+        this.currentState = State.STORY;
+        this.charIndex = 0;
+        this.alpha = 0.0f;
+        
+        textArea.setText("");
+        splitScreen.setVisible(false);
+        buttonPanel.setVisible(false);
+        
+        this.warrior = new Warrior(); 
+        warrior.setLevel(12);
+
+        this.archer = new Archer(); 
+        archer.setLevel(12);
+
+        this.mage = new Mage();
+        mage.setLevel(12);
+
+        this.boss = new Elarion();
+
+        heroSide.setOwner(warrior);
+        enemySide.setOwner(boss);
+        
+        if (animationTimer != null && !animationTimer.isRunning()) {
+            animationTimer.start();
+        }
     }
 
     @Override
@@ -64,14 +95,18 @@ public class IntroPanel extends JPanel {
 
         if (currentState == State.TRIAL) {
             Character activeHero = getActiveHero();
+
             if (activeHero != null && activeHero.getIdleSprite() != null) {
                 Sprite s = activeHero.getIdleSprite();
+
                 if (s.isLoaded()) {
                     g.drawImage(s.getCurrentFrame(), 100, getHeight() - 580, 400, 400, null);
                 }
             }
+
             if (boss != null && boss.getIdleSprite() != null) {
                 Sprite s = boss.getIdleSprite();
+
                 if (s.isLoaded()) {
                     g.drawImage(s.getCurrentFrame(), getWidth() - 500, getHeight() - 580, 400, 400, null);
                 }
@@ -88,13 +123,14 @@ public class IntroPanel extends JPanel {
         splitScreen.setVisible(false);
         splitScreen.add(heroSide);
         splitScreen.add(enemySide);
+
         add(splitScreen, BorderLayout.CENTER);
 
         JPanel bottomContainer = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
-                // Your custom box drawing logic
+
                 g2.setColor(Color.BLACK); 
                 g2.fillRoundRect(50, 10, getWidth()-100, getHeight()-20, 20, 20);
                 g2.setColor(new Color(181, 153, 110));
@@ -102,28 +138,25 @@ public class IntroPanel extends JPanel {
                 g2.drawRoundRect(50, 10, getWidth()-100, getHeight()-20, 20, 20);
             }
         };
+
         bottomContainer.setPreferredSize(new Dimension(1040, 250));
         bottomContainer.setOpaque(false);
-        bottomContainer.setFocusable(false); //
+        bottomContainer.setFocusable(false);
 
-
-        // 1. Setup the Text Area for the Center
         textArea = new JTextArea("");
         textArea.setOpaque(false);
         textArea.setEditable(false);
         textArea.setFocusable(false);
-        textArea.setFont(new Font("Monospaced", Font.BOLD, 22));
+        textArea.setFont(new Font("Georgia", Font.PLAIN, 22));
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        // Adjust margins to make room for the buttons below
         textArea.setMargin(new Insets(15, 80, 10, 80)); 
         bottomContainer.add(textArea, BorderLayout.CENTER);
 
-        // 2. Setup the Button Panel for the South (NO WRAPPER)
-        buttonPanel = new JPanel(new GridLayout(1, 3, 5, 0)); // 1 row, 3 columns
+        buttonPanel = new JPanel(new GridLayout(1, 3, 5, 0)); 
         buttonPanel.setOpaque(false);
         buttonPanel.setVisible(false);
-        // Add an EmptyBorder to give the buttons some "room" from the box edges
+
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 0, 50)); 
 
         buttonPanel.add(new SkillButton("Skill 1", 1));
@@ -136,7 +169,9 @@ public class IntroPanel extends JPanel {
 
     private void startAnimation() {
         animationTimer = new Timer(50, e -> {
-            if (background != null) background.update();
+            if (background != null) 
+                background.update();
+
             warrior.updateAnimations();
             archer.updateAnimations();
             mage.updateAnimations();
@@ -147,6 +182,7 @@ public class IntroPanel extends JPanel {
                     textArea.append(String.valueOf(fullDialogue.charAt(charIndex)));
                     charIndex++;
                 }
+
                 if (alpha < 1.0f) {
                     alpha += 0.02f;
                     textArea.setForeground(new Color(1f, 1f, 1f, Math.min(alpha, 1.0f)));
@@ -171,21 +207,24 @@ public class IntroPanel extends JPanel {
         buttonPanel.setVisible(true);
 
         refreshTrialButtons();
-
         revalidate();
         repaint();
     }
 
     private void handleTrialAction(int skillNum) {
         Character activeHero = getActiveHero();
-        if (activeHero == null) return;
+
+        if (activeHero == null) 
+            return;
 
         if (activeHero.isSkillAvailable(skillNum)) {
             Sprite[] effects = activeHero.getSkillSprite(skillNum);
+            
             if (effects != null) {
                 for (int i = 0; i < effects.length; i++) {
                     final Sprite s = effects[i];
                     Timer t = new Timer(i * 400, ev -> enemySide.playEffect(s, 50, 50, 450, 450));
+
                     t.setRepeats(false);
                     t.start();
                 }
@@ -195,7 +234,9 @@ public class IntroPanel extends JPanel {
         String result = activeHero.useSkill(skillNum, boss);
         
         if (activeHero.getHp() <= 0) {
-            if (animationTimer != null) animationTimer.stop(); 
+            if (animationTimer != null) 
+                animationTimer.stop(); 
+
             game.showScreen("gameover");
             return; 
         }
@@ -207,25 +248,34 @@ public class IntroPanel extends JPanel {
             Timer delay = new Timer(1500, e -> {
                 textArea.append("\nWarrior has finished. Archer, take aim!");
                 heroSide.setOwner(archer); 
+            
                 refreshTrialButtons();
             });
+
             delay.setRepeats(false);
             delay.start();
         } 
+
         else if (activeHero == archer && archer.allSkillsUsed()) {
             Timer delay = new Timer(1500, e -> {
                 textArea.append("\nArcher has finished. Mage, unleash your mana!");
                 heroSide.setOwner(mage);
+
                 refreshTrialButtons();
             });
+
             delay.setRepeats(false);
             delay.start();
         } 
+
         else if (activeHero == mage && mage.allSkillsUsed()) {
             Timer delay = new Timer(2000, e -> {
-                if (animationTimer != null) animationTimer.stop();
+                if (animationTimer != null) 
+                    animationTimer.stop();
+        
                 game.showScreen("charSelect");
             });
+
             delay.setRepeats(false);
             delay.start();
         }
@@ -240,9 +290,15 @@ public class IntroPanel extends JPanel {
     }
 
     private Character getActiveHero() {
-        if (!warrior.allSkillsUsed()) return warrior;
-        if (!archer.allSkillsUsed()) return archer;
-        if (!mage.allSkillsUsed()) return mage;
+        if (!warrior.allSkillsUsed()) 
+            return warrior;
+
+        if (!archer.allSkillsUsed()) 
+            return archer;
+
+        if (!mage.allSkillsUsed()) 
+            return mage;
+
         return null;
     }
 
@@ -252,8 +308,9 @@ public class IntroPanel extends JPanel {
         public SkillButton(String text, int skillNum) {
             super(text);
             this.skillNum = skillNum;
+
             setFocusable(false);
-            setFont(new Font("Serif", Font.BOLD, 18));
+            setFont(new Font("Georgia", Font.PLAIN, 18));
             setContentAreaFilled(false);
             setBorderPainted(false);
             setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
@@ -267,9 +324,9 @@ public class IntroPanel extends JPanel {
 
         public void updateButtonState() {
             Character activeHero = getActiveHero();
+
             if (activeHero != null) {
                 setEnabled(activeHero.getSkillCooldown(skillNum) == 0);
-
                 setForeground(new Color(175, 238, 171));
             }
         }
@@ -286,18 +343,19 @@ public class IntroPanel extends JPanel {
             } else {
                 g2.setColor(new Color(40, 40, 40));
             }
+
             g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
-            
             g2.setColor(new Color(181, 153, 110));
             g2.setStroke(new BasicStroke(2));
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
-            
 
             super.paintComponent(g);
 
             Character activeHero = getActiveHero();
+
             if (activeHero != null) {
                 int cd = (activeHero != null) ? activeHero.getSkillCooldown(skillNum) : 0;
+
                 if (cd > 0) {
                     g2.setColor(new Color(0, 0, 0, 200));
                     g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
@@ -307,11 +365,14 @@ public class IntroPanel extends JPanel {
                     g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
 
                     g2.setColor(new Color(249, 152, 155));
-                    g2.setFont(new Font("Serif", Font.BOLD, 18));
-                    String text = "Cooldown: " + String.valueOf(cd) + " turn(s)";
+                    g2.setFont(new Font("Georgia", Font.PLAIN, 18));
+
+                    String text = "Cooldown (" + cd + ")";
                     FontMetrics fm = g2.getFontMetrics();
+
                     int tx = (getWidth() - fm.stringWidth(text)) / 2;
                     int ty = (getHeight() + fm.getAscent()) / 2 - 4;
+
                     g2.drawString(text, tx, ty);
                 }
             }
@@ -321,8 +382,13 @@ public class IntroPanel extends JPanel {
     private class ActiveEffect {
         Sprite sprite;
         int x, y, w, h;
+
         public ActiveEffect(Sprite s, int x, int y, int w, int h) {
-            this.sprite = s; this.x = x; this.y = y; this.w = w; this.h = h;
+            this.sprite = s; 
+            this.x = x; 
+            this.y = y; 
+            this.w = w; 
+            this.h = h;
         }
     }
 
@@ -333,20 +399,36 @@ public class IntroPanel extends JPanel {
 
         public BattleSidePanel(Character owner, int x, int y, int w, int h) {
             this.owner = owner;
-            this.x = x; this.y = y; this.w = w; this.h = h;
+            this.x = x; 
+            this.y = y; 
+            this.w = w; 
+            this.h = h;
+
             this.setOpaque(false);
         }
 
-        public void setOwner(Character owner) { this.owner = owner; repaint(); }
+        public void setOwner(Character owner) { 
+            this.owner = owner; 
+            repaint(); 
+        }
 
         public void updateEffects() {
-            for (ActiveEffect ae : activeEffects) if (ae.sprite != null) ae.sprite.update();
+            for (ActiveEffect ae : activeEffects) {
+                if (ae.sprite != null) {
+                    ae.sprite.update();
+                }
+            }
         }
     
         public void playEffect(Sprite effect, int ex, int ey, int ew, int eh) {
             ActiveEffect newEffect = new ActiveEffect(effect, ex, ey, ew, eh);
             activeEffects.add(newEffect);
-            Timer t = new Timer(600, e -> { activeEffects.remove(newEffect); repaint(); });
+
+            Timer t = new Timer(600, e -> { 
+                activeEffects.remove(newEffect); 
+                repaint(); 
+            });
+
             t.setRepeats(false);
             t.start();
         }
@@ -354,6 +436,7 @@ public class IntroPanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+
             for (ActiveEffect ae : activeEffects) {
                 if (ae.sprite != null && ae.sprite.isLoaded()) {
                     g.drawImage(ae.sprite.getCurrentFrame(), ae.x, ae.y, ae.w, ae.h, null);

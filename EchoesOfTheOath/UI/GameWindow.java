@@ -42,6 +42,7 @@ public class GameWindow {
 
     public GameWindow() {
         this.bgm = new MusicPlayer();
+
         window = new JFrame("Echoes of the Oath");
         window.setSize(1080,720);
         window.setResizable(false);
@@ -82,6 +83,10 @@ public class GameWindow {
         return this.bgm;
     }
 
+    public BattlePanel getBattlePanel() {
+        return battle;
+    }
+
     public Character getCurrentBoss() { 
         return bosses[currentBossIndex]; 
     }
@@ -93,12 +98,8 @@ public class GameWindow {
     public void advanceStoryProgress() {
         if (currentBossIndex < bosses.length - 1) {
             currentBossIndex++;
-            if (currentBossIndex % 2 == 0) {
-                int nationNumber = (currentBossIndex / 2) + 1;
-                story.setNation(nationNumber); 
-            } else {
-                story.resetStory();
-            }
+
+            System.out.println("Boss defeated. Dialogue continues normally.");
         }
     }
 
@@ -111,6 +112,8 @@ public class GameWindow {
         }
 
         switch (name) {
+            case "start" -> start.refreshMenu();
+
             case "intro" -> container.getComponent(1).requestFocusInWindow();
             
             case "story" -> {
@@ -129,17 +132,17 @@ public class GameWindow {
     }
 
     public void autosave() {
-        if (chosenCharacter == null) return;
+        if (chosenCharacter == null) 
+            return;
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("autosave.txt"))) {
-            int nationNumber = (currentBossIndex / 2) + 1;
-
-            writer.write("Nation:" + nationNumber + "\n"); 
+            writer.write("Nation:" + story.getCurrentNation() + "\n");
+            writer.write("BossIndex:" + currentBossIndex + "\n");
+            writer.write("LineIndex:" + story.getLineIndex() + "\n");
             writer.write("CharacterClass:" + chosenCharacter.getClassType() + "\n");
             writer.write("Level:" + chosenCharacter.getLevel() + "\n");
             writer.write("Gold:" + chosenCharacter.getGold() + "\n");
-            
-            System.out.println("Checkpoint Locked: Nation " + nationNumber);
+            writer.write("HP:" + chosenCharacter.getHp() + "\n");
         } catch (IOException e) {
             System.out.println("Autosave failed: " + e.getMessage());
         }
@@ -147,45 +150,77 @@ public class GameWindow {
 
     public void loadGame() {
         File saveFile = new File("autosave.txt");
-        if (!saveFile.exists()) return;
+        if (!saveFile.exists()) 
+            return;
 
         try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(saveFile))) {
             String line;
+            java.util.Map<String, String> saveParams = new java.util.HashMap<>();
+            
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":");
-                if (parts.length < 2) continue;
 
-                String key = parts[0];
-                String value = parts[1];
-
-                switch (key) {
-                    case "Nation" -> {
-                        int nation = Integer.parseInt(value);
-                        this.currentBossIndex = (nation - 1) * 2; 
-                        story.setNation(nation);
-                    }
-                    case "CharacterClass" -> {
-                        if (value.equalsIgnoreCase("Warrior")) setChosenCharacter(new Warrior());
-                        else if (value.equalsIgnoreCase("Archer")) setChosenCharacter(new Archer());
-                        else if (value.equalsIgnoreCase("Mage")) setChosenCharacter(new Mage());
-                    }
-                    case "Level" -> {
-                        if (chosenCharacter != null) {
-                            chosenCharacter.setLevel(Integer.parseInt(value));
-                        }
-                    }
-                    case "Gold" -> {
-                        if (chosenCharacter != null) {
-                            chosenCharacter.setGold(Double.parseDouble(value));
-                        }
-                    }
-                }
+                if (parts.length >= 2) 
+                    saveParams.put(parts[0], parts[1]);
             }
-            story.loadSelectedHero();
-            showScreen("story");
-            
+
+            String cls = saveParams.get("CharacterClass");
+            if (cls != null) {
+                if (cls.equalsIgnoreCase("Warrior")) 
+                    setChosenCharacter(new Warrior());
+
+                else if (cls.equalsIgnoreCase("Archer")) 
+                    setChosenCharacter(new Archer());
+                
+                else if (cls.equalsIgnoreCase("Mage")) 
+                    setChosenCharacter(new Mage());
+            }
+
+            if (chosenCharacter != null) {
+                if (saveParams.containsKey("Level")) 
+                    chosenCharacter.setLevel(Integer.parseInt(saveParams.get("Level")));
+
+                if (saveParams.containsKey("Gold")) 
+                    chosenCharacter.setGold(Double.parseDouble(saveParams.get("Gold")));
+                
+                if (saveParams.containsKey("HP")) 
+                    chosenCharacter.setHp(Integer.parseInt(saveParams.get("HP")));
+                
+                if (saveParams.containsKey("BossIndex"))
+                    this.currentBossIndex = Integer.parseInt(saveParams.get("BossIndex"));
+                
+                if (saveParams.containsKey("Nation")) 
+                    story.setNation(Integer.parseInt(saveParams.get("Nation")));
+
+                if (saveParams.containsKey("LineIndex")) 
+                    story.setLineIndex(Integer.parseInt(saveParams.get("LineIndex")));
+                
+                story.loadSelectedHero(); 
+                battle.loadBattleData();  
+                showScreen("story");  
+            }
         } catch (Exception e) {
             System.out.println("Error loading save: " + e.getMessage());
+        }
+    }
+
+    public void resetForNewGame() {
+        this.chosenCharacter = null;
+        this.currentBossIndex = 0;
+        
+        bosses[0] = new babyM();
+        bosses[1] = new Archivist();
+        bosses[2] = new Ilaryx();
+        bosses[3] = new Lunareth();
+        bosses[4] = new Sarukdal();
+        bosses[5] = new Elarion();
+
+        story.setNation(1);
+        story.resetStory(); 
+        battle.loadBattleData(); 
+
+        if (intro != null) {
+            intro.resetIntro();
         }
     }
 }

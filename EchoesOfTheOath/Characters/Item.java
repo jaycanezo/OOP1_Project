@@ -18,22 +18,40 @@ public class Item {
         this.dialogueLines = lines;
         this.isConsumable = isConsumable;
         BufferedImage img = null;
+
         try {
             img = ImageIO.read(getClass().getResource("/EchoesOfTheOath/Resources/" + imagePath));
         } catch (Exception e) {
             System.err.println("Could not load: " + imagePath);
         }
+
         this.image = img;
     }
 
-    public String getName() { return name; }
-    public BufferedImage getImage() { return image; }
-    public String getDescription() { return description; }
-    public int getPrice() { return price; }
-    public boolean isConsumable() { return isConsumable; }
+    public String getName() { 
+        return name; 
+    }
+
+    public BufferedImage getImage() { 
+        return image; 
+    }
+
+    public String getDescription() { 
+        return description; 
+    }
+
+    public int getPrice() { 
+        return price; 
+    }
+
+    public boolean isConsumable() { 
+        return isConsumable; 
+    }
 
     public String getRandomLine() {
-        if (dialogueLines == null || dialogueLines.length == 0) return "...";
+        if (dialogueLines == null || dialogueLines.length == 0) 
+            return "...";
+        
         return dialogueLines[(int)(Math.random() * dialogueLines.length)];
     }
 }

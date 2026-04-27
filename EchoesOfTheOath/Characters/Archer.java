@@ -16,7 +16,9 @@ public class Archer extends Character {
 
     @Override
     public String useSkill(int skillNumber, Character enemy) {
-        if (skillNumber < 1 || skillNumber > 3) return "Invalid skill number.\n";
+        if (skillNumber < 1 || skillNumber > 3) 
+            return "Invalid skill number.\n";
+
         if (!isSkillAvailable(skillNumber)) {
             return "Skill on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining.\n";
         }
@@ -30,21 +32,21 @@ public class Archer extends Character {
                 bgm.playSFX("Archer_Piercingshot.wav");
                 dmg = ((random.nextInt(45 - 15 + 1) + 15 + 25) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Basic Skill: Piercing Shot!\n")
-                   .append("You shoot a swift arrow at your foe.");
+                   .append("You shoot a swift arrow at your foe!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("Archer_VolleyofNature.wav");
                 dmg = ((random.nextInt(95 - 70 + 1) + 70 + 20) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Advanced Skill: Volley of Nature!\n")
-                   .append("You fire multiple arrows, raining them down on your enemy.");
+                   .append("You fire multiple arrows, raining them down on your enemy!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("Archer_Nature'swrath.wav");
                 dmg = ((random.nextInt(230 - 105 + 1) + 105 + 80) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Ultimate: Nature's Wrath!\n")
-                   .append("You unleash four guiding arrows, striking your enemy with precision.");
+                   .append("You unleash four guiding arrows, striking your enemy with precision!");
                 setSkillCooldown(3, getSkillMaxCooldown(skillNumber));
                 break;
         }
@@ -76,22 +78,6 @@ public class Archer extends Character {
             case 3 -> (105*lvl + 80*lvl + b) + " - " + (230*lvl + 80*lvl + b);
             default -> "0";
         };
-    }
-
-    public String displayCharacterInfo() {
-        StringBuilder msg = new StringBuilder();
-
-        msg.append("\nWielders of ancient knowledge, Mages command the elements and arcane forces. Fragile in body but unmatched in power, they bend magic at will to devastate their enemies from a distance.\n");
-
-        msg.append("SKILLS:\n");
-       
-        for (int i = 1; i <= 3; i++) {
-            String skillName = getSkillName(i);
-            String damageRange = getSkillDamageRange(i);
-            msg.append("(" + i + ") " + skillName + "\nDamage: " + damageRange + "\n");
-        }
-
-        return msg.toString();
     }
     
     @Override

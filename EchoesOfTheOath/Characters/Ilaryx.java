@@ -16,7 +16,8 @@ public class Ilaryx extends Character {
 
     @Override
     public String useSkill(int skillNumber, Character enemy) {
-        if (!isSkillAvailable(skillNumber) && skillNumber != 1) skillNumber = 1;
+        if (!isSkillAvailable(skillNumber) && skillNumber != 1) 
+            skillNumber = 1;
 
         int dmg = 0;
         StringBuilder msg = new StringBuilder();
@@ -26,21 +27,21 @@ public class Ilaryx extends Character {
                 bgm.playSFX("ILARYX quickshot_noisles.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: Quick Shot!\n")
-                   .append("Ilaryx fires a Double Tap! Two arrows blaze toward you.");
+                   .append("Ilaryx fires a Double Tap! Two arrows blaze toward you!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 bgm.playSFX("ILARYX hunters trap_noisles.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Hunter's Trap!\n")
-                   .append("Ilaryx activates an Invisible Snare! You feel the trap closing in.");
+                   .append("Ilaryx activates an Invisible Snare! You feel the trap closing in around you!");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 bgm.playSFX("ILARYX Arrow of the Silverfang_noisles.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 msg.append(getName()).append(" uses Ultimate: Arrow of the Silverfang!\n")
-                   .append("Ilaryx fires a massive, charged arrow directly at you.");
+                   .append("Ilaryx channels silver magic into her bow, firing a massive, charged arrow directly at you. Brace yourself!");
                 setSkillCooldown(3, 3);
                 break;
         }

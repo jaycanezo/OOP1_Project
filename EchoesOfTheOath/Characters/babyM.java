@@ -16,7 +16,8 @@ public class babyM extends Character {
 
     @Override
     public String useSkill(int skillNumber, Character enemy) {
-        if (!isSkillAvailable(skillNumber) && skillNumber != 1) skillNumber = 1;
+        if (!isSkillAvailable(skillNumber) && skillNumber != 1) 
+            skillNumber = 1;
 
         int dmg = 0;
         StringBuilder msg = new StringBuilder();
@@ -26,21 +27,21 @@ public class babyM extends Character {
                 bgm.playSFX("BabyM-Tantrum Toss.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: Tantrum Toss!\n")
-                   .append("The infant king shrieks and hurls his golden rattle at you.");
+                   .append("The infant king shrieks furiously and hurls his golden rattle straight at you!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 bgm.playSFX("BabyM-Feigned Faint.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Feigned Faint!\n")
-                   .append("Baby M collapses, tricking you into lowering your guard before striking.");
+                   .append("Baby M suddenly collapses, tricking you into lowering your guard before striking you with a vicious surprise attack!");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 bgm.playSFX("BabyM-Enforced Decree.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 msg.append(getName()).append(" uses Ultimate: Enforced Decree!\n")
-                   .append("The King hurtles toward you with unstoppable, mechanical precision.");
+                   .append("The infant King freezes mid-air as if controlled by an unseen force, then hurtles toward you with unstoppable, mechanical precision!");
                 setSkillCooldown(3, 3);
                 break;
         }

@@ -16,7 +16,8 @@ public class Lunareth extends Character {
 
     @Override
     public String useSkill(int skillNumber, Character enemy) {
-        if (!isSkillAvailable(skillNumber) && skillNumber != 1) skillNumber = 1;
+        if (!isSkillAvailable(skillNumber) && skillNumber != 1) 
+            skillNumber = 1;
 
         int dmg = 0;
         StringBuilder msg = new StringBuilder();
@@ -26,21 +27,21 @@ public class Lunareth extends Character {
                 bgm.playSFX("LUNARETH moonpierce shot.wav");
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: Moonpierce Shot!\n")
-                   .append("Lunareth fires a luminous arrow imbued with lunar energy.");
+                   .append("Lunareth fires a luminous arrow imbued with lunar energy straight at you!");
                 setSkillCooldown(1, 0);
                 break;
             case 2:
                 bgm.playSFX("LUNARETH Binding Roots_noisles.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Binding Roots!\n")
-                   .append("Enchanted roots ensnare you and pull you down!");
+                   .append("Enchanted shoot up from the ground, ensnaring you and pulling you down!");
                 setSkillCooldown(2, 2);
                 break;
             case 3:
                 bgm.playSFX("LUNARETH Eclipse Volley_noisles.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 msg.append(getName()).append(" uses Ultimate: Eclipse Volley!\n")
-                   .append("Lunareth summons the eclipse to rain a storm of arrows on you.");
+                   .append("Lunareth leaps into the air, summoning the eclipse to rain a storm of arrows directly on you. Brace yourself!");
                 setSkillCooldown(3, 3);
                 break;
         }
