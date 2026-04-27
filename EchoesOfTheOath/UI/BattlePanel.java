@@ -30,11 +30,7 @@ public class BattlePanel extends JPanel {
     // Array of paths matching the boss sequence in GameWindow
     private final String[] backgroundPaths = {
         "/EchoesOfTheOath/Resources/nation1_bg6.png",
-        "/EchoesOfTheOath/Resources/nation1_bg8.png",
-        "/EchoesOfTheOath/Resources/battle_bg_Ilaryx.png",
-        "/EchoesOfTheOath/Resources/battle_bg_Lunareth.png",
-        "/EchoesOfTheOath/Resources/battle_bg_Sarukdal.png",
-        "/EchoesOfTheOath/Resources/battle_bg_Elarion.png"
+        "/EchoesOfTheOath/Resources/nation1_bg8.png"
     };
 
     public BattlePanel(GameWindow game) {
@@ -56,6 +52,10 @@ public class BattlePanel extends JPanel {
     }
 
     public void loadBattleData() {
+        if (animationTimer != null && animationTimer.isRunning()) {
+            animationTimer.stop();
+        }
+        
         this.player = game.getChosenCharacter();
         this.enemy = game.getCurrentBoss();
         this.isPlayerTurn = true;
@@ -89,6 +89,7 @@ public class BattlePanel extends JPanel {
             
             disableButtons(false); 
             refreshSkillButtons();
+            startAnimation();
             repaint();
         }
     }
@@ -154,6 +155,9 @@ public class BattlePanel extends JPanel {
             animationTimer.stop();
             game.advanceStoryProgress(); 
             game.story.nextLine();
+
+            game.autosave();
+
             JOptionPane.showMessageDialog(this, "Victory!");
             game.showScreen("story"); 
             return true;

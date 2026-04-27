@@ -69,6 +69,8 @@ public class GameWindow {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         showScreen("start");
+
+        
     }
 
     public void setChosenCharacter(Character chosenCharacter) {
@@ -140,10 +142,14 @@ public class GameWindow {
     }
 
     public void autosave() {
-        if (chosenCharacter == null) 
-            return;
+        // 1. GATEKEEPER: If no hero is chosen, do not save anything
+        if (chosenCharacter == null) {
+            System.out.println("Autosave skipped: No character selected yet.");
+            return; 
+        }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("autosave.txt"))) {
+            // Only write data if we have a valid character
             writer.write("Nation:" + story.getCurrentNation() + "\n");
             writer.write("BossIndex:" + currentBossIndex + "\n");
             writer.write("LineIndex:" + story.getLineIndex() + "\n");
@@ -157,6 +163,10 @@ public class GameWindow {
     }
 
     public void loadGame() {
+        if (battle != null) {
+            battle.loadBattleData(); // This now contains our timer-stop fix
+        }
+        
         File saveFile = new File("autosave.txt");
         if (!saveFile.exists()) 
             return;

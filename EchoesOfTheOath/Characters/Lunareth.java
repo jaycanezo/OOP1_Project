@@ -28,21 +28,21 @@ public class Lunareth extends Character {
                 dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: Moonpierce Shot!\n")
                    .append("Lunareth fires a luminous arrow imbued with lunar energy straight at you!");
-                setSkillCooldown(1, 0);
+                setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("LUNARETH Binding Roots_noisles.wav");
                 dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Binding Roots!\n")
                    .append("Enchanted shoot up from the ground, ensnaring you and pulling you down!");
-                setSkillCooldown(2, 2);
+                setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("LUNARETH Eclipse Volley_noisles.wav");
                 dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
                 msg.append(getName()).append(" uses Ultimate: Eclipse Volley!\n")
                    .append("Lunareth leaps into the air, summoning the eclipse to rain a storm of arrows directly on you. Brace yourself!");
-                setSkillCooldown(3, 3);
+                setSkillCooldown(3, getSkillMaxCooldown(skillNumber));
                 break;
         }
         enemy.takeDamage(dmg);

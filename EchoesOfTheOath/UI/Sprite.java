@@ -17,7 +17,13 @@ public class Sprite {
 
     public Sprite(String resourcePath, int frameWidth, int frameHeight, int frameCount) {
         try {
-            BufferedImage sheet = ImageIO.read(Sprite.class.getResource(resourcePath));
+            java.net.URL url = Sprite.class.getResource(resourcePath);
+            if (url == null) {
+                System.err.println("URL Null for: " + resourcePath);
+                return;
+            }
+            
+            BufferedImage sheet = ImageIO.read(url);
 
             if (sheet == null) {
                 System.err.println("Sprite sheet not found: " + resourcePath);

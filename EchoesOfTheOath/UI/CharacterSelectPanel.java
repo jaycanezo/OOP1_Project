@@ -231,20 +231,12 @@ public class CharacterSelectPanel extends JPanel {
         String name = JOptionPane.showInputDialog(this, "Enter your hero's name:");
 
         if (name != null && !name.trim().isEmpty()) {
-            Character freshHero = null;
-
-            if (tempChosen instanceof Warrior) 
-                freshHero = new Warrior();
-
-            else if (tempChosen instanceof Archer) 
-                freshHero = new Archer();
-
-            else if (tempChosen instanceof Mage) 
-                freshHero = new Mage();
-
-            freshHero.setName(name);
-            game.setChosenCharacter(freshHero); 
-            game.getBattlePanel().loadBattleData();
+            tempChosen.setName(name);
+            game.setChosenCharacter(tempChosen); 
+            
+            // TRIGGER FIRST SAVE: Now that chosenCharacter is NOT null, it will save!
+            game.autosave(); 
+            
             game.showScreen("story");
         }
     }
