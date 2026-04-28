@@ -233,10 +233,7 @@ public class CharacterSelectPanel extends JPanel {
         if (name != null && !name.trim().isEmpty()) {
             tempChosen.setName(name);
             game.setChosenCharacter(tempChosen); 
-            
-            // TRIGGER FIRST SAVE: Now that chosenCharacter is NOT null, it will save!
             game.autosave(); 
-            
             game.showScreen("story");
         }
     }

@@ -21,6 +21,7 @@ public class GameWindow {
     CharacterSelectPanel charSelect;
     BattlePanel battle;
     GameOverPanel gameOver;
+    QuestPanel quest;
     
     private Character chosenCharacter;
     private MusicPlayer bgm = new MusicPlayer();
@@ -57,6 +58,7 @@ public class GameWindow {
         charSelect = new CharacterSelectPanel(this);
         battle = new BattlePanel(this);
         gameOver = new GameOverPanel(this);
+        quest = new QuestPanel(this);
 
         container.add(start, "start");
         container.add(intro, "intro");
@@ -64,6 +66,7 @@ public class GameWindow {
         container.add(story, "story");
         container.add(battle, "battle");
         container.add(gameOver, "gameover");
+        container.add(quest, "quest");
 
         window.add(container);
         window.setLocationRelativeTo(null);
@@ -124,12 +127,15 @@ public class GameWindow {
         switch (name) {
             case "start" -> start.refreshMenu();
 
+            case "quest" -> quest.startNewGame();
+
             case "intro" -> container.getComponent(1).requestFocusInWindow();
             
             case "story" -> {
                 if (currentBossIndex % 2 == 0 && story.getLineIndex() == 0) {
                     autosave(); 
                 }
+                
                 story.loadSelectedHero();
                 story.requestFocusInWindow();
             }
@@ -142,14 +148,12 @@ public class GameWindow {
     }
 
     public void autosave() {
-        // 1. GATEKEEPER: If no hero is chosen, do not save anything
         if (chosenCharacter == null) {
             System.out.println("Autosave skipped: No character selected yet.");
             return; 
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("autosave.txt"))) {
-            // Only write data if we have a valid character
             writer.write("Nation:" + story.getCurrentNation() + "\n");
             writer.write("BossIndex:" + currentBossIndex + "\n");
             writer.write("LineIndex:" + story.getLineIndex() + "\n");
@@ -164,7 +168,7 @@ public class GameWindow {
 
     public void loadGame() {
         if (battle != null) {
-            battle.loadBattleData(); // This now contains our timer-stop fix
+            battle.loadBattleData();
         }
         
         File saveFile = new File("autosave.txt");

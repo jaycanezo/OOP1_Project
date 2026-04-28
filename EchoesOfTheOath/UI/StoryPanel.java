@@ -77,6 +77,7 @@ public class StoryPanel extends JPanel {
     }
 
     public void resetStory() {
+        this.lineIndex = 0;
         this.currentSpeaker = "";
         this.gameState = PLAY_STATE;
         this.showNPC = false;
@@ -345,7 +346,8 @@ public class StoryPanel extends JPanel {
                         currentSpeaker = player.getName(); 
                         break;
 
-                case 45: currentSpeaker =""; 
+                case 45: game.showScreen("quest"); 
+                        currentSpeaker = ""; 
                         break;
 
                 case 48: setBackgroundImage("nation1_bg8.2.png"); showPlayer = false; 
@@ -630,11 +632,5 @@ public class StoryPanel extends JPanel {
             }
         }
         g2.drawString(currentLine.toString(), x, drawY);
-    }
-
-    public void nextLine() {
-        this.lineIndex++; 
-        this.currentSpeaker = ""; // Clear speaker to avoid leftover names
-        repaint(); 
     }
 }

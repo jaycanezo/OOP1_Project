@@ -24,10 +24,8 @@ public class BattlePanel extends JPanel {
     private int slotCol = 0, slotRow = 0;
     private int scrollOffset = 0;
     private boolean isPlayerTurn = true;
-    private Sprite background; // Current active background
-    private int currentLevel = 0; // Local index to match GameWindow's boss index
-
-    // Array of paths matching the boss sequence in GameWindow
+    private Sprite background; 
+    private int currentLevel = 0; 
     private final String[] backgroundPaths = {
         "/EchoesOfTheOath/Resources/nation1_bg6.png",
         "/EchoesOfTheOath/Resources/nation1_bg8.png"
@@ -60,29 +58,23 @@ public class BattlePanel extends JPanel {
         this.enemy = game.getCurrentBoss();
         this.isPlayerTurn = true;
         
-        // Sync local level with GameWindow's boss index
-        // Since GameWindow increments this index, we use it to select the BG
         try {
-            // Reflection or a public getter in GameWindow for the current index is best
-            // For now, we load based on the enemy name or currentBossIndex
             this.background = new Sprite(backgroundPaths[game.getBossIndex()], 1920, 1080, 1);
         } catch (Exception e) {
-            this.background = null; // Fallback to black if file missing
+            this.background = null;
         }
 
         if (player != null && enemy != null) {
-            // Reset player state
             player.resetCooldowns();
-            
-            
-            // EXPLICITLY set the bar to the current HP (full)
             playerHpBar.setMaximum(player.getMaxHp());
             playerHpBar.setValue(player.getHp());
             playerHpBar.setString(player.getHp() + " / " + player.getMaxHp());
+            playerHpBar.setForeground(Color.GREEN);
 
             enemyHpBar.setMaximum(enemy.getMaxHp());
-            enemyHpBar.setValue(enemy.getHp()); // Fresh enemy starts at Max HP
+            enemyHpBar.setValue(enemy.getHp());
             enemyHpBar.setString(enemy.getHp() + " / " + enemy.getMaxHp());
+            enemyHpBar.setForeground(Color.GREEN);
 
             playerSide.setOwner(player);
             enemySide.setOwner(enemy);
@@ -95,7 +87,6 @@ public class BattlePanel extends JPanel {
     }
 
     private void playerTurn(int skillNum) {
-        // 1. Hard check: If it's not the turn or button is disabled, STOP
         if (!isPlayerTurn || !player.isSkillAvailable(skillNum)) {
             if (!player.isSkillAvailable(skillNum)) {
                 logArea.setText(player.getSkillName(skillNum) + " is on cooldown!");
@@ -103,7 +94,6 @@ public class BattlePanel extends JPanel {
             return;
         }
 
-        // 2. Lock the turn immediately
         isPlayerTurn = false;
         disableButtons(true); 
         
@@ -140,7 +130,7 @@ public class BattlePanel extends JPanel {
             refreshStatus();
 
             if (!checkGameOver()) {
-                isPlayerTurn = true; // TURN IS NOW TRANSFERRED BACK
+                isPlayerTurn = true;
                 disableButtons(false); 
                 this.requestFocusInWindow();
             }
@@ -154,7 +144,6 @@ public class BattlePanel extends JPanel {
             logArea.setText("Victory! " + enemy.getName() + " falls.");
             animationTimer.stop();
             game.advanceStoryProgress(); 
-            game.story.nextLine();
 
             game.autosave();
 
@@ -206,12 +195,10 @@ public class BattlePanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // 1. Draw the SINGLE background first
         if (background != null && background.isLoaded()) {
             g.drawImage(background.getCurrentFrame(), 0, 0, getWidth(), getHeight(), null);
         }
 
-        // 2. Draw the Characters at fixed positions
         if (player != null && player.getIdleSprite() != null) {
             Sprite s = player.getIdleSprite();
             if (s.isLoaded()) {
@@ -284,20 +271,17 @@ public class BattlePanel extends JPanel {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Draw the black rounded box
                 g2.setColor(Color.BLACK); 
                 g2.fillRoundRect(50, 10, getWidth()-100, getHeight()-20, 20, 20);
                 
-                // Draw the light brown "vintage" border
                 g2.setColor(new Color(181, 153, 110));
                 g2.setStroke(new BasicStroke(3)); 
                 g2.drawRoundRect(50, 10, getWidth()-100, getHeight()-20, 20, 20);
             }
         };
         bottomContainer.setPreferredSize(new Dimension(1040, 250));
-        bottomContainer.setOpaque(false); // Ensure we see the main background
+        bottomContainer.setOpaque(false);
 
-        // Update logArea (JTextArea) transparency and margins
         logArea = new JTextArea("The battle begins!");
         logArea.setOpaque(false);
         logArea.setEditable(false);
@@ -306,18 +290,16 @@ public class BattlePanel extends JPanel {
         logArea.setForeground(Color.WHITE);
         logArea.setLineWrap(true);
         logArea.setWrapStyleWord(true);
-        logArea.setMargin(new Insets(15, 80, 10, 80)); // Matching IntroPanel margins
-
-        // Switch Skill buttons to a horizontal 1x3 grid
+        logArea.setMargin(new Insets(15, 80, 10, 80));
+    
         buttonPanel = new JPanel(new GridLayout(1, 3, 5, 0)); 
         buttonPanel.setOpaque(false);
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 0, 50)); // Padding
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 0, 50)); 
 
         addButton("Skill 1", 1);
         addButton("Skill 2", 2);
         addButton("Ultimate", 3);
 
-        // Layout the box: Buttons on top, Text in the middle
         bottomContainer.add(buttonPanel, BorderLayout.NORTH);
         bottomContainer.add(logArea, BorderLayout.CENTER);
         
@@ -388,15 +370,13 @@ public class BattlePanel extends JPanel {
                 btn.setText(player.getSkillName(skillIdx));
                 
                 int cd = player.getSkillCooldown(skillIdx);
-                
-                // Only enable if it's the player's turn AND no cooldown
                 boolean canUse = (isPlayerTurn && cd == 0);
                 btn.setEnabled(canUse);
                 
                 if (!isPlayerTurn || cd > 0) {
-                    btn.setForeground(Color.GRAY); //
+                    btn.setForeground(Color.GRAY); 
                 } else {
-                    btn.setForeground(new Color(175, 238, 171)); //
+                    btn.setForeground(new Color(175, 238, 171)); 
                 }
             }
         }
@@ -407,10 +387,9 @@ public class BattlePanel extends JPanel {
             if (c instanceof JButton btn) {
                 btn.setEnabled(!disable);
                 if (disable) {
-                    btn.setForeground(Color.GRAY); // Visual feedback for disabled
+                    btn.setForeground(Color.GRAY); 
                 } else {
-                    // This will be handled by refreshSkillButtons, but we can set a default here
-                    btn.setForeground(new Color(175, 238, 171)); // Light Green
+                    btn.setForeground(new Color(175, 238, 171)); 
                 }
             }
         }
@@ -451,9 +430,6 @@ public class BattlePanel extends JPanel {
 
         @Override
         protected void paintComponent(Graphics g) {
-            // DO NOT call super.paintComponent(g) - we need this layer transparent
-            
-            // Draw ONLY the skill effects (slashes, fireballs, etc.)
             for (ActiveEffect ae : activeEffects) {
                 if (ae.sprite != null && ae.sprite.isLoaded()) {
                     g.drawImage(ae.sprite.getCurrentFrame(), ae.x, ae.y, ae.w, ae.h, null);
@@ -471,40 +447,36 @@ public class BattlePanel extends JPanel {
             setFocusable(false);
             setFont(new Font("Serif", Font.BOLD, 18));
             setContentAreaFilled(false);
-            setBorderPainted(false); // Crucial for custom round painting
+            setBorderPainted(false); 
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            // Background logic
+            
             if (getModel().isPressed()) g2.setColor(new Color(60, 60, 60));
             else if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80));
             else g2.setColor(new Color(40, 40, 40));
             
             g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
-            
-            // Brown Border
+        
             g2.setColor(new Color(181, 153, 110));
             g2.setStroke(new BasicStroke(2));
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
-
-            // Update text color based on cooldown state
+        
             if (player != null && player.getSkillCooldown(skillNum) == 0) {
-                setForeground(new Color(175, 238, 171)); // Light Green
+                setForeground(new Color(175, 238, 171)); 
             }
 
             super.paintComponent(g);
 
-            // Cooldown overlay
             int cd = (player != null) ? player.getSkillCooldown(skillNum) : 0;
             if (cd > 0) {
                 g2.setColor(new Color(0, 0, 0, 200));
                 g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
 
-                g2.setColor(new Color(249, 152, 155)); // Light Red text
+                g2.setColor(new Color(249, 152, 155)); 
                 g2.setFont(new Font("Serif", Font.BOLD, 18));
                 String text = "Cooldown: " + String.valueOf(cd) + " turn(s)";
                 FontMetrics fm = g2.getFontMetrics();
