@@ -8,9 +8,9 @@ public class Archer extends Character {
         super("Archer", 1300, 1, "Archer");
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Archer.png", 515, 480, 1));
         
-        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Archer_Piercingshot.png", 500, 500, 4)};
-        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Archer_VolleyOfNature.png", 320, 395, 8)};
-        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/Archer_NaturesWrath.png", 214, 427, 12)};
+        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill1.png", 177, 145, 8)};
+        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill2.png", 160, 240, 10)};
+        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill3.png", 143, 213, 12)};
         setSkillSprites(s1, s2, s3);
     }   
 

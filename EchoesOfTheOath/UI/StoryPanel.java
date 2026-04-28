@@ -52,6 +52,8 @@ public class StoryPanel extends JPanel {
         loadBG("nation1_bg8.1.png", 1920, 1080, 1);
         loadBG("nation1_bg8.2.png", 1920, 1080, 30);
         loadBG("nation1_storyline1.png", 1920, 1080, 7);
+        loadBG("nation2_bg1.png", 1920, 1080, 1);
+        loadBG("nation2_bg2.png", 1920, 1080, 1);
         
         Timer animationTimer = new Timer(100, e -> {
             if (playerSprite != null) playerSprite.update();
@@ -115,6 +117,12 @@ public class StoryPanel extends JPanel {
                 setBackgroundImage("nation1_bg6.png");
             } else {
                 setBackgroundImage("nation1_bg1.png");
+            }
+        } else if (currentNation == 2) {
+            if (lineIndex >= 4) {
+                setBackgroundImage("nation2_bg2.png");
+            } else {
+                setBackgroundImage("nation2_bg1.png");
             }
         }
 
@@ -417,6 +425,76 @@ public class StoryPanel extends JPanel {
 
                 case 70: showNPC=false; 
                         break;
+            }
+        }
+
+        if(currentNation==2){
+            switch (lineIndex) {
+                case 0:
+                    bgm.stopMusic();
+                    bgm.playMusic("nation2_bgm1.WAV");
+                    setBackgroundImage("nation2_bg1.png");
+                    break;
+                case 4:
+                    currentSpeaker = player.getName();
+                    break;
+                case 5:
+                    setBackgroundImage("nation2_bg2.png");
+                    currentSpeaker = "";
+                    break;
+                case 6:
+                    updateScene("Elven Scout", true);
+                    currentSpeaker = "Elven Scout";
+                    break;
+                case 7:
+                    updateScene("Elven Rebel",true);
+                    currentSpeaker = "Elven Rebel";
+                    break;
+                case 9:
+                    currentSpeaker = player.getName();
+                    break;
+                case 10:
+                    updateScene("Elven Rebel",true);
+                    currentSpeaker = "Elven Rebel";
+                    break;
+                case 11:
+                    updateScene("Elven Scout",true);
+                    currentSpeaker = "Elven Scout";
+                    break;
+                case 12:
+                    currentSpeaker = player.getName();
+                    break;
+                case 13:
+                    updateScene("Elven Scout",true);
+                    currentSpeaker = "Elven Scout";
+                    break;
+                case 14:
+                    showNPC = false;
+                    currentSpeaker ="";
+                    break;
+                case 16:
+                    setBackgroundImage("nation2_bg1.png");
+                    break;
+                case 17:
+                    setBackgroundImage("");
+                    setBackground(Color.BLACK);
+                    currentSpeaker = "A Whisper";
+                    break;
+                case 18:
+                    setBackgroundImage("nation2_bg1.png");
+                    currentSpeaker = player.getName();
+                    break;
+                case 19:
+                    currentSpeaker = "";
+                    break;
+                case 20:
+                    currentSpeaker = player.getName();
+                    break;
+                case 21:
+                    currentSpeaker = "";
+                    break;
+                default:
+                    break;
             }
         }
         repaint();

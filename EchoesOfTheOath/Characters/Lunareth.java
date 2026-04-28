@@ -6,11 +6,11 @@ public class Lunareth extends Character {
 
     public Lunareth() {
         super("Lunareth", " VEYORA < NATION 2 > - MAIN BOSS", 1400, 8);
-        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Lunareth.png", 500, 500, 1));
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/lunareth.png", 1000, 1000, 1));
         
-        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Lunareth_Skill1.png", 128, 128, 8)};
-        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Lunareth_Skill2.png", 128, 128, 8)};
-        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/Lunareth_Skill3.png", 128, 128, 8)};
+        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/lunareth_skill1.png", 1000, 1000, 9)};
+        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/lunareth_skill2.png", 1000, 1000, 9)};
+        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/lunareth_skill3.png", 1000, 1000, 9)};
         setSkillSprites(s1, s2, s3);
     }
 

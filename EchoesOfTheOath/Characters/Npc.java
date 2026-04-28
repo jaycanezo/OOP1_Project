@@ -15,6 +15,8 @@ public class Npc {
         register("Guard", "/EchoesOfTheOath/Resources/npc1.png", 458, 545);
         register("Informant", "/EchoesOfTheOath/Resources/npc2.png", 2000, 2000);
         register("Attendant", "/EchoesOfTheOath/Resources/npc3.png", 2000, 2000);
+        register("Elven Scout", "/EchoesOfTheOath/Resources/npc4.png", 538, 538);
+        register("Elven Rebel", "/EchoesOfTheOath/Resources/npc4.png", 538, 538);
         registry.put("Archivist", new Archivist());
     }
 

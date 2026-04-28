@@ -6,11 +6,11 @@ public class Ilaryx extends Character {
 
     public Ilaryx() {
         super("Ilaryx", " VEYORA < NATION 2 > - MINI BOSS", 1400, 6);
-        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Ilaryx.png", 500, 500, 1));
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/illaryx.png", 1000, 1000, 1));
         
-        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Ilaryx_Skill1.png", 128, 128, 8)};
-        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Ilaryx_Skill2.png", 128, 128, 8)};
-        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/Ilaryx_Skill3.png", 128, 128, 8)};
+        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/ilaryx_skill1.png", 1000, 1000, 9)};
+        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/ilaryx_skill2.png", 1000, 1000, 12)};
+        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/ilaryx_skill3.png", 1000, 1000, 12)};
         setSkillSprites(s1, s2, s3);
     }
 
