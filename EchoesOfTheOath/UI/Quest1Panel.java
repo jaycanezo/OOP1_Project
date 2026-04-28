@@ -384,7 +384,11 @@ public class Quest1Panel extends JPanel {
         okBtn.setFocusable(false);
         okBtn.setBounds(140, 195, 120, 40); 
         
-        okBtn.addActionListener(e -> dialog.dispose()); 
+        okBtn.addActionListener(e -> {
+            dialog.dispose();
+            game.showScreen("story"); 
+        });
+
         panel.add(okBtn);
 
         dialog.add(panel);
