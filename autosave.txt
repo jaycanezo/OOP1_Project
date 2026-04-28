@@ -1,7 +1,8 @@
 Nation:2
 BossIndex:2
-LineIndex:0
+LineIndex:22
+Name:AJy
 CharacterClass:Mage
-Level:1
-Gold:1000.0
-HP:84
+Level:3
+Gold:1450.0
+HP:4500

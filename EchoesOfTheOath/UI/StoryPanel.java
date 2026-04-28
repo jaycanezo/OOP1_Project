@@ -54,6 +54,13 @@ public class StoryPanel extends JPanel {
         loadBG("nation1_storyline1.png", 1920, 1080, 7);
         loadBG("nation2_bg1.png", 1920, 1080, 1);
         loadBG("nation2_bg2.png", 1920, 1080, 1);
+        loadBG("nation2_bg3.png", 1920, 1080, 1);
+        loadBG("nation2_bg4.png", 1920, 1080, 1);
+        loadBG("nation2_bg5.png", 1920, 1080, 1);
+        loadBG("nation2_bg6.png", 1920, 1080, 1);
+        loadBG("nation2_bg7.png", 1920, 1080, 1);
+        loadBG("nation2_bg8.png", 1920, 1080, 1);
+        loadBG("nation2_bg9.png", 1920, 1080, 1);
         
         Timer animationTimer = new Timer(100, e -> {
             if (playerSprite != null) playerSprite.update();
@@ -108,6 +115,10 @@ public class StoryPanel extends JPanel {
 
         if (this.player != null) { 
             this.playerSprite = this.player.getIdleSprite(); 
+            // Force an update to currentSpeaker if they were the last one talking
+            if (currentSpeaker.equals("Warrior") || currentSpeaker.equals("Mage") || currentSpeaker.equals("Archer")) {
+                currentSpeaker = player.getName();
+            }
         }
 
         if (currentNation == 1) {
@@ -119,9 +130,11 @@ public class StoryPanel extends JPanel {
                 setBackgroundImage("nation1_bg1.png");
             }
         } else if (currentNation == 2) {
-            if (lineIndex >= 4) {
-                setBackgroundImage("nation2_bg2.png");
-            } else {
+            if(lineIndex >=47) {
+                setBackgroundImage("nation2_bg4.png");
+            }else if(lineIndex>=74){
+                setBackgroundImage("nation2_bg9.png");
+            }else{
                 setBackgroundImage("nation2_bg1.png");
             }
         }
@@ -492,6 +505,187 @@ public class StoryPanel extends JPanel {
                     break;
                 case 21:
                     currentSpeaker = "";
+                    break;
+                case 22:
+                    game.showScreen("Quest2");
+                    setBackgroundImage("nation2_bg3.png");
+                    break;
+                case 23:
+                    updateScene("Healer", true);
+                    currentSpeaker = "Healer";
+                    break;
+                case 24:
+                    currentSpeaker = player.getName();
+                    break;
+                case 25:
+                    currentSpeaker = "Healer";
+                    break;
+                case 26:
+                    currentSpeaker = player.getName();
+                    break;
+                case 27:
+                    currentSpeaker = "Healer";
+                    break;
+                case 28:
+                    currentSpeaker = player.getName();
+                    break;
+                case 29:
+                    currentSpeaker = "Healer";
+                    break;
+                case 30:
+                    currentSpeaker = "";
+                    break;
+                case 32:
+                    setBackgroundImage("");
+                    setBackground(Color.BLACK);
+                    showNPC = false;
+                    bgm.playSFX("");/////////////////////////////////
+                    break;
+                case 33:
+                    setBackgroundImage("nation2_bg4.png");
+                    break;
+                case 37:
+                    currentSpeaker = player.getName();
+                    break;
+                case 38:
+                    updateScene("Ilaryx", true);
+                    currentSpeaker = "";
+                    break;
+                case 39:
+                    currentSpeaker = "Ilaryx";
+                    break;
+                case 40:
+                    currentSpeaker = player.getName();
+                    break;
+                case 41:
+                    currentSpeaker = "Ilaryx";
+                    break;
+                case 42:
+                    currentSpeaker = player.getName();
+                    break;
+                case 43:
+                    currentSpeaker = "Ilaryx";
+                    break;
+                case 44:
+                    currentSpeaker = player.getName();
+                    break;
+                case 45:
+                    currentSpeaker = "Ilaryx";
+                    break;
+                case 47:
+                    game.showScreen("battle");
+                    break;
+                case 48:
+                    updateScene("Ilaryx", true);
+                    currentSpeaker = "Ilaryx";
+                    break;
+                case 49:
+                    currentSpeaker = player.getName();
+                    break;
+                case 50:
+                    currentSpeaker = "";
+                    break;
+                case 51:
+                    currentSpeaker = "Ilaryx";
+                    break;
+                case 52:
+                    currentSpeaker = player.getName();
+                    break;
+                case 53:
+                    currentSpeaker = "Ilaryx";
+                    break;
+                case 54:
+                    currentSpeaker = "";
+                    break;
+                case 56:
+                    currentSpeaker = player.getName();
+                    break;
+                case 58:
+                    currentSpeaker = "";
+                    break;
+                case 60:
+                    setBackgroundImage("nation2_bg5.png");
+                    showNPC = false;
+                    showPlayer = false;
+                    break;
+                case 61:
+                    updateScene("Lunareth", true);
+                    showPlayer=false;
+                    currentSpeaker = "Lunareth";
+                    break;
+                case 62:
+                    setBackgroundImage("nation2_bg6.png");
+                    currentSpeaker = "";
+                    showNPC = false;
+                    showPlayer = false;
+                    break;
+                case 63:
+                    updateScene(player.getName(), false);
+                    currentSpeaker = "";
+                    break;
+                case 64:
+                    setBackgroundImage("nation2_bg7.png");
+                    currentSpeaker = "";
+                    showPlayer = false;
+                    break;
+                case 66:
+                    setBackgroundImage("nation2_bg8.png");
+                    showPlayer = true;
+
+                    break;
+                case 67:
+                    updateScene("Lunareth", true);
+                    currentSpeaker = "Lunareth";
+                    break;
+                case 68:
+                    currentSpeaker = player.getName();
+                    break;
+                case 69:
+                    currentSpeaker = "Lunareth";
+                    break;
+                case 70:
+                    currentSpeaker = player.getName();
+                    break;
+                case 71:
+                    currentSpeaker = "Lunareth";
+                    break;
+                case 72:
+                    currentSpeaker = player.getName();
+                    break;
+                case 73:
+                    currentSpeaker = "Lunareth";
+                    break;
+                case 74:
+                    game.showScreen("battle");
+                    updateScene("Lunareth", true);
+                    currentSpeaker = "";
+                    break;
+                case 75:
+                    currentSpeaker = "Lunareth";
+                    break;
+                case 76:
+                    currentSpeaker = player.getName();
+                    break;
+                case 77:
+                    currentSpeaker = "Lunareth";
+                    break;
+                case 78:
+                    currentSpeaker = "";
+                    break;
+                case 79:
+                    currentSpeaker = player.getName();
+                    showNPC=false;
+                    break;
+                case 80:
+                    currentSpeaker = "";
+                    break;
+                case 82:
+                    setBackgroundImage("nation2_bg9.png");
+                    currentSpeaker = player.getName();
+                    break;
+                case 85:
+                    setBackgroundImage("");
+                    showPlayer=false;
                     break;
                 default:
                     break;

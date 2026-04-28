@@ -2,6 +2,7 @@ package EchoesOfTheOath.UI;
 
 import java.awt.*;
 import javax.swing.*;
+import EchoesOfTheOath.Characters.Character;
 
 public class ResultPanel extends JPanel {
     private GameWindow game;
@@ -10,6 +11,8 @@ public class ResultPanel extends JPanel {
     private Timer animTimer;
     private float animProgress = 0.0f; 
     private java.awt.image.BufferedImage backgroundCapture; 
+    private int earnedLevel = 0;
+    private int earnedGold = 0;
     
     public ResultPanel(GameWindow game) {
         this.game = game;
@@ -21,17 +24,24 @@ public class ResultPanel extends JPanel {
         this.isVictoryCurrent = isVictory;
         this.backgroundCapture = bgCapture;
         this.removeAll(); 
+
+        // Capture rewards only on victory
+        if (isVictory && game.getChosenCharacter() != null) {
+            this.earnedLevel = game.getChosenCharacter().getLevel();
+            this.earnedGold = 500; // Fixed reward per your request
+        }
     
         game.getBgm().playSFX("battle.wav"); 
         
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 0));
         buttonPanel.setOpaque(false);
-        buttonPanel.setBounds(0, 520, 1080, 100); 
+        buttonPanel.setBounds(0, 460, 1080, 100); 
         
         if (isVictory) {
             JButton continueBtn = createStyledButton("Continue Journey");
             continueBtn.addActionListener(e -> game.showScreen("story"));
             buttonPanel.add(continueBtn);
+            
         } else {
             JButton retryBtn = createStyledButton("Return to Checkpoint");
             retryBtn.addActionListener(e -> game.loadGame()); 
@@ -81,7 +91,7 @@ public class ResultPanel extends JPanel {
         g2.setColor(new Color(0, 0, 0, bgAlpha)); 
         g2.fillRect(0, 0, getWidth(), getHeight());
         
-        int bannerHeight = 160;
+        int bannerHeight = 240;
         int bannerY = (getHeight() - bannerHeight) / 2 - 40; 
         
         float wipeProgress = Math.min(1.0f, animProgress * 1.5f); 
@@ -122,6 +132,27 @@ public class ResultPanel extends JPanel {
             
             g2.setColor(Color.WHITE);
             g2.drawString(title, titleX, titleY);
+            
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        }
+
+        if (textAlpha > 0 && isVictoryCurrent) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, textAlpha));
+            
+            // Get the updated level from the player object
+            int currentLevel = game.getChosenCharacter().getLevel(); 
+            String rewardText = "You Leveled up to " + currentLevel + "  |  Gold Gained: +500!";
+            
+            g2.setFont(new Font("Georgia", Font.BOLD, 26));
+            // Draw shadow first
+            g2.setColor(new Color(0, 0, 0, 150));
+            int rewardY = (getHeight() / 2) + 30; // Positioned below the main banner
+            int rewardX = (getWidth() - g2.getFontMetrics().stringWidth(rewardText)) / 2;
+            g2.drawString(rewardText, rewardX + 2, rewardY + 2);
+
+            // Draw main golden reward text
+            g2.setColor(new Color(255, 255, 255)); 
+            g2.drawString(rewardText, rewardX, rewardY);
             
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
         }

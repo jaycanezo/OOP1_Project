@@ -29,7 +29,9 @@ public class BattlePanel extends JPanel {
     private boolean battleOver = false;
     private final String[] backgroundPaths = {
         "/EchoesOfTheOath/Resources/nation1_bg6.png",
-        "/EchoesOfTheOath/Resources/nation1_bg8.png"
+        "/EchoesOfTheOath/Resources/nation1_bg8.png",
+        "/EchoesOfTheOath/Resources/nation2_bg4.png",
+        "/EchoesOfTheOath/Resources/nation2_bg9.png"
     };
 
     public BattlePanel(GameWindow game) {
@@ -150,19 +152,28 @@ public class BattlePanel extends JPanel {
 
         if (enemy.getHp() <= 0) {
             battleOver = true;
-            
             logArea.setText("Victory! " + enemy.getName() + " falls.");
             animationTimer.stop();
-            
+
+            // 1. Process the rewards BEFORE saving
+            player.setLevel(player.getLevel() + 1); // Level Up
+            player.setGold(player.getGold() + 500); // Add Gold
+
+            // 2. Advance progress and reset status
             game.advanceStoryProgress(); 
             player.setHp(player.getMaxHp());
             player.resetCooldowns();
+            
+            // 3. Save the new rewards and progress to the file
             game.autosave();
 
             Timer delay = new Timer(1500, e -> {
-                java.awt.image.BufferedImage capture = new java.awt.image.BufferedImage(getWidth(), getHeight(), java.awt.image.BufferedImage.TYPE_INT_ARGB);
+                // Capture the battle screen for the ResultPanel background
+                java.awt.image.BufferedImage capture = new java.awt.image.BufferedImage(
+                    getWidth(), getHeight(), java.awt.image.BufferedImage.TYPE_INT_ARGB);
                 this.paint(capture.getGraphics());
                 
+                // Show the result screen with rewards displayed
                 game.showResultScreen(true, capture);
             });
             delay.setRepeats(false);

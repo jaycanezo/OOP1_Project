@@ -22,6 +22,7 @@ public class GameWindow {
     BattlePanel battle;
     ResultPanel resultScreen; 
     Quest1Panel quest1;
+    Quest2Panel quest2;
     
     private Character chosenCharacter;
     private MusicPlayer bgm = new MusicPlayer();
@@ -59,6 +60,7 @@ public class GameWindow {
         battle = new BattlePanel(this);
         resultScreen = new ResultPanel(this);
         quest1 = new Quest1Panel(this);
+        quest2 = new Quest2Panel(this);
 
         container.add(start, "start");
         container.add(intro, "intro");
@@ -67,6 +69,7 @@ public class GameWindow {
         container.add(battle, "battle");
         container.add(resultScreen, "result");
         container.add(quest1, "quest1");
+        container.add(quest2, "Quest2");
 
         window.add(container);
         window.setLocationRelativeTo(null);
@@ -126,6 +129,8 @@ public class GameWindow {
 
             case "quest1" -> quest1.startNewGame();
 
+            case "Quest2" -> quest2.startQuest();
+            
             case "intro" -> container.getComponent(1).requestFocusInWindow();
             
             case "story" -> {
@@ -154,6 +159,7 @@ public class GameWindow {
             writer.write("Nation:" + story.getCurrentNation() + "\n");
             writer.write("BossIndex:" + currentBossIndex + "\n");
             writer.write("LineIndex:" + story.getLineIndex() + "\n");
+            writer.write("Name:" + chosenCharacter.getName() + "\n");
             writer.write("CharacterClass:" + chosenCharacter.getClassType() + "\n");
             writer.write("Level:" + chosenCharacter.getLevel() + "\n");
             writer.write("Gold:" + chosenCharacter.getGold() + "\n");
@@ -185,14 +191,14 @@ public class GameWindow {
 
             String cls = saveParams.get("CharacterClass");
             if (cls != null) {
-                if (cls.equalsIgnoreCase("Warrior")) 
-                    setChosenCharacter(new Warrior());
+                if (cls.equalsIgnoreCase("Warrior")) setChosenCharacter(new Warrior());
+                else if (cls.equalsIgnoreCase("Archer")) setChosenCharacter(new Archer());
+                else if (cls.equalsIgnoreCase("Mage")) setChosenCharacter(new Mage());
 
-                else if (cls.equalsIgnoreCase("Archer")) 
-                    setChosenCharacter(new Archer());
-                
-                else if (cls.equalsIgnoreCase("Mage")) 
-                    setChosenCharacter(new Mage());
+                // CRITICAL: Apply the saved name AFTER creating the new character object
+                if (chosenCharacter != null && saveParams.containsKey("Name")) {
+                    chosenCharacter.setName(saveParams.get("Name"));
+                }
             }
 
             if (chosenCharacter != null) {
@@ -213,7 +219,11 @@ public class GameWindow {
 
                 if (saveParams.containsKey("LineIndex")) 
                     story.setLineIndex(Integer.parseInt(saveParams.get("LineIndex")));
-                
+
+                if (saveParams.containsKey("Name")) {
+                    chosenCharacter.setName(saveParams.get("Name"));
+                }
+
                 story.loadSelectedHero(); 
                 battle.loadBattleData();  
                 showScreen("story");  
@@ -246,5 +256,16 @@ public class GameWindow {
     public void showResultScreen(boolean isVictory, java.awt.image.BufferedImage bgCapture) {
         resultScreen.displayResult(isVictory, bgCapture); 
         showScreen("result");
+    }
+
+    public void processVictoryRewards() {
+        if (chosenCharacter != null) {
+            // Increase level and add gold
+            chosenCharacter.setLevel(chosenCharacter.getLevel() + 1);
+            chosenCharacter.setGold(chosenCharacter.getGold() + 500);
+            
+            // Save the new stats immediately
+            autosave();
+        }
     }
 }

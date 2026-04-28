@@ -15,9 +15,12 @@ public class Npc {
         register("Guard", "/EchoesOfTheOath/Resources/npc1.png", 458, 545);
         register("Informant", "/EchoesOfTheOath/Resources/npc2.png", 2000, 2000);
         register("Attendant", "/EchoesOfTheOath/Resources/npc3.png", 2000, 2000);
-        register("Elven Scout", "/EchoesOfTheOath/Resources/npc4.png", 538, 538);
-        register("Elven Rebel", "/EchoesOfTheOath/Resources/npc4.png", 538, 538);
+        register("Elven Scout", "/EchoesOfTheOath/Resources/npc4.png", 1000, 1000);
+        register("Elven Rebel", "/EchoesOfTheOath/Resources/npc5.png", 1000, 1000);
+        register("Healer", "/EchoesOfTheOath/Resources/npc6.png", 1000, 1000);
         registry.put("Archivist", new Archivist());
+        registry.put("Ilaryx", new Ilaryx());
+        registry.put("Lunareth", new Lunareth());
     }
 
     private void register(String name, String resPath, int width, int height) {
