@@ -346,7 +346,7 @@ public class StoryPanel extends JPanel {
                         currentSpeaker = player.getName(); 
                         break;
 
-                case 45: game.showScreen("quest"); 
+                case 45: game.showScreen("quest1"); 
                         currentSpeaker = ""; 
                         break;
 

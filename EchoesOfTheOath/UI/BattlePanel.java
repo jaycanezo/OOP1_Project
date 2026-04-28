@@ -26,6 +26,7 @@ public class BattlePanel extends JPanel {
     private boolean isPlayerTurn = true;
     private Sprite background; 
     private int currentLevel = 0; 
+    private boolean battleOver = false;
     private final String[] backgroundPaths = {
         "/EchoesOfTheOath/Resources/nation1_bg6.png",
         "/EchoesOfTheOath/Resources/nation1_bg8.png"
@@ -54,6 +55,7 @@ public class BattlePanel extends JPanel {
             animationTimer.stop();
         }
         
+        this.battleOver = false;
         this.player = game.getChosenCharacter();
         this.enemy = game.getCurrentBoss();
         this.isPlayerTurn = true;
@@ -87,8 +89,8 @@ public class BattlePanel extends JPanel {
     }
 
     private void playerTurn(int skillNum) {
-        if (!isPlayerTurn || !player.isSkillAvailable(skillNum)) {
-            if (!player.isSkillAvailable(skillNum)) {
+        if (battleOver || !isPlayerTurn || !player.isSkillAvailable(skillNum)) {
+            if (!battleOver && !player.isSkillAvailable(skillNum)) {
                 logArea.setText(player.getSkillName(skillNum) + " is on cooldown!");
             }
             return;
@@ -114,6 +116,8 @@ public class BattlePanel extends JPanel {
     }
 
     private void enemyTurn() {
+        if (battleOver) return;
+
         int randomSkill = (int)(Math.random() * 3) + 1;
         logArea.append("\n" + enemy.getName() + " prepares to strike!");
 
@@ -123,6 +127,8 @@ public class BattlePanel extends JPanel {
         }
 
         Timer actionDelay = new Timer(1500, e -> {
+            if (battleOver) return;
+
             String result = enemy.useSkill(randomSkill, player);
             logArea.append("\n" + result);
             
@@ -140,20 +146,45 @@ public class BattlePanel extends JPanel {
     }
 
     private boolean checkGameOver() {
+        if (battleOver) return true;
+
         if (enemy.getHp() <= 0) {
+            battleOver = true;
+            
             logArea.setText("Victory! " + enemy.getName() + " falls.");
             animationTimer.stop();
+            
             game.advanceStoryProgress(); 
-
+            player.setHp(player.getMaxHp());
+            player.resetCooldowns();
             game.autosave();
 
-            JOptionPane.showMessageDialog(this, "Victory!");
-            game.showScreen("story"); 
+            Timer delay = new Timer(1500, e -> {
+                java.awt.image.BufferedImage capture = new java.awt.image.BufferedImage(getWidth(), getHeight(), java.awt.image.BufferedImage.TYPE_INT_ARGB);
+                this.paint(capture.getGraphics());
+                
+                game.showResultScreen(true, capture);
+            });
+            delay.setRepeats(false);
+            delay.start();
+            
             return true;
         }
+        
         if (player.getHp() <= 0) {
+            battleOver = true;
+            logArea.setText("You have fallen...");
             animationTimer.stop();
-            game.showScreen("gameover"); 
+            
+            Timer delay = new Timer(1500, e -> {
+                java.awt.image.BufferedImage capture = new java.awt.image.BufferedImage(getWidth(), getHeight(), java.awt.image.BufferedImage.TYPE_INT_ARGB);
+                this.paint(capture.getGraphics());
+                
+                game.showResultScreen(false, capture);
+            });
+            delay.setRepeats(false);
+            delay.start();
+            
             return true;
         }
         
@@ -161,6 +192,8 @@ public class BattlePanel extends JPanel {
     }
 
     private void handleKeyInput(KeyEvent e) {
+        if (battleOver) return;
+        
         int code = e.getKeyCode();
 
         if (code == KeyEvent.VK_I || (code == KeyEvent.VK_ESCAPE && currentBattleState == INVENTORY_STATE)) {
