@@ -20,8 +20,8 @@ public class GameWindow {
     StoryPanel story;
     CharacterSelectPanel charSelect;
     BattlePanel battle;
-    GameOverPanel gameOver;
-    QuestPanel quest;
+    ResultPanel resultScreen; 
+    Quest1Panel quest1;
     
     private Character chosenCharacter;
     private MusicPlayer bgm = new MusicPlayer();
@@ -57,23 +57,21 @@ public class GameWindow {
         story = new StoryPanel(this);
         charSelect = new CharacterSelectPanel(this);
         battle = new BattlePanel(this);
-        gameOver = new GameOverPanel(this);
-        quest = new QuestPanel(this);
+        resultScreen = new ResultPanel(this);
+        quest1 = new Quest1Panel(this);
 
         container.add(start, "start");
         container.add(intro, "intro");
         container.add(charSelect, "charSelect");
         container.add(story, "story");
         container.add(battle, "battle");
-        container.add(gameOver, "gameover");
-        container.add(quest, "quest");
+        container.add(resultScreen, "result");
+        container.add(quest1, "quest1");
 
         window.add(container);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         showScreen("start");
-
-        
     }
 
     public void setChosenCharacter(Character chosenCharacter) {
@@ -111,7 +109,6 @@ public class GameWindow {
     public void advanceStoryProgress() {
         if (currentBossIndex < bosses.length - 1) {
             currentBossIndex++;
-
             System.out.println("Boss defeated. Dialogue continues normally.");
         }
     }
@@ -127,7 +124,7 @@ public class GameWindow {
         switch (name) {
             case "start" -> start.refreshMenu();
 
-            case "quest" -> quest.startNewGame();
+            case "quest1" -> quest1.startNewGame();
 
             case "intro" -> container.getComponent(1).requestFocusInWindow();
             
@@ -244,5 +241,10 @@ public class GameWindow {
         if (intro != null) {
             intro.resetIntro();
         }
+    }
+
+    public void showResultScreen(boolean isVictory, java.awt.image.BufferedImage bgCapture) {
+        resultScreen.displayResult(isVictory, bgCapture); 
+        showScreen("result");
     }
 }

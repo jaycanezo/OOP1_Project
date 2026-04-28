@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 
-public class QuestPanel extends JPanel {
+public class Quest1Panel extends JPanel {
     private GameWindow game;
     private final int rows = 10;
     private final int cols = 10;
@@ -25,7 +25,7 @@ public class QuestPanel extends JPanel {
     private int startR = -1;
     private int startC = -1;
 
-    public QuestPanel(GameWindow game) {
+    public Quest1Panel(GameWindow game) {
         this.game = game;
         this.setLayout(new BorderLayout());
         this.setBackground(Color.BLACK);
@@ -223,17 +223,20 @@ public class QuestPanel extends JPanel {
         statusLabel.setText("A Rune Exploded!");
         statusLabel.setForeground(Color.RED);
 
-        Timer delay = new Timer(2000, e -> {
+       Timer delay = new Timer(2000, e -> {
             Character player = game.getChosenCharacter();
-            int damage = 30; 
-            player.setHp(player.getHp() - damage);
-
-            if (player.getHp() <= 0) {
-                game.showScreen("gameover");
+            
+            player.getInventory().clear();
+            
+            int goldLost = 50;
+            if (player.getGold() >= goldLost) {
+                player.setGold(player.getGold() - goldLost);
             } else {
-                JOptionPane.showMessageDialog(this, "The trap exploded! You took " + damage + " damage.");
-                game.showScreen("story");
+                player.setGold(0);
             }
+
+            showCustomPopup("Trap Triggered!", "Your bag caught fire! You lost all your items and dropped " + goldLost + " Gold!", false);
+            game.showScreen("story");
         });
         delay.setRepeats(false);
         delay.start();
@@ -247,8 +250,8 @@ public class QuestPanel extends JPanel {
 
             Timer delay = new Timer(2000, e -> {
                 Character player = game.getChosenCharacter();
-                player.setGold(player.getGold() + 200);
-                JOptionPane.showMessageDialog(this, "Vault unlocked! You found 200 Gold!");
+                player.setGold(player.getGold() + 500);
+                showCustomPopup("Success!", "Vault unlocked! You found 500 Gold inside the chest!", true);
                 game.showScreen("story");
             });
             delay.setRepeats(false);
@@ -293,5 +296,104 @@ public class QuestPanel extends JPanel {
 
             super.paintComponent(g);
         }
+    }
+
+    private void showCustomPopup(String title, String message, boolean isVictory) {
+        JDialog dialog = new JDialog(game.window, "", true); 
+        dialog.setUndecorated(true);
+        dialog.setBackground(new Color(0, 0, 0, 0)); 
+
+        JPanel panel = new JPanel(null) { 
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            
+                g2.setColor(new Color(15, 10, 20, 245));
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25);
+                
+                g2.setColor(new Color(181, 153, 110));
+                g2.setStroke(new BasicStroke(3));
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 25, 25);
+
+                int bannerHeight = 60;
+                int bannerY = 20; 
+                
+                Color brightYellow = new Color(255, 220, 0, 200);
+                Color deepOrange = new Color(255, 140, 0, 200);
+                
+                if (!isVictory) { 
+                    brightYellow = new Color(220, 20, 60, 200);
+                    deepOrange = new Color(139, 0, 0, 200);
+                }
+
+                GradientPaint gp = new GradientPaint(0, bannerY, brightYellow, getWidth(), bannerY, deepOrange);
+                g2.setPaint(gp);
+                g2.fillRect(2, bannerY, getWidth() - 4, bannerHeight); 
+            
+                g2.setColor(new Color(255, 255, 255, 150));
+                g2.fillRect(2, bannerY, getWidth() - 4, 3);
+                g2.fillRect(2, bannerY + bannerHeight - 3, getWidth() - 4, 3);
+
+                g2.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 28));
+                FontMetrics fm = g2.getFontMetrics();
+                int titleX = (getWidth() - fm.stringWidth(title)) / 2;
+                int titleY = bannerY + 40;
+                
+                g2.setColor(new Color(0, 0, 0, 150)); 
+                g2.drawString(title, titleX + 3, titleY + 3);
+                
+                g2.setColor(Color.WHITE); 
+                g2.drawString(title, titleX, titleY);
+            }
+        };
+
+        JTextArea msgArea = new JTextArea(message);
+        msgArea.setFont(new Font("Georgia", Font.PLAIN, 18));
+        msgArea.setForeground(Color.WHITE);
+        msgArea.setOpaque(false);
+        msgArea.setWrapStyleWord(true);
+        msgArea.setLineWrap(true);
+        msgArea.setEditable(false);
+        msgArea.setFocusable(false);
+        msgArea.setBounds(30, 100, 340, 80);
+        panel.add(msgArea);
+
+        JButton okBtn = new JButton("Continue") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                if (getModel().isPressed()) g2.setColor(new Color(60, 60, 60));
+                else if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80));
+                else g2.setColor(new Color(40, 40, 40));
+                
+                g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
+                g2.setColor(new Color(181, 153, 110));
+                g2.setStroke(new BasicStroke(2));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
+                super.paintComponent(g);
+            }
+        };
+
+        okBtn.setFont(new Font("Georgia", Font.BOLD, 16));
+        okBtn.setForeground(Color.WHITE);
+        okBtn.setContentAreaFilled(false);
+        okBtn.setBorderPainted(false);
+        okBtn.setFocusable(false);
+        okBtn.setBounds(140, 195, 120, 40); 
+        
+        okBtn.addActionListener(e -> {
+            dialog.dispose();
+            game.showScreen("story"); 
+        });
+
+        panel.add(okBtn);
+
+        dialog.add(panel);
+        dialog.setSize(400, 260); 
+        dialog.setLocationRelativeTo(this); 
+        dialog.setVisible(true); 
     }
 }
