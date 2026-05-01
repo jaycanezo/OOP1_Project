@@ -7,10 +7,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.swing.*;
 
 public class GameWindow {
-
     JFrame window;
     CardLayout cardLayout;
     JPanel container;
@@ -23,10 +24,17 @@ public class GameWindow {
     ResultPanel resultScreen; 
     Quest1Panel quest1;
     Quest2Panel quest2;
+    Quest3Panel quest3;
+    Quest4Panel quest4;
+    EndingPanel ending;
+    NationTransitionPanel nationTransition;
     
     private Character chosenCharacter;
     private MusicPlayer bgm = new MusicPlayer();
     private int currentBossIndex = 0;
+    private int blinkTick = 0;
+    private final ExecutorService saveExecutor = Executors.newSingleThreadExecutor();
+
     private final Character[] bosses = {
         new babyM(),
         new Archivist(),
@@ -35,12 +43,6 @@ public class GameWindow {
         new Sarukdal(),
         new Elarion()
     };
-
-    private final java.util.Map<String, String> bgmPlaylist = java.util.Map.of(
-        "start", "intro_bgm.WAV",
-        "story", "nation1_bgm1.WAV",
-        "battle", "nation1_fight_bgm1.WAV"
-    );
 
     public GameWindow() {
         this.bgm = new MusicPlayer();
@@ -61,6 +63,10 @@ public class GameWindow {
         resultScreen = new ResultPanel(this);
         quest1 = new Quest1Panel(this);
         quest2 = new Quest2Panel(this);
+        quest3 = new Quest3Panel(this);
+        quest4 = new Quest4Panel(this);
+        ending = new EndingPanel(this);
+        nationTransition = new NationTransitionPanel(this);
 
         container.add(start, "start");
         container.add(intro, "intro");
@@ -69,7 +75,11 @@ public class GameWindow {
         container.add(battle, "battle");
         container.add(resultScreen, "result");
         container.add(quest1, "quest1");
-        container.add(quest2, "Quest2");
+        container.add(quest2, "quest2");
+        container.add(quest3, "quest3");
+        container.add(quest4, "quest4");
+        container.add(ending, "ending");
+        container.add(nationTransition, "nationTransition");
 
         window.add(container);
         window.setLocationRelativeTo(null);
@@ -94,54 +104,93 @@ public class GameWindow {
     }
 
     public Character getCurrentBoss() { 
-        return switch (currentBossIndex) {
-            case 0 -> new babyM();
-            case 1 -> new Archivist();
-            case 2 -> new Ilaryx();
-            case 3 -> new Lunareth();
-            case 4 -> new Sarukdal();
-            case 5 -> new Elarion();
-            default -> new babyM();
-        };
+        if (currentBossIndex >= 0 && currentBossIndex < bosses.length) {
+            return bosses[currentBossIndex];
+        }
+        return bosses[0];
     }
 
     public int getBossIndex() {
         return this.currentBossIndex;
     }
 
+    public void startNationTransition(int nation) {
+        story.setNation(nation); 
+        nationTransition.startTransition(nation);
+        showScreen("nationTransition"); 
+    }
+
     public void advanceStoryProgress() {
         if (currentBossIndex < bosses.length - 1) {
             currentBossIndex++;
-            System.out.println("Boss defeated. Dialogue continues normally.");
         }
     }
 
     public void showScreen(String name) {
         cardLayout.show(container, name);
-        
-        if (bgmPlaylist.containsKey(name)) {
-            bgm.stopMusic();
-            bgm.playMusic(bgmPlaylist.get(name));
+
+        if (name.equals("start")) {
+            bgm.playMusic("intro_bgm.WAV");
+        }
+        else if (name.equals("quest1")) {
+            bgm.playMusic("nation1_bgm2.1.WAV");
+        }
+        else if (name.equals("quest3")) {
+            bgm.playMusic("quest3_music.wav");
+        }
+        else if (name.equals("quest4")) {
+            bgm.playMusic("quest4_music.wav");
+        }
+        else if (name.equals("battle")) {
+            int boss = getBossIndex(); 
+            switch (boss) {
+                case 0 -> bgm.playMusic("nation1_fight_bgm1.WAV");
+                case 1 -> bgm.playMusic("nation1_fight_bgm2.WAV");
+                case 2 -> bgm.playMusic("nation2_fight_bgm.WAV");
+                case 3 -> bgm.playMusic("nation2_fight_bgm.WAV");
+                case 4 -> bgm.playMusic("nation3_fight_bgm.WAV");
+                case 5 -> bgm.playMusic("nation3_fight_bgm2.WAV");
+                default -> bgm.playMusic("nation1_fight_bgm1.WAV");
+            }
+        } 
+        else if (name.equals("story")) {
+            int boss = getBossIndex(); 
+            int line = story.getLineIndex(); 
+            
+            if (boss <= 1) { 
+                if (line >= 48 || boss == 1) bgm.playMusic("nation1_bgm2.WAV"); 
+                else if (line >= 23) bgm.playMusic("nation1_bgm2.WAV");
+                else bgm.playMusic("nation1_bgm1.wav");
+            }
+            else if (boss == 2 || boss == 3) bgm.playMusic("nation2_bgm.WAV");
+            else if (boss == 4 || boss == 5) {
+                if (line >= 68) bgm.playMusic("intro_bgm.WAV");
+                else if (boss == 5) bgm.playMusic("nation3_bgm2.wav"); 
+                else bgm.playMusic("nation3_bgm1.wav");
+            }
+            else {
+                bgm.playMusic("intro_bgm.WAV");
+            }
+        }
+        else if (name.equals("ending")) {
+            bgm.playMusic("intro_bgm.WAV");
+            ending.startEnding();
         }
 
         switch (name) {
             case "start" -> start.refreshMenu();
-
             case "quest1" -> quest1.startNewGame();
-
-            case "Quest2" -> quest2.startQuest();
-            
+            case "quest2" -> quest2.startQuest();
+            case "quest3" -> quest3.startNewGame();
+            case "quest4" -> quest4.startNewGame();
             case "intro" -> container.getComponent(1).requestFocusInWindow();
-            
             case "story" -> {
                 if (currentBossIndex % 2 == 0 && story.getLineIndex() == 0) {
                     autosave(); 
                 }
-                
                 story.loadSelectedHero();
                 story.requestFocusInWindow();
             }
-                    
             case "battle" -> {
                 battle.loadBattleData();
                 battle.requestFocusInWindow();
@@ -149,44 +198,64 @@ public class GameWindow {
         }
     }
 
-    public void autosave() {
-        if (chosenCharacter == null) {
-            System.out.println("Autosave skipped: No character selected yet.");
-            return; 
-        }
+    public void flashlightBlinkTransition(String nextScreen) {
+        blinkTick = 0;
+        final int[] currentAlpha = {0}; 
+        JPanel darknessPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(new Color(0, 0, 0, currentAlpha[0])); 
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        darknessPanel.setOpaque(false);
+        window.setGlassPane(darknessPanel);
+        darknessPanel.setVisible(true);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("autosave.txt"))) {
-            writer.write("Nation:" + story.getCurrentNation() + "\n");
-            writer.write("BossIndex:" + currentBossIndex + "\n");
-            writer.write("LineIndex:" + story.getLineIndex() + "\n");
-            writer.write("Name:" + chosenCharacter.getName() + "\n");
-            writer.write("CharacterClass:" + chosenCharacter.getClassType() + "\n");
-            writer.write("Level:" + chosenCharacter.getLevel() + "\n");
-            writer.write("Gold:" + chosenCharacter.getGold() + "\n");
-            writer.write("HP:" + chosenCharacter.getHp() + "\n");
-        } catch (IOException e) {
-            System.out.println("Autosave failed: " + e.getMessage());
-        }
+        int[] blinkSequence = {0, 180, 50, 230, 100, 255, 150, 255, 255};
+        javax.swing.Timer blinkTimer = new javax.swing.Timer(120, null);
+        blinkTimer.addActionListener(e -> {
+            if (blinkTick < blinkSequence.length) {
+                currentAlpha[0] = blinkSequence[blinkTick]; 
+                darknessPanel.repaint();            
+                blinkTick++;
+            } else {
+                blinkTimer.stop();
+                darknessPanel.setVisible(false);
+                showScreen(nextScreen);
+            }
+        });
+        blinkTimer.start();
+    }
+
+    public void autosave() {
+        if (chosenCharacter == null) return;
+        saveExecutor.execute(() -> {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("autosave.txt"))) {
+                writer.write("Nation:" + story.getCurrentNation() + "\n");
+                writer.write("BossIndex:" + currentBossIndex + "\n");
+                writer.write("LineIndex:" + story.getLineIndex() + "\n");
+                writer.write("Name:" + chosenCharacter.getName() + "\n");
+                writer.write("CharacterClass:" + chosenCharacter.getClassType() + "\n");
+                writer.write("Level:" + chosenCharacter.getLevel() + "\n");
+                writer.write("Gold:" + chosenCharacter.getGold() + "\n");
+                writer.write("HP:" + chosenCharacter.getHp() + "\n");
+                System.out.println("Autosave successful!");
+            } catch (IOException e) { e.printStackTrace(); }
+        });
     }
 
     public void loadGame() {
-        if (battle != null) {
-            battle.loadBattleData();
-        }
-        
         File saveFile = new File("autosave.txt");
-        if (!saveFile.exists()) 
-            return;
+        if (!saveFile.exists()) return;
 
         try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(saveFile))) {
             String line;
             java.util.Map<String, String> saveParams = new java.util.HashMap<>();
-            
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":");
-
-                if (parts.length >= 2) 
-                    saveParams.put(parts[0], parts[1]);
+                if (parts.length >= 2) saveParams.put(parts[0], parts[1]);
             }
 
             String cls = saveParams.get("CharacterClass");
@@ -194,63 +263,31 @@ public class GameWindow {
                 if (cls.equalsIgnoreCase("Warrior")) setChosenCharacter(new Warrior());
                 else if (cls.equalsIgnoreCase("Archer")) setChosenCharacter(new Archer());
                 else if (cls.equalsIgnoreCase("Mage")) setChosenCharacter(new Mage());
-
-                // CRITICAL: Apply the saved name AFTER creating the new character object
-                if (chosenCharacter != null && saveParams.containsKey("Name")) {
-                    chosenCharacter.setName(saveParams.get("Name"));
-                }
             }
 
             if (chosenCharacter != null) {
-                if (saveParams.containsKey("Level")) 
-                    chosenCharacter.setLevel(Integer.parseInt(saveParams.get("Level")));
-
-                if (saveParams.containsKey("Gold")) 
-                    chosenCharacter.setGold(Double.parseDouble(saveParams.get("Gold")));
-                
-                if (saveParams.containsKey("HP")) 
-                    chosenCharacter.setHp(Integer.parseInt(saveParams.get("HP")));
-                
-                if (saveParams.containsKey("BossIndex"))
-                    this.currentBossIndex = Integer.parseInt(saveParams.get("BossIndex"));
-                
-                if (saveParams.containsKey("Nation")) 
-                    story.setNation(Integer.parseInt(saveParams.get("Nation")));
-
-                if (saveParams.containsKey("LineIndex")) 
-                    story.setLineIndex(Integer.parseInt(saveParams.get("LineIndex")));
-
-                if (saveParams.containsKey("Name")) {
-                    chosenCharacter.setName(saveParams.get("Name"));
-                }
+                if (saveParams.containsKey("Level")) chosenCharacter.setLevel(Integer.parseInt(saveParams.get("Level")));
+                if (saveParams.containsKey("Gold")) chosenCharacter.setGold(Double.parseDouble(saveParams.get("Gold")));
+                if (saveParams.containsKey("HP")) chosenCharacter.setHp(Integer.parseInt(saveParams.get("HP")));
+                if (saveParams.containsKey("BossIndex")) this.currentBossIndex = Integer.parseInt(saveParams.get("BossIndex"));
+                if (saveParams.containsKey("Nation")) story.setNation(Integer.parseInt(saveParams.get("Nation")));
+                if (saveParams.containsKey("LineIndex")) story.setLineIndex(Integer.parseInt(saveParams.get("LineIndex")));
+                if (saveParams.containsKey("Name")) chosenCharacter.setName(saveParams.get("Name"));
 
                 story.loadSelectedHero(); 
                 battle.loadBattleData();  
                 showScreen("story");  
             }
-        } catch (Exception e) {
-            System.out.println("Error loading save: " + e.getMessage());
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public void resetForNewGame() {
         this.chosenCharacter = null;
         this.currentBossIndex = 0;
-        
-        bosses[0] = new babyM();
-        bosses[1] = new Archivist();
-        bosses[2] = new Ilaryx();
-        bosses[3] = new Lunareth();
-        bosses[4] = new Sarukdal();
-        bosses[5] = new Elarion();
-
         story.setNation(1);
         story.resetStory(); 
         battle.loadBattleData(); 
-
-        if (intro != null) {
-            intro.resetIntro();
-        }
+        if (intro != null) intro.resetIntro();
     }
 
     public void showResultScreen(boolean isVictory, java.awt.image.BufferedImage bgCapture) {
@@ -260,11 +297,8 @@ public class GameWindow {
 
     public void processVictoryRewards() {
         if (chosenCharacter != null) {
-            // Increase level and add gold
             chosenCharacter.setLevel(chosenCharacter.getLevel() + 1);
             chosenCharacter.setGold(chosenCharacter.getGold() + 500);
-            
-            // Save the new stats immediately
             autosave();
         }
     }

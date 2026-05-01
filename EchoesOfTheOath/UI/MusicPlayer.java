@@ -1,28 +1,28 @@
 package EchoesOfTheOath.UI;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import javax.sound.sampled.*;
 
 public class MusicPlayer {
     private Clip clip;
+    private final Map<String, URL> soundCache = new HashMap<>();
 
     public void playMusic(String fileName) {
-        if (clip != null && clip.isRunning()) {
-            stopMusic();
-        }
+        stopMusic();
 
         try {
-            URL url = getClass().getResource("/EchoesOfTheOath/Resources/" + fileName);
+            URL url = soundCache.getOrDefault(fileName, 
+                getClass().getResource("/EchoesOfTheOath/Resources/" + fileName));
 
-            if (url == null) 
-                return;
+            if (url == null) return;
 
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
-
             clip = AudioSystem.getClip();
             clip.open(audioIn);
-            clip.start();
             clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,22 +33,17 @@ public class MusicPlayer {
         new Thread(() -> {
             try {
                 URL url = getClass().getResource("/EchoesOfTheOath/Resources/" + fileName);
-
-                if (url == null) 
-                    return;
+                if (url == null) return;
 
                 AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
                 Clip sfxClip = AudioSystem.getClip();
-
                 sfxClip.open(audioIn);
-
                 sfxClip.addLineListener(event -> {
                     if (event.getType() == LineEvent.Type.STOP) {
                         sfxClip.close();
                     }
                 });
                 sfxClip.start();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -58,8 +53,8 @@ public class MusicPlayer {
     public void stopMusic() {
         if (clip != null) {
             clip.stop();
-            clip.close();
-
+            clip.flush(); 
+            clip.close(); 
             clip = null;
         }
     }

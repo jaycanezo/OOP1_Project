@@ -19,36 +19,43 @@ public class Quest1Panel extends JPanel {
     private int safeTilesRevealed = 0;
     private final int totalSafeTiles = (rows * cols) - totalMines;
 
+    private JPanel topPanel;
     private JLabel statusLabel;
     private JPanel gridPanel;
     
     private int startR = -1;
     private int startC = -1;
 
+    // --- INSTRUCTION OVERLAY VARIABLES ---
+    private boolean showingInstructions = true;
+    private JPanel instrButtonPanel;
+    private Timer instrAnimTimer;
+    private float instrAnimProgress = 0.0f;
+
     public Quest1Panel(GameWindow game) {
         this.game = game;
-        this.setLayout(new BorderLayout());
+        this.setLayout(null); // Changed to null layout for overlay positioning!
         this.setBackground(Color.BLACK);
 
         setupTopPanel();
         
         gridPanel = new JPanel(new GridLayout(rows, cols, 5, 5));
         gridPanel.setOpaque(false);
-        gridPanel.setBorder(BorderFactory.createEmptyBorder(10, 250, 60, 250));
-        this.add(gridPanel, BorderLayout.CENTER);
+        gridPanel.setBounds(250, 120, 580, 520); // Center the 10x10 grid
+        this.add(gridPanel);
     }
 
     private void setupTopPanel() {
-        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel = new JPanel(new BorderLayout());
         topPanel.setOpaque(false);
-        topPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 10, 0));
+        topPanel.setBounds(0, 30, 1080, 60);
 
         statusLabel = new JLabel("Disarm the Arcane Runes to proceed. Right-click to flag.", SwingConstants.CENTER);
         statusLabel.setFont(new Font("Georgia", Font.BOLD, 24));
         statusLabel.setForeground(new Color(181, 153, 110)); 
 
         topPanel.add(statusLabel, BorderLayout.CENTER);
-        this.add(topPanel, BorderLayout.NORTH);
+        this.add(topPanel);
     }
 
     public void startNewGame() {
@@ -70,6 +77,48 @@ public class Quest1Panel extends JPanel {
 
         gridPanel.revalidate();
         gridPanel.repaint();
+
+        // --- INSTRUCTION OVERLAY LOGIC ---
+        showingInstructions = true;
+        instrAnimProgress = 0.0f;
+        
+        // Hide game elements so they don't draw over the banner
+        topPanel.setVisible(false);
+        gridPanel.setVisible(false);
+
+        if (instrButtonPanel != null) this.remove(instrButtonPanel);
+        
+        instrButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 0));
+        instrButtonPanel.setOpaque(false);
+        
+        JButton startBtn = createInstrButton("Begin Quest");
+        startBtn.addActionListener(e -> {
+            showingInstructions = false;
+            instrButtonPanel.setVisible(false);
+            
+            // Show the game elements!
+            topPanel.setVisible(true);
+            gridPanel.setVisible(true);
+
+            repaint();
+        });
+        
+        instrButtonPanel.add(startBtn);
+        this.add(instrButtonPanel);
+        instrButtonPanel.setVisible(false);
+        
+        if (instrAnimTimer != null && instrAnimTimer.isRunning()) instrAnimTimer.stop();
+        
+        instrAnimTimer = new Timer(15, e -> {
+            instrAnimProgress += 0.03f;
+            if (instrAnimProgress >= 1.0f) {
+                instrAnimProgress = 1.0f;
+                instrAnimTimer.stop();
+                instrButtonPanel.setVisible(true);
+            }
+            repaint();
+        });
+        instrAnimTimer.start();
     }
 
     private void generateSolvableBoard() {
@@ -94,7 +143,8 @@ public class Quest1Panel extends JPanel {
                         break;
                     }
                 }
-                if (validBoard) break;
+                if (validBoard) 
+                    break;
             }
         }
     }
@@ -115,7 +165,8 @@ public class Quest1Panel extends JPanel {
     private void calculateNumbers() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (logicGrid[r][c] == -1) continue;
+                if (logicGrid[r][c] == -1) 
+                    continue;
 
                 int count = 0;
                 for (int i = -1; i <= 1; i++) {
@@ -129,6 +180,7 @@ public class Quest1Panel extends JPanel {
                         }
                     }
                 }
+
                 logicGrid[r][c] = count;
             }
         }
@@ -145,7 +197,7 @@ public class Quest1Panel extends JPanel {
                 btn.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseReleased(MouseEvent e) {
-                        if (gameOver) return;
+                        if (gameOver || showingInstructions) return;
 
                         if (SwingUtilities.isRightMouseButton(e)) {
                             toggleFlag(finalR, finalC);
@@ -163,7 +215,8 @@ public class Quest1Panel extends JPanel {
 
     private void toggleFlag(int r, int c) {
         TileButton btn = uiGrid[r][c];
-        if (!btn.isEnabled() && !btn.getText().equals("F")) return; 
+        if (!btn.isEnabled() && !btn.getText().equals("F")) 
+            return; 
 
         if (btn.getText().equals("F")) {
             btn.setText("");
@@ -174,10 +227,12 @@ public class Quest1Panel extends JPanel {
     }
 
     private void revealTile(int r, int c) {
-        if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+        if (r < 0 || r >= rows || c < 0 || c >= cols) 
+            return;
         
         TileButton btn = uiGrid[r][c];
-        if (!btn.isEnabled() || btn.getText().equals("F")) return;
+        if (!btn.isEnabled() || btn.getText().equals("F")) 
+            return;
 
         btn.setEnabled(false); 
 
@@ -195,6 +250,7 @@ public class Quest1Panel extends JPanel {
                     }
                 }
             }
+            
             checkWinCondition();
         }
     }
@@ -236,6 +292,8 @@ public class Quest1Panel extends JPanel {
             }
 
             showCustomPopup("Trap Triggered!", "Your bag caught fire! You lost all your items and dropped " + goldLost + " Gold!", false);
+            
+            // Ensure instructions show up again if they retry
             game.showScreen("story");
         });
         delay.setRepeats(false);
@@ -296,6 +354,103 @@ public class Quest1Panel extends JPanel {
 
             super.paintComponent(g);
         }
+    }
+
+    // --- NEW: INSTRUCTION OVERLAY DRAWING & BUTTON LOGIC ---
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        if (showingInstructions) {
+            int bgAlpha = (int)(160 * instrAnimProgress); 
+            g2.setColor(new Color(0, 0, 0, bgAlpha)); 
+            g2.fillRect(0, 0, getWidth(), getHeight());
+            
+            int bannerHeight = 220;
+            int bannerY = (getHeight() - bannerHeight) / 2 - 40; 
+            
+            if (instrButtonPanel != null) {
+                instrButtonPanel.setBounds(0, bannerY + bannerHeight + 40, getWidth(), 100); 
+            }
+            
+            float wipeProgress = Math.min(1.0f, instrAnimProgress * 1.5f); 
+            int currentBannerWidth = (int)(getWidth() * wipeProgress);
+            int bannerX = (getWidth() - currentBannerWidth) / 2; 
+            
+            if (currentBannerWidth > 0) {
+                // Sapphire Blue to Deep Teal gradient
+                Color leftColor = new Color(10, 60, 120, 230);
+                Color rightColor = new Color(10, 100, 100, 230);
+
+                GradientPaint gp = new GradientPaint(bannerX, bannerY, leftColor, bannerX + currentBannerWidth, bannerY, rightColor);
+                g2.setPaint(gp);
+                g2.fillRect(bannerX, bannerY, currentBannerWidth, bannerHeight);
+            
+                g2.setColor(new Color(255, 255, 255, 180));
+                g2.fillRect(bannerX, bannerY, currentBannerWidth, 3); 
+                g2.fillRect(bannerX, bannerY + bannerHeight - 3, currentBannerWidth, 3); 
+            }
+            
+            float textAlpha = Math.max(0.0f, (instrAnimProgress - 0.3f) / 0.7f); 
+            
+            if (textAlpha > 0) {
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, textAlpha));
+                
+                String title = "Q U E S T   1";
+                g2.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 60));
+                FontMetrics fmTitle = g2.getFontMetrics();
+                int titleX = (getWidth() - fmTitle.stringWidth(title)) / 2;
+                int titleY = bannerY + 80;
+                
+                g2.setColor(new Color(0, 0, 0, 120)); 
+                g2.drawString(title, titleX + 4, titleY + 4); 
+                g2.setColor(Color.WHITE);
+                g2.drawString(title, titleX, titleY);
+                
+                g2.setFont(new Font("Georgia", Font.ITALIC, 24));
+                String objective = "Objective: Disarm the Arcane Runes";
+                int objX = (getWidth() - g2.getFontMetrics().stringWidth(objective)) / 2;
+                g2.setColor(new Color(200, 230, 255)); 
+                g2.drawString(objective, objX, titleY + 50);
+                
+                g2.setFont(new Font("Georgia", Font.PLAIN, 18));
+                String mechanic = "Left-Click to Reveal Safe Tiles. Right-Click to Flag Arcane Mines.";
+                int mechX = (getWidth() - g2.getFontMetrics().stringWidth(mechanic)) / 2;
+                g2.setColor(new Color(150, 180, 200));
+                g2.drawString(mechanic, mechX, titleY + 90);
+                
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+            }
+        }
+    }
+
+    private JButton createInstrButton(String text) {
+        JButton btn = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                if (getModel().isPressed()) g2.setColor(new Color(60, 60, 60));
+                else if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80));
+                else g2.setColor(new Color(40, 40, 40));
+                
+                g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
+                g2.setColor(new Color(150, 200, 255)); 
+                g2.setStroke(new BasicStroke(2));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
+                super.paintComponent(g);
+            }
+        };
+        btn.setFont(new Font("Georgia", Font.BOLD, 16));
+        btn.setForeground(Color.WHITE);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setFocusable(false);
+        btn.setPreferredSize(new Dimension(240, 50)); 
+        return btn;
     }
 
     private void showCustomPopup(String title, String message, boolean isVictory) {

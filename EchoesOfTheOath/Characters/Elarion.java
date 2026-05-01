@@ -6,11 +6,11 @@ public class Elarion extends Character {
 
     public Elarion() {
         super("Elarion", " DEMON REALM < NATION 3 > - MAIN BOSS", 1400, 12);
-        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Elarion.png", 517, 483, 1));
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/elarion.png", 517, 483, 1));
         
-        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Elarion_Skill1.png", 128, 128, 8)};
-        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Elarion_Skill2.png", 128, 128, 8)};
-        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/Elarion_Skill3.png", 128, 128, 8)};
+        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Elarion_Skill1.png", 248, 198, 11)};
+        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Elarion_Skill2.png", 257, 221, 12)};
+        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/Elarion_Skill3.png", 500, 666, 9)};
         setSkillSprites(s1, s2, s3);
     }
 

@@ -1,0 +1,86 @@
+package EchoesOfTheOath.UI;
+
+import java.awt.*;
+import javax.swing.*;
+
+public class EndingPanel extends JPanel {
+    private GameWindow game;
+    private float alpha = 0f;
+
+    public EndingPanel(GameWindow game) {
+        this.game = game;
+        this.setLayout(new BorderLayout());
+        this.setBackground(Color.BLACK);
+
+        JPanel buttonContainer = new JPanel();
+        buttonContainer.setOpaque(false);
+        buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
+
+        JButton restartBtn = createEndingButton("START NEW JOURNEY");
+        restartBtn.addActionListener(e -> {
+            game.resetForNewGame(); 
+            game.showScreen("start"); 
+        });
+
+        JButton exitBtn = createEndingButton("EXIT GAME");
+        exitBtn.addActionListener(e -> System.exit(0));
+
+        buttonContainer.add(restartBtn);
+        buttonContainer.add(Box.createRigidArea(new Dimension(20, 0)));
+        buttonContainer.add(exitBtn);
+
+        this.add(buttonContainer, BorderLayout.SOUTH);
+    }
+
+    private JButton createEndingButton(String text) {
+        JButton btn = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(new Color(40, 40, 40, 200));
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+                g2.setColor(new Color(181, 153, 110)); // Your signature gold
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
+                super.paintComponent(g);
+            }
+        };
+        btn.setFont(new Font("Georgia", Font.BOLD, 16));
+        btn.setForeground(Color.WHITE);
+        btn.setPreferredSize(new Dimension(250, 45));
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setFocusable(false);
+        return btn;
+    }
+
+    public void startEnding() {
+        Timer timer = new Timer(50, e -> {
+            alpha += 0.05f;
+            if (alpha > 1f) alpha = 1f;
+            repaint();
+        });
+        timer.start();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        
+        Image bg = new ImageIcon(getClass().getResource("/EchoesOfTheOath/Resources/nation3_bg10.png")).getImage();
+        g2d.drawImage(bg, 0, 0, getWidth(), getHeight(), null);
+
+        g2d.setColor(new Color(0, 0, 0, (int)(alpha * 150)));
+        g2d.setFont(new Font("Serif", Font.ITALIC, 30));
+        String text = "The journey to remember is over. The journey as Guardian begins.";
+        int width = g2d.getFontMetrics().stringWidth(text);
+        g2d.drawString(text, (getWidth() - width) / 2, getHeight() / 2);
+
+        g2d.setFont(new Font("Serif", Font.BOLD, 60));
+        g2d.setColor(new Color(0, 0, 0, (int)(alpha * 150)));
+        String endText = "- THE END -";
+        int endWidth = g2d.getFontMetrics().stringWidth(endText);
+        g2d.drawString(endText, (getWidth() - endWidth) / 2, (getHeight() / 2) + 100);
+    }
+}

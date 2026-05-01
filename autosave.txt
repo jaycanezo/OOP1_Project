@@ -1,8 +1,8 @@
-Nation:2
-BossIndex:2
-LineIndex:22
-Name:AJy
+Nation:3
+BossIndex:5
+LineIndex:61
+Name:sjdfnd
 CharacterClass:Mage
-Level:3
-Gold:1450.0
-HP:4500
+Level:7
+Gold:3450.0
+HP:10500

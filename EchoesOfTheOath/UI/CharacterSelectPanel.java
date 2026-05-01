@@ -101,9 +101,14 @@ public class CharacterSelectPanel extends JPanel {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                if (getModel().isPressed()) g2.setColor(new Color(60, 60, 60));
-                else if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80));
-                else g2.setColor(new Color(40, 40, 40));
+                if (getModel().isPressed()) 
+                    g2.setColor(new Color(60, 60, 60));
+
+                else if (getModel().isRollover()) 
+                    g2.setColor(new Color(80, 80, 80));
+
+                else 
+                    g2.setColor(new Color(40, 40, 40));
                 
                 g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
                 
@@ -136,7 +141,7 @@ public class CharacterSelectPanel extends JPanel {
 
     private JPanel createCharButton(String name, Sprite s, Character c, JLabel imgLabel, String bgPath) {
         JPanel panel = new JPanel(new BorderLayout()) {
-            private Sprite localBG = new Sprite(bgPath, 1080, 720, 1);
+        private Sprite localBG = new Sprite(bgPath, 1080, 720, 1);
 
             @Override
             protected void paintComponent(Graphics g) {
@@ -164,6 +169,7 @@ public class CharacterSelectPanel extends JPanel {
         imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
         if (s != null && s.isLoaded()) {
             s.update();
+
             Image scaledImg = s.getCurrentFrame().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
             imgLabel.setIcon(new ImageIcon(scaledImg));
         }
@@ -174,9 +180,14 @@ public class CharacterSelectPanel extends JPanel {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             
-            if (getModel().isPressed()) g2.setColor(new Color(60, 60, 60));
-            else if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80));
-            else g2.setColor(new Color(40, 40, 40));
+            if (getModel().isPressed()) 
+                g2.setColor(new Color(60, 60, 60));
+
+            else if (getModel().isRollover()) 
+                g2.setColor(new Color(80, 80, 80));
+
+            else 
+                g2.setColor(new Color(40, 40, 40));
             
             g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
             
@@ -228,13 +239,89 @@ public class CharacterSelectPanel extends JPanel {
             return;
         }
 
-        String name = JOptionPane.showInputDialog(this, "Enter your hero's name:");
+        String name = showInputDialog(); 
 
         if (name != null && !name.trim().isEmpty()) {
             tempChosen.setName(name);
+            tempChosen.setLevel(1);
+            tempChosen.setGold(1000);
+            tempChosen.setHp(tempChosen.getMaxHp());
+            tempChosen.getInventory().clear();
             game.setChosenCharacter(tempChosen); 
             game.autosave(); 
-            game.showScreen("story");
+            game.startNationTransition(1);
         }
+    }
+
+    private String showInputDialog() {
+        final String[] result = {null};
+        JDialog dialog = new JDialog(game.window, "Hero Registration", true);
+        dialog.setUndecorated(true);
+        dialog.setBackground(new Color(0, 0, 0, 0)); 
+
+        JPanel content = new JPanel(null) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                // Dark Background
+                g2.setColor(new Color(20, 20, 20, 245));
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+                
+                // Gold Border
+                g2.setColor(new Color(181, 153, 110));
+                g2.setStroke(new BasicStroke(3));
+                g2.drawRoundRect(2, 2, getWidth()-5, getHeight()-5, 20, 20);
+            }
+        };
+        content.setPreferredSize(new Dimension(400, 200));
+
+        JLabel label = new JLabel("What is your hero's name?");
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Georgia", Font.ITALIC, 18));
+        label.setBounds(40, 30, 320, 30);
+        content.add(label);
+
+        JTextField input = new JTextField();
+        input.setBackground(new Color(40, 40, 40));
+        input.setForeground(Color.WHITE);
+        input.setCaretColor(Color.WHITE);
+        input.setFont(new Font("Georgia", Font.PLAIN, 20));
+        input.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(181, 153, 110), 1),
+            BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+        input.setBounds(40, 70, 320, 40);
+        content.add(input);
+
+        JButton confirm = new JButton("Enter the Realm") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(getModel().isRollover() ? new Color(60, 60, 60) : new Color(40, 40, 40));
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+                g2.setColor(new Color(181, 153, 110));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 10, 10);
+                super.paintComponent(g);
+            }
+        };
+        confirm.setBounds(100, 130, 200, 40);
+        confirm.setFont(new Font("Georgia", Font.BOLD, 14));
+        confirm.setForeground(new Color(175, 238, 171));
+        confirm.setContentAreaFilled(false);
+        confirm.setBorderPainted(false);
+        confirm.addActionListener(e -> {
+            result[0] = input.getText();
+            dialog.dispose();
+        });
+        content.add(confirm);
+
+        dialog.add(content);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+
+        return result[0];
     }
 }

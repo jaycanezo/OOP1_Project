@@ -16,7 +16,7 @@ public class IntroPanel extends JPanel {
     private enum State { 
         STORY, TRIAL 
     }
-
+    
     private State currentState = State.STORY;
     private String fullDialogue = DialogueManager.getIntroDialogue();
     private int charIndex = 0;
@@ -27,6 +27,7 @@ public class IntroPanel extends JPanel {
     private Archer archer = new Archer();
     private Mage mage = new Mage();
     private Elarion boss = new Elarion();
+    private Character currentHero;
 
     private BattleSidePanel heroSide;
     private BattleSidePanel enemySide;
@@ -67,6 +68,7 @@ public class IntroPanel extends JPanel {
         
         this.warrior = new Warrior(); 
         warrior.setLevel(12);
+        this.currentHero = warrior;
 
         this.archer = new Archer(); 
         archer.setLevel(12);
@@ -247,32 +249,30 @@ public class IntroPanel extends JPanel {
         if (activeHero == warrior && warrior.allSkillsUsed()) {
             Timer delay = new Timer(1500, e -> {
                 textArea.append("\nWarrior has finished. Archer, take aim!");
+                currentHero = archer;
                 heroSide.setOwner(archer); 
             
                 refreshTrialButtons();
             });
-
             delay.setRepeats(false);
             delay.start();
         } 
-
         else if (activeHero == archer && archer.allSkillsUsed()) {
             Timer delay = new Timer(1500, e -> {
                 textArea.append("\nArcher has finished. Mage, unleash your mana!");
+                currentHero = mage;    
                 heroSide.setOwner(mage);
 
                 refreshTrialButtons();
             });
-
             delay.setRepeats(false);
             delay.start();
-        } 
-
+        }
         else if (activeHero == mage && mage.allSkillsUsed()) {
             Timer delay = new Timer(2000, e -> {
                 if (animationTimer != null) 
                     animationTimer.stop();
-        
+            
                 game.showScreen("charSelect");
             });
 
@@ -290,16 +290,7 @@ public class IntroPanel extends JPanel {
     }
 
     private Character getActiveHero() {
-        if (!warrior.allSkillsUsed()) 
-            return warrior;
-
-        if (!archer.allSkillsUsed()) 
-            return archer;
-
-        if (!mage.allSkillsUsed()) 
-            return mage;
-
-        return null;
+        return currentHero;
     }
 
     private class SkillButton extends JButton {

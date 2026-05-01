@@ -14,7 +14,7 @@ public class MenuRenderer {
         int x = 50;
         int y = 70;
         int statW = 320;
-        int itemW = totalW - statW - 15;
+        int itemW = totalW - statW - 15; 
 
         drawWindow(g2, x, y, statW, totalH, "CHARACTER STATS");
         int sx = x + 30;
@@ -44,7 +44,7 @@ public class MenuRenderer {
         int ix = x + statW + 15;
 
         drawWindow(g2, ix, y, itemW, totalH, "INVENTORY");
-        renderItems(g2, player.getInventory(), ix + 45, y + 80, slotCol, slotRow, scrollOffset, 5);
+        renderItems(g2, player.getInventory(), ix + 168, y + 80, slotCol, slotRow, scrollOffset, 5);
     }
 
     public static void drawShop(Graphics2D g2, int gold, ArrayList<Item> stock, int slotCol, int slotRow, String resultMsg) {
@@ -182,7 +182,7 @@ public class MenuRenderer {
 
     public static void drawOptionsOverlay(Graphics2D g2, int cursorNum) {
         int screenW = 1080, screenH = 720;
-        int w = 450, h = 320;
+        int w = 500, h = 550; 
         int x = (screenW - w) / 2;
         int y = (screenH - h) / 2;
 
@@ -196,21 +196,63 @@ public class MenuRenderer {
         g2.drawRoundRect(x, y, w, h, 20, 20);
 
         g2.setFont(new Font("Georgia", Font.BOLD, 32));
-        g2.drawString("PAUSED", x + 155, y + 60);
+        g2.drawString("PAUSED", x + 175, y + 60);
 
-        String[] options = {"Restart Nation", "Back to Title", "Quit Desktop"};
+        String[] options = {"Return to Checkpoint", "Back to Title", "Quit Desktop"};
         g2.setFont(new Font("Georgia", Font.PLAIN, 24));
         
         for (int i = 0; i < options.length; i++) {
-            int textY = y + 130 + (i * 60);
+            int textY = y + 130 + (i * 45);
             
             if (i == cursorNum) {
-                g2.setColor(Color.YELLOW);
-                g2.drawString("> " + options[i], x + 100, textY);
+                g2.setColor(Color.YELLOW); 
+                g2.drawString("> " + options[i], x + 130, textY);
             } else {
                 g2.setColor(Color.BLACK);
-                g2.drawString("  " + options[i], x + 100, textY);
+                g2.drawString("  " + options[i], x + 130, textY);
             }
         }
+
+        g2.setColor(new Color(111, 78, 55, 180));
+        g2.setStroke(new BasicStroke(2));
+        g2.drawLine(x + 40, y + 290, x + w - 40, y + 290);
+
+        g2.setColor(Color.BLACK);
+        g2.setFont(new Font("Georgia", Font.BOLD, 22));
+        g2.drawString("CONTROLS GUIDE", x + 140, y + 330);
+
+        int col1X = x + 60;
+        int col2X = x + 280;
+        int startY = y + 380;
+
+        drawKeyBox(g2, "W/A/S/D", "Navigate", col1X, startY);
+        drawKeyBox(g2, "ENTER", "Select / Next", col1X, startY + 50);
+        drawKeyBox(g2, "SPACE", "Progress Text", col1X, startY + 100);
+
+        drawKeyBox(g2, "I", "Inventory", col2X, startY);
+        drawKeyBox(g2, "P", "Shop", col2X, startY + 50);
+        drawKeyBox(g2, "ESC", "Back / Pause", col2X, startY + 100);
+    }
+
+    private static void drawKeyBox(Graphics2D g2, String key, String desc, int x, int y) {
+        g2.setFont(new Font("SansSerif", Font.BOLD, 14)); 
+        FontMetrics fm = g2.getFontMetrics();
+        
+        int keyWidth = fm.stringWidth(key) + 16; 
+        int boxHeight = 26;
+
+        g2.setColor(new Color(25, 25, 25)); 
+        g2.fillRoundRect(x, y - 18, keyWidth, boxHeight, 6, 6);
+        
+        g2.setColor(new Color(100, 100, 100)); 
+        g2.setStroke(new BasicStroke(1));
+        g2.drawRoundRect(x, y - 18, keyWidth, boxHeight, 6, 6);
+
+        g2.setColor(Color.YELLOW);
+        g2.drawString(key, x + 8, y);
+
+        g2.setFont(new Font("Georgia", Font.PLAIN, 16));
+        g2.setColor(Color.BLACK);
+        g2.drawString(desc, x + keyWidth + 12, y);
     }
 }

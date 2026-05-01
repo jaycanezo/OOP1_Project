@@ -2,7 +2,6 @@ package EchoesOfTheOath.UI;
 
 import java.awt.*;
 import javax.swing.*;
-import EchoesOfTheOath.Characters.Character;
 
 public class ResultPanel extends JPanel {
     private GameWindow game;
@@ -11,8 +10,6 @@ public class ResultPanel extends JPanel {
     private Timer animTimer;
     private float animProgress = 0.0f; 
     private java.awt.image.BufferedImage backgroundCapture; 
-    private int earnedLevel = 0;
-    private int earnedGold = 0;
     
     public ResultPanel(GameWindow game) {
         this.game = game;
@@ -24,18 +21,11 @@ public class ResultPanel extends JPanel {
         this.isVictoryCurrent = isVictory;
         this.backgroundCapture = bgCapture;
         this.removeAll(); 
-
-        // Capture rewards only on victory
-        if (isVictory && game.getChosenCharacter() != null) {
-            this.earnedLevel = game.getChosenCharacter().getLevel();
-            this.earnedGold = 500; // Fixed reward per your request
-        }
     
         game.getBgm().playSFX("battle.wav"); 
         
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 0));
         buttonPanel.setOpaque(false);
-        buttonPanel.setBounds(0, 460, 1080, 100); 
         
         if (isVictory) {
             JButton continueBtn = createStyledButton("Continue Journey");
@@ -87,12 +77,16 @@ public class ResultPanel extends JPanel {
             g2.drawImage(backgroundCapture, 0, 0, getWidth(), getHeight(), null);
         }
         
-        int bgAlpha = (int)(120 * animProgress); 
+        int bgAlpha = (int)(160 * animProgress); 
         g2.setColor(new Color(0, 0, 0, bgAlpha)); 
         g2.fillRect(0, 0, getWidth(), getHeight());
         
-        int bannerHeight = 240;
-        int bannerY = (getHeight() - bannerHeight) / 2 - 40; 
+        int bannerHeight = 160;
+        int bannerY = (getHeight() - bannerHeight) / 2 - 20; 
+        
+        if (buttonPanel != null) {
+            buttonPanel.setBounds(0, bannerY + bannerHeight + 40, getWidth(), 100); 
+        }
         
         float wipeProgress = Math.min(1.0f, animProgress * 1.5f); 
         int currentBannerWidth = (int)(getWidth() * wipeProgress);
@@ -111,9 +105,9 @@ public class ResultPanel extends JPanel {
             g2.setPaint(gp);
             g2.fillRect(bannerX, bannerY, currentBannerWidth, bannerHeight);
         
-            g2.setColor(new Color(255, 255, 255, 150));
-            g2.fillRect(bannerX, bannerY, currentBannerWidth, 6); 
-            g2.fillRect(bannerX, bannerY + bannerHeight - 6, currentBannerWidth, 6); 
+            g2.setColor(new Color(255, 255, 255, 180));
+            g2.fillRect(bannerX, bannerY, currentBannerWidth, 3); 
+            g2.fillRect(bannerX, bannerY + bannerHeight - 3, currentBannerWidth, 3); 
         }
         
         float textAlpha = Math.max(0.0f, (animProgress - 0.3f) / 0.7f); 
@@ -121,38 +115,34 @@ public class ResultPanel extends JPanel {
         if (textAlpha > 0) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, textAlpha));
             
+            int titleY = bannerY + (isVictoryCurrent ? 85 : 105);
+            
             String title = isVictoryCurrent ? "V I C T O R Y" : "D E F E A T";
-            g2.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 85));
+            g2.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 80));
             FontMetrics fmTitle = g2.getFontMetrics();
             int titleX = (getWidth() - fmTitle.stringWidth(title)) / 2;
-            int titleY = bannerY + 115;
             
-            g2.setColor(new Color(0, 0, 0, 100)); 
-            g2.drawString(title, titleX + 5, titleY + 5); 
+            g2.setColor(new Color(0, 0, 0, 120)); 
+            g2.drawString(title, titleX + 4, titleY + 4); 
             
             g2.setColor(Color.WHITE);
             g2.drawString(title, titleX, titleY);
             
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-        }
+            if (isVictoryCurrent && game.getChosenCharacter() != null) {
+                String rewardText = "Level " + game.getChosenCharacter().getLevel() + " Reached   +500 Gold";
+                
+                g2.setFont(new Font("Georgia", Font.ITALIC, 22));
+                FontMetrics fmReward = g2.getFontMetrics();
+                
+                int rewardY = titleY + 40; 
+                int rewardX = (getWidth() - fmReward.stringWidth(rewardText)) / 2;
 
-        if (textAlpha > 0 && isVictoryCurrent) {
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, textAlpha));
-            
-            // Get the updated level from the player object
-            int currentLevel = game.getChosenCharacter().getLevel(); 
-            String rewardText = "You Leveled up to " + currentLevel + "  |  Gold Gained: +500!";
-            
-            g2.setFont(new Font("Georgia", Font.BOLD, 26));
-            // Draw shadow first
-            g2.setColor(new Color(0, 0, 0, 150));
-            int rewardY = (getHeight() / 2) + 30; // Positioned below the main banner
-            int rewardX = (getWidth() - g2.getFontMetrics().stringWidth(rewardText)) / 2;
-            g2.drawString(rewardText, rewardX + 2, rewardY + 2);
+                g2.setColor(new Color(0, 0, 0, 150));
+                g2.drawString(rewardText, rewardX + 2, rewardY + 2);
 
-            // Draw main golden reward text
-            g2.setColor(new Color(255, 255, 255)); 
-            g2.drawString(rewardText, rewardX, rewardY);
+                g2.setColor(new Color(255, 240, 180)); 
+                g2.drawString(rewardText, rewardX, rewardY);
+            }
             
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
         }
@@ -180,7 +170,7 @@ public class ResultPanel extends JPanel {
         btn.setContentAreaFilled(false);
         btn.setBorderPainted(false);
         btn.setFocusable(false);
-        btn.setPreferredSize(new Dimension(220, 50));
+        btn.setPreferredSize(new Dimension(240, 50));
         return btn;
     }
 }

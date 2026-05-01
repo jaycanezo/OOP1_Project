@@ -30,14 +30,6 @@ public class StartPanel extends JPanel {
         animationTimer.start();
 
         setupMenu();
-
-        addKeyListener(new KeyAdapter() {
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    game.showScreen("intro");
-                }
-            }
-        });
     }
 
     private void setupMenu() {

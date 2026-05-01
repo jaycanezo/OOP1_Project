@@ -6,11 +6,11 @@ public class Sarukdal extends Character {
 
     public Sarukdal() {
         super("Sarukdal", " DEMON REALM < NATION 3 > - MINI BOSS", 1400, 10);
-        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Sarukdal.png", 500, 500, 1));
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/sarukdal.png", 3528, 3000, 1));
         
-        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Sarukdal_Skill1.png", 128, 128, 8)};
-        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Sarukdal_Skill2.png", 128, 128, 8)};
-        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/Sarukdal_Skill3.png", 128, 128, 8)};
+        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Sarukdal_Skill1.png", 500, 500, 14)};
+        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Sarukdal_Skill2.png", 500, 500, 16)};
+        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/Sarukdal_Skill3.png", 400, 666, 11)};
         setSkillSprites(s1, s2, s3);
     }
 
