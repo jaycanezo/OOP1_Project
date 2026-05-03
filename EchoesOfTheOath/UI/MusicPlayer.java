@@ -8,9 +8,14 @@ import javax.sound.sampled.*;
 public class MusicPlayer {
     private Clip clip;
     private final Map<String, URL> soundCache = new HashMap<>();
+    private String currentPlaying = "";
 
     public void playMusic(String fileName) {
         stopMusic();
+
+        if (fileName.equals(currentPlaying)) {
+            return;
+        }
 
         try {
             URL url = soundCache.getOrDefault(fileName, 
@@ -27,6 +32,8 @@ public class MusicPlayer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        currentPlaying = fileName;
     }
 
     public void playSFX(String fileName) {
@@ -51,6 +58,8 @@ public class MusicPlayer {
     }
 
     public void stopMusic() {
+        currentPlaying = "";
+
         if (clip != null) {
             clip.stop();
             clip.flush(); 

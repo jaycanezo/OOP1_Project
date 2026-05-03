@@ -133,7 +133,7 @@ public class GameWindow {
             bgm.playMusic("intro_bgm.WAV");
         }
         else if (name.equals("quest1")) {
-            bgm.playMusic("nation1_bgm2.1.WAV");
+            bgm.playMusic("quest1_music.WAV");
         }
         else if (name.equals("quest3")) {
             bgm.playMusic("quest3_music.wav");
@@ -154,23 +154,30 @@ public class GameWindow {
             }
         } 
         else if (name.equals("story")) {
-            int boss = getBossIndex(); 
+            int nation = story.getCurrentNation();
             int line = story.getLineIndex(); 
             
-            if (boss <= 1) { 
-                if (line >= 48 || boss == 1) bgm.playMusic("nation1_bgm2.WAV"); 
-                else if (line >= 23) bgm.playMusic("nation1_bgm2.WAV");
+            if (nation == 1) {
+                if (line >= 23) bgm.playMusic("nation1_bgm2.WAV");
                 else bgm.playMusic("nation1_bgm1.wav");
             }
-            else if (boss == 2 || boss == 3) bgm.playMusic("nation2_bgm.WAV");
-            else if (boss == 4 || boss == 5) {
+            else if (nation == 2) {
+                if (line >= 23){
+
+                }else{
+                    bgm.playMusic("nation2_bgm.WAV"); 
+                }
+                
+            }
+            else if (nation == 3) {
                 if (line >= 68) bgm.playMusic("intro_bgm.WAV");
-                else if (boss == 5) bgm.playMusic("nation3_bgm2.wav"); 
+                else if (getBossIndex() == 5) bgm.playMusic("nation3_bgm2.wav"); 
                 else bgm.playMusic("nation3_bgm1.wav");
             }
-            else {
-                bgm.playMusic("intro_bgm.WAV");
-            }
+        }
+        else if (name.equals("ending")) {
+            bgm.playMusic("intro_bgm.WAV");
+            ending.startEnding();
         }
         else if (name.equals("ending")) {
             bgm.playMusic("intro_bgm.WAV");

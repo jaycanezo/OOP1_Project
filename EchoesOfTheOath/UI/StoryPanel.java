@@ -74,7 +74,8 @@ public class StoryPanel extends JPanel {
             loadBG("nation1_bg8.png", 1920, 1080, 1);
             loadBG("nation1_bg8.1.png", 1920, 1080, 1);
             loadBG("nation1_bg8.2.png", 1920, 1080, 30);
-            loadBG("nation1_storyline1.png", 1920, 1080, 7);
+            loadBG("nation1_bg9.png", 2730, 1536, 1);
+            loadBG("nation1_storyline1.png", 1280, 720, 29);
         } else if (nation == 2) {
             loadBG("nation2_bg1.png", 1920, 1080, 1);
             loadBG("nation2_bg2.png", 1920, 1080, 1);
@@ -184,18 +185,21 @@ public class StoryPanel extends JPanel {
             }
             
             if (code == KeyEvent.VK_I) { 
-                gameState = INVENTORY_STATE; 
+                gameState = INVENTORY_STATE;
+                game.getBgm().playSFX("inventory_sfx.wav"); 
                 resetCursor(); 
             }
 
             if (code == KeyEvent.VK_P) { 
                 gameState = SHOP_STATE; 
+                game.getBgm().playSFX("shop_sfx.wav"); 
                 resetCursor();
                 shopResultMessage = "";
             }
 
             if (code == KeyEvent.VK_O || code == KeyEvent.VK_ESCAPE) { 
                 gameState = OPTIONS_STATE; 
+                game.getBgm().playSFX("options_sfx.wav");
                 shopResultMessage = "";
                 optionsCursor = 0; 
             }
@@ -271,63 +275,208 @@ public class StoryPanel extends JPanel {
 
         if (currentNation == 1) {
             switch (lineIndex) {
-                case 0: break;
-                case 1: bgm.playSFX("nation1_sfx1.wav"); break;
-                case 2: setBackgroundImage("nation1_bg2.png"); currentSpeaker = ""; break;
-                case 4: bgm.playSFX("nation1_sfx1.wav"); break;
-                case 5: updateScene("Guard", true); bgm.playSFX("nation1_sfx2.wav"); currentSpeaker = ""; break;
-                case 6: updateScene("Guard", true); break;
-                case 7: currentSpeaker = player.getName(); break;
-                case 8: updateScene("Guard", true); break;
-                case 9: currentSpeaker = ""; break;
-                case 10: setBackgroundImage("nation1_bg3.png"); bgm.playSFX("nation1_sfx1.wav"); this.showNPC = false; currentSpeaker = ""; break;
-                case 11: updateScene("Informant", true); currentSpeaker = ""; break; 
-                case 12: currentSpeaker = "Informant"; break;
-                case 13: currentSpeaker = player.getName(); break;
-                case 14: currentSpeaker = "Informant"; break;
-                case 15: currentSpeaker = player.getName(); break;
-                case 16: currentSpeaker = "Informant"; break;
-                case 17: setBackgroundImage("nation1_bg4.png"); this.showNPC = false; currentSpeaker = " "; break;
-                case 18: updateScene(player.getName(), false); break;
-                case 20: currentSpeaker = " "; break;
-                case 22: bgm.playSFX("nation1_sfx3.wav"); break;
-                case 23: setBackgroundImage("nation1_bg5.png"); updateScene(player.getName(), false); currentSpeaker = ""; break;
-                case 25: bgm.playSFX("nation1_sfx4.wav"); break;
-                case 26: setBackgroundImage("nation1_bg6.png"); break;
-                case 27: updateScene("Attendant", true); currentSpeaker = "Attendant"; break;
-                case 28: currentSpeaker = player.getName(); break;
-                case 29: currentSpeaker = "Attendant"; break;
-                case 30: currentSpeaker = player.getName(); break;
-                case 31: currentSpeaker = "Attendant"; break;
-                case 32: setBackgroundImage("nation1_bg6.1.png"); showPlayer = false; showNPC = false; break;
-                case 33: showPlayer = true; break;
-                case 36: setBackgroundImage("nation1_bg6.png"); currentSpeaker = "Attendant"; showNPC = true; break;
-                case 37: game.showScreen("battle"); currentSpeaker = player.getName(); showNPC = false; break;
-                case 38: setBackgroundImage("nation1_bg6.png"); currentSpeaker = ""; break;
-                case 39: currentSpeaker = player.getName(); break;
-                case 40: setBackgroundImage("nation1_bg6.1.png"); currentSpeaker = ""; break;
-                case 42: setBackgroundImage("nation1_bg6.png"); currentSpeaker = player.getName(); break;
-                case 45: game.showScreen("quest1"); currentSpeaker = ""; break;
-                case 48: setBackgroundImage("nation1_bg8.2.png"); showPlayer = false; break;
-                case 49: setBackgroundImage("nation1_bg7.png"); showPlayer = true; break;
-                case 50: setBackgroundImage("nation1_bg8.png"); break;
-                case 51: updateScene("Archivist", true); currentSpeaker = "Archivist"; showPlayer = true; break;
-                case 52: currentSpeaker = player.getName(); break;
-                case 53: currentSpeaker = "Archivist"; break;
-                case 54: currentSpeaker = player.getName(); break;
-                case 55: currentSpeaker = "Archivist"; break;
-                case 56: setBackgroundImage("nation1_storyline1.png"); showNPC = false; showPlayer = false; break;
-                case 57: setBackgroundImage("nation1_bg8.png"); currentSpeaker = player.getName(); showPlayer = true; showNPC = true; break;
-                case 58: currentSpeaker = "Archivist"; break;
-                case 59: game.showScreen("battle"); showPlayer = true; showNPC = true; break;
-                case 60: currentSpeaker = "Archivist"; break;
-                case 61: currentSpeaker = ""; break; 
-                case 62: currentSpeaker = player.getName(); break;
-                case 63: currentSpeaker = ""; break;
-                case 65: currentSpeaker = player.getName(); break;
-                case 68: currentSpeaker = "Archivist"; break;
-                case 69: currentSpeaker = player.getName(); break;
-                case 70: showNPC=false; break;
+                case 0: 
+                    break;
+                case 1: 
+                    bgm.playSFX("nation1_sfx1.wav"); 
+                    break;
+                case 2: 
+                    setBackgroundImage("nation1_bg2.png"); 
+                    currentSpeaker = ""; 
+                break;
+                case 4: 
+                    bgm.playSFX("nation1_sfx1.wav"); 
+                    break;
+                case 5: 
+                    updateScene("Guard", true); 
+                    bgm.playSFX("nation1_sfx2.wav"); 
+                    currentSpeaker = ""; 
+                    break;
+                case 6: 
+                    updateScene("Guard", true); 
+                    break;
+                case 7: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 8: 
+                    updateScene("Guard", true); 
+                    break;
+                case 9: 
+                    currentSpeaker = ""; 
+                    break;
+                case 10: 
+                    setBackgroundImage("nation1_bg3.png"); 
+                    bgm.playSFX("nation1_sfx1.wav"); 
+                    this.showNPC = false; 
+                    currentSpeaker = ""; 
+                    break;
+                case 11: 
+                    updateScene("Informant", true); 
+                    currentSpeaker = ""; 
+                    break; 
+                case 12: 
+                    currentSpeaker = "Informant"; 
+                    break;
+                case 13: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 14: 
+                    currentSpeaker = "Informant"; 
+                    break;
+                case 15: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 16: 
+                    currentSpeaker = "Informant"; 
+                    break;
+                case 17: 
+                    setBackgroundImage("nation1_bg4.png"); 
+                    this.showNPC = false; currentSpeaker = " "; 
+                    break;
+                case 18: 
+                    updateScene(player.getName(), false); 
+                    break;
+                case 20: 
+                    currentSpeaker = " "; 
+                    break;
+                case 22: 
+                    bgm.playSFX("nation1_sfx3.wav"); 
+                    break;
+                case 23: 
+                    setBackgroundImage("nation1_bg5.png"); 
+                    updateScene(player.getName(), false); 
+                    currentSpeaker = ""; 
+                    break;
+                case 25: 
+                    bgm.playSFX("nation1_sfx4.wav"); 
+                    break;
+                case 26: 
+                    setBackgroundImage("nation1_bg6.png"); 
+                    break;
+                case 27: 
+                    updateScene("Attendant", true); 
+                    currentSpeaker = "Attendant"; 
+                    break;
+                case 28: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 29: 
+                    currentSpeaker = "Attendant"; 
+                    break;
+                case 30: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 31: 
+                    currentSpeaker = "Attendant"; 
+                    break;
+                case 32: 
+                    setBackgroundImage("nation1_bg6.1.png"); 
+                    showPlayer = false; 
+                    showNPC = false; 
+                    break;
+                case 33: 
+                    showPlayer = true; 
+                    break;
+                case 36: 
+                    setBackgroundImage("nation1_bg6.png"); 
+                    currentSpeaker = "Attendant"; 
+                    showNPC = true; 
+                    break;
+                case 37: 
+                    game.showScreen("battle"); 
+                    currentSpeaker = player.getName(); 
+                    showNPC = false; 
+                    break;
+                case 38: 
+                    setBackgroundImage("nation1_bg6.png"); 
+                    currentSpeaker = ""; 
+                    break;
+                case 39: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 40: 
+                    setBackgroundImage("nation1_bg6.1.png"); 
+                    currentSpeaker = ""; 
+                    break;
+                case 42: 
+                    setBackgroundImage("nation1_bg6.png"); 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 45: 
+                    game.showScreen("quest1"); 
+                    currentSpeaker = ""; 
+                    break;
+                case 48: 
+                    setBackgroundImage("nation1_bg8.2.png"); 
+                    showPlayer = false; 
+                    break;
+                case 49: 
+                    setBackgroundImage("nation1_bg7.png"); 
+                    showPlayer = true; 
+                    break;
+                case 50: 
+                    setBackgroundImage("nation1_bg8.png"); 
+                    break;
+                case 51: 
+                    updateScene("Archivist", true); 
+                    currentSpeaker = "Archivist"; 
+                    showPlayer = true; 
+                    break;
+                case 52: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 53: 
+                    currentSpeaker = "Archivist"; 
+                    break;
+                case 54: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 55: 
+                    currentSpeaker = "Archivist"; 
+                    break;
+                case 56: 
+                    setBackgroundImage("nation1_storyline1.png"); 
+                    showNPC = false; showPlayer = false; 
+                    break;
+                case 57: 
+                    setBackgroundImage("nation1_bg8.png"); 
+                    updateScene("Archivist", true);
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 58: 
+                    currentSpeaker = "Archivist"; 
+                    break;
+                case 59: 
+                    game.showScreen("battle"); 
+                    break;
+                case 60: 
+                    updateScene("Archivist", true);
+                    currentSpeaker = "Archivist";  
+                    break;
+                case 61: 
+                    currentSpeaker = ""; 
+                    break; 
+                case 62: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 63: 
+                    currentSpeaker = ""; 
+                    break;
+                case 65: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 67: 
+                    setBackgroundImage("nation1_bg9.png");
+                    break;
+                case 68: 
+                    currentSpeaker = "Archivist"; 
+                    break;
+                case 69: 
+                    currentSpeaker = player.getName(); 
+                    break;
+                case 70: 
+                    showNPC=false; 
+                    break;
             }
         }
 
@@ -705,7 +854,7 @@ public class StoryPanel extends JPanel {
             String path = "/EchoesOfTheOath/Resources/" + name;
             Sprite bgSprite = new Sprite(path, frameWidth, frameHeight, frameCount);
 
-            if(name.equals("nation1_bg8.2.png")) {
+            if(name.equals("nation1_bg8.2.png")||name.equals("nation1_storyline1.png")) {
                 bgSprite.setLooping(false);
             }
             if (bgSprite.isLoaded()) {

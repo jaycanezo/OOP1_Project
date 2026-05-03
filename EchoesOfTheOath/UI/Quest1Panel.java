@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
+import EchoesOfTheOath.UI.MusicPlayer;
 
 public class Quest1Panel extends JPanel {
     private GameWindow game;
@@ -31,6 +32,7 @@ public class Quest1Panel extends JPanel {
     private JPanel instrButtonPanel;
     private Timer instrAnimTimer;
     private float instrAnimProgress = 0.0f;
+    private MusicPlayer sfx = new MusicPlayer();
 
     public Quest1Panel(GameWindow game) {
         this.game = game;
@@ -50,7 +52,7 @@ public class Quest1Panel extends JPanel {
         topPanel.setOpaque(false);
         topPanel.setBounds(0, 30, 1080, 60);
 
-        statusLabel = new JLabel("Disarm the Arcane Runes to proceed. Right-click to flag.", SwingConstants.CENTER);
+        statusLabel = new JLabel("Disarm the Arcane Runes of the Trapdoor to proceed. Right-click to flag.", SwingConstants.CENTER);
         statusLabel.setFont(new Font("Georgia", Font.BOLD, 24));
         statusLabel.setForeground(new Color(181, 153, 110)); 
 
@@ -266,6 +268,7 @@ public class Quest1Panel extends JPanel {
 
     private void triggerExplosion(int r, int c) {
         gameOver = true;
+        sfx.playSFX("quest1_sfx.WAV");
         uiGrid[r][c].setText("*");
 
         for (int i = 0; i < rows; i++) {
@@ -301,6 +304,7 @@ public class Quest1Panel extends JPanel {
     }
 
     private void checkWinCondition() {
+        sfx.playSFX("quest1_sfx2.WAV");
         if (safeTilesRevealed == totalSafeTiles) {
             gameOver = true;
             statusLabel.setText("Trap Disarmed!");

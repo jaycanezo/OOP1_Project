@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class MenuRenderer {
+    private static MusicPlayer sfx = new MusicPlayer();
 
     public static void drawInventory(Graphics2D g2, Character player, int slotCol, int slotRow, int scrollOffset) {
         int screenW = 1080;

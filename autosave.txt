@@ -1,8 +1,8 @@
-Nation:3
-BossIndex:5
-LineIndex:61
-Name:sjdfnd
-CharacterClass:Mage
-Level:7
-Gold:3450.0
-HP:10500
+Nation:1
+BossIndex:0
+LineIndex:0
+Name:Jay
+CharacterClass:Warrior
+Level:1
+Gold:1000.0
+HP:1500

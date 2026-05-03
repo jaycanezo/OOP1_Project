@@ -4,7 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
+        {
+            "type": "java",
+            "name": "OOP_Project",
+            "request": "launch",
+            "mainClass": "EchoesOfTheOath.OOP_Project",
+            "projectName": "OOP1_Project_2bdb3389"
+        },
         {
             "type": "java",
             "name": "Current File",
