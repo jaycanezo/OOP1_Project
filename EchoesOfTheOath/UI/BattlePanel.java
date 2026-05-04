@@ -17,6 +17,8 @@ public class BattlePanel extends JPanel {
     private JPanel buttonPanel;
     private JLabel playerNameLabel, enemyNameLabel;
     private Timer animationTimer;
+    private Font smallFont;
+    private Font mediumFont;
 
     private final int BATTLE_STATE = 0;
     private final int INVENTORY_STATE = 1;
@@ -48,6 +50,8 @@ public class BattlePanel extends JPanel {
         this.setBackground(Color.BLACK);
         this.setLayout(new BorderLayout());
         this.setFocusable(true); 
+        this.smallFont = FontManager.getFont("Jersey10-Regular.ttf", 22f);
+        this.mediumFont = FontManager.getFont("Jersey10-Regular.ttf", 26f);
 
         this.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -372,7 +376,7 @@ public class BattlePanel extends JPanel {
         logArea.setOpaque(false);
         logArea.setEditable(false);
         logArea.setFocusable(false);
-        logArea.setFont(new Font("Monospaced", Font.BOLD, 22));
+        logArea.setFont(mediumFont);
         logArea.setForeground(Color.WHITE);
         logArea.setLineWrap(true);
         logArea.setWrapStyleWord(true);
@@ -414,7 +418,7 @@ public class BattlePanel extends JPanel {
         p.setOpaque(false);
         JLabel lbl = new JLabel(initialName);
         lbl.setForeground(Color.WHITE);
-        lbl.setFont(new Font("Monospaced", Font.BOLD, 18));
+        lbl.setFont(smallFont);
 
         if (isPlayer) playerNameLabel = lbl;
         else enemyNameLabel = lbl;
@@ -514,7 +518,7 @@ public class BattlePanel extends JPanel {
             this.skillNum = skillNum;
 
             setFocusable(false);
-            setFont(new Font("Serif", Font.BOLD, 18));
+            setFont(smallFont);
             setContentAreaFilled(false);
             setBorderPainted(false); 
         }
@@ -546,7 +550,7 @@ public class BattlePanel extends JPanel {
                 g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
 
                 g2.setColor(new Color(249, 152, 155)); 
-                g2.setFont(new Font("Serif", Font.BOLD, 18));
+                g2.setFont(smallFont);
                 String text = "Cooldown: " + String.valueOf(cd) + " turn(s)";
                 FontMetrics fm = g2.getFontMetrics();
                 g2.drawString(text, (getWidth() - fm.stringWidth(text)) / 2, (getHeight() + fm.getAscent()) / 2 - 4);

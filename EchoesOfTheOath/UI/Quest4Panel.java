@@ -13,6 +13,12 @@ public class Quest4Panel extends JPanel {
     private GameWindow game;
     private Timer gameTimer;
     
+    // --- FONT VARIABLES ---
+    private Font titleFont;
+    private Font headerFont;
+    private Font normalFont;
+    private Font smallFont;
+
     private int mouseX = -100, mouseY = -100;
     private int sanity = 1000;
     private final int MAX_SANITY = 1000;
@@ -53,6 +59,12 @@ public class Quest4Panel extends JPanel {
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
 
+        // --- LOAD FONTS ---
+        this.titleFont = FontManager.getFont("Jersey10-Regular.ttf", 48f);  // Was 42
+        this.headerFont = FontManager.getFont("Jersey10-Regular.ttf", 30f); // Was 24/22
+        this.normalFont = FontManager.getFont("Jersey10-Regular.ttf", 26f); // Was 20
+        this.smallFont = FontManager.getFont("Jersey10-Regular.ttf", 22f);  // Was 14/18
+
         backgroundSprite = new Sprite("/EchoesOfTheOath/Resources/quest4_bg.png", 1080, 720, 1);
         jumpscareSprite = new Sprite("/EchoesOfTheOath/Resources/void_jumpscare.png", 700, 600, 1);
         eyeballTrapSprite = new Sprite("/EchoesOfTheOath/Resources/eyeball_trap.png", 80, 80, 1);
@@ -81,13 +93,13 @@ public class Quest4Panel extends JPanel {
             public void keyPressed(KeyEvent e) {
                 if (gameState == INSTRUCTION_STATE && e.getKeyCode() == KeyEvent.VK_ENTER) {
                     gameState = PLAY_STATE; 
-
                     if (gameTimer != null) gameTimer.start(); 
                 }
             }
         });
     }
 
+    // ... [startNewGame(), generateRoom(), checkCollisions(), handleInteraction() remain unchanged] ...
     public void startNewGame() {
         this.requestFocusInWindow();
         this.gameState = INSTRUCTION_STATE;
@@ -99,20 +111,14 @@ public class Quest4Panel extends JPanel {
         
         generateRoom();
         
-        if (gameTimer != null && gameTimer.isRunning()) 
-            gameTimer.stop();
+        if (gameTimer != null && gameTimer.isRunning()) gameTimer.stop();
         
         gameTimer = new Timer(50, e -> {
             if (!isPaused) {
                 pulseTick += 0.15f; 
                 sanity -= 2; 
-
-                if (isJumpscareActive) 
-                    sanity -= 20; 
-                
-                if (sanity <= 0) 
-                    triggerDefeat();
-
+                if (isJumpscareActive) sanity -= 20; 
+                if (sanity <= 0) triggerDefeat();
                 repaint();
             }
         });
@@ -121,26 +127,15 @@ public class Quest4Panel extends JPanel {
     private void generateRoom() {
         shards = new ArrayList<>();
         phantoms = new ArrayList<>();
-        
-        for (int i = 0; i < 3; i++) {
-            shards.add(new Rectangle(100 + rand.nextInt(800), 100 + rand.nextInt(500), 60, 60));
-        }
-        
-        for (int i = 0; i < 6; i++) {
-            phantoms.add(new Rectangle(50 + rand.nextInt(900), 50 + rand.nextInt(600), 80, 80));
-        }
+        for (int i = 0; i < 3; i++) shards.add(new Rectangle(100 + rand.nextInt(800), 100 + rand.nextInt(500), 60, 60));
+        for (int i = 0; i < 6; i++) phantoms.add(new Rectangle(50 + rand.nextInt(900), 50 + rand.nextInt(600), 80, 80));
     }
 
     private void checkCollisions() {
         boolean touchingPhantom = false;
-        
         for (Rectangle t : phantoms) {
             double distance = Math.hypot(mouseX - (t.x + t.width/2), mouseY - (t.y + t.height/2));
-            
-            if (distance < 45) {
-                touchingPhantom = true;
-                break;
-            }
+            if (distance < 45) { touchingPhantom = true; break; }
         }
 
         if (touchingPhantom) {
@@ -157,7 +152,6 @@ public class Quest4Panel extends JPanel {
         for (int i = 0; i < shards.size(); i++) {
             if (shards.get(i).contains(x, y)) {
                 triggerDialogueChoice(i);
-
                 return;
             }
         }
@@ -176,22 +170,22 @@ public class Quest4Panel extends JPanel {
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
+                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+
                 g2.setColor(new Color(15, 5, 5, 245)); 
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
-                
                 g2.setColor(new Color(150, 0, 0));
                 g2.setStroke(new BasicStroke(3));
                 g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
 
                 g2.setColor(new Color(220, 20, 40)); 
-                g2.setFont(new Font("Georgia", Font.BOLD | Font.ITALIC, 22));
+                g2.setFont(headerFont);
                 g2.drawString(shardNames[shardIndex], 20, 40);
             }
         };
 
         JTextArea questionArea = new JTextArea(ghostQuestions[shardIndex]);
-        questionArea.setFont(new Font("Georgia", Font.PLAIN, 18));
+        questionArea.setFont(smallFont);
         questionArea.setForeground(Color.WHITE);
         questionArea.setOpaque(false);
         questionArea.setWrapStyleWord(true);
@@ -228,26 +222,18 @@ public class Quest4Panel extends JPanel {
             shards.remove(shardObj);
             shardsFound++;
             sanity = Math.min(MAX_SANITY, sanity + 300); 
-            
-            if (shardsFound >= 3) {
-                triggerVictory();
-            } else {
-                isPaused = false;
-            }
+            if (shardsFound >= 3) triggerVictory();
+            else isPaused = false;
         } else {
             sanity -= 400; 
-            if (sanity <= 0) {
-                triggerDefeat();
-            } else {
-                isPaused = false;
-            }
+            if (sanity <= 0) triggerDefeat();
+            else isPaused = false;
         }
     }
 
     private void triggerDefeat() {
         gameTimer.stop();
         isPaused = true;
-        
         Timer delay = new Timer(500, e -> {
             BufferedImage capture = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
             this.paint(capture.getGraphics());
@@ -260,7 +246,6 @@ public class Quest4Panel extends JPanel {
     private void triggerVictory() {
         gameTimer.stop();
         isPaused = true;
-
         Timer delay = new Timer(1000, e -> {
             game.autosave();
             game.flashlightBlinkTransition("story");
@@ -275,12 +260,10 @@ public class Quest4Panel extends JPanel {
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
-                if (getModel().isRollover()) 
-                    g2.setColor(new Color(100, 10, 10));
-
-                else 
-                    g2.setColor(new Color(30, 10, 10)); 
+                if (getModel().isRollover()) g2.setColor(new Color(100, 10, 10));
+                else g2.setColor(new Color(30, 10, 10)); 
                 
                 g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 10, 10);
                 g2.setColor(new Color(150, 40, 40));
@@ -288,12 +271,11 @@ public class Quest4Panel extends JPanel {
                 super.paintComponent(g);
             }
         };
-        btn.setFont(new Font("Georgia", Font.PLAIN, 14));
+        btn.setFont(smallFont);
         btn.setForeground(Color.WHITE);
         btn.setContentAreaFilled(false);
         btn.setBorderPainted(false);
         btn.setFocusable(false);
-
         return btn;
     }
 
@@ -301,6 +283,7 @@ public class Quest4Panel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
         if (gameState == INSTRUCTION_STATE) {
             drawInstructions(g2);
@@ -339,7 +322,6 @@ public class Quest4Panel extends JPanel {
             if (!isJumpscareActive) {
                 for (Rectangle t : phantoms) {
                     double dist = Math.hypot(mouseX - (t.x + t.width/2), mouseY - (t.y + t.height/2));
-                    
                     if (dist < 110) {
                         if (eyeballTrapSprite != null && eyeballTrapSprite.isLoaded()) {
                             g2.drawImage(eyeballTrapSprite.getCurrentFrame(), t.x, t.y, t.width, t.height, null);
@@ -353,13 +335,9 @@ public class Quest4Panel extends JPanel {
 
             if (!isJumpscareActive) {
                 Area darkOverlay = new Area(new Rectangle(0, 0, getWidth(), getHeight()));
-                
                 int lightRadius = 90; 
-                if (sanity < 400) 
-                    lightRadius = 60;
-
-                if (sanity < 150) 
-                    lightRadius = 40;
+                if (sanity < 400) lightRadius = 60;
+                if (sanity < 150) lightRadius = 40;
 
                 Ellipse2D lightCircle = new Ellipse2D.Double(mouseX - lightRadius, mouseY - lightRadius, lightRadius * 2, lightRadius * 2);
                 darkOverlay.subtract(new Area(lightCircle));
@@ -386,21 +364,16 @@ public class Quest4Panel extends JPanel {
             }
 
             g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Georgia", Font.BOLD, 20));
+            g2.setFont(normalFont);
             g2.drawString("WILLPOWER: " + sanity, 30, 40);
             g2.drawString("SHARDS FOUND: " + shardsFound + "/3", 30, 70);
             
             g2.setColor(Color.DARK_GRAY);
             g2.fillRect(30, 90, 300, 20);
 
-            if (sanity > 500) 
-                g2.setColor(new Color(200, 50, 50)); 
-
-            else if (sanity > 200) 
-                g2.setColor(new Color(255, 140, 0)); 
-
-            else 
-                g2.setColor(new Color(139, 0, 0));
+            if (sanity > 500) g2.setColor(new Color(200, 50, 50)); 
+            else if (sanity > 200) g2.setColor(new Color(255, 140, 0)); 
+            else g2.setColor(new Color(139, 0, 0));
             
             g2.fillRect(30, 90, (int)(300 * ((double)sanity / MAX_SANITY)), 20);
             g2.setColor(Color.WHITE);
@@ -413,25 +386,37 @@ public class Quest4Panel extends JPanel {
         g2.fillRect(0, 0, getWidth(), getHeight());
 
         g2.setColor(new Color(181, 153, 110)); 
-        g2.setFont(new Font("Georgia", Font.BOLD, 42));
-        g2.drawString("Trial of the Shadows", 320, 250);
+        g2.setFont(titleFont);
+        
+        // Centering math for the title
+        FontMetrics fm = g2.getFontMetrics();
+        String title = "Trial of the Shadows";
+        g2.drawString(title, (getWidth() - fm.stringWidth(title)) / 2, 250);
 
         g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Georgia", Font.PLAIN, 24));
-        g2.drawString("The darkness feeds on your Willpower.", 330, 320);
+        g2.setFont(headerFont);
+        fm = g2.getFontMetrics();
+        String desc = "The darkness feeds on your Willpower.";
+        g2.drawString(desc, (getWidth() - fm.stringWidth(desc)) / 2, 320);
         
-        g2.setFont(new Font("SansSerif", Font.BOLD, 20));
+        g2.setFont(normalFont);
         g2.setColor(new Color(200, 200, 200));
-        g2.drawString("Goal: Find all 3 hidden shards before your mind breaks.", 270, 380);
-        g2.drawString("Controls: Move your MOUSE to aim your flashlight.", 290, 415);
+        fm = g2.getFontMetrics();
+        String goal = "Goal: Find all 3 hidden shards before your mind breaks.";
+        String controls = "Controls: Move your MOUSE to aim your flashlight.";
+        g2.drawString(goal, (getWidth() - fm.stringWidth(goal)) / 2, 380);
+        g2.drawString(controls, (getWidth() - fm.stringWidth(controls)) / 2, 415);
         
         g2.setColor(new Color(255, 100, 100)); 
-        g2.drawString("Warning: Beware what lurks in the shadows...", 320, 460);
+        String warn = "Warning: Beware what lurks in the shadows...";
+        g2.drawString(warn, (getWidth() - fm.stringWidth(warn)) / 2, 460);
 
         if (System.currentTimeMillis() % 1000 < 500) { 
             g2.setColor(Color.YELLOW);
-            g2.setFont(new Font("Georgia", Font.BOLD, 22));
-            g2.drawString("Press [ ENTER ] to Descend", 390, 550);
+            g2.setFont(headerFont);
+            fm = g2.getFontMetrics();
+            String start = "Press [ ENTER ] to Descend";
+            g2.drawString(start, (getWidth() - fm.stringWidth(start)) / 2, 550);
         }
     }
 }

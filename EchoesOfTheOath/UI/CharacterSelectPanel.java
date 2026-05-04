@@ -12,6 +12,8 @@ public class CharacterSelectPanel extends JPanel {
     private Character tempChosen;
     private Sprite warriorS, archerS, mageS, background;
     private JLabel warriorLabel, archerLabel, mageLabel;
+    private Font smallFont;
+    private Font mediumFont;
 
     public CharacterSelectPanel(GameWindow game) {
         this.game = game;
@@ -19,6 +21,8 @@ public class CharacterSelectPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         background = new Sprite("/EchoesOfTheOath/Resources/intro_bg.png", 426, 240, 121);
+        smallFont = FontManager.getFont("Jersey10-Regular.ttf", 22f);
+        mediumFont = FontManager.getFont("Jersey10-Regular.ttf", 26f);
 
         Warrior w = new Warrior();
         Archer a = new Archer();
@@ -91,7 +95,7 @@ public class CharacterSelectPanel extends JPanel {
         textArea = new JTextArea("Choose a Hero to begin your journey.");
         textArea.setOpaque(false);
         textArea.setEditable(false);
-        textArea.setFont(new Font("Georgia", Font.PLAIN, 24));
+        textArea.setFont(mediumFont);
         textArea.setForeground(Color.WHITE);
         textArea.setMargin(new Insets(0, 80, 5, 80));
 
@@ -121,7 +125,7 @@ public class CharacterSelectPanel extends JPanel {
             }
         };
 
-        confirmBtn.setFont(new Font("Georgia", Font.PLAIN, 18));
+        confirmBtn.setFont(mediumFont);
         confirmBtn.setForeground(new Color(175, 238, 171)); 
         confirmBtn.setContentAreaFilled(false);
         confirmBtn.setBorderPainted(false); 
@@ -200,7 +204,7 @@ public class CharacterSelectPanel extends JPanel {
         }
     };
 
-        selectBtn.setFont(new Font("Georgia", Font.PLAIN, 16));
+        selectBtn.setFont(smallFont);
         selectBtn.setForeground(Color.WHITE);
         selectBtn.setContentAreaFilled(false);
         selectBtn.setBorderPainted(false); 
@@ -279,7 +283,7 @@ public class CharacterSelectPanel extends JPanel {
 
         JLabel label = new JLabel("What is your hero's name?");
         label.setForeground(Color.WHITE);
-        label.setFont(new Font("Georgia", Font.ITALIC, 18));
+        label.setFont(mediumFont);
         label.setBounds(40, 30, 320, 30);
         content.add(label);
 
@@ -287,7 +291,7 @@ public class CharacterSelectPanel extends JPanel {
         input.setBackground(new Color(40, 40, 40));
         input.setForeground(Color.WHITE);
         input.setCaretColor(Color.WHITE);
-        input.setFont(new Font("Georgia", Font.PLAIN, 20));
+        input.setFont(mediumFont);
         input.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(181, 153, 110), 1),
             BorderFactory.createEmptyBorder(5, 10, 5, 10)));
@@ -307,7 +311,7 @@ public class CharacterSelectPanel extends JPanel {
             }
         };
         confirm.setBounds(100, 130, 200, 40);
-        confirm.setFont(new Font("Georgia", Font.BOLD, 14));
+        confirm.setFont(smallFont);
         confirm.setForeground(new Color(175, 238, 171));
         confirm.setContentAreaFilled(false);
         confirm.setBorderPainted(false);

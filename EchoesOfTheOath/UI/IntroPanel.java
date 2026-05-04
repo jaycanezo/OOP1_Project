@@ -22,6 +22,8 @@ public class IntroPanel extends JPanel {
     private int charIndex = 0;
     private float alpha = 0.0f;
     private Timer animationTimer;
+    private Font smallText;
+    private Font mediumText;
 
     private Warrior warrior = new Warrior();
     private Archer archer = new Archer();
@@ -39,6 +41,8 @@ public class IntroPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.setFocusable(true);
         background = new Sprite("/EchoesOfTheOath/Resources/intro_bg.png", 426, 240, 121);
+        smallText = FontManager.getFont("Jersey10-Regular.ttf", 22f);
+        mediumText = FontManager.getFont("Jersey10-Regular.ttf", 26f);
 
         warrior.setLevel(12);
         archer.setLevel(12);
@@ -89,7 +93,6 @@ public class IntroPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
 
         if (background != null && background.isLoaded()) {
             g.drawImage(background.getCurrentFrame(), 0, 0, getWidth(), getHeight(), null);
@@ -149,7 +152,7 @@ public class IntroPanel extends JPanel {
         textArea.setOpaque(false);
         textArea.setEditable(false);
         textArea.setFocusable(false);
-        textArea.setFont(new Font("Georgia", Font.PLAIN, 22));
+        textArea.setFont(mediumText);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setMargin(new Insets(15, 80, 10, 80)); 
@@ -301,7 +304,7 @@ public class IntroPanel extends JPanel {
             this.skillNum = skillNum;
 
             setFocusable(false);
-            setFont(new Font("Georgia", Font.PLAIN, 18));
+            setFont(smallText);
             setContentAreaFilled(false);
             setBorderPainted(false);
             setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
@@ -356,7 +359,7 @@ public class IntroPanel extends JPanel {
                     g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
 
                     g2.setColor(new Color(249, 152, 155));
-                    g2.setFont(new Font("Georgia", Font.PLAIN, 18));
+                    g2.setFont(smallText);
 
                     String text = "Cooldown (" + cd + ")";
                     FontMetrics fm = g2.getFontMetrics();

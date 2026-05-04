@@ -5,7 +5,7 @@ public class Warrior extends Character {
     private MusicPlayer bgm = new MusicPlayer();
         
     public Warrior() {
-        super("Warrior", 1500, 1, "Warrior");
+        super("Warrior", 1800, 1, "Warrior");
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Warrior.png", 523, 477, 1));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Warrior_Slash.png", 128, 128, 9)};

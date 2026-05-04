@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
-import EchoesOfTheOath.UI.MusicPlayer;
 
 public class Quest1Panel extends JPanel {
     private GameWindow game;
@@ -23,6 +22,10 @@ public class Quest1Panel extends JPanel {
     private JPanel topPanel;
     private JLabel statusLabel;
     private JPanel gridPanel;
+    private Font titleFont = FontManager.getFont("Jersey10-Regular.ttf", 64f);
+    private Font headerFont = FontManager.getFont("Jersey10-Regular.ttf", 32f);
+    private Font normalFont = FontManager.getFont("Jersey10-Regular.ttf", 24f);
+    private Font smallFont = FontManager.getFont("Jersey10-Regular.ttf", 18f);
     
     private int startR = -1;
     private int startC = -1;
@@ -53,7 +56,7 @@ public class Quest1Panel extends JPanel {
         topPanel.setBounds(0, 30, 1080, 60);
 
         statusLabel = new JLabel("Disarm the Arcane Runes of the Trapdoor to proceed. Right-click to flag.", SwingConstants.CENTER);
-        statusLabel.setFont(new Font("Georgia", Font.BOLD, 24));
+        statusLabel.setFont(normalFont);
         statusLabel.setForeground(new Color(181, 153, 110)); 
 
         topPanel.add(statusLabel, BorderLayout.CENTER);
@@ -331,7 +334,7 @@ public class Quest1Panel extends JPanel {
             setFocusable(false);
             setContentAreaFilled(false);
             setBorderPainted(false);
-            setFont(new Font("Georgia", Font.BOLD, 18));
+            setFont(normalFont);
             setForeground(Color.WHITE);
         }
 
@@ -404,7 +407,7 @@ public class Quest1Panel extends JPanel {
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, textAlpha));
                 
                 String title = "Q U E S T   1";
-                g2.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 60));
+                g2.setFont(titleFont);
                 FontMetrics fmTitle = g2.getFontMetrics();
                 int titleX = (getWidth() - fmTitle.stringWidth(title)) / 2;
                 int titleY = bannerY + 80;
@@ -414,13 +417,13 @@ public class Quest1Panel extends JPanel {
                 g2.setColor(Color.WHITE);
                 g2.drawString(title, titleX, titleY);
                 
-                g2.setFont(new Font("Georgia", Font.ITALIC, 24));
+                g2.setFont(headerFont);
                 String objective = "Objective: Disarm the Arcane Runes";
                 int objX = (getWidth() - g2.getFontMetrics().stringWidth(objective)) / 2;
                 g2.setColor(new Color(200, 230, 255)); 
                 g2.drawString(objective, objX, titleY + 50);
                 
-                g2.setFont(new Font("Georgia", Font.PLAIN, 18));
+                g2.setFont(smallFont);
                 String mechanic = "Left-Click to Reveal Safe Tiles. Right-Click to Flag Arcane Mines.";
                 int mechX = (getWidth() - g2.getFontMetrics().stringWidth(mechanic)) / 2;
                 g2.setColor(new Color(150, 180, 200));
@@ -448,7 +451,7 @@ public class Quest1Panel extends JPanel {
                 super.paintComponent(g);
             }
         };
-        btn.setFont(new Font("Georgia", Font.BOLD, 16));
+        btn.setFont(normalFont);
         btn.setForeground(Color.WHITE);
         btn.setContentAreaFilled(false);
         btn.setBorderPainted(false);
@@ -495,7 +498,7 @@ public class Quest1Panel extends JPanel {
                 g2.fillRect(2, bannerY, getWidth() - 4, 3);
                 g2.fillRect(2, bannerY + bannerHeight - 3, getWidth() - 4, 3);
 
-                g2.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 28));
+                g2.setFont(headerFont);
                 FontMetrics fm = g2.getFontMetrics();
                 int titleX = (getWidth() - fm.stringWidth(title)) / 2;
                 int titleY = bannerY + 40;
@@ -509,7 +512,7 @@ public class Quest1Panel extends JPanel {
         };
 
         JTextArea msgArea = new JTextArea(message);
-        msgArea.setFont(new Font("Georgia", Font.PLAIN, 18));
+        msgArea.setFont(normalFont);
         msgArea.setForeground(Color.WHITE);
         msgArea.setOpaque(false);
         msgArea.setWrapStyleWord(true);
@@ -536,7 +539,7 @@ public class Quest1Panel extends JPanel {
             }
         };
 
-        okBtn.setFont(new Font("Georgia", Font.BOLD, 16));
+        okBtn.setFont(smallFont);
         okBtn.setForeground(Color.WHITE);
         okBtn.setContentAreaFilled(false);
         okBtn.setBorderPainted(false);

@@ -5,7 +5,7 @@ public class Ilaryx extends Character {
     private MusicPlayer bgm = new MusicPlayer();
 
     public Ilaryx() {
-        super("Ilaryx", " VEYORA < NATION 2 > - MINI BOSS", 1400, 6);
+        super("Ilaryx", " VEYORA < NATION 2 > - MINI BOSS", 1400, 4);
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/illaryx.png", 1000, 1000, 1));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/BabyM_TantrumToss.png", 128, 128, 12)};

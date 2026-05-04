@@ -12,6 +12,7 @@ import javax.swing.*;
 public class StoryPanel extends JPanel {
     private GameWindow game;
     private Character player;
+    private Image dialogueBg;
 
     private int optionsCursor = 0;
     private final int PLAY_STATE = 0, INVENTORY_STATE = 1, SHOP_STATE = 2, SUB_MENU_STATE = 3, OPTIONS_STATE = 4;
@@ -23,6 +24,8 @@ public class StoryPanel extends JPanel {
     private Sprite playerSprite, npcSprite;
 
     private String[] dialogueText;
+    private Font smallText;
+    private Font mediumText;
     private int lineIndex = 0;
     private Npc npcManager = new Npc();
     private String currentSpeaker = "";
@@ -40,6 +43,13 @@ public class StoryPanel extends JPanel {
         this.setLayout(null);
         
         setNation(1);
+        smallText = FontManager.getFont("Jersey10-Regular.ttf", 22f);
+        mediumText = FontManager.getFont("Jersey10-Regular.ttf", 26f);
+
+        java.net.URL imgURL = getClass().getResource("/EchoesOfTheOath/Resources/dialogue_box.png");
+        if (imgURL != null) {
+            dialogueBg = new ImageIcon(imgURL).getImage();
+        }
 
         Timer animationTimer = new Timer(100, e -> {
             if (playerSprite != null) playerSprite.update();
@@ -703,12 +713,18 @@ public class StoryPanel extends JPanel {
 
     private void drawDialogueBox(Graphics2D g2) {
         int boxX = 50, boxY = getHeight() - 220, boxW = getWidth() - 100, boxH = 180;
-
-        g2.setColor(new Color(181, 153, 110, 255)); 
-        g2.fillRoundRect(boxX, boxY, boxW, boxH, 20, 20);
-        g2.setColor(Color.BLACK);
-        g2.setStroke(new BasicStroke(3));
-        g2.drawRoundRect(boxX, boxY, boxW, boxH, 20, 20);
+        if (dialogueBg != null) {
+            g2.drawImage(dialogueBg, boxX, boxY, boxW, boxH, null);
+            g2.setColor(new Color(181, 153, 110));
+            g2.setStroke(new BasicStroke(3));
+            g2.drawRoundRect(boxX, boxY, boxW, boxH, 20, 20);
+        } else {
+            g2.setColor(new Color(181, 153, 110, 255)); 
+            g2.fillRoundRect(boxX, boxY, boxW, boxH, 20, 20);
+            g2.setColor(Color.BLACK);
+            g2.setStroke(new BasicStroke(3));
+            g2.drawRoundRect(boxX, boxY, boxW, boxH, 20, 20);
+        }
 
         if (lineIndex == 0 && currentNation == 1 && gameState != SHOP_STATE) {
             int iconY = boxY + (boxH / 2) + 12; 
@@ -729,27 +745,31 @@ public class StoryPanel extends JPanel {
         }
             
         if (!currentSpeaker.trim().isEmpty()) { 
-            g2.setColor(new Color(111, 78, 55, 255)); 
-            g2.fillRect(boxX + 20, boxY - 30, 200, 40);
-            g2.setColor(Color.BLACK);
-            g2.drawRect(boxX + 20, boxY - 30, 200, 40);
-            g2.setFont(new Font("Georgia", Font.PLAIN, 22));
+            // 1. Dark Grey Fill (Matches the overall darkness)
+            g2.setColor(new Color(30, 30, 30, 255)); 
+            g2.fillRoundRect(boxX + 20, boxY - 30, 200, 40, 10, 10);
+            
+            // 2. Gold Border
+            g2.setColor(new Color(181, 153, 110));
+            g2.setStroke(new BasicStroke(2));
+            g2.drawRoundRect(boxX + 20, boxY - 30, 200, 40, 10, 10);
+            
+            // 3. White Text (Or Gold Text)
+            g2.setColor(new Color(181, 153, 110)); 
+            g2.setFont(mediumText);
             g2.drawString(currentSpeaker, boxX + 40, boxY - 2);
         }
 
-        g2.setColor(Color.BLACK);
-        g2.setFont(new Font("Georgia", Font.PLAIN, 20));
+        g2.setColor(new Color(181, 153, 110));
+        g2.setFont(smallText);
 
         if (lineIndex < dialogueText.length) {
             drawWrappedText(g2, dialogueText[lineIndex], boxX + 25 + 15, boxY + 25 + 25, boxW - (25 * 2) - 30);
         }
     }
 
-    private void drawInstructionKey(Graphics2D g2, String key, String desc, int x, int y) {
-        Font keyFont = new Font("SansSerif", Font.BOLD, 20); 
-        Font descFont = new Font("Georgia", Font.PLAIN, 22); 
-        
-        g2.setFont(keyFont);
+    private void drawInstructionKey(Graphics2D g2, String key, String desc, int x, int y) { 
+        g2.setFont(smallText);
         FontMetrics fmKey = g2.getFontMetrics();
         
         int keyWidth = Math.max(45, fmKey.stringWidth(key) + 20); 
@@ -766,7 +786,7 @@ public class StoryPanel extends JPanel {
         int textX = x + (keyWidth - fmKey.stringWidth(key)) / 2;
         g2.drawString(key, textX, y);
 
-        g2.setFont(descFont);
+        g2.setFont(mediumText);
         g2.setColor(new Color(40, 20, 10)); 
         g2.drawString(desc, x + keyWidth + 15, y);
     }
@@ -868,7 +888,7 @@ public class StoryPanel extends JPanel {
     }
 
     private void drawWrappedText(Graphics2D g2, String line, int x, int y, int maxWidth) {
-        g2.setFont(new Font("Georgia", Font.PLAIN, 22));
+        g2.setFont(mediumText);
         FontMetrics fm = g2.getFontMetrics();
         String[] words = line.split(" ");
         StringBuilder currentLine = new StringBuilder();

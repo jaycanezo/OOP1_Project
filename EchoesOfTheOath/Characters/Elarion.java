@@ -5,7 +5,7 @@ public class Elarion extends Character {
     private MusicPlayer bgm = new MusicPlayer();
 
     public Elarion() {
-        super("Elarion", " DEMON REALM < NATION 3 > - MAIN BOSS", 1400, 12);
+        super("Elarion", " DEMON REALM < NATION 3 > - MAIN BOSS", 1400, 7);
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/elarion.png", 517, 483, 1));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Elarion_Skill1.png", 248, 198, 11)};

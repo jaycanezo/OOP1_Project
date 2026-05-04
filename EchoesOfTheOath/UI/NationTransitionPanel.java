@@ -12,6 +12,8 @@ public class NationTransitionPanel extends JPanel {
     private float bgAlpha = 0f;
     private int phase = 0; 
     private Timer transitionTimer;
+    private Font titleFont = FontManager.getFont("Jersey10-Regular.ttf", 72f);
+    private Font headerFont = FontManager.getFont("Jersey10-Regular.ttf", 42f);
 
     public NationTransitionPanel(GameWindow game) {
         this.game = game;
@@ -97,13 +99,13 @@ public class NationTransitionPanel extends JPanel {
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(1f, Math.max(0f, textAlpha))));
 
-        g2.setFont(new Font("Georgia", Font.BOLD, 36));
+        g2.setFont(headerFont);
         g2.setColor(new Color(181, 153, 110));
         FontMetrics fmTitle = g2.getFontMetrics();
         int titleX = (getWidth() - fmTitle.stringWidth(nationTitle)) / 2;
         g2.drawString(nationTitle, titleX, getHeight() / 2 - 30);
 
-        g2.setFont(new Font("Georgia", Font.BOLD, 64));
+        g2.setFont(titleFont);
         g2.setColor(Color.WHITE);
         FontMetrics fmName = g2.getFontMetrics();
         int nameX = (getWidth() - fmName.stringWidth(nationName)) / 2;

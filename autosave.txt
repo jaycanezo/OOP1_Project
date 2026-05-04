@@ -1,8 +1,8 @@
 Nation:1
-BossIndex:0
-LineIndex:0
+BossIndex:1
+LineIndex:37
 Name:Jay
 CharacterClass:Warrior
-Level:1
-Gold:1000.0
-HP:1500
+Level:2
+Gold:1500.0
+HP:3600

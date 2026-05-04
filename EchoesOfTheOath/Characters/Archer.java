@@ -5,7 +5,7 @@ public class Archer extends Character {
     private MusicPlayer bgm = new MusicPlayer();
 
     public Archer() {
-        super("Archer", 1300, 1, "Archer");
+        super("Archer", 1600, 1, "Archer");
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Archer.png", 515, 480, 1));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill1.png", 177, 145, 8)};

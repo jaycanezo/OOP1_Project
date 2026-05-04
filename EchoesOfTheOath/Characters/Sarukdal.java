@@ -5,7 +5,7 @@ public class Sarukdal extends Character {
     private MusicPlayer bgm = new MusicPlayer();
 
     public Sarukdal() {
-        super("Sarukdal", " DEMON REALM < NATION 3 > - MINI BOSS", 1400, 10);
+        super("Sarukdal", " DEMON REALM < NATION 3 > - MINI BOSS", 1400, 6);
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/sarukdal.png", 3528, 3000, 1));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Sarukdal_Skill1.png", 500, 500, 14)};

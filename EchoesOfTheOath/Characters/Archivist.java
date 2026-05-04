@@ -5,7 +5,7 @@ public class Archivist extends Character {
     private MusicPlayer bgm = new MusicPlayer();
 
     public Archivist() {
-        super("The Archivist", " HUMANAS < NATION 1 > - MAIN BOSS", 1400, 4);
+        super("The Archivist", " HUMANAS < NATION 1 > - MAIN BOSS", 1400, 3);
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Archivist.png", 400, 400, 1));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/archivist_skill1.png", 128, 128, 12)};

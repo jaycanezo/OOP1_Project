@@ -5,7 +5,7 @@ public class Lunareth extends Character {
     private MusicPlayer bgm = new MusicPlayer();
 
     public Lunareth() {
-        super("Lunareth", " VEYORA < NATION 2 > - MAIN BOSS", 1400, 8);
+        super("Lunareth", " VEYORA < NATION 2 > - MAIN BOSS", 1400, 5);
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/lunareth.png", 1000, 1000, 1));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/lunareth_skill1.png", 1000, 1000, 9)};

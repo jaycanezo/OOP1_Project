@@ -5,7 +5,7 @@ public class babyM extends Character {
     private MusicPlayer bgm = new MusicPlayer();
 
     public babyM() {
-        super("King Bartholomew Monarch (\"Baby M\")", " HUMANAS < NATION 1 > - MINI BOSS", 1400, 2);
+        super("King Bartholomew Monarch (\"Baby M\")", " HUMANAS < NATION 1 > - MINI BOSS", 1400, 1);
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/BabyM.png", 862, 725, 1));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/BabyM_TantrumToss.png", 128, 128, 12)};
