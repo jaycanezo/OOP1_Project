@@ -77,7 +77,7 @@ public class DialogueManager {
                 "(Your pendant glows with a violent, flickering light. A voice, distant and distorted, echoes in their mind.)",
                 "“We vow to bind the darkness... within ourselves...”",
                 "“The oath... it’s not just a story. It’s why I’m here. I didn't just survive. I failed.”",
-                "(Your weapon ignites with a raw, unstable energy. They lung forward, driving the blade through the center of the Archivist’s desk and into his chest.)",
+                "(Your weapon ignites with a raw, unstable energy. They lung forward, driving the power through the center of the Archivist’s desk and into his chest.)",
                 "(The library begins to dissolve into ash. The scrolls turn into black flakes that drift toward the ceiling.)",
                 "“You think... freeing them... changes anything? You only broke... one link... in a chain... you helped forge.”",
                 "“Maybe. But I’m the one who’s going to break the rest.”",

@@ -11,11 +11,11 @@ public class MusicPlayer {
     private String currentPlaying = "";
 
     public void playMusic(String fileName) {
-        stopMusic();
-
         if (fileName.equals(currentPlaying)) {
             return;
         }
+
+        stopMusic();
 
         try {
             URL url = soundCache.getOrDefault(fileName, 

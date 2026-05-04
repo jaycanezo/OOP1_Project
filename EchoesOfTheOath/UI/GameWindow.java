@@ -15,7 +15,7 @@ public class GameWindow {
     JFrame window;
     CardLayout cardLayout;
     JPanel container;
-
+    
     IntroPanel intro;
     StartPanel start;
     StoryPanel story;
@@ -28,6 +28,7 @@ public class GameWindow {
     Quest4Panel quest4;
     EndingPanel ending;
     NationTransitionPanel nationTransition;
+    private CreditsPanel creditsPanel;
     
     private Character chosenCharacter;
     private MusicPlayer bgm = new MusicPlayer();
@@ -67,6 +68,8 @@ public class GameWindow {
         quest4 = new Quest4Panel(this);
         ending = new EndingPanel(this);
         nationTransition = new NationTransitionPanel(this);
+        creditsPanel = new CreditsPanel(this);
+
 
         container.add(start, "start");
         container.add(intro, "intro");
@@ -80,6 +83,7 @@ public class GameWindow {
         container.add(quest4, "quest4");
         container.add(ending, "ending");
         container.add(nationTransition, "nationTransition");
+        container.add(creditsPanel, "credits");
 
         window.add(container);
         window.setLocationRelativeTo(null);
@@ -176,12 +180,9 @@ public class GameWindow {
             }
         }
         else if (name.equals("ending")) {
-            bgm.playMusic("intro_bgm.WAV");
             ending.startEnding();
-        }
-        else if (name.equals("ending")) {
-            bgm.playMusic("intro_bgm.WAV");
-            ending.startEnding();
+        }else if (name.equals("credits")) {
+            creditsPanel.startCredits();
         }
 
         switch (name) {

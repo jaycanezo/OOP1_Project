@@ -1,8 +1,8 @@
-Nation:1
-BossIndex:1
-LineIndex:37
+Nation:3
+BossIndex:4
+LineIndex:0
 Name:Jay
-CharacterClass:Warrior
-Level:2
-Gold:1500.0
-HP:3600
+CharacterClass:Mage
+Level:5
+Gold:2450.0
+HP:7500

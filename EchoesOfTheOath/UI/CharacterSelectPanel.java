@@ -71,8 +71,8 @@ public class CharacterSelectPanel extends JPanel {
         mageLabel = new JLabel();
         
         selectionGrid.add(createCharButton("Warrior", warriorS, w, warriorLabel, "/EchoesOfTheOath/Resources/nation1_bg1.png"));
-        selectionGrid.add(createCharButton("Archer", archerS, a, archerLabel, "/EchoesOfTheOath/Resources/nation1_bg2.png"));
-        selectionGrid.add(createCharButton("Mage", mageS, m, mageLabel, "/EchoesOfTheOath/Resources/nation1_bg3.png"));
+        selectionGrid.add(createCharButton("Archer", archerS, a, archerLabel, "/EchoesOfTheOath/Resources/nation2_bg1.png"));
+        selectionGrid.add(createCharButton("Mage", mageS, m, mageLabel, "/EchoesOfTheOath/Resources/nation3_bg1.png"));
 
         add(selectionGrid, BorderLayout.CENTER);
 

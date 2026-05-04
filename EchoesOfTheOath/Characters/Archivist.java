@@ -9,7 +9,7 @@ public class Archivist extends Character {
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Archivist.png", 400, 400, 1));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/archivist_skill1.png", 128, 128, 12)};
-        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/archivist_skill2.png", 128, 128, 4)
+        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/archivist_skill2.png", 127, 127, 4)
             , new Sprite("/EchoesOfTheOath/Resources/archivist_skill1.png", 128, 128, 12)
         };
         Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/archivist_skill3.1.png", 128, 128, 8)

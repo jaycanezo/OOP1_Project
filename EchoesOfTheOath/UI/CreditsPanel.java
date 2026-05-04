@@ -1,0 +1,213 @@
+package EchoesOfTheOath.UI;
+
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.*;
+
+public class CreditsPanel extends JPanel {
+    private GameWindow game;
+    private Timer scrollTimer;
+    private int scrollY; 
+    private float fadeAlpha = 0f;
+    
+    private Font titleFont;
+    private Font nameFont;
+    private Font descFont;
+    
+    // NEW: Background Image
+    private Image backgroundImage;
+
+    private final int TOTAL_MEMBERS = 7;
+    private String[] memberNames = {
+        "Jay R. Cañezo", "April Anne O. Tandoc", "Eden Agnes Olivar", 
+        "Kaina B. Padilla", "Althea Ambil", "Jackielou Abelada", "Kenn Migan Vincent C. Gumonan"
+    };
+    private String[] memberRoles = {
+        "Project Manager and Lead Programmer", "Co-lead Programmer", "Lead Art Designer, Writer", 
+        "Art Designer", "QA Tester", "Honorary Member", "Mentor"
+    };
+    private String[] memberDesc = {
+        "Built the core structure, designed the combat,\nand sound systems",
+        "Crafted the settings, inventory, shop,\nand auto saving system.",
+        "Illustrated the backgrounds, visual effects,\nand revised the storyline",
+        "Illustrated the character skill and sprites.",
+        "Illustraded the game's UML, and Case Diagram.",
+        "Previously contributed in making the game's\ncore structure for which some was adapted for this project.",
+        "Guided and Mentored us in learning OOP,\nPaving the way for this project."
+    };
+    
+    private Image[] memberPortraits = new Image[TOTAL_MEMBERS];
+
+    private String[] memberImageFiles = {
+        "jay.jpg",    
+        "april.png",   // Matches Developer Two
+        "eden.jpeg",       // Matches Developer Three
+        "kaina.jpeg",    // Matches Developer Four
+        "althea.jpeg",        // Matches Developer Five
+        "jack.jpeg",     // Matches Developer Six
+        "sir_khai.jpeg"      // Matches Developer Seven
+    };
+
+    public CreditsPanel(GameWindow game) {
+        this.game = game;
+        this.setBackground(Color.BLACK);
+        this.setFocusable(true);
+        
+        this.titleFont = FontManager.getFont("Jersey10-Regular.ttf", 64f);
+        this.nameFont = FontManager.getFont("Jersey10-Regular.ttf", 40f);
+        this.descFont = FontManager.getFont("Jersey10-Regular.ttf", 26f);
+
+        // --- LOAD BACKGROUND IMAGE ---
+        java.net.URL imgURL = getClass().getResource("/EchoesOfTheOath/Resources/nation3_bg10.png");
+        if (imgURL != null) {
+            backgroundImage = new ImageIcon(imgURL).getImage();
+        }
+
+        for(int i = 0; i < TOTAL_MEMBERS; i++) {
+            java.net.URL imgURL1 = getClass().getResource("/EchoesOfTheOath/Resources/" + memberImageFiles[i]);
+            if (imgURL1 != null) {
+                memberPortraits[i] = new ImageIcon(imgURL1).getImage();
+            } else {
+                System.out.println("Could not find image: dev" + i + ".png");
+            }
+        }
+
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    endCredits();
+                }
+            }
+        });
+    }
+
+    public void startCredits() {
+        scrollY = 720; 
+        fadeAlpha = 0f; // Start completely invisible
+        
+        if (scrollTimer != null && scrollTimer.isRunning()) {
+            scrollTimer.stop();
+        }
+
+        scrollTimer = new Timer(16, e -> {
+            scrollY -= 1; 
+            
+            // Fade in logic (Fades in over about 1 second)
+            if (fadeAlpha < 1f) {
+                fadeAlpha += 0.015f; 
+                if (fadeAlpha > 1f) fadeAlpha = 1f;
+            }
+
+            // --- EXACT SCROLL CUTOFF MATH ---
+            // Calculate the exact position of the "THANK YOU FOR PLAYING" text
+            int startY = scrollY + 150; 
+            int spacing = 220; 
+            int finalY = startY + (TOTAL_MEMBERS * spacing) + 100;
+
+            // When the final text clears the top of the screen (with a tiny 50px buffer)
+            if (finalY < -50) { 
+                endCredits();
+            }
+            
+            repaint();
+        });
+        scrollTimer.start();
+        this.requestFocusInWindow();
+    }
+
+    private void endCredits() {
+        if (scrollTimer != null) scrollTimer.stop();
+        game.showScreen("ending"); // Route to Ending Panel
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        
+        // --- 1. DRAW BACKGROUND (Solid, no fade) ---
+        if (backgroundImage != null) {
+            g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+        }
+        
+        // --- 2. APPLY THE FADE LENS ---
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeAlpha));
+
+        // Darkish overlay 
+        g2.setColor(new Color(0, 0, 0, 210)); 
+        g2.fillRect(0, 0, getWidth(), getHeight());
+
+        // --- 3. DRAW CREDITS TEXT ---
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+
+        g2.setFont(titleFont);
+        g2.setColor(new Color(181, 153, 110)); 
+        FontMetrics fmTitle = g2.getFontMetrics();
+        g2.drawString("ECHOES OF THE OATH", (getWidth() - fmTitle.stringWidth("ECHOES OF THE OATH")) / 2, scrollY);
+        
+        g2.setColor(Color.WHITE);
+        g2.setFont(nameFont);
+        FontMetrics fmSubtitle = g2.getFontMetrics();
+        g2.drawString("Created By", (getWidth() - fmSubtitle.stringWidth("Created By")) / 2, scrollY + 50);
+
+        int startY = scrollY + 150; 
+        int spacing = 220; 
+
+        for (int i = 0; i < TOTAL_MEMBERS; i++) {
+            int currentY = startY + (i * spacing);
+            int boxX = 200;
+
+            int picSize = 120;
+            if (memberPortraits[i] != null) {
+                g2.drawImage(memberPortraits[i], boxX, currentY, picSize, picSize, null);
+                g2.setColor(new Color(181, 153, 110));
+                g2.setStroke(new BasicStroke(2));
+                g2.drawRect(boxX, currentY, picSize, picSize);
+            } else {
+                g2.setColor(new Color(40, 40, 40));
+                g2.fillRect(boxX, currentY, picSize, picSize);
+                g2.setColor(new Color(181, 153, 110));
+                g2.setStroke(new BasicStroke(2));
+                g2.drawRect(boxX, currentY, picSize, picSize);
+                
+                g2.setFont(descFont);
+                g2.setColor(Color.GRAY);
+                g2.drawString("No Pic", boxX + 35, currentY + 65);
+            }
+
+            int textX = boxX + picSize + 30;
+
+            g2.setColor(Color.WHITE);
+            g2.setFont(nameFont);
+            g2.drawString(memberNames[i], textX, currentY + 25);
+            
+            g2.setColor(new Color(175, 238, 171)); 
+            g2.setFont(descFont);
+            g2.drawString(memberRoles[i], textX, currentY + 55);
+
+            g2.setColor(new Color(200, 200, 200)); 
+            g2.setFont(descFont);
+            
+            // Split the string into pieces wherever there is a \n
+            String[] descriptionLines = memberDesc[i].split("\n");
+            
+            // Draw each piece on a new line!
+            int descY = currentY + 90;
+            for (String line : descriptionLines) {
+                g2.drawString(line, textX, descY);
+                descY += 25; // Pushes the next line down by 30 pixels
+            }
+        }
+
+        int finalY = startY + (TOTAL_MEMBERS * spacing) + 100;
+        g2.setColor(new Color(181, 153, 110));
+        g2.setFont(titleFont);
+        g2.drawString("THANK YOU FOR PLAYING", (getWidth() - fmTitle.stringWidth("THANK YOU FOR PLAYING")) / 2, finalY);
+
+        g2.setColor(Color.GRAY);
+        g2.setFont(descFont);
+        g2.drawString("©Mythspire Developers", (getWidth())/2, finalY+25);
+    }
+}

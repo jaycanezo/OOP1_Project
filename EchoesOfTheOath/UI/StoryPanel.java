@@ -21,6 +21,9 @@ public class StoryPanel extends JPanel {
     private Sprite currentBackground;
     private int currentNation = 1;
     private Sprite playerSprite, npcSprite;
+    private float uiAlpha = 1.0f;
+    private boolean isFadingOut = false;
+    private Timer fadeOutTimer;
 
     private String[] dialogueText;
     private Font smallText;
@@ -183,6 +186,8 @@ public class StoryPanel extends JPanel {
     }
 
     private void handleInput(int code) {
+        if (isFadingOut) return; 
+
         if (gameState == PLAY_STATE) {
             if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_ENTER) {
                 progressStory();
@@ -343,12 +348,10 @@ public class StoryPanel extends JPanel {
                 case 20: 
                     currentSpeaker = " "; 
                     break;
-                case 22: 
-                    bgm.playSFX("nation1_sfx3.wav"); 
-                    break;
                 case 23: 
                     setBackgroundImage("nation1_bg5.png"); 
                     updateScene(player.getName(), false); 
+                    bgm.playSFX("nation1_sfx3.wav"); 
                     currentSpeaker = ""; 
                     break;
                 case 25: 
@@ -379,24 +382,25 @@ public class StoryPanel extends JPanel {
                     showNPC = false; 
                     break;
                 case 33: 
+                    currentSpeaker = ""; 
                     showPlayer = true; 
                     break;
-                case 36: 
+                case 35: 
                     setBackgroundImage("nation1_bg6.png"); 
                     currentSpeaker = "Attendant"; 
                     showNPC = true; 
                     break;
                 case 37: 
                     game.showScreen("battle"); 
-                    currentSpeaker = player.getName(); 
+                    currentSpeaker = ""; 
                     showNPC = false; 
                     break;
                 case 38: 
                     setBackgroundImage("nation1_bg6.png"); 
-                    currentSpeaker = ""; 
+                    currentSpeaker = player.getName(); 
                     break;
                 case 39: 
-                    currentSpeaker = player.getName(); 
+                    currentSpeaker = ""; 
                     break;
                 case 40: 
                     setBackgroundImage("nation1_bg6.1.png"); 
@@ -405,6 +409,9 @@ public class StoryPanel extends JPanel {
                 case 42: 
                     setBackgroundImage("nation1_bg6.png"); 
                     currentSpeaker = player.getName(); 
+                    break;
+                case 44:
+                    currentSpeaker = ""; 
                     break;
                 case 45: 
                     game.showScreen("quest1"); 
@@ -440,6 +447,7 @@ public class StoryPanel extends JPanel {
                     break;
                 case 56: 
                     setBackgroundImage("nation1_storyline1.png"); 
+                    currentSpeaker = ""; 
                     showNPC = false; showPlayer = false; 
                     break;
                 case 57: 
@@ -452,6 +460,7 @@ public class StoryPanel extends JPanel {
                     break;
                 case 59: 
                     game.showScreen("battle"); 
+                    currentSpeaker = "";
                     break;
                 case 60: 
                     updateScene("Archivist", true);
@@ -468,6 +477,9 @@ public class StoryPanel extends JPanel {
                     break;
                 case 65: 
                     currentSpeaker = player.getName(); 
+                    break;
+                case 66:
+                    currentSpeaker = ""; 
                     break;
                 case 67: 
                     setBackgroundImage("nation1_bg9.png");
@@ -633,7 +645,7 @@ public class StoryPanel extends JPanel {
                 case 71:
                 case 72:
                 case 73: currentSpeaker = player.getName(); break;
-                case 74: game.showScreen("ending"); break;
+                case 74: startEndingTransition(); break;
             }
         }
         repaint();
@@ -660,14 +672,15 @@ public class StoryPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        // 1. Draw Background normally (NO FADE)
         if (currentBackground != null && currentBackground.isLoaded()) {
             g2.drawImage(currentBackground.getCurrentFrame(), 0, 0, getWidth(), getHeight(), null);
         }
 
         if (player == null) return;
-
         String heroName = player.getName();
 
+        // Characters fade automatically because we updated drawCharacter above!
         if (showPlayer && playerSprite != null) {
             drawCharacter(g2, playerSprite, 50, getHeight() - 550, 450, 450, currentSpeaker.equals(heroName));
         }
@@ -677,29 +690,39 @@ public class StoryPanel extends JPanel {
             drawCharacter(g2, npcSprite, getWidth() - 500, getHeight() - 550, 450, 450, npcIsTalking);
         }
 
-        if (gameState == PLAY_STATE) {
-            drawDialogueBox(g2);
-        } else if (gameState == INVENTORY_STATE || gameState == SUB_MENU_STATE) {
-            MenuRenderer.drawInventory(g2, player, slotCol, slotRow, scrollOffset);
-            drawDialogueBox(g2);
-
-            if (gameState == SUB_MENU_STATE) {
-                MenuRenderer.drawSubMenu(g2, subMenuCursor); 
+        // 2. Wrap all UI/Dialogue boxes in the Alpha Composite
+        if (uiAlpha > 0) {
+            Composite oldComp = g2.getComposite();
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, uiAlpha));
+            
+            // Keep your existing drawing logic here
+            if (gameState == PLAY_STATE) {
+                drawDialogueBox(g2);
+            } else if (gameState == INVENTORY_STATE || gameState == SUB_MENU_STATE) {
+                MenuRenderer.drawInventory(g2, player, slotCol, slotRow, scrollOffset);
+                drawDialogueBox(g2);
+                if (gameState == SUB_MENU_STATE) MenuRenderer.drawSubMenu(g2, subMenuCursor); 
+            } else if (gameState == SHOP_STATE) {
+                MenuRenderer.drawShop(g2, (int)player.getGold(), gameShop.getStock(), slotCol, slotRow, shopResultMessage);
+                drawDialogueBox(g2);
             }
-        } else if (gameState == SHOP_STATE) {
-            MenuRenderer.drawShop(g2, (int)player.getGold(), gameShop.getStock(), slotCol, slotRow, shopResultMessage);
-            drawDialogueBox(g2);
-        }
-        if (gameState == OPTIONS_STATE) {
-            MenuRenderer.drawOptionsOverlay(g2, optionsCursor);
+            if (gameState == OPTIONS_STATE) {
+                MenuRenderer.drawOptionsOverlay(g2, optionsCursor);
+            }
+            
+            g2.setComposite(oldComp); // Reset it
         }
     }
 
     private void drawCharacter(Graphics2D g2, Sprite s, int x, int y, int w, int h, boolean isSpeaking) {
         BufferedImage frame = s.getCurrentFrame();
         if (frame != null) {
-            float alpha = isSpeaking ? 1.0f : 0.5f; 
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            // Multiply the standard alpha by the fading UI alpha
+            float baseAlpha = isSpeaking ? 1.0f : 0.5f; 
+            float finalAlpha = baseAlpha * uiAlpha; 
+            if (finalAlpha < 0) finalAlpha = 0;
+            
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, finalAlpha));
             g2.drawImage(frame, x, y, w, h, null);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f)); 
         }
@@ -887,5 +910,21 @@ public class StoryPanel extends JPanel {
             }
         }
         g2.drawString(currentLine.toString(), x, drawY);
+    }
+
+    private void startEndingTransition() {
+        isFadingOut = true;
+        
+        fadeOutTimer = new Timer(50, e -> {
+            uiAlpha -= 0.05f;
+            
+            if (uiAlpha <= 0f) {
+                uiAlpha = 0f;
+                fadeOutTimer.stop();
+                game.showScreen("credits"); // Move to credits when UI is fully gone
+            }
+            repaint();
+        });
+        fadeOutTimer.start();
     }
 }

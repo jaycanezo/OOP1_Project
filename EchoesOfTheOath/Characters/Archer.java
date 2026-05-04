@@ -6,10 +6,10 @@ public class Archer extends Character {
 
     public Archer() {
         super("Archer", 1600, 1, "Archer");
-        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Archer.png", 515, 480, 1));
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Archer.png", 264, 330, 12));
         
-        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill1.png", 177, 145, 8)};
-        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill2.png", 160, 240, 10)};
+        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill1.png", 176, 144, 8)};
+        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill2.png", 159, 239, 10)};
         Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill3.png", 143, 213, 12)};
         setSkillSprites(s1, s2, s3);
     }   

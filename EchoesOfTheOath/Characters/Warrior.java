@@ -6,7 +6,7 @@ public class Warrior extends Character {
         
     public Warrior() {
         super("Warrior", 1800, 1, "Warrior");
-        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Warrior.png", 523, 477, 1));
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Warrior.png", 300, 297, 12));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Warrior_Slash.png", 128, 128, 9)};
         Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Warrior_CrimsonStrike.png", 128, 128, 7)};
