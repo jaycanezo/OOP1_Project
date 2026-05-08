@@ -7,8 +7,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javax.swing.*;
 
 public class GameWindow {
@@ -34,7 +32,6 @@ public class GameWindow {
     private MusicPlayer bgm = new MusicPlayer();
     private int currentBossIndex = 0;
     private int blinkTick = 0;
-    private final ExecutorService saveExecutor = Executors.newSingleThreadExecutor();
 
     private final Character[] bosses = {
         new babyM(),
@@ -51,7 +48,14 @@ public class GameWindow {
         window = new JFrame("Echoes of the Oath");
         window.setSize(1080,720);
         window.setResizable(false);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        window.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                autosave(); 
+                System.exit(0); 
+            }
+        });
 
         cardLayout = new CardLayout();
         container = new JPanel(cardLayout);
@@ -119,9 +123,8 @@ public class GameWindow {
     }
 
     public void startNationTransition(int nation) {
-        story.setNation(nation); 
-        nationTransition.startTransition(nation);
         showScreen("nationTransition"); 
+        nationTransition.startTransition(nation);
     }
 
     public void advanceStoryProgress() {
@@ -166,12 +169,7 @@ public class GameWindow {
                 else bgm.playMusic("nation1_bgm1.wav");
             }
             else if (nation == 2) {
-                if (line >= 23){
-
-                }else{
-                    bgm.playMusic("nation2_bgm.WAV"); 
-                }
-                
+                bgm.playMusic("nation2_bgm.WAV");      
             }
             else if (nation == 3) {
                 if (line >= 68) bgm.playMusic("intro_bgm.WAV");
@@ -183,6 +181,12 @@ public class GameWindow {
             ending.startEnding();
         }else if (name.equals("credits")) {
             creditsPanel.startCredits();
+            this.chosenCharacter = null; 
+            
+            java.io.File saveFile = new java.io.File("autosave.txt");
+            if (saveFile.exists()) {
+                saveFile.delete();
+            }
         }
 
         switch (name) {
@@ -239,19 +243,27 @@ public class GameWindow {
 
     public void autosave() {
         if (chosenCharacter == null) return;
-        saveExecutor.execute(() -> {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("autosave.txt"))) {
-                writer.write("Nation:" + story.getCurrentNation() + "\n");
-                writer.write("BossIndex:" + currentBossIndex + "\n");
-                writer.write("LineIndex:" + story.getLineIndex() + "\n");
-                writer.write("Name:" + chosenCharacter.getName() + "\n");
-                writer.write("CharacterClass:" + chosenCharacter.getClassType() + "\n");
-                writer.write("Level:" + chosenCharacter.getLevel() + "\n");
-                writer.write("Gold:" + chosenCharacter.getGold() + "\n");
-                writer.write("HP:" + chosenCharacter.getHp() + "\n");
-                System.out.println("Autosave successful!");
-            } catch (IOException e) { e.printStackTrace(); }
-        });
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("autosave.txt"))) {
+            writer.write("Nation:" + story.getCurrentNation() + "\n");
+            writer.write("BossIndex:" + currentBossIndex + "\n");
+            writer.write("LineIndex:" + story.getLineIndex() + "\n");
+            writer.write("Name:" + chosenCharacter.getName() + "\n");
+            writer.write("CharacterClass:" + chosenCharacter.getClassType() + "\n");
+            writer.write("Level:" + chosenCharacter.getLevel() + "\n");
+            writer.write("Gold:" + chosenCharacter.getGold() + "\n");
+            writer.write("HP:" + chosenCharacter.getHp() + "\n");
+        
+            StringBuilder invText = new StringBuilder();
+            for (EchoesOfTheOath.Characters.Item item : chosenCharacter.getInventory()) {
+                invText.append(item.getName()).append(",");
+            }
+            writer.write("Inventory:" + invText.toString() + "\n");
+            
+            System.out.println("Autosave successful!");
+        } catch (IOException e) { 
+            e.printStackTrace(); 
+        }
     }
 
     public void loadGame() {
@@ -261,8 +273,9 @@ public class GameWindow {
         try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(saveFile))) {
             String line;
             java.util.Map<String, String> saveParams = new java.util.HashMap<>();
+        
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":");
+                String[] parts = line.split(":", 2); 
                 if (parts.length >= 2) saveParams.put(parts[0], parts[1]);
             }
 
@@ -274,17 +287,47 @@ public class GameWindow {
             }
 
             if (chosenCharacter != null) {
-                if (saveParams.containsKey("Level")) chosenCharacter.setLevel(Integer.parseInt(saveParams.get("Level")));
-                if (saveParams.containsKey("Gold")) chosenCharacter.setGold(Double.parseDouble(saveParams.get("Gold")));
-                if (saveParams.containsKey("HP")) chosenCharacter.setHp(Integer.parseInt(saveParams.get("HP")));
-                if (saveParams.containsKey("BossIndex")) this.currentBossIndex = Integer.parseInt(saveParams.get("BossIndex"));
-                if (saveParams.containsKey("Nation")) story.setNation(Integer.parseInt(saveParams.get("Nation")));
-                if (saveParams.containsKey("LineIndex")) story.setLineIndex(Integer.parseInt(saveParams.get("LineIndex")));
-                if (saveParams.containsKey("Name")) chosenCharacter.setName(saveParams.get("Name"));
+                int savedNation = Integer.parseInt(saveParams.getOrDefault("Nation", "1"));
 
-                story.loadSelectedHero(); 
-                battle.loadBattleData();  
-                showScreen("story");  
+                SwingWorker<Void, Void> loader = new SwingWorker<>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        story.preloadNationBackgrounds(savedNation);
+                        return null;
+                    }
+
+                    @Override
+                    protected void done() {
+                        story.applyPreloadedNation();
+                        
+                        chosenCharacter.setLevel(Integer.parseInt(saveParams.getOrDefault("Level", "1")));
+                        chosenCharacter.setGold(Double.parseDouble(saveParams.getOrDefault("Gold", "0")));
+                        chosenCharacter.setHp(Integer.parseInt(saveParams.getOrDefault("HP", "100")));
+                        currentBossIndex = Integer.parseInt(saveParams.getOrDefault("BossIndex", "0"));
+                        story.setLineIndex(Integer.parseInt(saveParams.getOrDefault("LineIndex", "0")));
+                        chosenCharacter.setName(saveParams.getOrDefault("Name", "Hero"));
+
+                        chosenCharacter.getInventory().clear();
+                        if (saveParams.containsKey("Inventory") && !saveParams.get("Inventory").trim().isEmpty()) {
+                            String[] savedItems = saveParams.get("Inventory").split(",");
+                            Shop referenceShop = new Shop(); 
+                            
+                            for (String itemName : savedItems) {
+                                itemName = itemName.trim();
+                                for (Item shopItem : referenceShop.getStock()) {
+                                    if (shopItem.getName().equals(itemName)) {
+                                        chosenCharacter.getInventory().add(shopItem);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    
+                        story.loadSelectedHero(); 
+                        showScreen("story");  
+                    }
+                };
+                loader.execute(); 
             }
         } catch (Exception e) { e.printStackTrace(); }
     }
@@ -292,22 +335,21 @@ public class GameWindow {
     public void resetForNewGame() {
         this.chosenCharacter = null;
         this.currentBossIndex = 0;
-        story.setNation(1);
+
+        java.io.File saveFile = new java.io.File("autosave.txt");
+        if (saveFile.exists()) {
+            saveFile.delete();
+        }
+
+        story.preloadNationBackgrounds(1);
+        story.applyPreloadedNation();
         story.resetStory(); 
-        battle.loadBattleData(); 
         if (intro != null) intro.resetIntro();
+        showScreen("intro"); 
     }
 
     public void showResultScreen(boolean isVictory, java.awt.image.BufferedImage bgCapture) {
         resultScreen.displayResult(isVictory, bgCapture); 
         showScreen("result");
-    }
-
-    public void processVictoryRewards() {
-        if (chosenCharacter != null) {
-            chosenCharacter.setLevel(chosenCharacter.getLevel() + 1);
-            chosenCharacter.setGold(chosenCharacter.getGold() + 500);
-            autosave();
-        }
     }
 }

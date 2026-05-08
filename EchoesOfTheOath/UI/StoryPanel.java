@@ -38,17 +38,21 @@ public class StoryPanel extends JPanel {
     private int slotCol = 0, slotRow = 0, subMenuCursor = 0, scrollOffset = 0;
     private String shopGreeting = "Welcome, traveler! What can I get for you today?";
     private String shopResultMessage = "";
+    private String hoverDescription = "";
+    private String interactionMessage = "";
     
     public StoryPanel(GameWindow game) {
         this.game = game;
         this.setFocusable(true);
         this.setLayout(null);
         
-        setNation(1);
+        preloadNationBackgrounds(1);
+        applyPreloadedNation();
+
         smallText = FontManager.getFont("Jersey10-Regular.ttf", 22f);
         mediumText = FontManager.getFont("Jersey10-Regular.ttf", 26f);
 
-        Timer animationTimer = new Timer(100, e -> {
+        Timer animationTimer = new Timer(150, e -> {
             if (playerSprite != null) playerSprite.update();
             if (npcSprite != null) npcSprite.update();
             if (currentBackground != null) currentBackground.update();
@@ -107,18 +111,25 @@ public class StoryPanel extends JPanel {
         }
     }
 
-    public void setNation(int nationNumber) {
+    public void preloadNationBackgrounds(int nationNumber) {
         this.currentNation = nationNumber;
         this.dialogueText = DialogueManager.getNationDialogue(nationNumber);
         
-        loadNationBackgrounds(nationNumber);
+        loadNationBackgrounds(nationNumber); 
+    }
 
+    public void applyPreloadedNation() {
         resetStory();
         this.showPlayer = true;
         
-        if (nationNumber == 1) setBackgroundImage("nation1_bg1.png");
-        else if (nationNumber == 2) setBackgroundImage("nation2_bg1.png");
-        else if (nationNumber == 3) setBackgroundImage("nation3_bg1.png");
+        if (currentNation == 1) 
+            setBackgroundImage("nation1_bg1.png");
+
+        else if (currentNation == 2) 
+            setBackgroundImage("nation2_bg1.png");
+
+        else if (currentNation == 3) 
+            setBackgroundImage("nation3_bg1.png");
     }
 
     public void resetStory() {
@@ -212,8 +223,7 @@ public class StoryPanel extends JPanel {
                 shopResultMessage = "";
                 optionsCursor = 0; 
             }
-        } 
-        else if (gameState == OPTIONS_STATE) {
+        } else if (gameState == OPTIONS_STATE) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) 
                 optionsCursor = (optionsCursor > 0) ? optionsCursor - 1 : 2;
 
@@ -225,14 +235,23 @@ public class StoryPanel extends JPanel {
 
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) 
                 executeOptionsAction();
-        }
-        else {
+        } else {
             if (code == KeyEvent.VK_I) {
-                gameState = (gameState == INVENTORY_STATE) ? PLAY_STATE : INVENTORY_STATE;
+                if (gameState == INVENTORY_STATE) {
+                    gameState = PLAY_STATE;
+                } else {
+                    gameState = INVENTORY_STATE; 
+                    game.getBgm().playSFX("inventory_sfx.wav"); 
+                }
                 resetCursor();
             }
             else if (code == KeyEvent.VK_P) {
-                gameState = (gameState == SHOP_STATE) ? PLAY_STATE : SHOP_STATE;
+                if (gameState == SHOP_STATE) {
+                    gameState = PLAY_STATE;
+                } else {
+                    gameState = SHOP_STATE; 
+                    game.getBgm().playSFX("shop_sfx.wav"); 
+                }
                 resetCursor();
             }
             else if (code == KeyEvent.VK_ESCAPE) {
@@ -272,6 +291,10 @@ public class StoryPanel extends JPanel {
         lineIndex++;
 
         if (dialogueText == null || lineIndex >= dialogueText.length) {
+            if (currentNation == 3) {
+                return;
+            }
+
             if (game.getBossIndex() % 2 == 0 && game.getBossIndex() > 0) {
                 int nextNation = (game.getBossIndex() / 2) + 1;
                 game.startNationTransition(nextNation);
@@ -515,7 +538,7 @@ public class StoryPanel extends JPanel {
                 case 19: currentSpeaker = ""; break;
                 case 20: currentSpeaker = player.getName(); break;
                 case 21: currentSpeaker = ""; break;
-                case 22: game.showScreen("quest2"); setBackgroundImage("nation2_bg3.png"); bgm.playSFX(""); break;/////////////////////////////////
+                case 22: game.showScreen("quest2"); setBackgroundImage("nation2_bg3.png"); break;
                 case 23: updateScene("Healer", true); currentSpeaker = "Healer"; break;
                 case 24: currentSpeaker = player.getName(); break;
                 case 25: currentSpeaker = "Healer"; break;
@@ -577,7 +600,7 @@ public class StoryPanel extends JPanel {
                 case 3: currentSpeaker = player.getName(); break;
                 case 4: setBackgroundImage("nation3_bg2.png"); currentSpeaker = ""; break;
                 case 5: updateScene("Spirit of Lunareth", true); currentSpeaker = "??Lunareth??"; break;
-                case 6: updateScene("Spirit of The Archivist", true); currentSpeaker = "??Archivist??"; break;
+                case 6: updateScene("Spirit of the Archivist", true); currentSpeaker = "??Archivist??"; break;
                 case 7: currentSpeaker = player.getName(); break;
                 case 8: updateScene("Spirit of Lunareth", true); currentSpeaker = "??Lunareth??"; break;
                 case 9: currentSpeaker = ""; showNPC = false; break;
@@ -672,7 +695,6 @@ public class StoryPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // 1. Draw Background normally (NO FADE)
         if (currentBackground != null && currentBackground.isLoaded()) {
             g2.drawImage(currentBackground.getCurrentFrame(), 0, 0, getWidth(), getHeight(), null);
         }
@@ -680,7 +702,6 @@ public class StoryPanel extends JPanel {
         if (player == null) return;
         String heroName = player.getName();
 
-        // Characters fade automatically because we updated drawCharacter above!
         if (showPlayer && playerSprite != null) {
             drawCharacter(g2, playerSprite, 50, getHeight() - 550, 450, 450, currentSpeaker.equals(heroName));
         }
@@ -690,12 +711,10 @@ public class StoryPanel extends JPanel {
             drawCharacter(g2, npcSprite, getWidth() - 500, getHeight() - 550, 450, 450, npcIsTalking);
         }
 
-        // 2. Wrap all UI/Dialogue boxes in the Alpha Composite
         if (uiAlpha > 0) {
             Composite oldComp = g2.getComposite();
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, uiAlpha));
             
-            // Keep your existing drawing logic here
             if (gameState == PLAY_STATE) {
                 drawDialogueBox(g2);
             } else if (gameState == INVENTORY_STATE || gameState == SUB_MENU_STATE) {
@@ -710,14 +729,13 @@ public class StoryPanel extends JPanel {
                 MenuRenderer.drawOptionsOverlay(g2, optionsCursor);
             }
             
-            g2.setComposite(oldComp); // Reset it
+            g2.setComposite(oldComp); 
         }
     }
 
     private void drawCharacter(Graphics2D g2, Sprite s, int x, int y, int w, int h, boolean isSpeaking) {
         BufferedImage frame = s.getCurrentFrame();
         if (frame != null) {
-            // Multiply the standard alpha by the fading UI alpha
             float baseAlpha = isSpeaking ? 1.0f : 0.5f; 
             float finalAlpha = baseAlpha * uiAlpha; 
             if (finalAlpha < 0) finalAlpha = 0;
@@ -736,7 +754,7 @@ public class StoryPanel extends JPanel {
         g2.setStroke(new BasicStroke(3));
         g2.drawRoundRect(boxX, boxY, boxW, boxH, 20, 20);
 
-        if (lineIndex == 0 && currentNation == 1 && gameState != SHOP_STATE) {
+        if (lineIndex == 0 && currentNation == 1 && gameState == PLAY_STATE) {
             int iconY = boxY + (boxH / 2) + 12; 
             int itemSpacing = 220; 
             int startX = boxX + (boxW - (itemSpacing * 3 + 150)) / 2;
@@ -752,6 +770,17 @@ public class StoryPanel extends JPanel {
         if (gameState == SHOP_STATE) {
             drawWrappedText(g2, shopGreeting, boxX + 40, boxY + 50, boxW - 80);
             return; 
+        }
+
+        if (gameState == INVENTORY_STATE || gameState == SUB_MENU_STATE) {
+            g2.setColor(Color.WHITE);
+            g2.setFont(smallText);
+            
+            String textToShow = interactionMessage.isEmpty() ? hoverDescription : interactionMessage;
+            if (textToShow.isEmpty()) textToShow = "Your inventory is empty.";
+            
+            drawWrappedText(g2, textToShow, boxX + 40, boxY + 50, boxW - 80);
+            return;
         }
             
         if (!currentSpeaker.trim().isEmpty()) { 
@@ -791,7 +820,7 @@ public class StoryPanel extends JPanel {
         g2.drawString(key, textX, y);
 
         g2.setFont(mediumText);
-        g2.setColor(new Color(40, 20, 10)); 
+        g2.setColor(new Color(181, 153, 110));
         g2.drawString(desc, x + keyWidth + 15, y);
     }
 
@@ -827,10 +856,9 @@ public class StoryPanel extends JPanel {
         
         if (index >= 0 && index < list.size()) {
             Item item = list.get(index);
-            if (gameState != SHOP_STATE) {
-                String info = item.getName() + ": " + item.getDescription();
-                dialogueText[lineIndex] = info;
-            }
+            hoverDescription = item.getName() + ": " + item.getDescription();
+        } else {
+            hoverDescription = "";
         }
     }
 
@@ -850,23 +878,30 @@ public class StoryPanel extends JPanel {
         Item selected = inv.get(index);
 
         if (subMenuCursor == 0) { 
-            dialogueText[lineIndex] = InventoryManager.useItem(selected, player);
+            interactionMessage = InventoryManager.useItem(selected, player);
             if (selected.isConsumable()) inv.remove(index);
         } 
         else if (subMenuCursor == 1) {
-            dialogueText[lineIndex] = InventoryManager.sellItem(selected, player);
+            interactionMessage = InventoryManager.sellItem(selected, player);
             if (!selected.getName().equals("Father")) inv.remove(index);
         } 
         else if (subMenuCursor == 2) { 
             inv.remove(index);
-            dialogueText[lineIndex] = "Discarded " + selected.getName();
+            interactionMessage = "Discarded " + selected.getName();
         }
 
         gameState = INVENTORY_STATE;
         repaint();
     }
 
-    private void resetCursor() { slotCol = 0; slotRow = 0; subMenuCursor = 0; scrollOffset = 0; }
+    private void resetCursor() { 
+        slotCol = 0; 
+        slotRow = 0; 
+        subMenuCursor = 0; 
+        scrollOffset = 0; 
+        interactionMessage = "";
+        updateHoverDescription();   
+    }
 
     private void setBackgroundImage(String file) { 
         this.currentBackground = backgroundRegistry.get(file); 
@@ -921,7 +956,7 @@ public class StoryPanel extends JPanel {
             if (uiAlpha <= 0f) {
                 uiAlpha = 0f;
                 fadeOutTimer.stop();
-                game.showScreen("credits"); // Move to credits when UI is fully gone
+                game.showScreen("credits"); 
             }
             repaint();
         });

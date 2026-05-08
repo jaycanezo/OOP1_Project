@@ -6,7 +6,7 @@ public class Warrior extends Character {
         
     public Warrior() {
         super("Warrior", 1800, 1, "Warrior");
-        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Warrior.png", 300, 297, 12));
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Warrior.png", 272, 248, 16));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Warrior_Slash.png", 128, 128, 9)};
         Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Warrior_CrimsonStrike.png", 128, 128, 7)};
@@ -33,21 +33,21 @@ public class Warrior extends Character {
         switch (skillNumber) {
             case 1:
                 bgm.playSFX("Slash.wav");
-                dmg = ((random.nextInt(45 - 15 + 1) + 15 + 15) * getLevel()) + bonus;
+                dmg = ((random.nextInt(55 - 20 + 1) + 15 + 15) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Basic Skill: Slash!\n")
                    .append("You swing your sword in a swift slash toward your enemy, dealing damage!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("crimsonStrike.wav");
-                dmg = ((random.nextInt(90 - 65 + 1) + 65 + 10) * getLevel()) + bonus;
+                dmg = ((random.nextInt(105 - 75 + 1) + 65 + 10) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Advanced Skill: Crimson Strike!\n")
                    .append("You perform a heavy, sweeping strike, landing a fierce blow on your enemy!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("bladeQuake.wav");
-                dmg = ((random.nextInt(255 - 135 + 1) + 135 + 40) * getLevel()) + bonus;
+                dmg = ((random.nextInt(280 - 150 + 1) + 135 + 40) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Ultimate: Blade Quake!\n")
                    .append("You unleash devastating strength in a massive ground-splitting attack on your enemy!");
                 setSkillCooldown(3, getSkillMaxCooldown(skillNumber));
@@ -76,9 +76,9 @@ public class Warrior extends Character {
         int lvl = getLevel();
         int b = getSkillBonus(skillNumber);
         return switch(skillNumber) {
-            case 1 -> (15*lvl + 15*lvl + b) + " - " + (45*lvl + 15*lvl + b);
-            case 2 -> (65*lvl + 10*lvl + b) + " - " + (90*lvl + 10*lvl + b);
-            case 3 -> (135*lvl + 40*lvl + b) + " - " + (255*lvl + 40*lvl + b);
+            case 1 -> (20*lvl + 20*lvl + b) + " - " + (55*lvl + 20*lvl + b);
+            case 2 -> (75*lvl + 20*lvl + b) + " - " + (105*lvl + 20*lvl + b);
+            case 3 -> (150*lvl + 50*lvl + b) + " - " + (280*lvl + 50*lvl + b);
             default -> "0";
         };
     }

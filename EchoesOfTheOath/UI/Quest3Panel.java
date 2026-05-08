@@ -12,7 +12,6 @@ public class Quest3Panel extends JPanel {
     private int clickCount = 0;
     private int corruptionLevel = 0; 
     
-    // --- FONT VARIABLES ---
     private Font headerFont;
     private Font normalFont;
     private Font smallFont;
@@ -21,9 +20,9 @@ public class Quest3Panel extends JPanel {
 
     private int[] memoryTriggers = {3, 7, 12}; 
     private String[] memoryPrompts = {
-        "Day 1: You left him to hold the line against the rift. What was your final order?",
-        "Year 100: The cold set in. His mind reached out to yours through the Oath, begging for an answer. How did you respond?",
-        "Year 1000: He has forgotten his own name. He only remembers the weight of the shield. What do you say to him now?"
+        "You left him to hold the line against the rift. What was your final order?",
+        "The cold set in. His mind reached out to yours through the Oath, begging for an answer. How did you respond?",
+        "He has forgotten his own name. He only remembers the weight of the shield. What do you say to him now?"
     };
     
     private String[][] dialogueChoices = {
@@ -46,10 +45,9 @@ public class Quest3Panel extends JPanel {
         this.setLayout(null);
         this.setBackground(Color.BLACK); 
         
-        // --- LOAD FONTS ---
-        this.headerFont = FontManager.getFont("Jersey10-Regular.ttf", 32f); // Was 24
-        this.normalFont = FontManager.getFont("Jersey10-Regular.ttf", 26f); // Was 18
-        this.smallFont = FontManager.getFont("Jersey10-Regular.ttf", 22f);  // Was 16
+        this.headerFont = FontManager.getFont("Jersey10-Regular.ttf", 32f);
+        this.normalFont = FontManager.getFont("Jersey10-Regular.ttf", 26f); 
+        this.smallFont = FontManager.getFont("Jersey10-Regular.ttf", 22f); 
 
         ripples = new ArrayList<>();
 
@@ -62,7 +60,6 @@ public class Quest3Panel extends JPanel {
         });
     }
 
-    // ... [startNewGame(), progressDecay() remain unchanged] ...
     public void startNewGame() {
         yearsAbandoned = 0;
         clickCount = 0;

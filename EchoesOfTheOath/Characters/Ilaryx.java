@@ -8,9 +8,9 @@ public class Ilaryx extends Character {
         super("Ilaryx", " VEYORA < NATION 2 > - MINI BOSS", 1400, 4);
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/illaryx.png", 1000, 1000, 1));
         
-        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/BabyM_TantrumToss.png", 128, 128, 12)};
-        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/BabyM_FeignedFaint.png", 128, 128, 11)};
-        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/BabyM_EnforcedDecree.png", 192, 128, 9)};
+        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/ilaryx_quickshot.png", 100, 136, 5)};
+        Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/ilaryx_huntersTrap.png", 204, 268, 5)};
+        Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/ilaryx_arrowOfTheSilverfang.png", 464, 464, 5)};
         setSkillSprites(s1, s2, s3);
     }
 

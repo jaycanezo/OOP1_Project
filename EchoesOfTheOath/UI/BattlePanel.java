@@ -16,6 +16,11 @@ public class BattlePanel extends JPanel {
     private JTextArea logArea;
     private JPanel buttonPanel;
     private JLabel playerNameLabel, enemyNameLabel;
+    
+    private Timer turnTimer;
+    private int turnTimeLeft = 10;
+    private JLabel timerLabel;
+
     private Timer animationTimer;
     private Font smallFont;
     private Font mediumFont;
@@ -29,10 +34,8 @@ public class BattlePanel extends JPanel {
     private Sprite background; 
     private boolean battleOver = false;
     
-    // NEW: Replaces BattleSidePanel for full-screen unclipped effects[cite: 11]
     private java.util.List<ActiveEffect> activeEffects = new java.util.ArrayList<>();
     
-    // NEW: Variables to track hit overlays
     private int playerFlash = 0;
     private int enemyFlash = 0;
 
@@ -68,12 +71,17 @@ public class BattlePanel extends JPanel {
         if (animationTimer != null && animationTimer.isRunning()) {
             animationTimer.stop();
         }
+        if (turnTimer != null && turnTimer.isRunning()) {
+            turnTimer.stop();
+        }
         
         this.battleOver = false;
         this.player = game.getChosenCharacter();
         this.enemy = game.getCurrentBoss();
+        this.enemy.setHp(this.enemy.getMaxHp());
         this.isPlayerTurn = true;
-        this.activeEffects.clear(); // Clear lingering effects
+        this.turnTimeLeft = 10; 
+        this.activeEffects.clear(); 
         this.playerFlash = 0;
         this.enemyFlash = 0;
         
@@ -100,11 +108,57 @@ public class BattlePanel extends JPanel {
             enemyHpBar.setString(enemy.getHp() + " / " + enemy.getMaxHp());
             enemyHpBar.setForeground(Color.GREEN);
 
+            if (timerLabel != null) {
+                timerLabel.setText("10");
+                timerLabel.setForeground(Color.WHITE);
+            }
+
             disableButtons(false); 
             refreshSkillButtons();
             startAnimation();
+            startTurnTimer();
             repaint();
         }
+    }
+
+    private void startTurnTimer() {
+        if (turnTimer != null) turnTimer.stop();
+        
+        turnTimer = new Timer(1000, e -> {
+            if (isPlayerTurn && !battleOver) {
+                turnTimeLeft--;
+                timerLabel.setText(String.valueOf(turnTimeLeft));
+                
+                if (turnTimeLeft <= 3) {
+                    timerLabel.setForeground(new Color(249, 152, 155)); 
+                } else {
+                    timerLabel.setForeground(Color.WHITE);
+                }
+                
+                if (turnTimeLeft <= 0) {
+                    if (currentBattleState == INVENTORY_STATE) {
+                        currentBattleState = BATTLE_STATE;
+                        repaint();
+                    }
+                    
+                    if (player.isSkillAvailable(1)) {
+                        logArea.setText("Time's up! " + player.getName() + " attacks automatically!");
+                        playerTurn(1); 
+                    } else {
+                        isPlayerTurn = false;
+                        disableButtons(true);
+                        logArea.setText("Time's up! " + player.getName() + " hesitated! Turn skipped.");
+                        Timer delay = new Timer(2000, ev -> enemyTurn());
+                        delay.setRepeats(false);
+                        delay.start();
+                    }
+                }
+            } else if (!isPlayerTurn && !battleOver) {
+                timerLabel.setText("...");
+                timerLabel.setForeground(Color.GRAY);
+            }
+        });
+        turnTimer.start();
     }
 
     private void playerTurn(int skillNum) {
@@ -116,17 +170,20 @@ public class BattlePanel extends JPanel {
         }
 
         isPlayerTurn = false;
+        turnTimeLeft = 10; 
+        if (timerLabel != null) timerLabel.setText("--");
+        
         disableButtons(true); 
         
-        // Play effect on enemy coordinates
         Sprite[] effects = player.getSkillSprite(skillNum);
         if (effects != null) {
-            for (Sprite s : effects) 
-                playEffect(s, getWidth() - 525, getHeight() - 600, 450, 450);
+            for (Sprite s : effects) {
+                triggerSkillEffect(s, getWidth() - 525, getHeight() - 600);
+            }
         }
 
         String result = player.useSkill(skillNum, enemy);
-        enemyFlash = 10; // Trigger red overlay on enemy (10 frames = 500ms)
+        enemyFlash = 10; 
         logArea.setText(result);
         refreshStatus();
 
@@ -145,14 +202,13 @@ public class BattlePanel extends JPanel {
         int randomSkill = (int)(Math.random() * 3) + 1;
         logArea.append("\n" + enemy.getName() + " prepares to strike!");
 
-        // Play effect on player coordinates
         Sprite[] effects = enemy.getSkillSprite(randomSkill);
         if (effects != null) {
-            for (Sprite s : effects) 
-                playEffect(s, 75, getHeight() - 600, 450, 450);
+            for (Sprite s : effects) {
+                triggerSkillEffect(s, 75, getHeight() - 600);
+            }
         }
 
-        // FIX: Trigger the flash immediately when the attack effect starts!
         playerFlash = 10; 
 
         Timer actionDelay = new Timer(1500, e -> {
@@ -167,6 +223,11 @@ public class BattlePanel extends JPanel {
 
             if (!checkGameOver()) {
                 isPlayerTurn = true;
+                turnTimeLeft = 10; 
+                if (timerLabel != null) {
+                    timerLabel.setText("10");
+                    timerLabel.setForeground(Color.WHITE);
+                }
                 disableButtons(false); 
                 this.requestFocusInWindow();
             }
@@ -182,8 +243,11 @@ public class BattlePanel extends JPanel {
 
         if (enemy.getHp() <= 0) {
             battleOver = true;
+            if (turnTimer != null) turnTimer.stop(); 
+            
+            game.getBgm().stopMusic(); 
+            
             logArea.setText("Victory! " + enemy.getName() + " falls.");
-            // REMOVED: animationTimer.stop() - so effects keep playing
 
             player.setLevel(player.getLevel() + 1); 
             player.setGold(player.getGold() + 500); 
@@ -194,7 +258,7 @@ public class BattlePanel extends JPanel {
             game.autosave();
 
             Timer delay = new Timer(1500, e -> {
-                animationTimer.stop(); // Stop right before capture[cite: 11]
+                animationTimer.stop(); 
                 java.awt.image.BufferedImage capture = new java.awt.image.BufferedImage(
                     getWidth(), getHeight(), java.awt.image.BufferedImage.TYPE_INT_ARGB);
                 this.paint(capture.getGraphics());
@@ -210,11 +274,14 @@ public class BattlePanel extends JPanel {
         
         if (player.getHp() <= 0) {
             battleOver = true;
+            if (turnTimer != null) turnTimer.stop(); 
+            
+            game.getBgm().stopMusic();
+            
             logArea.setText("You have fallen...");
-            // REMOVED: animationTimer.stop() - so effects keep playing
             
             Timer delay = new Timer(1500, e -> {
-                animationTimer.stop(); // Stop right before capture[cite: 11]
+                animationTimer.stop(); 
                 java.awt.image.BufferedImage capture = new java.awt.image.BufferedImage(getWidth(), getHeight(), java.awt.image.BufferedImage.TYPE_INT_ARGB);
                 this.paint(capture.getGraphics());
                 
@@ -263,7 +330,6 @@ public class BattlePanel extends JPanel {
         }
     }
 
-    // NEW: Method replaces BattleSidePanel for full-screen drawing
     public void playEffect(Sprite effect, int ex, int ey, int ew, int eh) {
         ActiveEffect newEffect = new ActiveEffect(effect, ex, ey, ew, eh);
         activeEffects.add(newEffect);
@@ -276,6 +342,27 @@ public class BattlePanel extends JPanel {
         t.start();
     }
 
+    private void triggerSkillEffect(Sprite s, int baseX, int baseY) {
+        int targetW = 450;
+        int targetH = 450;
+        int offsetX = 0;
+        int offsetY = 0;
+
+        if (s != null && s.getCurrentFrame() != null) {
+            int origW = s.getCurrentFrame().getWidth();
+            int origH = s.getCurrentFrame().getHeight();
+            
+            double scale = Math.min(450.0 / origW, 450.0 / origH);
+            targetW = (int) (origW * scale);
+            targetH = (int) (origH * scale);
+            
+            offsetX = (450 - targetW) / 2;
+            offsetY = (450 - targetH) / 2;
+        }
+
+        playEffect(s, baseX + offsetX, baseY + offsetY, targetW, targetH);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -285,7 +372,6 @@ public class BattlePanel extends JPanel {
             g.drawImage(background.getCurrentFrame(), 0, 0, getWidth(), getHeight(), null);
         }
 
-        // 1. Draw Idle Characters[cite: 11]
         if (player != null && player.getIdleSprite() != null && player.getIdleSprite().isLoaded()) {
             g.drawImage(player.getIdleSprite().getCurrentFrame(), 100, getHeight() - 580, 400, 400, null);
         }
@@ -294,14 +380,11 @@ public class BattlePanel extends JPanel {
             g.drawImage(enemy.getIdleSprite().getCurrentFrame(), getWidth() - 500, getHeight() - 580, 400, 400, null);
         }
 
-        // 2. Draw Full-Screen Red Overlay if ANY character is hit
         if (playerFlash > 0 || enemyFlash > 0) {
-            // Using 100 opacity so the background is still slightly visible through the red tint
             g2.setColor(new Color(255, 0, 0, 100)); 
             g2.fillRect(0, 0, getWidth(), getHeight());
         }
 
-        // 3. Draw Unclipped Effects OVER the red tint, but UNDER the UI[cite: 11]
         for (ActiveEffect ae : activeEffects) {
             if (ae.sprite != null && ae.sprite.isLoaded()) {
                 g.drawImage(ae.sprite.getCurrentFrame(), ae.x, ae.y, ae.w, ae.h, null);
@@ -345,11 +428,16 @@ public class BattlePanel extends JPanel {
         playerHpBar = createHPBar();
         enemyHpBar = createHPBar();
 
-        JPanel topPanel = new JPanel(new GridLayout(1, 2, 20, 0));
+        JPanel topPanel = new JPanel(new GridLayout(1, 3, 20, 0));
         topPanel.setOpaque(false);
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 
+        timerLabel = new JLabel("60", SwingConstants.CENTER);
+        timerLabel.setFont(FontManager.getFont("Jersey10-Regular.ttf", 48f));
+        timerLabel.setForeground(Color.WHITE);
+
         topPanel.add(createLabeledBar("PLAYER", playerHpBar, true));
+        topPanel.add(timerLabel);
         topPanel.add(createLabeledBar("ENEMY", enemyHpBar, false));
         
         add(topPanel, BorderLayout.NORTH);
@@ -429,16 +517,14 @@ public class BattlePanel extends JPanel {
     }
 
     private void startAnimation() {
-        animationTimer = new Timer(50, e -> {
+        animationTimer = new Timer(100, e -> {
             if (player != null) player.updateAnimations();
             if (enemy != null) enemy.updateAnimations();
             
-            // Advance active effect sprites
             for (ActiveEffect ae : activeEffects) {
                 if (ae.sprite != null) ae.sprite.update();
             }
 
-            // Reduce flash overlay times
             if (playerFlash > 0) playerFlash--;
             if (enemyFlash > 0) enemyFlash--;
 

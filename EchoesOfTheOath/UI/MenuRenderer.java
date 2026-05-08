@@ -14,45 +14,57 @@ public class MenuRenderer {
     public static void drawInventory(Graphics2D g2, Character player, int slotCol, int slotRow, int scrollOffset) {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
-        int screenW = 1080;
-        int totalW = 980;
-        int totalH = 360; 
-        int x = 50;
+        int totalH = 390; 
         int y = 70;
-        int statW = 320;
-        int itemW = totalW - statW - 15; 
 
-        drawWindow(g2, x, y, statW, totalH, "CHARACTER STATS");
-        int sx = x + 30;
+        int statX = 40;
+        int statW = 280;
+        drawWindow(g2, statX, y, statW, totalH, "STATS");
+        
+        int sx = statX + 20;
         int sy = y + 65;
 
-        g2.setFont(normalFont); // Standardized to the new normal font
+        g2.setFont(smallFont); 
         g2.setColor(Color.WHITE);
-
         g2.drawString("NAME:  " + player.getName(), sx, sy);
         g2.drawString("CLASS: " + player.getClassType(), sx, sy + 25);
         g2.drawString("LVL:   " + player.getLevel(), sx, sy + 50);
         g2.drawString("GOLD:  " + player.getGold(), sx, sy + 75);
         g2.drawString("HP:", sx, sy + 105);
-        drawSidebarHPBar(g2, sx, sy + 115, player, statW - 50);
+        drawSidebarHPBar(g2, sx, sy + 115, player, statW - 40);
 
-        g2.drawString("SKILLS:", sx, sy + 185);
+        g2.drawString("SKILLS:", sx, sy + 175);
+        if (player.getSkillName(1) != null) g2.drawString("• " + player.getSkillName(1) + " (" + player.getSkillDamageRange(1) + ")", sx, sy + 200);
+        if (player.getSkillName(2) != null) g2.drawString("• " + player.getSkillName(2) + " (" + player.getSkillDamageRange(2) + ")", sx, sy + 225);
+        if (player.getSkillName(3) != null) g2.drawString("• " + player.getSkillName(3) + " (" + player.getSkillDamageRange(3) + ")", sx, sy + 250);
 
-        // Slightly smaller font for the skills list to prevent clutter
-        g2.setFont(smallFont); 
-        if (player.getSkillName(1) != null) 
-            g2.drawString("• " + player.getSkillName(1) + " (" + player.getSkillDamageRange(1) + ")", sx, sy + 210);
+        int equipX = statX + statW + 15;
+        int equipW = 260;
+        drawWindow(g2, equipX, y, equipW, totalH, "EQUIPPED");
 
-        if (player.getSkillName(2) != null) 
-            g2.drawString("• " + player.getSkillName(2) + " (" + player.getSkillDamageRange(2) + ")", sx, sy + 235);
+        int ex = equipX + 20;
+        int ey = y + 65;
+        
+        g2.setFont(smallFont);
+        boolean hasEquip = false;
+        int equipOffset = 0;
+        for (Item item : player.getInventory()) {
+            if (item.isEquipped()) {
+                g2.setColor(new Color(175, 238, 171)); 
+                g2.drawString("• " + item.getName(), ex, ey + equipOffset);
+                equipOffset += 25;
+                hasEquip = true;
+            }
+        }
+        if (!hasEquip) {
+            g2.setColor(Color.GRAY);
+            g2.drawString("• None", ex, ey);
+        }
 
-        if (player.getSkillName(3) != null) 
-            g2.drawString("• " + player.getSkillName(3) + " (" + player.getSkillDamageRange(3) + ")", sx, sy + 260);
-
-        int ix = x + statW + 15;
-
-        drawWindow(g2, ix, y, itemW, totalH, "INVENTORY");
-        renderItems(g2, player.getInventory(), ix + 168, y + 80, slotCol, slotRow, scrollOffset, 5);
+        int invX = equipX + equipW + 15;
+        int invW = 415;
+        drawWindow(g2, invX, y, invW, totalH, "INVENTORY");
+        renderItems(g2, player.getInventory(), invX + 35, y + 80, slotCol, slotRow, scrollOffset, 5, true);
     }
 
     public static void drawShop(Graphics2D g2, int gold, ArrayList<Item> stock, int slotCol, int slotRow, String resultMsg) {
@@ -60,12 +72,12 @@ public class MenuRenderer {
 
         int screenW = 1080;
         int totalW = 980;
-        int totalH = 360;
+        int totalH = 390; 
         int x = (screenW - totalW) / 2;
         int y = 70;
 
         drawWindow(g2, x, y, totalW, totalH, "SHOP | Gold: " + gold);
-        renderItems(g2, stock, x + 40, y + 80, slotCol, slotRow, 0, 5); 
+        renderItems(g2, stock, x + 40, y + 80, slotCol, slotRow, 0, 5, false); 
 
         int itemIndex = slotCol + (slotRow * 5);
 
@@ -107,11 +119,11 @@ public class MenuRenderer {
         g2.drawRoundRect(x, y, w, h, 15, 15);
 
         g2.setColor(Color.WHITE);
-        g2.setFont(headerFont); // Titles use the larger header font
+        g2.setFont(headerFont); 
         g2.drawString(title, x + 20, y + 35);
     }
 
-    private static void renderItems(Graphics2D g2, ArrayList<Item> list, int startX, int startY, int slotCol, int slotRow, int scrollOffset, int cols) {
+    private static void renderItems(Graphics2D g2, ArrayList<Item> list, int startX, int startY, int slotCol, int slotRow, int scrollOffset, int cols, boolean showEquippedStatus) {
         if (list == null) 
             return;
 
@@ -146,6 +158,15 @@ public class MenuRenderer {
 
                 if (item != null && item.getImage() != null) {
                     g2.drawImage(item.getImage(), dx + 4, dy + 4, slotSize - 8, slotSize - 8, null);
+                }
+                
+                if (showEquippedStatus && item != null && item.isEquipped()) {
+                    g2.setColor(new Color(175, 238, 171)); 
+                    g2.setStroke(new BasicStroke(2));
+                    g2.drawRoundRect(dx, dy, slotSize, slotSize, 10, 10);
+                    
+                    g2.setFont(smallFont);
+                    g2.drawString("E", dx + slotSize - 12, dy + slotSize - 4);
                 }
             }
         }
@@ -209,14 +230,12 @@ public class MenuRenderer {
         g2.setStroke(new BasicStroke(4));
         g2.drawRoundRect(x, y, w, h, 20, 20);
 
-        // --- PERFECTLY CENTERED "PAUSED" TITLE ---
         g2.setFont(titleFont);
         FontMetrics fmTitle = g2.getFontMetrics();
         int pausedWidth = fmTitle.stringWidth("PAUSED");
         int pausedX = x + (w - pausedWidth) / 2;
         g2.drawString("PAUSED", pausedX, y + 75);
 
-        // --- PERFECTLY CENTERED MENU OPTIONS ---
         String[] options = {"Return to Checkpoint", "Back to Title", "Quit Desktop"};
         g2.setFont(headerFont);
         FontMetrics fmOptions = g2.getFontMetrics();
@@ -224,11 +243,11 @@ public class MenuRenderer {
         for (int i = 0; i < options.length; i++) {
             int textY = y + 140 + (i * 45);
             int optionWidth = fmOptions.stringWidth(options[i]);
-            int optX = x + (w - optionWidth) / 2; // Exact center X for this string
+            int optX = x + (w - optionWidth) / 2;
             
             if (i == cursorNum) {
                 g2.setColor(Color.YELLOW); 
-                g2.drawString(">", optX - 25, textY); // Place cursor directly to the left
+                g2.drawString(">", optX - 25, textY);
                 g2.drawString(options[i], optX, textY);
             } else {
                 g2.setColor(Color.BLACK);
@@ -240,7 +259,6 @@ public class MenuRenderer {
         g2.setStroke(new BasicStroke(2));
         g2.drawLine(x + 40, y + 290, x + w - 40, y + 290);
 
-        // --- PERFECTLY CENTERED "CONTROLS GUIDE" ---
         g2.setColor(Color.BLACK);
         g2.setFont(headerFont);
         FontMetrics fmControls = g2.getFontMetrics();

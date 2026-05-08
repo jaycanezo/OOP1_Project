@@ -16,7 +16,6 @@ public class Quest2Panel extends JPanel {
     private Sprite playerSprite;
     private Sprite background;
 
-    // --- FONT VARIABLES ---
     private Font titleFont;
     private Font headerFont;
     private Font normalFont;
@@ -38,6 +37,10 @@ public class Quest2Panel extends JPanel {
     private Timer gameLoopTimer;
     private Timer countdownTimer;
     private List<Arrow> arrows;
+    private boolean showingInstructions = true;
+    private JPanel instrButtonPanel;
+    private Timer instrAnimTimer;
+    private float instrAnimProgress = 0.0f;
 
     public Quest2Panel(GameWindow game) {
         this.game = game;
@@ -45,8 +48,7 @@ public class Quest2Panel extends JPanel {
         this.setLayout(null);
         this.setBackground(Color.BLACK);
 
-        // --- LOAD FONTS ---
-        this.titleFont = FontManager.getFont("Jersey10-Regular.ttf", 54f);
+        this.titleFont = FontManager.getFont("Jersey10-Regular.ttf", 64f);
         this.headerFont = FontManager.getFont("Jersey10-Regular.ttf", 40f);
         this.normalFont = FontManager.getFont("Jersey10-Regular.ttf", 30f);
         this.smallFont = FontManager.getFont("Jersey10-Regular.ttf", 24f); 
@@ -60,7 +62,7 @@ public class Quest2Panel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (!isGameOver) {
+                if (!isGameOver && !showingInstructions) {
                     if (e.getKeyCode() == KeyEvent.VK_A) leftPressed = true;
                     if (e.getKeyCode() == KeyEvent.VK_D) rightPressed = true;
                 }
@@ -91,9 +93,41 @@ public class Quest2Panel extends JPanel {
         if (gameLoopTimer != null) gameLoopTimer.stop();
         if (countdownTimer != null) countdownTimer.stop();
 
-        // Trigger the intro popup to start the quest
-        repaint();
-        SwingUtilities.invokeLater(() -> showIntroDialog());
+        showingInstructions = true;
+        instrAnimProgress = 0.0f;
+
+        if (instrButtonPanel != null) this.remove(instrButtonPanel);
+        
+        instrButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 0));
+        instrButtonPanel.setOpaque(false);
+        
+        JButton startBtn = createInstrButton("Begin Quest");
+        startBtn.addActionListener(e -> {
+            showingInstructions = false;
+            instrButtonPanel.setVisible(false);
+            
+            gameLoopTimer.start();
+            countdownTimer.start();
+            this.requestFocusInWindow();
+            repaint();
+        });
+        
+        instrButtonPanel.add(startBtn);
+        this.add(instrButtonPanel);
+        instrButtonPanel.setVisible(false);
+        
+        if (instrAnimTimer != null && instrAnimTimer.isRunning()) instrAnimTimer.stop();
+        
+        instrAnimTimer = new Timer(15, e -> {
+            instrAnimProgress += 0.03f;
+            if (instrAnimProgress >= 1.0f) {
+                instrAnimProgress = 1.0f;
+                instrAnimTimer.stop();
+                instrButtonPanel.setVisible(true);
+            }
+            repaint();
+        });
+        instrAnimTimer.start();
     }
 
     private void setupTimers() {
@@ -162,66 +196,9 @@ public class Quest2Panel extends JPanel {
         
         repaint();
 
-        // Slight delay so the player can see what hit them before the popup appears
         Timer popupDelay = new Timer(500, e -> showResultDialog(win));
         popupDelay.setRepeats(false);
         popupDelay.start();
-    }
-
-    // --- POPUP DIALOG METHODS ---
-
-    private void showIntroDialog() {
-        JDialog dialog = new JDialog(game.window, "", true);
-        dialog.setUndecorated(true);
-        dialog.setBackground(new Color(0, 0, 0, 0));
-
-        JPanel panel = new JPanel(null) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-
-                g2.setColor(new Color(20, 10, 10, 245)); 
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
-                
-                g2.setColor(new Color(181, 153, 110)); 
-                g2.setStroke(new BasicStroke(3));
-                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
-
-                g2.setColor(new Color(255, 215, 0));
-                g2.setFont(headerFont);
-                String title = "MINI-ENCOUNTER: THE UNSEEN STALKER";
-                FontMetrics fm = g2.getFontMetrics();
-                g2.drawString(title, (getWidth() - fm.stringWidth(title)) / 2, 45);
-            }
-        };
-
-        JTextArea descArea = new JTextArea("Survive 15 seconds of sudden arrow volleys.\n\nUse 'A' and 'D' to move left or right.");
-        descArea.setFont(normalFont);
-        descArea.setForeground(Color.WHITE);
-        descArea.setOpaque(false);
-        descArea.setWrapStyleWord(true);
-        descArea.setLineWrap(true);
-        descArea.setEditable(false);
-        descArea.setBounds(40, 80, 520, 100);
-        panel.add(descArea);
-
-        JButton startBtn = createCustomButton("Start Encounter");
-        startBtn.setBounds(150, 190, 300, 50);
-        startBtn.addActionListener(e -> {
-            dialog.dispose();
-            gameLoopTimer.start();
-            countdownTimer.start();
-            this.requestFocusInWindow();
-        });
-
-        panel.add(startBtn);
-
-        dialog.add(panel);
-        dialog.setSize(600, 280);
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
     }
 
     private void showResultDialog(boolean win) {
@@ -234,7 +211,7 @@ public class Quest2Panel extends JPanel {
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
                 g2.setColor(new Color(20, 10, 10, 245)); 
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
@@ -279,7 +256,7 @@ public class Quest2Panel extends JPanel {
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
                 if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80)); 
                 else g2.setColor(new Color(40, 40, 40)); 
@@ -298,28 +275,118 @@ public class Quest2Panel extends JPanel {
         return btn;
     }
 
+    private JButton createInstrButton(String text) {
+        JButton btn = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                if (getModel().isPressed()) g2.setColor(new Color(60, 60, 60));
+                else if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80));
+                else g2.setColor(new Color(40, 40, 40));
+                
+                g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
+                g2.setColor(new Color(150, 200, 255)); 
+                g2.setStroke(new BasicStroke(2));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
+                super.paintComponent(g);
+            }
+        };
+        btn.setFont(normalFont);
+        btn.setForeground(Color.WHITE);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setFocusable(false);
+        btn.setPreferredSize(new Dimension(240, 50)); 
+        return btn;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         if (background != null && background.isLoaded()) {
             g2.drawImage(background.getCurrentFrame(), 0, 0, getWidth(), getHeight(), null);
         }
-        if (playerSprite != null && playerSprite.isLoaded()) {
-            g2.drawImage(playerSprite.getCurrentFrame(), playerX - 50, playerY - 50, 200, 200, null);
-        }
 
-        g2.setColor(new Color(0, 0, 150)); 
-        for (Arrow a : arrows) {
-            drawCustomArrow(g2, a.x, (int)a.y);
-        }
+        if (!showingInstructions) {
+            if (playerSprite != null && playerSprite.isLoaded()) {
+                g2.drawImage(playerSprite.getCurrentFrame(), playerX - 50, playerY - 50, 200, 200, null);
+            }
 
-        g2.setFont(headerFont);
-        g2.setColor(Color.WHITE);
-        g2.drawString("Time: " + Math.max(0, timeLeft), 30, 50);
+            g2.setColor(new Color(0, 0, 150)); 
+            for (Arrow a : arrows) {
+                drawCustomArrow(g2, a.x, (int)a.y);
+            }
+
+            g2.setFont(headerFont);
+            g2.setColor(Color.WHITE);
+            g2.drawString("Time: " + Math.max(0, timeLeft), 30, 50);
+        }
+        
+        if (showingInstructions) {
+            int bgAlpha = (int)(160 * instrAnimProgress); 
+            g2.setColor(new Color(0, 0, 0, bgAlpha)); 
+            g2.fillRect(0, 0, getWidth(), getHeight());
+            
+            int bannerHeight = 220;
+            int bannerY = (getHeight() - bannerHeight) / 2 - 40; 
+            
+            if (instrButtonPanel != null) {
+                instrButtonPanel.setBounds(0, bannerY + bannerHeight + 40, getWidth(), 100); 
+            }
+            
+            float wipeProgress = Math.min(1.0f, instrAnimProgress * 1.5f); 
+            int currentBannerWidth = (int)(getWidth() * wipeProgress);
+            int bannerX = (getWidth() - currentBannerWidth) / 2; 
+            
+            if (currentBannerWidth > 0) {
+                Color leftColor = new Color(10, 60, 120, 230);
+                Color rightColor = new Color(10, 100, 100, 230);
+
+                GradientPaint gp = new GradientPaint(bannerX, bannerY, leftColor, bannerX + currentBannerWidth, bannerY, rightColor);
+                g2.setPaint(gp);
+                g2.fillRect(bannerX, bannerY, currentBannerWidth, bannerHeight);
+            
+                g2.setColor(new Color(255, 255, 255, 180));
+                g2.fillRect(bannerX, bannerY, currentBannerWidth, 3); 
+                g2.fillRect(bannerX, bannerY + bannerHeight - 3, currentBannerWidth, 3); 
+            }
+            
+            float textAlpha = Math.max(0.0f, (instrAnimProgress - 0.3f) / 0.7f); 
+            
+            if (textAlpha > 0) {
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, textAlpha));
+                
+                String title = "Q U E S T   2";
+                g2.setFont(titleFont);
+                FontMetrics fmTitle = g2.getFontMetrics();
+                int titleX = (getWidth() - fmTitle.stringWidth(title)) / 2;
+                int titleY = bannerY + 80;
+                
+                g2.setColor(new Color(0, 0, 0, 120)); 
+                g2.drawString(title, titleX + 4, titleY + 4); 
+                g2.setColor(Color.WHITE);
+                g2.drawString(title, titleX, titleY);
+                
+                g2.setFont(headerFont);
+                String objective = "Objective: Survive the Unseen Stalker";
+                int objX = (getWidth() - g2.getFontMetrics().stringWidth(objective)) / 2;
+                g2.setColor(new Color(200, 230, 255)); 
+                g2.drawString(objective, objX, titleY + 50);
+                
+                g2.setFont(smallFont);
+                String mechanic = "Use 'A' and 'D' to dodge the arrows for 15 seconds!";
+                int mechX = (getWidth() - g2.getFontMetrics().stringWidth(mechanic)) / 2;
+                g2.setColor(new Color(150, 180, 200));
+                g2.drawString(mechanic, mechX, titleY + 90);
+                
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+            }
+        }
     }
 
     private void drawCustomArrow(Graphics2D g2, int x, int y) {

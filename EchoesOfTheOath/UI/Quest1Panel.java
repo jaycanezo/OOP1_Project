@@ -30,7 +30,6 @@ public class Quest1Panel extends JPanel {
     private int startR = -1;
     private int startC = -1;
 
-    // --- INSTRUCTION OVERLAY VARIABLES ---
     private boolean showingInstructions = true;
     private JPanel instrButtonPanel;
     private Timer instrAnimTimer;
@@ -39,14 +38,14 @@ public class Quest1Panel extends JPanel {
 
     public Quest1Panel(GameWindow game) {
         this.game = game;
-        this.setLayout(null); // Changed to null layout for overlay positioning!
+        this.setLayout(null); 
         this.setBackground(Color.BLACK);
 
         setupTopPanel();
         
         gridPanel = new JPanel(new GridLayout(rows, cols, 5, 5));
         gridPanel.setOpaque(false);
-        gridPanel.setBounds(250, 120, 580, 520); // Center the 10x10 grid
+        gridPanel.setBounds(250, 120, 580, 520);
         this.add(gridPanel);
     }
 
@@ -83,11 +82,9 @@ public class Quest1Panel extends JPanel {
         gridPanel.revalidate();
         gridPanel.repaint();
 
-        // --- INSTRUCTION OVERLAY LOGIC ---
         showingInstructions = true;
         instrAnimProgress = 0.0f;
-        
-        // Hide game elements so they don't draw over the banner
+
         topPanel.setVisible(false);
         gridPanel.setVisible(false);
 
@@ -101,7 +98,6 @@ public class Quest1Panel extends JPanel {
             showingInstructions = false;
             instrButtonPanel.setVisible(false);
             
-            // Show the game elements!
             topPanel.setVisible(true);
             gridPanel.setVisible(true);
 
@@ -299,7 +295,6 @@ public class Quest1Panel extends JPanel {
 
             showCustomPopup("Trap Triggered!", "Your bag caught fire! You lost all your items and dropped " + goldLost + " Gold!", false);
             
-            // Ensure instructions show up again if they retry
             game.showScreen("story");
         });
         delay.setRepeats(false);
@@ -363,7 +358,6 @@ public class Quest1Panel extends JPanel {
         }
     }
 
-    // --- NEW: INSTRUCTION OVERLAY DRAWING & BUTTON LOGIC ---
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -388,7 +382,6 @@ public class Quest1Panel extends JPanel {
             int bannerX = (getWidth() - currentBannerWidth) / 2; 
             
             if (currentBannerWidth > 0) {
-                // Sapphire Blue to Deep Teal gradient
                 Color leftColor = new Color(10, 60, 120, 230);
                 Color rightColor = new Color(10, 100, 100, 230);
 

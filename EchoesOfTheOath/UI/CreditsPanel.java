@@ -14,14 +14,12 @@ public class CreditsPanel extends JPanel {
     private Font titleFont;
     private Font nameFont;
     private Font descFont;
-    
-    // NEW: Background Image
     private Image backgroundImage;
 
     private final int TOTAL_MEMBERS = 7;
     private String[] memberNames = {
-        "Jay R. Cañezo", "April Anne O. Tandoc", "Eden Agnes Olivar", 
-        "Kaina B. Padilla", "Althea Ambil", "Jackielou Abelada", "Kenn Migan Vincent C. Gumonan"
+        "Jay R. Cañezo", "April Anne O. Tandoc", "Eden Agnes L. Olivar", 
+        "Kaina B. Padilla", "Althea M. Ambil", "Jackielou C. Abelada", "Kenn Migan Vincent C. Gumonan"
     };
     private String[] memberRoles = {
         "Project Manager and Lead Programmer", "Co-lead Programmer", "Lead Art Designer, Writer", 
@@ -41,12 +39,12 @@ public class CreditsPanel extends JPanel {
 
     private String[] memberImageFiles = {
         "jay.jpg",    
-        "april.png",   // Matches Developer Two
-        "eden.jpeg",       // Matches Developer Three
-        "kaina.jpeg",    // Matches Developer Four
-        "althea.jpeg",        // Matches Developer Five
-        "jack.jpeg",     // Matches Developer Six
-        "sir_khai.jpeg"      // Matches Developer Seven
+        "april.png",  
+        "eden.jpeg",     
+        "kaina.jpeg",  
+        "althea.jpg",        
+        "jack.jpg",    
+        "sir_khai.jpeg"     
     };
 
     public CreditsPanel(GameWindow game) {
@@ -58,7 +56,6 @@ public class CreditsPanel extends JPanel {
         this.nameFont = FontManager.getFont("Jersey10-Regular.ttf", 40f);
         this.descFont = FontManager.getFont("Jersey10-Regular.ttf", 26f);
 
-        // --- LOAD BACKGROUND IMAGE ---
         java.net.URL imgURL = getClass().getResource("/EchoesOfTheOath/Resources/nation3_bg10.png");
         if (imgURL != null) {
             backgroundImage = new ImageIcon(imgURL).getImage();
@@ -85,7 +82,7 @@ public class CreditsPanel extends JPanel {
 
     public void startCredits() {
         scrollY = 720; 
-        fadeAlpha = 0f; // Start completely invisible
+        fadeAlpha = 0f; 
         
         if (scrollTimer != null && scrollTimer.isRunning()) {
             scrollTimer.stop();
@@ -94,19 +91,15 @@ public class CreditsPanel extends JPanel {
         scrollTimer = new Timer(16, e -> {
             scrollY -= 1; 
             
-            // Fade in logic (Fades in over about 1 second)
             if (fadeAlpha < 1f) {
                 fadeAlpha += 0.015f; 
                 if (fadeAlpha > 1f) fadeAlpha = 1f;
             }
 
-            // --- EXACT SCROLL CUTOFF MATH ---
-            // Calculate the exact position of the "THANK YOU FOR PLAYING" text
             int startY = scrollY + 150; 
             int spacing = 220; 
             int finalY = startY + (TOTAL_MEMBERS * spacing) + 100;
 
-            // When the final text clears the top of the screen (with a tiny 50px buffer)
             if (finalY < -50) { 
                 endCredits();
             }
@@ -119,27 +112,23 @@ public class CreditsPanel extends JPanel {
 
     private void endCredits() {
         if (scrollTimer != null) scrollTimer.stop();
-        game.showScreen("ending"); // Route to Ending Panel
+        game.showScreen("ending");
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        
-        // --- 1. DRAW BACKGROUND (Solid, no fade) ---
+
         if (backgroundImage != null) {
             g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
         }
-        
-        // --- 2. APPLY THE FADE LENS ---
+
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeAlpha));
 
-        // Darkish overlay 
         g2.setColor(new Color(0, 0, 0, 210)); 
         g2.fillRect(0, 0, getWidth(), getHeight());
 
-        // --- 3. DRAW CREDITS TEXT ---
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
         g2.setFont(titleFont);
@@ -190,14 +179,12 @@ public class CreditsPanel extends JPanel {
             g2.setColor(new Color(200, 200, 200)); 
             g2.setFont(descFont);
             
-            // Split the string into pieces wherever there is a \n
             String[] descriptionLines = memberDesc[i].split("\n");
             
-            // Draw each piece on a new line!
             int descY = currentY + 90;
             for (String line : descriptionLines) {
                 g2.drawString(line, textX, descY);
-                descY += 25; // Pushes the next line down by 30 pixels
+                descY += 25; 
             }
         }
 

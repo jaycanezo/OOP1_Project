@@ -13,7 +13,6 @@ public class Quest4Panel extends JPanel {
     private GameWindow game;
     private Timer gameTimer;
     
-    // --- FONT VARIABLES ---
     private Font titleFont;
     private Font headerFont;
     private Font normalFont;
@@ -59,11 +58,10 @@ public class Quest4Panel extends JPanel {
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
 
-        // --- LOAD FONTS ---
-        this.titleFont = FontManager.getFont("Jersey10-Regular.ttf", 48f);  // Was 42
-        this.headerFont = FontManager.getFont("Jersey10-Regular.ttf", 30f); // Was 24/22
-        this.normalFont = FontManager.getFont("Jersey10-Regular.ttf", 26f); // Was 20
-        this.smallFont = FontManager.getFont("Jersey10-Regular.ttf", 22f);  // Was 14/18
+        this.titleFont = FontManager.getFont("Jersey10-Regular.ttf", 48f);  
+        this.headerFont = FontManager.getFont("Jersey10-Regular.ttf", 30f); 
+        this.normalFont = FontManager.getFont("Jersey10-Regular.ttf", 26f); 
+        this.smallFont = FontManager.getFont("Jersey10-Regular.ttf", 22f);  
 
         backgroundSprite = new Sprite("/EchoesOfTheOath/Resources/quest4_bg.png", 1080, 720, 1);
         jumpscareSprite = new Sprite("/EchoesOfTheOath/Resources/void_jumpscare.png", 700, 600, 1);
@@ -99,7 +97,6 @@ public class Quest4Panel extends JPanel {
         });
     }
 
-    // ... [startNewGame(), generateRoom(), checkCollisions(), handleInteraction() remain unchanged] ...
     public void startNewGame() {
         this.requestFocusInWindow();
         this.gameState = INSTRUCTION_STATE;
@@ -128,7 +125,7 @@ public class Quest4Panel extends JPanel {
         shards = new ArrayList<>();
         phantoms = new ArrayList<>();
         for (int i = 0; i < 3; i++) shards.add(new Rectangle(100 + rand.nextInt(800), 100 + rand.nextInt(500), 60, 60));
-        for (int i = 0; i < 6; i++) phantoms.add(new Rectangle(50 + rand.nextInt(900), 50 + rand.nextInt(600), 80, 80));
+        for (int i = 0; i < 20; i++) phantoms.add(new Rectangle(50 + rand.nextInt(900), 50 + rand.nextInt(600), 80, 80));
     }
 
     private void checkCollisions() {
@@ -387,8 +384,7 @@ public class Quest4Panel extends JPanel {
 
         g2.setColor(new Color(181, 153, 110)); 
         g2.setFont(titleFont);
-        
-        // Centering math for the title
+
         FontMetrics fm = g2.getFontMetrics();
         String title = "Trial of the Shadows";
         g2.drawString(title, (getWidth() - fm.stringWidth(title)) / 2, 250);

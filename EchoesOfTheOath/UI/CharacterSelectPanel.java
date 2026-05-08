@@ -3,6 +3,7 @@ package EchoesOfTheOath.UI;
 import EchoesOfTheOath.Characters.*;
 import EchoesOfTheOath.Characters.Character;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 
@@ -34,7 +35,7 @@ public class CharacterSelectPanel extends JPanel {
 
         setupUI(w, a, m);
 
-        Timer animationTimer = new Timer(100, e -> {
+        Timer animationTimer = new Timer(150, e -> {
             if (background != null) 
                 background.update();
 
@@ -269,11 +270,9 @@ public class CharacterSelectPanel extends JPanel {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Dark Background
                 g2.setColor(new Color(20, 20, 20, 245));
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
                 
-                // Gold Border
                 g2.setColor(new Color(181, 153, 110));
                 g2.setStroke(new BasicStroke(3));
                 g2.drawRoundRect(2, 2, getWidth()-5, getHeight()-5, 20, 20);
@@ -296,6 +295,19 @@ public class CharacterSelectPanel extends JPanel {
             BorderFactory.createLineBorder(new Color(181, 153, 110), 1),
             BorderFactory.createEmptyBorder(5, 10, 5, 10)));
         input.setBounds(40, 70, 320, 40);
+
+        input.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    dialog.dispose(); 
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    result[0] = input.getText();
+                    dialog.dispose();
+                }
+            }
+        });
+
         content.add(input);
 
         JButton confirm = new JButton("Enter the Realm") {

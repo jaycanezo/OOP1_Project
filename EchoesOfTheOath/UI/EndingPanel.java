@@ -42,7 +42,7 @@ public class EndingPanel extends JPanel {
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(new Color(40, 40, 40, 200));
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
-                g2.setColor(new Color(181, 153, 110)); // Your signature gold
+                g2.setColor(new Color(181, 153, 110)); 
                 g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
                 super.paintComponent(g);
             }
@@ -59,7 +59,6 @@ public class EndingPanel extends JPanel {
     public void startEnding() {
         alpha = 0f; 
         
-        // Prevent clicking while invisible
         restartBtn.setEnabled(false);
         exitBtn.setEnabled(false);
 
@@ -67,7 +66,7 @@ public class EndingPanel extends JPanel {
             alpha += 0.05f;
             if (alpha >= 1f) {
                 alpha = 1f;
-                // Enable buttons once fully visible
+
                 restartBtn.setEnabled(true);
                 exitBtn.setEnabled(true);
                 ((Timer)e.getSource()).stop(); 
@@ -82,19 +81,15 @@ public class EndingPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         
-        // 1. Draw Background (Solid, no fade)
         Image bg = new ImageIcon(getClass().getResource("/EchoesOfTheOath/Resources/nation3_bg10.png")).getImage();
         g2d.drawImage(bg, 0, 0, getWidth(), getHeight(), null);
 
-        // 2. Draw Dark Overlay (Solid, no fade)
         g2d.setColor(new Color(0, 0, 0, 180)); 
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        // 3. Apply the Alpha Fade to everything drawn after this point
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
-        // Now we can just use solid colors, and Java handles the fading!
         g2d.setColor(Color.WHITE);
         g2d.setFont(FontManager.getFont("Jersey10-Regular.ttf", 36f));
         
@@ -102,7 +97,7 @@ public class EndingPanel extends JPanel {
         int width = g2d.getFontMetrics().stringWidth(text);
         g2d.drawString(text, (getWidth() - width) / 2, getHeight() / 2);
 
-        g2d.setColor(new Color(255, 215, 0)); // Gold
+        g2d.setColor(new Color(255, 215, 0)); 
         g2d.setFont(FontManager.getFont("Jersey10-Regular.ttf", 32f));
         
         String endText = "- THE END -";
@@ -110,12 +105,10 @@ public class EndingPanel extends JPanel {
         g2d.drawString(endText, (getWidth() - endWidth) / 2, (getHeight() / 2) + 220);
     }
 
-    // 4. Override paintChildren to apply the fade to the Swing Buttons!
     @Override
     protected void paintChildren(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         
-        // Wrap the button container in the camera fade lens
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         super.paintChildren(g2);
         

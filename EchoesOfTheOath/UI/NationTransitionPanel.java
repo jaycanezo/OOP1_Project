@@ -21,33 +21,50 @@ public class NationTransitionPanel extends JPanel {
         this.setBackground(Color.BLACK);
     }
 
+    private boolean isLoadingDone = false; 
+
     public void startTransition(int nation) {
         if (transitionTimer != null && transitionTimer.isRunning()) {
             transitionTimer.stop();
         }
 
         game.getBgm().stopMusic();
+        isLoadingDone = false; 
 
         if (nation == 1) {
             background = new Sprite("/EchoesOfTheOath/Resources/nation1_bg1.png", 1920, 1080, 1);
             nationTitle = "NATION 1";
             nationName = "HUMANAS";
-            game.getBgm().playMusic("nation1_bgm1.wav"); //
+            game.getBgm().playMusic("nation1_bgm1.wav"); 
         } else if (nation == 2) {
             background = new Sprite("/EchoesOfTheOath/Resources/nation2_bg1.png", 1920, 1080, 1);
             nationTitle = "NATION 2";
             nationName = "VEYORA";
-            game.getBgm().playMusic("nation2_bgm.WAV"); //
+            game.getBgm().playMusic("nation2_bgm.WAV"); 
         } else if (nation == 3) {
             background = new Sprite("/EchoesOfTheOath/Resources/nation3_bg1.png", 1920, 1080, 1);
             nationTitle = "NATION 3";
             nationName = "DEMON REALMS";
-            game.getBgm().playMusic("nation3_bgm1.wav"); //
+            game.getBgm().playMusic("nation3_bgm1.wav"); 
         }
 
         textAlpha = 0f;
         bgAlpha = 0f;
         phase = 0;
+
+        SwingWorker<Void, Void> loader = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                game.story.preloadNationBackgrounds(nation);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                isLoadingDone = true; 
+            }
+        };
+        loader.execute();
 
         transitionTimer = new Timer(50, new java.awt.event.ActionListener() {
             int holdTicks = 0;
@@ -55,15 +72,23 @@ public class NationTransitionPanel extends JPanel {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 if (phase == 0) { 
                     bgAlpha += 0.04f;
-                    if (bgAlpha >= 1f) { bgAlpha = 1f; phase = 1; }
+                    if (bgAlpha >= 1f) { 
+                        bgAlpha = 1f; 
+                        phase = 1; 
+                    }
                 } 
                 else if (phase == 1) { 
                     textAlpha += 0.05f;
-                    if (textAlpha >= 1f) { textAlpha = 1f; phase = 2; }
+                    if (textAlpha >= 1f) { 
+                        textAlpha = 1f; 
+                        phase = 2; 
+                    }
                 } 
                 else if (phase == 2) { 
                     holdTicks++;
-                    if (holdTicks > 40) { phase = 3; } 
+                    if (holdTicks > 40 && isLoadingDone) { 
+                        phase = 3; 
+                    } 
                 } 
                 else if (phase == 3) { 
                     textAlpha -= 0.05f;
@@ -71,6 +96,8 @@ public class NationTransitionPanel extends JPanel {
                         textAlpha = 0f; 
                         phase = 4; 
                         transitionTimer.stop();
+
+                        game.story.applyPreloadedNation(); 
                         game.showScreen("story"); 
                     }
                 }

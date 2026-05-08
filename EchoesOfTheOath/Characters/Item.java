@@ -10,6 +10,8 @@ public class Item {
     private final int price;
     private final String[] dialogueLines;
     private final boolean isConsumable;
+    
+    private boolean isEquipped = false;
 
     public Item(String name, String desc, String imagePath, int price, String[] lines, boolean isConsumable) {
         this.name = name;
@@ -28,25 +30,14 @@ public class Item {
         this.image = img;
     }
 
-    public String getName() { 
-        return name; 
-    }
+    public String getName() { return name; }
+    public BufferedImage getImage() { return image; }
+    public String getDescription() { return description; }
+    public int getPrice() { return price; }
+    public boolean isConsumable() { return isConsumable; }
 
-    public BufferedImage getImage() { 
-        return image; 
-    }
-
-    public String getDescription() { 
-        return description; 
-    }
-
-    public int getPrice() { 
-        return price; 
-    }
-
-    public boolean isConsumable() { 
-        return isConsumable; 
-    }
+    public boolean isEquipped() { return isEquipped; }
+    public void setEquipped(boolean equipped) { this.isEquipped = equipped; }
 
     public String getRandomLine() {
         if (dialogueLines == null || dialogueLines.length == 0) 

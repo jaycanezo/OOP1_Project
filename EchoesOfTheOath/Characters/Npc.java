@@ -20,7 +20,7 @@ public class Npc {
         register("Healer", "/EchoesOfTheOath/Resources/npc6.png", 1000, 1000);
         register("Shadow Voice", "/EchoesOfTheOath/Resources/shadow_voice.png", 4968, 4808);
         register("Sarukdal Defeated", "/EchoesOfTheOath/Resources/sarukdal_after.png", 8888, 7552); 
-        register("Spirit of The Archivist", "/EchoesOfTheOath/Resources/spirit_archivist.png", 3200, 3200);
+        register("Spirit of the Archivist", "/EchoesOfTheOath/Resources/spirit_archivist.png", 3200, 3200);
         register("Spirit of Lunareth", "/EchoesOfTheOath/Resources/spirit_lunareth.png", 9328, 7168);
         register("Random NPC", "/EchoesOfTheOath/Resources/randomNPC.png", 865, 817);
 
