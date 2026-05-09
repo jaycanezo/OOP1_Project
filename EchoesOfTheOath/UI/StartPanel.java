@@ -92,11 +92,11 @@ public class StartPanel extends JPanel {
                 int btnHeight = 80;
                 
                 int centerX = (getWidth() - btnWidth) / 2;
-                int startY = getHeight() / 2 - 20; 
+                int startY = getHeight() / 2+20; 
 
                 newGameBtn.setBounds(centerX, startY, btnWidth, btnHeight);
-                continueBtn.setBounds(centerX, startY + 95, btnWidth, btnHeight);
-                exitBtn.setBounds(centerX, startY + 190, btnWidth, btnHeight);
+                continueBtn.setBounds(centerX, startY + 80, btnWidth, btnHeight);
+                exitBtn.setBounds(centerX, startY + 160, btnWidth, btnHeight);
             }
         });
     }
@@ -226,9 +226,9 @@ public class StartPanel extends JPanel {
         for (String line : lines) {
             
             if (line.equals("OATH")) {
-                g2.setFont(FontManager.getFont("Jersey10-Regular.ttf", 230f)); // Massive text
+                g2.setFont(FontManager.getFont("Jersey10-Regular.ttf", 300f)); // Massive text
             } else {
-                g2.setFont(FontManager.getFont("Jersey10-Regular.ttf", 80f));  // Smaller text
+                g2.setFont(FontManager.getFont("Jersey10-Regular.ttf", 100f));  // Smaller text
             }
             
             FontMetrics fm = g2.getFontMetrics();
@@ -251,7 +251,7 @@ public class StartPanel extends JPanel {
             g2.drawString(line, titleX, titleY);
             
             // Adjust the spacing between the lines
-            titleY += fm.getHeight() + 50; 
+            titleY += fm.getHeight() + 70; 
         }
     }
 

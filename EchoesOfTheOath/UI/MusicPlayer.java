@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.sound.sampled.*;
 
-public class MusicPlayer {
+public class MusicPlayer{
     private Clip clip;
     private final Map<String, URL> soundCache = new HashMap<>();
     private String currentPlaying = "";
