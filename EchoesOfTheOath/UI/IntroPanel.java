@@ -5,13 +5,15 @@ import EchoesOfTheOath.Characters.Character;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
 public class IntroPanel extends JPanel {
     private GameWindow game;
     private JTextArea textArea;
-    private JPanel splitScreen;
     private JPanel buttonPanel;
+    private JButton continueBtn;
     
     private enum State { 
         STORY, TRIAL 
@@ -31,9 +33,10 @@ public class IntroPanel extends JPanel {
     private Elarion boss = new Elarion();
     private Character currentHero;
 
-    private BattleSidePanel heroSide;
-    private BattleSidePanel enemySide;
     private Sprite background;
+    
+    // Active Effects list for full-screen drawing alignment
+    private List<ActiveEffect> activeEffects = new ArrayList<>();
 
     public IntroPanel(GameWindow game) {
         this.game = game;
@@ -47,6 +50,7 @@ public class IntroPanel extends JPanel {
         warrior.setLevel(12);
         archer.setLevel(12);
         mage.setLevel(12);
+        currentHero = warrior;
 
         setupComponents();
         startAnimation();
@@ -65,10 +69,12 @@ public class IntroPanel extends JPanel {
         this.currentState = State.STORY;
         this.charIndex = 0;
         this.alpha = 0.0f;
+        this.activeEffects.clear();
         
         textArea.setText("");
-        splitScreen.setVisible(false);
         buttonPanel.setVisible(false);
+        continueBtn.setVisible(false);
+        continueBtn.setText("Next Hero ➔");
         
         this.warrior = new Warrior(); 
         warrior.setLevel(12);
@@ -81,9 +87,6 @@ public class IntroPanel extends JPanel {
         mage.setLevel(12);
 
         this.boss = new Elarion();
-
-        heroSide.setOwner(warrior);
-        enemySide.setOwner(boss);
         
         if (animationTimer != null && !animationTimer.isRunning()) {
             animationTimer.start();
@@ -101,40 +104,37 @@ public class IntroPanel extends JPanel {
         if (currentState == State.TRIAL) {
             Character activeHero = getActiveHero();
 
+            // 1. Draw Hero
             if (activeHero != null && activeHero.getIdleSprite() != null) {
                 Sprite s = activeHero.getIdleSprite();
-
                 if (s.isLoaded()) {
                     g.drawImage(s.getCurrentFrame(), 100, getHeight() - 580, 400, 400, null);
                 }
             }
 
+            // 2. Draw Boss
             if (boss != null && boss.getIdleSprite() != null) {
                 Sprite s = boss.getIdleSprite();
-
                 if (s.isLoaded()) {
                     g.drawImage(s.getCurrentFrame(), getWidth() - 500, getHeight() - 580, 400, 400, null);
+                }
+            }
+
+            // 3. Draw Unclipped Effects over the Boss
+            for (ActiveEffect ae : activeEffects) {
+                if (ae.sprite != null && ae.sprite.isLoaded()) {
+                    g.drawImage(ae.sprite.getCurrentFrame(), ae.x, ae.y, ae.w, ae.h, null);
                 }
             }
         }
     }
 
     private void setupComponents() {
-        heroSide = new BattleSidePanel(warrior, 50, 50, 450, 450);
-        enemySide = new BattleSidePanel(boss, 50, 50, 450, 450);
-
-        splitScreen = new JPanel(new GridLayout(1, 2)); 
-        splitScreen.setOpaque(false);
-        splitScreen.setVisible(false);
-        splitScreen.add(heroSide);
-        splitScreen.add(enemySide);
-
-        add(splitScreen, BorderLayout.CENTER);
-
         JPanel bottomContainer = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
                 g2.setColor(Color.BLACK); 
                 g2.fillRoundRect(50, 10, getWidth()-100, getHeight()-20, 20, 20);
@@ -161,21 +161,83 @@ public class IntroPanel extends JPanel {
         buttonPanel = new JPanel(new GridLayout(1, 3, 5, 0)); 
         buttonPanel.setOpaque(false);
         buttonPanel.setVisible(false);
-
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 0, 50)); 
 
         buttonPanel.add(new SkillButton("Skill 1", 1));
         buttonPanel.add(new SkillButton("Skill 2", 2));
-        buttonPanel.add(new SkillButton("Skill 3", 3));
-
+        buttonPanel.add(new SkillButton("Ultimate", 3));
         bottomContainer.add(buttonPanel, BorderLayout.NORTH);
+
+        // Continue / Next Hero Button
+        JPanel continuePanel = new JPanel(new BorderLayout());
+        continuePanel.setOpaque(false);
+        continuePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 70)); 
+        
+        continueBtn = new JButton("Next Hero ➔") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                if (getModel().isPressed()) g2.setColor(new Color(60, 60, 60));
+                else if (getModel().isRollover()) g2.setColor(new Color(80, 80, 80));
+                else g2.setColor(new Color(40, 40, 40));
+                
+                g2.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
+                g2.setColor(new Color(175, 238, 171));
+                g2.setStroke(new BasicStroke(2));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
+                super.paintComponent(g);
+            }
+        };
+        continueBtn.setFont(smallText);
+        continueBtn.setForeground(Color.WHITE);
+        continueBtn.setContentAreaFilled(false);
+        continueBtn.setBorderPainted(false);
+        continueBtn.setFocusable(false);
+        continueBtn.setPreferredSize(new Dimension(160, 40));
+        continueBtn.setVisible(false); // Only visible in TRIAL state
+        continueBtn.addActionListener(e -> advanceHero());
+        
+        continuePanel.add(continueBtn, BorderLayout.SOUTH);
+        bottomContainer.add(continuePanel, BorderLayout.EAST);
+
         add(bottomContainer, BorderLayout.SOUTH);
+    }
+
+    private void advanceHero() {
+        if (currentHero == warrior) {
+            currentHero = archer;
+            currentHero.resetCooldowns();
+            textArea.setText("Warrior steps back. Archer, take aim!\nFeel free to test skills, then click Next Hero.");
+            refreshTrialButtons();
+        } else if (currentHero == archer) {
+            currentHero = mage;
+            currentHero.resetCooldowns();
+            textArea.setText("Archer steps back. Mage, unleash your mana!\nFeel free to test skills, then click Finish Trial.");
+            continueBtn.setText("Finish Trial ➔");
+            refreshTrialButtons();
+        } else if (currentHero == mage) {
+            if (animationTimer != null) animationTimer.stop();
+            game.showScreen("charSelect");
+        }
+        repaint();
+    }
+
+    private void playEffect(Sprite effect, int ex, int ey, int ew, int eh) {
+        ActiveEffect newEffect = new ActiveEffect(effect, ex, ey, ew, eh);
+        activeEffects.add(newEffect);
+
+        Timer t = new Timer(600, e -> { 
+            activeEffects.remove(newEffect); 
+            repaint(); 
+        });
+        t.setRepeats(false);
+        t.start();
     }
 
     private void startAnimation() {
         animationTimer = new Timer(50, e -> {
-            if (background != null) 
-                background.update();
+            if (background != null) background.update();
 
             warrior.updateAnimations();
             archer.updateAnimations();
@@ -195,8 +257,9 @@ public class IntroPanel extends JPanel {
             }
         
             if (currentState == State.TRIAL) {
-                heroSide.updateEffects();
-                enemySide.updateEffects();
+                for (ActiveEffect ae : activeEffects) {
+                    if (ae.sprite != null) ae.sprite.update();
+                }
             }
 
             repaint();
@@ -206,10 +269,10 @@ public class IntroPanel extends JPanel {
 
     private void switchToTrial() {
         currentState = State.TRIAL;
-        textArea.setText("The trial begins! Witness the power of the heroes.");
+        textArea.setText("The trial begins! Witness the power of the heroes.\nFeel free to test skills, then click Next Hero.");
         textArea.setForeground(Color.WHITE);
-        splitScreen.setVisible(true);
         buttonPanel.setVisible(true);
+        continueBtn.setVisible(true); 
 
         refreshTrialButtons();
         revalidate();
@@ -218,9 +281,7 @@ public class IntroPanel extends JPanel {
 
     private void handleTrialAction(int skillNum) {
         Character activeHero = getActiveHero();
-
-        if (activeHero == null) 
-            return;
+        if (activeHero == null) return;
 
         if (activeHero.isSkillAvailable(skillNum)) {
             Sprite[] effects = activeHero.getSkillSprite(skillNum);
@@ -228,8 +289,7 @@ public class IntroPanel extends JPanel {
             if (effects != null) {
                 for (int i = 0; i < effects.length; i++) {
                     final Sprite s = effects[i];
-                    Timer t = new Timer(i * 400, ev -> enemySide.playEffect(s, 50, 50, 450, 450));
-
+                    Timer t = new Timer(i * 400, ev -> playEffect(s, getWidth() - 525, getHeight() - 600, 450, 450));
                     t.setRepeats(false);
                     t.start();
                 }
@@ -238,50 +298,11 @@ public class IntroPanel extends JPanel {
 
         String result = activeHero.useSkill(skillNum, boss);
         
-        if (activeHero.getHp() <= 0) {
-            if (animationTimer != null) 
-                animationTimer.stop(); 
-
-            game.showScreen("gameover");
-            return; 
-        }
+        // Simulates the passage of a turn, ticking down the cooldowns!
+        activeHero.reduceCooldowns();
 
         refreshTrialButtons();
         textArea.setText(result);
-
-        if (activeHero == warrior && warrior.allSkillsUsed()) {
-            Timer delay = new Timer(1500, e -> {
-                textArea.append("\nWarrior has finished. Archer, take aim!");
-                currentHero = archer;
-                heroSide.setOwner(archer); 
-            
-                refreshTrialButtons();
-            });
-            delay.setRepeats(false);
-            delay.start();
-        } 
-        else if (activeHero == archer && archer.allSkillsUsed()) {
-            Timer delay = new Timer(1500, e -> {
-                textArea.append("\nArcher has finished. Mage, unleash your mana!");
-                currentHero = mage;    
-                heroSide.setOwner(mage);
-
-                refreshTrialButtons();
-            });
-            delay.setRepeats(false);
-            delay.start();
-        }
-        else if (activeHero == mage && mage.allSkillsUsed()) {
-            Timer delay = new Timer(2000, e -> {
-                if (animationTimer != null) 
-                    animationTimer.stop();
-            
-                game.showScreen("charSelect");
-            });
-
-            delay.setRepeats(false);
-            delay.start();
-        }
     }
 
     private void refreshTrialButtons() {
@@ -307,7 +328,6 @@ public class IntroPanel extends JPanel {
             setFont(smallText);
             setContentAreaFilled(false);
             setBorderPainted(false);
-            setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
             setForeground(Color.WHITE);
             
             addActionListener(e -> {
@@ -318,7 +338,6 @@ public class IntroPanel extends JPanel {
 
         public void updateButtonState() {
             Character activeHero = getActiveHero();
-
             if (activeHero != null) {
                 setEnabled(activeHero.getSkillCooldown(skillNum) == 0);
                 setForeground(new Color(175, 238, 171));
@@ -383,59 +402,6 @@ public class IntroPanel extends JPanel {
             this.y = y; 
             this.w = w; 
             this.h = h;
-        }
-    }
-
-    private class BattleSidePanel extends JPanel {
-        private Character owner;
-        private java.util.List<ActiveEffect> activeEffects = new java.util.ArrayList<>();
-        private int x, y, w, h;
-
-        public BattleSidePanel(Character owner, int x, int y, int w, int h) {
-            this.owner = owner;
-            this.x = x; 
-            this.y = y; 
-            this.w = w; 
-            this.h = h;
-
-            this.setOpaque(false);
-        }
-
-        public void setOwner(Character owner) { 
-            this.owner = owner; 
-            repaint(); 
-        }
-
-        public void updateEffects() {
-            for (ActiveEffect ae : activeEffects) {
-                if (ae.sprite != null) {
-                    ae.sprite.update();
-                }
-            }
-        }
-    
-        public void playEffect(Sprite effect, int ex, int ey, int ew, int eh) {
-            ActiveEffect newEffect = new ActiveEffect(effect, ex, ey, ew, eh);
-            activeEffects.add(newEffect);
-
-            Timer t = new Timer(600, e -> { 
-                activeEffects.remove(newEffect); 
-                repaint(); 
-            });
-
-            t.setRepeats(false);
-            t.start();
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-
-            for (ActiveEffect ae : activeEffects) {
-                if (ae.sprite != null && ae.sprite.isLoaded()) {
-                    g.drawImage(ae.sprite.getCurrentFrame(), ae.x, ae.y, ae.w, ae.h, null);
-                }
-            }
         }
     }
 }

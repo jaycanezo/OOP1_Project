@@ -1,8 +1,0 @@
-Nation:3
-BossIndex:4
-LineIndex:0
-Name:Jay
-CharacterClass:Mage
-Level:5
-Gold:2450.0
-HP:7500

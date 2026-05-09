@@ -6,7 +6,7 @@ public class Mage extends Character {
 
     public Mage() {
         super("Mage", 1500, 1, "Mage");
-        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Mage.png", 205, 256, 20));
+        setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Mage.png", 204, 204, 25));
         
         Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/Mage_Fireball.png", 128, 128, 7)};
         Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/Mage_HeatfireSurge.png", 128, 128, 12)};

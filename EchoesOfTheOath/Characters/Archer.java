@@ -8,7 +8,9 @@ public class Archer extends Character {
         super("Archer", 1600, 1, "Archer");
         setIdleSprite(new Sprite("/EchoesOfTheOath/Resources/Archer.png", 300, 300, 12));
         
-        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill1.png", 176, 144, 8)};
+        Sprite[] s1 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill1.png", 176, 144, 8),
+            new Sprite("/EchoesOfTheOath/Resources/archer_skill1.png", 320, 395, 8)
+        };
         Sprite[] s2 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill2.png", 159, 239, 10)};
         Sprite[] s3 = {new Sprite("/EchoesOfTheOath/Resources/archer_skill3.png", 143, 213, 12)};
         setSkillSprites(s1, s2, s3);
@@ -30,21 +32,21 @@ public class Archer extends Character {
         switch (skillNumber) {
             case 1:
                 bgm.playSFX("Archer_Piercingshot.wav");
-                dmg = ((random.nextInt(55 - 20 + 1) + 15 + 25) * getLevel()) + bonus;
+                dmg = ((random.nextInt(45 - 15 + 1) + 15 + 25) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Basic Skill: Piercing Shot!\n")
                    .append("You shoot a swift arrow at your foe!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("Archer_VolleyofNature.wav");
-                dmg = ((random.nextInt(110 - 80 + 1) + 70 + 20) * getLevel()) + bonus;
+                dmg = ((random.nextInt(95 - 70 + 1) + 70 + 20) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Advanced Skill: Volley of Nature!\n")
                    .append("You fire multiple arrows, raining them down on your enemy!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("Archer_Nature'swrath.wav");
-                dmg = ((random.nextInt(250 - 120 + 1) + 105 + 80) * getLevel()) + bonus;
+                dmg = ((random.nextInt(230 - 105 + 1) + 105 + 80) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Ultimate: Nature's Wrath!\n")
                    .append("You unleash four guiding arrows, striking your enemy with precision!");
                 setSkillCooldown(3, getSkillMaxCooldown(skillNumber));
@@ -73,9 +75,9 @@ public class Archer extends Character {
         int lvl = getLevel();
         int b = getSkillBonus(skillNumber);
         return switch (skillNumber) {
-            case 1 -> (20*lvl + 30*lvl + b) + " - " + (55*lvl + 30*lvl + b);
-            case 2 -> (80*lvl + 25*lvl + b) + " - " + (110*lvl + 25*lvl + b);
-            case 3 -> (120*lvl + 90*lvl + b) + " - " + (250*lvl + 90*lvl + b);
+            case 1 -> (15*lvl + 25*lvl + b) + " - " + (45*lvl + 25*lvl + b);
+            case 2 -> (70*lvl + 20*lvl + b) + " - " + (95*lvl + 20*lvl + b);
+            case 3 -> (105*lvl + 80*lvl + b) + " - " + (230*lvl + 80*lvl + b);
             default -> "0";
         };
     }

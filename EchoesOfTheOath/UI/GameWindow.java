@@ -46,9 +46,12 @@ public class GameWindow {
         this.bgm = new MusicPlayer();
 
         window = new JFrame("Echoes of the Oath");
-        window.setSize(1080,720);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        // Force the window to be exactly that size immediately
+        window.setSize(screenSize.width, screenSize.height);
+
         window.setResizable(false);
-        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
@@ -141,6 +144,9 @@ public class GameWindow {
         }
         else if (name.equals("quest1")) {
             bgm.playMusic("quest1_music.WAV");
+        } 
+        else if(name.equals("quest2")){
+            bgm.playMusic("quest2_bgm.WAV");
         }
         else if (name.equals("quest3")) {
             bgm.playMusic("quest3_music.wav");

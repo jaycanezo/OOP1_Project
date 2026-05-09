@@ -66,7 +66,7 @@ public class CreditsPanel extends JPanel {
             if (imgURL1 != null) {
                 memberPortraits[i] = new ImageIcon(imgURL1).getImage();
             } else {
-                System.out.println("Could not find image: dev" + i + ".png");
+                System.out.println("Could not find image: " + memberImageFiles[i]);
             }
         }
 
@@ -81,7 +81,9 @@ public class CreditsPanel extends JPanel {
     }
 
     public void startCredits() {
-        scrollY = 720; 
+        // --- THE FIX: Start exactly at the bottom of whatever the screen size is! ---
+        // (Fallback to 1080 if getHeight() is temporarily 0 during layout phase)
+        scrollY = getHeight() > 0 ? getHeight() : 1080; 
         fadeAlpha = 0f; 
         
         if (scrollTimer != null && scrollTimer.isRunning()) {
@@ -146,7 +148,10 @@ public class CreditsPanel extends JPanel {
 
         for (int i = 0; i < TOTAL_MEMBERS; i++) {
             int currentY = startY + (i * spacing);
-            int boxX = 200;
+            
+            // --- THE FIX: Dynamically center the Portrait + Text Block ---
+            int contentBlockWidth = 800; // Estimated total width of image + padding + text
+            int boxX = (getWidth() - contentBlockWidth) / 2+80;
 
             int picSize = 120;
             if (memberPortraits[i] != null) {
@@ -166,7 +171,7 @@ public class CreditsPanel extends JPanel {
                 g2.drawString("No Pic", boxX + 35, currentY + 65);
             }
 
-            int textX = boxX + picSize + 30;
+            int textX = boxX + picSize + 40; // Add spacing between image and text
 
             g2.setColor(Color.WHITE);
             g2.setFont(nameFont);
@@ -189,12 +194,16 @@ public class CreditsPanel extends JPanel {
         }
 
         int finalY = startY + (TOTAL_MEMBERS * spacing) + 100;
+        
         g2.setColor(new Color(181, 153, 110));
         g2.setFont(titleFont);
         g2.drawString("THANK YOU FOR PLAYING", (getWidth() - fmTitle.stringWidth("THANK YOU FOR PLAYING")) / 2, finalY);
 
+        // --- THE FIX: Perfectly measure and center the copyright text! ---
         g2.setColor(Color.GRAY);
         g2.setFont(descFont);
-        g2.drawString("©Mythspire Developers", (getWidth())/2, finalY+25);
+        FontMetrics fmDesc = g2.getFontMetrics(descFont);
+        String copyright = "©Mythspire Developers";
+        g2.drawString(copyright, (getWidth() - fmDesc.stringWidth(copyright)) / 2, finalY + 40);
     }
 }

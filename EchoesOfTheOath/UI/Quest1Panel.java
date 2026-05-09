@@ -45,14 +45,38 @@ public class Quest1Panel extends JPanel {
         
         gridPanel = new JPanel(new GridLayout(rows, cols, 5, 5));
         gridPanel.setOpaque(false);
-        gridPanel.setBounds(250, 120, 580, 520);
         this.add(gridPanel);
+
+        // --- NEW: DYNAMIC CENTERING LISTENER ---
+        // Centers the grid and expands the top panel based on true screen size
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                int screenW = getWidth();
+                int screenH = getHeight();
+
+                // Make the top text span the entire width of the screen
+                if (topPanel != null) {
+                    topPanel.setBounds(0, 50, screenW, 60);
+                }
+
+                // Keep the grid a fixed size, but move it to the exact mathematical center
+                int gridW = 580;
+                int gridH = 520;
+                int gridX = (screenW - gridW) / 2;
+                int gridY = (screenH - gridH) / 2 + 30; // Push it down slightly below the text
+
+                if (gridPanel != null) {
+                    gridPanel.setBounds(gridX, gridY, gridW, gridH);
+                }
+            }
+        });
     }
 
     private void setupTopPanel() {
         topPanel = new JPanel(new BorderLayout());
         topPanel.setOpaque(false);
-        topPanel.setBounds(0, 30, 1080, 60);
+        // Bounds will be handled by the ComponentListener now!
 
         statusLabel = new JLabel("Disarm the Arcane Runes of the Trapdoor to proceed. Right-click to flag.", SwingConstants.CENTER);
         statusLabel.setFont(normalFont);
@@ -295,7 +319,6 @@ public class Quest1Panel extends JPanel {
 
             showCustomPopup("Trap Triggered!", "Your bag caught fire! You lost all your items and dropped " + goldLost + " Gold!", false);
             
-            game.showScreen("story");
         });
         delay.setRepeats(false);
         delay.start();
@@ -312,7 +335,6 @@ public class Quest1Panel extends JPanel {
                 Character player = game.getChosenCharacter();
                 player.setGold(player.getGold() + 500);
                 showCustomPopup("Success!", "Vault unlocked! You found 500 Gold inside the chest!", true);
-                game.showScreen("story");
             });
             delay.setRepeats(false);
             delay.start();

@@ -21,14 +21,15 @@ public class Quest2Panel extends JPanel {
     private Font normalFont;
     private Font smallFont;
 
+    // --- NEW: Scaled Player Dimensions ---
     private int playerX = 490;
-    private final int playerY = 480; 
-    private final int playerWidth = 100;
-    private final int playerHeight = 150;
+    private int playerY = 480; 
+    private int playerWidth = 150;  // Increased size
+    private int playerHeight = 225; // Increased size
+    private int moveSpeed = 15;     // Increased speed to cross the wider screen
     
     private boolean leftPressed = false;
     private boolean rightPressed = false;
-    private final int moveSpeed = 8;
 
     private int timeLeft = 15;
     private boolean isGameOver = false;
@@ -82,7 +83,10 @@ public class Quest2Panel extends JPanel {
         if (this.player != null) {
             this.playerSprite = player.getIdleSprite();
         }
-        playerX = 490;
+        
+        // Start precisely in the middle of the dynamic screen
+        playerX = Math.max(0, (getWidth() - playerWidth) / 2);
+        
         timeLeft = 15;
         isGameOver = false;
         isVictory = false;
@@ -152,30 +156,43 @@ public class Quest2Panel extends JPanel {
     }
 
     private void updatePlayer() {
+        // --- THE FIX: Anchor player dynamically to the bottom! ---
+        playerY = getHeight() - 280; 
+
         if (leftPressed && playerX > 0) playerX -= moveSpeed;
         if (rightPressed && playerX < getWidth() - playerWidth) playerX += moveSpeed;
     }
 
     private void spawnAndMoveArrows() {
-        double baseSpeed = 5.0;
-        double speedMultiplier = (15 - timeLeft) * 0.6; 
+        // --- NEW: Difficulty scales dynamically with screen size ---
+        double heightScale = Math.max(1.0, getHeight() / 720.0);
+        double widthScale = Math.max(1.0, getWidth() / 1080.0);
+
+        double baseSpeed = 6.0 * heightScale; 
+        double speedMultiplier = (15 - timeLeft) * 0.8 * heightScale; 
         double currentArrowSpeed = baseSpeed + speedMultiplier;
 
-        if (Math.random() < 0.05 + ((15 - timeLeft) * 0.005)) {
-            arrows.add(new Arrow((int) (Math.random() * (getWidth() - 20)), -50));
+        // Multiply the spawn chance by the width scale so wide screens get more arrows!
+        double spawnChance = (0.07 + ((15 - timeLeft) * 0.007)) * widthScale;
+
+        if (Math.random() < spawnChance) {
+            arrows.add(new Arrow((int) (Math.random() * (getWidth() - 30)), -100));
         }
+        
         Iterator<Arrow> it = arrows.iterator();
         while (it.hasNext()) {
             Arrow a = it.next();
             a.y += currentArrowSpeed;
-            if (a.y > getHeight()) it.remove();
+            if (a.y > getHeight() + 100) it.remove();
         }
     }
 
     private void checkCollisions() {
-        Rectangle playerHitbox = new Rectangle(playerX + 20, playerY + 20, playerWidth - 40, playerHeight - 20);
+        Rectangle playerHitbox = new Rectangle(playerX + 30, playerY + 30, playerWidth - 60, playerHeight - 30);
+        
         for (Arrow a : arrows) {
-            Rectangle arrowHitbox = new Rectangle(a.x, (int)a.y, 15, 40);
+            // Arrow Hitbox scaled up to match the new drawing size
+            Rectangle arrowHitbox = new Rectangle(a.x, (int)a.y, 30, 80); 
             if (playerHitbox.intersects(arrowHitbox)) {
                 endQuest(false); 
                 break;
@@ -314,7 +331,8 @@ public class Quest2Panel extends JPanel {
 
         if (!showingInstructions) {
             if (playerSprite != null && playerSprite.isLoaded()) {
-                g2.drawImage(playerSprite.getCurrentFrame(), playerX - 50, playerY - 50, 200, 200, null);
+                // Drawing dimension increased from 200x200 to 300x300 for clarity
+                g2.drawImage(playerSprite.getCurrentFrame(), playerX - 75, playerY - 75, 300, 300, null);
             }
 
             g2.setColor(new Color(0, 0, 150)); 
@@ -390,14 +408,15 @@ public class Quest2Panel extends JPanel {
     }
 
     private void drawCustomArrow(Graphics2D g2, int x, int y) {
+        // --- NEW: Arrow scale doubled in size ---
         Path2D.Double arrowShape = new Path2D.Double();
-        arrowShape.moveTo(x + 7, y + 40); 
-        arrowShape.lineTo(x + 15, y + 25);
-        arrowShape.lineTo(x + 10, y + 25);
-        arrowShape.lineTo(x + 10, y);     
-        arrowShape.lineTo(x + 4, y);      
-        arrowShape.lineTo(x + 4, y + 25);
-        arrowShape.lineTo(x, y + 25);
+        arrowShape.moveTo(x + 15, y + 80); 
+        arrowShape.lineTo(x + 30, y + 50);
+        arrowShape.lineTo(x + 20, y + 50);
+        arrowShape.lineTo(x + 20, y);     
+        arrowShape.lineTo(x + 10, y);      
+        arrowShape.lineTo(x + 10, y + 50);
+        arrowShape.lineTo(x, y + 50);
         arrowShape.closePath();
         
         g2.fill(arrowShape);

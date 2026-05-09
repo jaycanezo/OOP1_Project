@@ -10,21 +10,26 @@ import javax.swing.*;
 public class StartPanel extends JPanel {
     private GameWindow game;
     private Timer animationTimer;
-    private JPanel buttonPanel;
+    
+    // Menu Buttons
     public JButton continueBtn; 
+    private JButton newGameBtn;
+    private JButton exitBtn;
 
+    // Images
     private BufferedImage bgImage;
     private BufferedImage flowerImg;
     private BufferedImage btnIdleImg;
     private BufferedImage btnHoverImg;
 
+    // Particle System
     private ArrayList<Flower> flowers;
     private ArrayList<Orb> orbs; 
 
     public StartPanel(GameWindow game) {
         this.game = game;
         this.setFocusable(true);
-        this.setLayout(null);
+        this.setLayout(null); // Keeps absolute positioning for buttons
 
         loadImages();
         setupParticleSystem();
@@ -60,12 +65,9 @@ public class StartPanel extends JPanel {
     }
 
     private void setupMenu() {
-        buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.setOpaque(true);
-    
-        JButton newGameBtn = createMenuButton("New Game", 370, 340);
-        continueBtn = createMenuButton("Continue", 370, 415); 
-        JButton exitBtn = createMenuButton("Exit", 370, 490);
+        newGameBtn = createMenuButton("New Game");
+        continueBtn = createMenuButton("Continue"); 
+        exitBtn = createMenuButton("Exit");
 
         refreshMenu(); 
 
@@ -80,6 +82,23 @@ public class StartPanel extends JPanel {
         add(newGameBtn);
         add(continueBtn);
         add(exitBtn);
+
+        // --- NEW: DYNAMIC CENTERING LISTENER ---
+        // Automatically calculates the center of the screen whenever the window size changes
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                int btnWidth = 340;
+                int btnHeight = 80;
+                
+                int centerX = (getWidth() - btnWidth) / 2;
+                int startY = getHeight() / 2 - 20; 
+
+                newGameBtn.setBounds(centerX, startY, btnWidth, btnHeight);
+                continueBtn.setBounds(centerX, startY + 95, btnWidth, btnHeight);
+                exitBtn.setBounds(centerX, startY + 190, btnWidth, btnHeight);
+            }
+        });
     }
 
     public void refreshMenu() {
@@ -91,7 +110,7 @@ public class StartPanel extends JPanel {
         }
     }
 
-    private JButton createMenuButton(String text, int x, int y) {
+    private JButton createMenuButton(String text) {
         JButton btn = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -158,7 +177,6 @@ public class StartPanel extends JPanel {
         btn.setContentAreaFilled(false);
         btn.setBorderPainted(false);
         btn.setFocusable(false);
-        btn.setBounds(x, y, 340, 80); 
 
         return btn;
     }
@@ -198,27 +216,43 @@ public class StartPanel extends JPanel {
         g2.setColor(new Color(0, 0, 0, 40));
         g2.fillRect(0, 0, getWidth(), getHeight());
 
-        g2.setFont(FontManager.getFont("Jersey10-Regular.ttf", 120f));
-        String title = "Echoes of the Oath";
-        FontMetrics fm = g2.getFontMetrics();
-        int titleX = (getWidth() - fm.stringWidth(title)) / 2;
-        int titleY = 240; 
-
-        g2.setColor(new Color(20, 5, 25, 230)); 
-        g2.drawString(title, titleX + 5, titleY + 5);
-
-        g2.setColor(new Color(255, 220, 100, 40));
-        g2.drawString(title, titleX - 3, titleY - 3);
-        g2.drawString(title, titleX + 3, titleY + 3);
-        g2.drawString(title, titleX - 3, titleY + 3);
-        g2.drawString(title, titleX + 3, titleY - 3);
+        // --- MULTI-SIZE TITLE DRAWING ---
+        String title = "ECHOES OF THE\nOATH";
+        String[] lines = title.split("\n");
         
-        g2.setColor(new Color(255, 240, 150, 80));
-        g2.drawString(title, titleX - 1, titleY - 1);
-        g2.drawString(title, titleX + 1, titleY + 1);
+        // Dynamically calculate where the title should start based on screen height
+        int titleY = Math.max(100, getHeight() / 2 - 200); 
 
-        g2.setColor(new Color(255, 250, 230)); 
-        g2.drawString(title, titleX, titleY);
+        for (String line : lines) {
+            
+            if (line.equals("OATH")) {
+                g2.setFont(FontManager.getFont("Jersey10-Regular.ttf", 230f)); // Massive text
+            } else {
+                g2.setFont(FontManager.getFont("Jersey10-Regular.ttf", 80f));  // Smaller text
+            }
+            
+            FontMetrics fm = g2.getFontMetrics();
+            int titleX = (getWidth() - fm.stringWidth(line)) / 2; 
+
+            g2.setColor(new Color(20, 5, 25, 230)); 
+            g2.drawString(line, titleX + 5, titleY + 5);
+
+            g2.setColor(new Color(255, 220, 100, 40));
+            g2.drawString(line, titleX - 3, titleY - 3);
+            g2.drawString(line, titleX + 3, titleY + 3);
+            g2.drawString(line, titleX - 3, titleY + 3);
+            g2.drawString(line, titleX + 3, titleY - 3);
+            
+            g2.setColor(new Color(255, 240, 150, 80));
+            g2.drawString(line, titleX - 1, titleY - 1);
+            g2.drawString(line, titleX + 1, titleY + 1);
+
+            g2.setColor(new Color(255, 250, 230)); 
+            g2.drawString(line, titleX, titleY);
+            
+            // Adjust the spacing between the lines
+            titleY += fm.getHeight() + 50; 
+        }
     }
 
     private class Flower {
@@ -228,8 +262,9 @@ public class StartPanel extends JPanel {
         Flower() { reset(true); }
 
         void reset(boolean firstTime) {
-            x = (float) (Math.random() * 1080);
-            y = firstTime ? (float) (Math.random() * 720) : -50;
+            // Replaced hardcoded 1080/720 with dynamic panel dimensions
+            x = (float) (Math.random() * Math.max(1, StartPanel.this.getWidth()));
+            y = firstTime ? (float) (Math.random() * Math.max(1, StartPanel.this.getHeight())) : -50;
             speed = 0.2f + (float) (Math.random() * 0.8f);
             swaySpeed = 0.01f + (float) (Math.random() * 0.02f);
             sway = (float) (Math.random() * Math.PI * 2);
@@ -241,7 +276,7 @@ public class StartPanel extends JPanel {
             y += speed;
             sway += swaySpeed;
             x += Math.sin(sway) * 0.8f;
-            if (y > 750) reset(false);
+            if (y > StartPanel.this.getHeight() + 30) reset(false);
         }
     }
 
@@ -252,8 +287,9 @@ public class StartPanel extends JPanel {
         Orb() { reset(true); }
 
         void reset(boolean firstTime) {
-            x = (float) (Math.random() * 1080);
-            y = firstTime ? (float) (Math.random() * 720) : -20;
+            // Replaced hardcoded 1080/720 with dynamic panel dimensions
+            x = (float) (Math.random() * Math.max(1, StartPanel.this.getWidth()));
+            y = firstTime ? (float) (Math.random() * Math.max(1, StartPanel.this.getHeight())) : -20;
             speed = 0.1f + (float) (Math.random() * 0.3f); 
             size = 3 + (int) (Math.random() * 4); 
             pulse = (float) (Math.random() * Math.PI * 2); 
@@ -268,7 +304,7 @@ public class StartPanel extends JPanel {
             pulse += pulseSpeed;
             alpha = 0.2f + (float) Math.abs(Math.sin(pulse)) * 0.6f;
 
-            if (y > 750) reset(false);
+            if (y > StartPanel.this.getHeight() + 30) reset(false);
         }
     }
 }

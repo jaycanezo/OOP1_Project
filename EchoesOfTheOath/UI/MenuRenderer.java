@@ -14,11 +14,24 @@ public class MenuRenderer {
     public static void drawInventory(Graphics2D g2, Character player, int slotCol, int slotRow, int scrollOffset) {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
-        int totalH = 390; 
-        int y = 70;
+        // --- Dynamic Full Screen Bounds ---
+        int screenW = g2.getClipBounds().width;
+        int screenH = g2.getClipBounds().height;
 
-        int statX = 40;
+        int totalH = 390; 
         int statW = 280;
+        int equipW = 260;
+        int invW = 415;
+        int padding = 15;
+        
+        // Center horizontally
+        int totalW = statW + padding + equipW + padding + invW;
+        int statX = (screenW - totalW) / 2;
+        
+        // --- THE FIX: Center vertically only within the space ABOVE the dialogue box ---
+        int availableHeight = screenH - 220; 
+        int y = (availableHeight - totalH) / 2; 
+
         drawWindow(g2, statX, y, statW, totalH, "STATS");
         
         int sx = statX + 20;
@@ -38,8 +51,7 @@ public class MenuRenderer {
         if (player.getSkillName(2) != null) g2.drawString("• " + player.getSkillName(2) + " (" + player.getSkillDamageRange(2) + ")", sx, sy + 225);
         if (player.getSkillName(3) != null) g2.drawString("• " + player.getSkillName(3) + " (" + player.getSkillDamageRange(3) + ")", sx, sy + 250);
 
-        int equipX = statX + statW + 15;
-        int equipW = 260;
+        int equipX = statX + statW + padding;
         drawWindow(g2, equipX, y, equipW, totalH, "EQUIPPED");
 
         int ex = equipX + 20;
@@ -61,8 +73,7 @@ public class MenuRenderer {
             g2.drawString("• None", ex, ey);
         }
 
-        int invX = equipX + equipW + 15;
-        int invW = 415;
+        int invX = equipX + equipW + padding;
         drawWindow(g2, invX, y, invW, totalH, "INVENTORY");
         renderItems(g2, player.getInventory(), invX + 35, y + 80, slotCol, slotRow, scrollOffset, 5, true);
     }
@@ -70,11 +81,17 @@ public class MenuRenderer {
     public static void drawShop(Graphics2D g2, int gold, ArrayList<Item> stock, int slotCol, int slotRow, String resultMsg) {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
-        int screenW = 1080;
+        // --- Dynamic Full Screen Bounds ---
+        int screenW = g2.getClipBounds().width;
+        int screenH = g2.getClipBounds().height;
+        
         int totalW = 980;
         int totalH = 390; 
+        
+        // --- THE FIX: Center vertically only within the space ABOVE the dialogue box ---
+        int availableHeight = screenH - 220;
         int x = (screenW - totalW) / 2;
-        int y = 70;
+        int y = (availableHeight - totalH) / 2;
 
         drawWindow(g2, x, y, totalW, totalH, "SHOP | Gold: " + gold);
         renderItems(g2, stock, x + 40, y + 80, slotCol, slotRow, 0, 5, false); 
@@ -190,7 +207,16 @@ public class MenuRenderer {
     }
 
     public static void drawSubMenu(Graphics2D g2, int subMenuCursor) {
-        int x = 520, y = 150, w = 130, h = 105; 
+        // --- Dynamic Full Screen Bounds ---
+        int screenW = g2.getClipBounds().width;
+        int screenH = g2.getClipBounds().height;
+        
+        int w = 130, h = 105; 
+        
+        // --- THE FIX: Center vertically only within the space ABOVE the dialogue box ---
+        int availableHeight = screenH - 220;
+        int x = (screenW - w) / 2;
+        int y = (availableHeight - h) / 2;
 
         g2.setColor(new Color(10, 10, 10, 250));
         g2.fillRoundRect(x, y, w, h, 12, 12);
@@ -216,7 +242,10 @@ public class MenuRenderer {
     public static void drawOptionsOverlay(Graphics2D g2, int cursorNum) {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         
-        int screenW = 1080, screenH = 720;
+        // Options usually spans the whole screen, so we don't subtract the dialogue box here!
+        int screenW = g2.getClipBounds().width;
+        int screenH = g2.getClipBounds().height;
+        
         int w = 500, h = 550; 
         int x = (screenW - w) / 2;
         int y = (screenH - h) / 2;
