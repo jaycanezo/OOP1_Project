@@ -19,12 +19,8 @@ public class Warrior extends Character {
 
     @Override
     public String useSkill(int skillNumber, Character enemy) {
-        if (skillNumber < 1 || skillNumber > 3) 
-            return "Invalid Skill Number.\n";
-        
-        if (!isSkillAvailable(skillNumber)) {
-            return "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining.";
-        }
+        if (skillNumber < 1 || skillNumber > 3) return "Invalid Skill Number.\n";
+        if (!isSkillAvailable(skillNumber)) return "Skill is on cooldown! " + getSkillCooldown(skillNumber) + " turn(s) remaining.";
 
         int dmg = 0;
         int bonus = getSkillBonus(skillNumber);
@@ -33,23 +29,23 @@ public class Warrior extends Character {
         switch (skillNumber) {
             case 1:
                 bgm.playSFX("Slash.wav");
-                dmg = ((random.nextInt(55 - 20 + 1) + 15 + 15) * getLevel()) + bonus;
-                msg.append(getName()).append(" uses Basic Skill: Slash!\n")
-                   .append("You swing your sword in a swift slash toward your enemy, dealing damage!");
+                // Weaker: 100 to 150 damage
+                dmg = ((random.nextInt(150 - 100 + 1) + 100) * getLevel()) + bonus;
+                msg.append(getName()).append(" uses Basic Skill: Slash!\n").append("You swing your sword in a swift slash toward your enemy, dealing damage!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("crimsonStrike.wav");
-                dmg = ((random.nextInt(105 - 75 + 1) + 65 + 10) * getLevel()) + bonus;
-                msg.append(getName()).append(" uses Advanced Skill: Crimson Strike!\n")
-                   .append("You perform a heavy, sweeping strike, landing a fierce blow on your enemy!");
+                // Weaker: 200 to 300 damage
+                dmg = ((random.nextInt(300 - 200 + 1) + 200) * getLevel()) + bonus;
+                msg.append(getName()).append(" uses Advanced Skill: Crimson Strike!\n").append("You perform a heavy, sweeping strike, landing a fierce blow on your enemy!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("bladeQuake.wav");
-                dmg = ((random.nextInt(280 - 150 + 1) + 135 + 40) * getLevel()) + bonus;
-                msg.append(getName()).append(" uses Ultimate: Blade Quake!\n")
-                   .append("You unleash devastating strength in a massive ground-splitting attack on your enemy!");
+                // Weaker: 400 to 600 damage
+                dmg = ((random.nextInt(600 - 400 + 1) + 400) * getLevel()) + bonus;
+                msg.append(getName()).append(" uses Ultimate: Blade Quake!\n").append("You unleash devastating strength in a massive ground-splitting attack on your enemy!");
                 setSkillCooldown(3, getSkillMaxCooldown(skillNumber));
                 break;
         }
@@ -76,9 +72,9 @@ public class Warrior extends Character {
         int lvl = getLevel();
         int b = getSkillBonus(skillNumber);
         return switch(skillNumber) {
-            case 1 -> (20*lvl + 20*lvl + b) + " - " + (55*lvl + 20*lvl + b);
-            case 2 -> (75*lvl + 20*lvl + b) + " - " + (105*lvl + 20*lvl + b);
-            case 3 -> (150*lvl + 50*lvl + b) + " - " + (280*lvl + 50*lvl + b);
+            case 1 -> (100*lvl + b) + " - " + (150*lvl + b);
+            case 2 -> (200*lvl + b) + " - " + (300*lvl + b);
+            case 3 -> (400*lvl + b) + " - " + (600*lvl + b);
             default -> "0";
         };
     }
@@ -87,9 +83,7 @@ public class Warrior extends Character {
     public String displaySkills() {
         StringBuilder msg = new StringBuilder();
         for (int i = 1; i <= 3; i++) {
-            msg.append(i).append(". ").append(getSkillName(i))
-               .append(" | Damage: ").append(getSkillDamageRange(i))
-               .append(" | Cooldown: ").append(getSkillCooldown(i)).append("\n");
+            msg.append(i).append(". ").append(getSkillName(i)).append(" | Damage: ").append(getSkillDamageRange(i)).append(" | Cooldown: ").append(getSkillCooldown(i)).append("\n");
         }
         return msg.toString();
     }

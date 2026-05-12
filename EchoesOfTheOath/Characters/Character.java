@@ -18,6 +18,7 @@ abstract public class Character {
     private boolean[] isUsed = new boolean[3];
     public ArrayList<Item> inventory = new ArrayList<>();
     public final int maxInventorySize = 20;
+    private int deathCount = 0;
     private Sprite idleSprite;
     private Sprite[] skill1Sprite, skill2Sprite, skill3Sprite;
 
@@ -117,6 +118,10 @@ abstract public class Character {
         };
     }
 
+    public int getDeathCount() { 
+        return this.deathCount; 
+    }
+
     public void setIdleSprite(Sprite s) { 
         this.idleSprite = s; 
     }
@@ -148,6 +153,10 @@ abstract public class Character {
         this.skill1Sprite = s1;
         this.skill2Sprite = s2;
         this.skill3Sprite = s3;
+    }
+
+    public void setDeathCount(int deaths) { 
+        this.deathCount = deaths; 
     }
     
     public void addSkillBonus(int skillSlot, int amount) {

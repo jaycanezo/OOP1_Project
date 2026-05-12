@@ -25,21 +25,21 @@ public class Sarukdal extends Character {
         switch (skillNumber) {
             case 1:
                 bgm.playSFX("SARUKDAL -- Warden’s Grasp.wav");
-                dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
+                dmg = (random.nextInt(80 - 50 + 1) + 50) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: Warden's Grasp!\n")
                    .append("Sarukdal hurls spectral chains at you, attempting to seize you!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("SARUKDAL -- Abyssal Lament.wav");
-                dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
+                dmg = (random.nextInt(180 - 120 + 1) + 120) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Abyssal Lament!\n")
                    .append("Dark flames spread across the battlefield, scorching everything around you!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("SARUKDAL -- Judgement of the Forsaken.wav");
-                dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
+                dmg = (random.nextInt(400 - 250 + 1) + 250) * getLevel();
                 msg.append(getName()).append(" uses Ultimate: Judgment of the Forsaken!\n")
                    .append("Glowing fire blades descend from the sky, targeting you with devastating force!");
                 setSkillCooldown(3, getSkillMaxCooldown(skillNumber));

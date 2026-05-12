@@ -25,21 +25,21 @@ public class Ilaryx extends Character {
         switch (skillNumber) {
             case 1:
                 bgm.playSFX("ILARYX quickshot_noisles.wav");
-                dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
+                dmg = (random.nextInt(80 - 50 + 1) + 50) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: Quick Shot!\n")
                    .append("Ilaryx fires a Double Tap! Two arrows blaze toward you!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("ILARYX hunters trap_noisles.wav");
-                dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
+                dmg = (random.nextInt(180 - 120 + 1) + 120) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Hunter's Trap!\n")
                    .append("Ilaryx activates an Invisible Snare! You feel the trap closing in around you!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("ILARYX Arrow of the Silverfang_noisles.wav");
-                dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
+                dmg = (random.nextInt(400 - 250 + 1) + 250) * getLevel();
                 msg.append(getName()).append(" uses Ultimate: Arrow of the Silverfang!\n")
                    .append("Ilaryx channels silver magic into her bow, firing a massive, charged arrow directly at you. Brace yourself!");
                 setSkillCooldown(3, getSkillMaxCooldown(skillNumber));

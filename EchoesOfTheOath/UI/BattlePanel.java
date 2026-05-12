@@ -279,6 +279,8 @@ public class BattlePanel extends JPanel {
             game.getBgm().stopMusic();
             
             logArea.setText("You have fallen...");
+
+            game.handleDeathCheckpoint();
             
             Timer delay = new Timer(1500, e -> {
                 animationTimer.stop(); 

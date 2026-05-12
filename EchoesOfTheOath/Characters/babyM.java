@@ -25,21 +25,21 @@ public class babyM extends Character {
         switch (skillNumber) {
             case 1:
                 bgm.playSFX("BabyM-Tantrum Toss.wav");
-                dmg = (random.nextInt(65 - 35 + 1) + 35) * getLevel();
+                dmg = (random.nextInt(80 - 50 + 1) + 50) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: Tantrum Toss!\n")
                    .append("The infant king shrieks furiously and hurls his golden rattle straight at you!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
                 bgm.playSFX("BabyM-Feigned Faint.wav");
-                dmg = (random.nextInt(105 - 80 + 1) + 80) * getLevel();
+                dmg = (random.nextInt(180 - 120 + 1) + 120) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Feigned Faint!\n")
                    .append("Baby M suddenly collapses, tricking you into lowering your guard before striking you with a vicious surprise attack!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
                 bgm.playSFX("BabyM-Enforced Decree.wav");
-                dmg = (random.nextInt(300 - 180 + 1) + 180) * getLevel();
+                dmg = (random.nextInt(400 - 250 + 1) + 250) * getLevel();
                 msg.append(getName()).append(" uses Ultimate: Enforced Decree!\n")
                    .append("The infant King freezes mid-air as if controlled by an unseen force, then hurtles toward you with unstoppable, mechanical precision!");
                 setSkillCooldown(3, getSkillMaxCooldown(skillNumber));

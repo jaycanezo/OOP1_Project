@@ -23,6 +23,11 @@ public class StoryPanel extends JPanel {
     private Sprite playerSprite, npcSprite;
     private float uiAlpha = 1.0f;
     private boolean isFadingOut = false;
+    
+    // --- THE FIX: INPUT LOCK FLAG ---
+    private boolean isInputLocked = false; 
+    // --------------------------------
+
     private Timer fadeOutTimer;
 
     private String[] dialogueText;
@@ -61,8 +66,9 @@ public class StoryPanel extends JPanel {
         animationTimer.start();
 
         addKeyListener(new KeyAdapter() {
+            // --- THE FIX: USE KEY RELEASED TO PREVENT BUFFERING/MASHING BUG ---
             @Override
-            public void keyPressed(KeyEvent e) {
+            public void keyReleased(KeyEvent e) {
                 handleInput(e.getKeyCode());
             }
         });
@@ -156,6 +162,7 @@ public class StoryPanel extends JPanel {
     }
 
     public void loadSelectedHero() {
+        this.isInputLocked = false; // THE FIX: UNLOCK CONTROLS WHEN RETURNING TO STORY
         this.player = game.getChosenCharacter();
         this.gameState = PLAY_STATE; 
         this.optionsCursor = 0;
@@ -197,7 +204,8 @@ public class StoryPanel extends JPanel {
     }
 
     private void handleInput(int code) {
-        if (isFadingOut) return; 
+        // --- THE FIX: IGNORE ALL KEYS IF FADING OR LOCKED ---
+        if (isFadingOut || isInputLocked) return; 
 
         if (gameState == PLAY_STATE) {
             if (code == KeyEvent.VK_SPACE || code == KeyEvent.VK_ENTER) {
@@ -297,9 +305,11 @@ public class StoryPanel extends JPanel {
 
             if (game.getBossIndex() % 2 == 0 && game.getBossIndex() > 0) {
                 int nextNation = (game.getBossIndex() / 2) + 1;
+                isInputLocked = true; // LOCK INPUT
                 game.startNationTransition(nextNation);
                 game.autosave(); 
             } else {
+                isInputLocked = true; // LOCK INPUT
                 game.showScreen("battle");
             }
             return;
@@ -307,34 +317,19 @@ public class StoryPanel extends JPanel {
 
         if (currentNation == 1) {
             switch (lineIndex) {
-                case 0: 
-                    break;
-                case 1: 
-                    bgm.playSFX("nation1_sfx1.wav"); 
-                    break;
-                case 2: 
-                    setBackgroundImage("nation1_bg2.png"); 
-                    currentSpeaker = ""; 
-                break;
-                case 4: 
-                    bgm.playSFX("nation1_sfx1.wav"); 
-                    break;
+                case 0: break;
+                case 1: bgm.playSFX("nation1_sfx1.wav"); break;
+                case 2: setBackgroundImage("nation1_bg2.png"); currentSpeaker = ""; break;
+                case 4: bgm.playSFX("nation1_sfx1.wav"); break;
                 case 5: 
                     updateScene("Guard", true); 
                     bgm.playSFX("nation1_sfx2.wav"); 
                     currentSpeaker = ""; 
                     break;
-                case 6: 
-                    updateScene("Guard", true); 
-                    break;
-                case 7: 
-                    currentSpeaker = player.getName(); 
-                    break;
-                case 8: 
-                    updateScene("Guard", true); 
-                    break;
-                case 9: 
-                    currentSpeaker = ""; 
+                case 6: updateScene("Guard", true); break;
+                case 7: currentSpeaker = player.getName(); break;
+                case 8: updateScene("Guard", true); break;
+                case 9: currentSpeaker = ""; 
                     break;
                 case 10: 
                     setBackgroundImage("nation1_bg3.png"); 
@@ -414,6 +409,7 @@ public class StoryPanel extends JPanel {
                     showNPC = true; 
                     break;
                 case 37: 
+                    isInputLocked = true; // LOCK INPUT
                     game.showScreen("battle"); 
                     currentSpeaker = ""; 
                     showNPC = false; 
@@ -437,6 +433,7 @@ public class StoryPanel extends JPanel {
                     currentSpeaker = ""; 
                     break;
                 case 45: 
+                    isInputLocked = true; // LOCK INPUT
                     game.showScreen("quest1"); 
                     currentSpeaker = ""; 
                     break;
@@ -482,6 +479,7 @@ public class StoryPanel extends JPanel {
                     currentSpeaker = "Archivist"; 
                     break;
                 case 59: 
+                    isInputLocked = true; // LOCK INPUT
                     game.showScreen("battle"); 
                     currentSpeaker = "";
                     break;
@@ -538,7 +536,11 @@ public class StoryPanel extends JPanel {
                 case 19: currentSpeaker = ""; break;
                 case 20: currentSpeaker = player.getName(); break;
                 case 21: currentSpeaker = ""; break;
-                case 22: game.showScreen("quest2"); setBackgroundImage("nation2_bg3.png"); break;
+                case 22: 
+                    isInputLocked = true; // LOCK INPUT
+                    game.showScreen("quest2"); 
+                    setBackgroundImage("nation2_bg3.png"); 
+                    break;
                 case 23: updateScene("Healer", true); currentSpeaker = "Healer"; break;
                 case 24: currentSpeaker = player.getName(); break;
                 case 25: currentSpeaker = "Healer"; break;
@@ -558,7 +560,10 @@ public class StoryPanel extends JPanel {
                 case 43: currentSpeaker = "Ilaryx"; break;
                 case 44: currentSpeaker = player.getName(); break;
                 case 45: currentSpeaker = "Ilaryx"; break;
-                case 47: game.showScreen("battle"); break;
+                case 47: 
+                    isInputLocked = true; // LOCK INPUT
+                    game.showScreen("battle"); 
+                    break;
                 case 48: updateScene("Ilaryx", true); currentSpeaker = "Ilaryx"; break;
                 case 49: currentSpeaker = player.getName(); break;
                 case 50: currentSpeaker = ""; break;
@@ -581,7 +586,12 @@ public class StoryPanel extends JPanel {
                 case 71: currentSpeaker = "Lunareth"; break;
                 case 72: currentSpeaker = player.getName(); break;
                 case 73: currentSpeaker = "Lunareth"; break;
-                case 74: game.showScreen("battle"); updateScene("Lunareth", true); currentSpeaker = ""; break;
+                case 74: 
+                    isInputLocked = true; // LOCK INPUT
+                    game.showScreen("battle"); 
+                    updateScene("Lunareth", true); 
+                    currentSpeaker = ""; 
+                    break;
                 case 75: currentSpeaker = "Lunareth"; break;
                 case 76: currentSpeaker = player.getName(); break;
                 case 77: currentSpeaker = "Lunareth"; break;
@@ -626,8 +636,18 @@ public class StoryPanel extends JPanel {
                 case 29: currentSpeaker = "Sarukdal"; break;
                 case 30:
                 case 31: currentSpeaker = player.getName(); break;
-                case 32: currentSpeaker = ""; showNPC = false; game.showScreen("battle"); break; 
-                case 33: currentSpeaker = ""; showNPC = false; game.flashlightBlinkTransition("quest3"); break;
+                case 32: 
+                    isInputLocked = true; // LOCK INPUT
+                    currentSpeaker = ""; 
+                    showNPC = false; 
+                    game.showScreen("battle"); 
+                    break; 
+                case 33: 
+                    isInputLocked = true; // LOCK INPUT
+                    currentSpeaker = ""; 
+                    showNPC = false; 
+                    game.flashlightBlinkTransition("quest3"); 
+                    break;
                 case 34: setBackgroundImage("nation3_bg6.png"); currentSpeaker = ""; break;
                 case 35: updateScene("Sarukdal Defeated", true); currentSpeaker = "Sarukdal"; break;
                 case 36: currentSpeaker = player.getName(); break;
@@ -638,7 +658,11 @@ public class StoryPanel extends JPanel {
                 case 41:
                 case 42: currentSpeaker = player.getName(); break;
                 case 43: setBackgroundImage("nation3_bg7.png"); currentSpeaker = player.getName(); break;
-                case 44: currentSpeaker = ""; game.flashlightBlinkTransition("quest4"); break;
+                case 44: 
+                    isInputLocked = true; // LOCK INPUT
+                    currentSpeaker = ""; 
+                    game.flashlightBlinkTransition("quest4"); 
+                    break;
                 case 45: setBackgroundImage("nation3_bg8.png"); currentSpeaker = player.getName(); break;
                 case 46:
                 case 47:
@@ -655,7 +679,12 @@ public class StoryPanel extends JPanel {
                 case 58: currentSpeaker = "Elarion"; break;
                 case 59: currentSpeaker = player.getName(); break;
                 case 60: currentSpeaker = "Elarion"; break;
-                case 61: currentSpeaker = ""; showNPC = false; game.showScreen("battle"); break; 
+                case 61: 
+                    isInputLocked = true; // LOCK INPUT
+                    currentSpeaker = ""; 
+                    showNPC = false; 
+                    game.showScreen("battle"); 
+                    break; 
                 case 62: currentSpeaker = ""; break;
                 case 63: updateScene("Elarion", true); currentSpeaker = "Elarion"; break;
                 case 64: currentSpeaker = player.getName(); break;
@@ -668,7 +697,10 @@ public class StoryPanel extends JPanel {
                 case 71:
                 case 72:
                 case 73: currentSpeaker = player.getName(); break;
-                case 74: startEndingTransition(); break;
+                case 74: 
+                    isInputLocked = true; // LOCK INPUT
+                    startEndingTransition(); 
+                    break;
             }
         }
         repaint();

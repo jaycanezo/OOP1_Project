@@ -81,8 +81,6 @@ public class CreditsPanel extends JPanel {
     }
 
     public void startCredits() {
-        // --- THE FIX: Start exactly at the bottom of whatever the screen size is! ---
-        // (Fallback to 1080 if getHeight() is temporarily 0 during layout phase)
         scrollY = getHeight() > 0 ? getHeight() : 1080; 
         fadeAlpha = 0f; 
         
@@ -148,12 +146,10 @@ public class CreditsPanel extends JPanel {
 
         for (int i = 0; i < TOTAL_MEMBERS; i++) {
             int currentY = startY + (i * spacing);
-            
-            // --- THE FIX: Dynamically center the Portrait + Text Block ---
-            int contentBlockWidth = 800; // Estimated total width of image + padding + text
+            int contentBlockWidth = 800; 
             int boxX = (getWidth() - contentBlockWidth) / 2+80;
-
             int picSize = 120;
+
             if (memberPortraits[i] != null) {
                 g2.drawImage(memberPortraits[i], boxX, currentY, picSize, picSize, null);
                 g2.setColor(new Color(181, 153, 110));
@@ -171,7 +167,7 @@ public class CreditsPanel extends JPanel {
                 g2.drawString("No Pic", boxX + 35, currentY + 65);
             }
 
-            int textX = boxX + picSize + 40; // Add spacing between image and text
+            int textX = boxX + picSize + 40;
 
             g2.setColor(Color.WHITE);
             g2.setFont(nameFont);
@@ -199,7 +195,6 @@ public class CreditsPanel extends JPanel {
         g2.setFont(titleFont);
         g2.drawString("THANK YOU FOR PLAYING", (getWidth() - fmTitle.stringWidth("THANK YOU FOR PLAYING")) / 2, finalY);
 
-        // --- THE FIX: Perfectly measure and center the copyright text! ---
         g2.setColor(Color.GRAY);
         g2.setFont(descFont);
         FontMetrics fmDesc = g2.getFontMetrics(descFont);

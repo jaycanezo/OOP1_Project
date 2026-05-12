@@ -34,8 +34,6 @@ public class IntroPanel extends JPanel {
     private Character currentHero;
 
     private Sprite background;
-    
-    // Active Effects list for full-screen drawing alignment
     private List<ActiveEffect> activeEffects = new ArrayList<>();
 
     public IntroPanel(GameWindow game) {
@@ -74,7 +72,7 @@ public class IntroPanel extends JPanel {
         textArea.setText("");
         buttonPanel.setVisible(false);
         continueBtn.setVisible(false);
-        continueBtn.setText("Next Hero ➔");
+        continueBtn.setText("Next Hero:");
         
         this.warrior = new Warrior(); 
         warrior.setLevel(12);
@@ -104,7 +102,6 @@ public class IntroPanel extends JPanel {
         if (currentState == State.TRIAL) {
             Character activeHero = getActiveHero();
 
-            // 1. Draw Hero
             if (activeHero != null && activeHero.getIdleSprite() != null) {
                 Sprite s = activeHero.getIdleSprite();
                 if (s.isLoaded()) {
@@ -112,7 +109,6 @@ public class IntroPanel extends JPanel {
                 }
             }
 
-            // 2. Draw Boss
             if (boss != null && boss.getIdleSprite() != null) {
                 Sprite s = boss.getIdleSprite();
                 if (s.isLoaded()) {
@@ -120,7 +116,6 @@ public class IntroPanel extends JPanel {
                 }
             }
 
-            // 3. Draw Unclipped Effects over the Boss
             for (ActiveEffect ae : activeEffects) {
                 if (ae.sprite != null && ae.sprite.isLoaded()) {
                     g.drawImage(ae.sprite.getCurrentFrame(), ae.x, ae.y, ae.w, ae.h, null);
@@ -168,12 +163,11 @@ public class IntroPanel extends JPanel {
         buttonPanel.add(new SkillButton("Ultimate", 3));
         bottomContainer.add(buttonPanel, BorderLayout.NORTH);
 
-        // Continue / Next Hero Button
         JPanel continuePanel = new JPanel(new BorderLayout());
         continuePanel.setOpaque(false);
         continuePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 70)); 
         
-        continueBtn = new JButton("Next Hero ➔") {
+        continueBtn = new JButton("Next Hero:") {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
@@ -195,7 +189,7 @@ public class IntroPanel extends JPanel {
         continueBtn.setBorderPainted(false);
         continueBtn.setFocusable(false);
         continueBtn.setPreferredSize(new Dimension(160, 40));
-        continueBtn.setVisible(false); // Only visible in TRIAL state
+        continueBtn.setVisible(false);
         continueBtn.addActionListener(e -> advanceHero());
         
         continuePanel.add(continueBtn, BorderLayout.SOUTH);
@@ -298,7 +292,6 @@ public class IntroPanel extends JPanel {
 
         String result = activeHero.useSkill(skillNum, boss);
         
-        // Simulates the passage of a turn, ticking down the cooldowns!
         activeHero.reduceCooldowns();
 
         refreshTrialButtons();

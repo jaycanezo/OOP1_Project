@@ -21,12 +21,11 @@ public class Quest2Panel extends JPanel {
     private Font normalFont;
     private Font smallFont;
 
-    // --- NEW: Scaled Player Dimensions ---
     private int playerX = 490;
     private int playerY = 480; 
-    private int playerWidth = 150;  // Increased size
-    private int playerHeight = 225; // Increased size
-    private int moveSpeed = 15;     // Increased speed to cross the wider screen
+    private int playerWidth = 150; 
+    private int playerHeight = 225;
+    private int moveSpeed = 15;    
     
     private boolean leftPressed = false;
     private boolean rightPressed = false;
@@ -84,7 +83,6 @@ public class Quest2Panel extends JPanel {
             this.playerSprite = player.getIdleSprite();
         }
         
-        // Start precisely in the middle of the dynamic screen
         playerX = Math.max(0, (getWidth() - playerWidth) / 2);
         
         timeLeft = 15;
@@ -156,7 +154,6 @@ public class Quest2Panel extends JPanel {
     }
 
     private void updatePlayer() {
-        // --- THE FIX: Anchor player dynamically to the bottom! ---
         playerY = getHeight() - 280; 
 
         if (leftPressed && playerX > 0) playerX -= moveSpeed;
@@ -164,7 +161,6 @@ public class Quest2Panel extends JPanel {
     }
 
     private void spawnAndMoveArrows() {
-        // --- NEW: Difficulty scales dynamically with screen size ---
         double heightScale = Math.max(1.0, getHeight() / 720.0);
         double widthScale = Math.max(1.0, getWidth() / 1080.0);
 
@@ -172,7 +168,6 @@ public class Quest2Panel extends JPanel {
         double speedMultiplier = (15 - timeLeft) * 0.8 * heightScale; 
         double currentArrowSpeed = baseSpeed + speedMultiplier;
 
-        // Multiply the spawn chance by the width scale so wide screens get more arrows!
         double spawnChance = (0.07 + ((15 - timeLeft) * 0.007)) * widthScale;
 
         if (Math.random() < spawnChance) {
@@ -191,7 +186,6 @@ public class Quest2Panel extends JPanel {
         Rectangle playerHitbox = new Rectangle(playerX + 30, playerY + 30, playerWidth - 60, playerHeight - 30);
         
         for (Arrow a : arrows) {
-            // Arrow Hitbox scaled up to match the new drawing size
             Rectangle arrowHitbox = new Rectangle(a.x, (int)a.y, 30, 80); 
             if (playerHitbox.intersects(arrowHitbox)) {
                 endQuest(false); 
@@ -331,7 +325,6 @@ public class Quest2Panel extends JPanel {
 
         if (!showingInstructions) {
             if (playerSprite != null && playerSprite.isLoaded()) {
-                // Drawing dimension increased from 200x200 to 300x300 for clarity
                 g2.drawImage(playerSprite.getCurrentFrame(), playerX - 75, playerY - 75, 300, 300, null);
             }
 
@@ -408,7 +401,6 @@ public class Quest2Panel extends JPanel {
     }
 
     private void drawCustomArrow(Graphics2D g2, int x, int y) {
-        // --- NEW: Arrow scale doubled in size ---
         Path2D.Double arrowShape = new Path2D.Double();
         arrowShape.moveTo(x + 15, y + 80); 
         arrowShape.lineTo(x + 30, y + 50);

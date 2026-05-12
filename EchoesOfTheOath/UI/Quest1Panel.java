@@ -46,25 +46,20 @@ public class Quest1Panel extends JPanel {
         gridPanel = new JPanel(new GridLayout(rows, cols, 5, 5));
         gridPanel.setOpaque(false);
         this.add(gridPanel);
-
-        // --- NEW: DYNAMIC CENTERING LISTENER ---
-        // Centers the grid and expands the top panel based on true screen size
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentResized(java.awt.event.ComponentEvent e) {
                 int screenW = getWidth();
                 int screenH = getHeight();
 
-                // Make the top text span the entire width of the screen
                 if (topPanel != null) {
                     topPanel.setBounds(0, 50, screenW, 60);
                 }
 
-                // Keep the grid a fixed size, but move it to the exact mathematical center
                 int gridW = 580;
                 int gridH = 520;
                 int gridX = (screenW - gridW) / 2;
-                int gridY = (screenH - gridH) / 2 + 30; // Push it down slightly below the text
+                int gridY = (screenH - gridH) / 2 + 30; 
 
                 if (gridPanel != null) {
                     gridPanel.setBounds(gridX, gridY, gridW, gridH);
@@ -76,7 +71,6 @@ public class Quest1Panel extends JPanel {
     private void setupTopPanel() {
         topPanel = new JPanel(new BorderLayout());
         topPanel.setOpaque(false);
-        // Bounds will be handled by the ComponentListener now!
 
         statusLabel = new JLabel("Disarm the Arcane Runes of the Trapdoor to proceed. Right-click to flag.", SwingConstants.CENTER);
         statusLabel.setFont(normalFont);

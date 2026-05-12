@@ -231,6 +231,9 @@ public class Quest4Panel extends JPanel {
     private void triggerDefeat() {
         gameTimer.stop();
         isPaused = true;
+
+        game.handleDeathCheckpoint();
+
         Timer delay = new Timer(500, e -> {
             BufferedImage capture = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
             this.paint(capture.getGraphics());

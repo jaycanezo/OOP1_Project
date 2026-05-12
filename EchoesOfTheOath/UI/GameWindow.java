@@ -47,7 +47,6 @@ public class GameWindow {
 
         window = new JFrame("Echoes of the Oath");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        // Force the window to be exactly that size immediately
         window.setSize(screenSize.width, screenSize.height);
 
         window.setResizable(false);
@@ -187,6 +186,17 @@ public class GameWindow {
             ending.startEnding();
         }else if (name.equals("credits")) {
             creditsPanel.startCredits();
+
+            if (this.chosenCharacter != null) {
+                try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("leaderboard.txt", true))) {
+                    writer.write(this.chosenCharacter.getName() + "," + 
+                                 this.chosenCharacter.getGold() + "," + 
+                                 this.chosenCharacter.getDeathCount() + "\n");
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             this.chosenCharacter = null; 
             
             java.io.File saveFile = new java.io.File("autosave.txt");
@@ -259,6 +269,7 @@ public class GameWindow {
             writer.write("Level:" + chosenCharacter.getLevel() + "\n");
             writer.write("Gold:" + chosenCharacter.getGold() + "\n");
             writer.write("HP:" + chosenCharacter.getHp() + "\n");
+            writer.write("DeathCount:" + chosenCharacter.getDeathCount() + "\n");
         
             StringBuilder invText = new StringBuilder();
             for (EchoesOfTheOath.Characters.Item item : chosenCharacter.getInventory()) {
@@ -269,6 +280,19 @@ public class GameWindow {
             System.out.println("Autosave successful!");
         } catch (IOException e) { 
             e.printStackTrace(); 
+        }
+    }
+
+    public void handleDeathCheckpoint() {
+        if (chosenCharacter != null) {
+            chosenCharacter.setDeathCount(chosenCharacter.getDeathCount() + 1);
+            chosenCharacter.setHp(chosenCharacter.getMaxHp()); 
+            
+            if (story.getLineIndex() > 0) {
+                story.setLineIndex(story.getLineIndex() - 1);
+            }
+            
+            autosave(); 
         }
     }
 
@@ -309,6 +333,7 @@ public class GameWindow {
                         chosenCharacter.setLevel(Integer.parseInt(saveParams.getOrDefault("Level", "1")));
                         chosenCharacter.setGold(Double.parseDouble(saveParams.getOrDefault("Gold", "0")));
                         chosenCharacter.setHp(Integer.parseInt(saveParams.getOrDefault("HP", "100")));
+                        chosenCharacter.setDeathCount(Integer.parseInt(saveParams.getOrDefault("DeathCount", "0")));
                         currentBossIndex = Integer.parseInt(saveParams.getOrDefault("BossIndex", "0"));
                         story.setLineIndex(Integer.parseInt(saveParams.getOrDefault("LineIndex", "0")));
                         chosenCharacter.setName(saveParams.getOrDefault("Name", "Hero"));

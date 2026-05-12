@@ -14,7 +14,6 @@ public class MenuRenderer {
     public static void drawInventory(Graphics2D g2, Character player, int slotCol, int slotRow, int scrollOffset) {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
-        // --- Dynamic Full Screen Bounds ---
         int screenW = g2.getClipBounds().width;
         int screenH = g2.getClipBounds().height;
 
@@ -24,11 +23,9 @@ public class MenuRenderer {
         int invW = 415;
         int padding = 15;
         
-        // Center horizontally
         int totalW = statW + padding + equipW + padding + invW;
         int statX = (screenW - totalW) / 2;
         
-        // --- THE FIX: Center vertically only within the space ABOVE the dialogue box ---
         int availableHeight = screenH - 220; 
         int y = (availableHeight - totalH) / 2; 
 
@@ -81,14 +78,12 @@ public class MenuRenderer {
     public static void drawShop(Graphics2D g2, int gold, ArrayList<Item> stock, int slotCol, int slotRow, String resultMsg) {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
-        // --- Dynamic Full Screen Bounds ---
         int screenW = g2.getClipBounds().width;
         int screenH = g2.getClipBounds().height;
         
         int totalW = 980;
         int totalH = 390; 
         
-        // --- THE FIX: Center vertically only within the space ABOVE the dialogue box ---
         int availableHeight = screenH - 220;
         int x = (screenW - totalW) / 2;
         int y = (availableHeight - totalH) / 2;
@@ -207,13 +202,10 @@ public class MenuRenderer {
     }
 
     public static void drawSubMenu(Graphics2D g2, int subMenuCursor) {
-        // --- Dynamic Full Screen Bounds ---
         int screenW = g2.getClipBounds().width;
         int screenH = g2.getClipBounds().height;
         
         int w = 130, h = 105; 
-        
-        // --- THE FIX: Center vertically only within the space ABOVE the dialogue box ---
         int availableHeight = screenH - 220;
         int x = (screenW - w) / 2;
         int y = (availableHeight - h) / 2;
@@ -242,7 +234,6 @@ public class MenuRenderer {
     public static void drawOptionsOverlay(Graphics2D g2, int cursorNum) {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         
-        // Options usually spans the whole screen, so we don't subtract the dialogue box here!
         int screenW = g2.getClipBounds().width;
         int screenH = g2.getClipBounds().height;
         
