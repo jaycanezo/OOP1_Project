@@ -13,7 +13,7 @@ abstract public class Character {
     private int level;
     private String classType;
     private int[] skillCooldowns = new int[3];;
-    private double gold = 1000; 
+    private double gold = 0; 
     private int[] skillBonuses = new int[3];
     private boolean[] isUsed = new boolean[3];
     public ArrayList<Item> inventory = new ArrayList<>();

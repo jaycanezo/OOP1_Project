@@ -28,21 +28,18 @@ public class Warrior extends Character {
 
         switch (skillNumber) {
             case 1:
-                bgm.playSFX("Slash.wav");
                 // Weaker: 100 to 150 damage
                 dmg = ((random.nextInt(150 - 100 + 1) + 100) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Basic Skill: Slash!\n").append("You swing your sword in a swift slash toward your enemy, dealing damage!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
-                bgm.playSFX("crimsonStrike.wav");
                 // Weaker: 200 to 300 damage
                 dmg = ((random.nextInt(300 - 200 + 1) + 200) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Advanced Skill: Crimson Strike!\n").append("You perform a heavy, sweeping strike, landing a fierce blow on your enemy!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
-                bgm.playSFX("bladeQuake.wav");
                 // Weaker: 400 to 600 damage
                 dmg = ((random.nextInt(600 - 400 + 1) + 400) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Ultimate: Blade Quake!\n").append("You unleash devastating strength in a massive ground-splitting attack on your enemy!");
@@ -86,5 +83,15 @@ public class Warrior extends Character {
             msg.append(i).append(". ").append(getSkillName(i)).append(" | Damage: ").append(getSkillDamageRange(i)).append(" | Cooldown: ").append(getSkillCooldown(i)).append("\n");
         }
         return msg.toString();
+    }
+
+    @Override
+    public Sprite[] getSkillSprite(int skillNumber) {
+        switch (skillNumber) {
+            case 1 -> bgm.playSFX("Slash.wav");
+            case 2 -> bgm.playSFX("crimsonStrike.wav");
+            case 3 -> bgm.playSFX("bladeQuake.wav");
+        }
+        return super.getSkillSprite(skillNumber);
     }
 }

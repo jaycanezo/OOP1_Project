@@ -29,21 +29,18 @@ public class Archivist extends Character {
 
         switch (skillNumber) {
             case 1:
-                bgm.playSFX("Archivist-The panoptic eye.wav");
                 dmg = (random.nextInt(80 - 50 + 1) + 50) * getLevel();
                 msg.append(getName()).append(" uses Basic Skill: The Panoptic Eye!\n")
                    .append("A pale, shimmering after-image of you appears, and suddenly you feel a sharp cut—not on you, but on your own future shadow!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
-                bgm.playSFX("Archivist-Temporary Relief.wav");
                 dmg = (random.nextInt(180 - 120 + 1) + 120) * getLevel();
                 msg.append(getName()).append(" uses Advanced Skill: Temporary Relief!\n")
                    .append("The Archivist strikes you with the crushing force of accumulated, unseen debts, leaving you reeling!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
-                bgm.playSFX("Archivist-The complete indictment.wav");
                 dmg = (random.nextInt(400 - 250 + 1) + 250) * getLevel();
                 msg.append(getName()).append(" Ultimate Skill: The Complete Indictment!\n")
                    .append("A storm of spectral scrolls engulfs you, tearing at your body as the Archivist claims you as his final possession!");
@@ -53,5 +50,15 @@ public class Archivist extends Character {
         enemy.takeDamage(dmg);
         reduceCooldowns();
         return msg.toString();
+    }
+
+    @Override
+    public Sprite[] getSkillSprite(int skillNumber) {
+        switch (skillNumber) {
+            case 1 -> bgm.playSFX("Archivist-The panoptic eye.wav");
+            case 2 -> bgm.playSFX("Archivist-Temporary Relief.wav");
+            case 3 -> bgm.playSFX("Archivist-The complete indictment.wav");
+        }
+        return super.getSkillSprite(skillNumber);
     }
 }

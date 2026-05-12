@@ -33,21 +33,18 @@ public class Mage extends Character {
         
         switch (skillNumber) {
             case 1:
-                bgm.playSFX("Mage_Fire_ball.wav");
                 dmg = ((random.nextInt(550 - 530 + 1) + 530 + 1000) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Basic Skill: Fireball!\n")
                    .append("You hurl a blazing fireball at your enemy, dealing damage!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
-                bgm.playSFX("Mage_Heatfire_Surge.wav");
                 dmg = ((random.nextInt(800 - 765 + 1) + 765 + 765) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Advanced Skill: Heatfire Surge!\n")
                    .append("You unleash a surge of intense flames, striking your enemy with great force!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
-                bgm.playSFX("Mage_Astral_Cataclysm.wav");
                 dmg = (1580 * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Ultimate: Astral Cataclysm!\n")
                    .append("You summon a massive fiery rock from the heavens, obliterating everything in the area around your enemy!");
@@ -93,5 +90,14 @@ public class Mage extends Character {
                .append(" | Cooldown: ").append(getSkillCooldown(i)).append("\n");
         }
         return msg.toString();
+    }
+    @Override
+    public Sprite[] getSkillSprite(int skillNumber) {
+        switch (skillNumber) {
+            case 1 -> bgm.playSFX("Mage_Fire_ball.wav");
+            case 2 -> bgm.playSFX("Mage_Heatfire_Surge.wav");
+            case 3 -> bgm.playSFX("Mage_Astral_Cataclysm.wav");
+        }
+        return super.getSkillSprite(skillNumber);
     }
 }

@@ -27,21 +27,18 @@ public class Archer extends Character {
 
         switch (skillNumber) {
             case 1:
-                bgm.playSFX("Archer_Piercingshot.wav");
                 // Weaker: 75 to 125 damage
                 dmg = ((random.nextInt(125 - 75 + 1) + 75) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Basic Skill: Piercing Shot!\n").append("You shoot a swift arrow at your foe!");
                 setSkillCooldown(1, getSkillMaxCooldown(skillNumber));
                 break;
             case 2:
-                bgm.playSFX("Archer_VolleyofNature.wav");
                 // Weaker: 150 to 250 damage
                 dmg = ((random.nextInt(250 - 150 + 1) + 150) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Advanced Skill: Volley of Nature!\n").append("You fire multiple arrows, raining them down on your enemy!");
                 setSkillCooldown(2, getSkillMaxCooldown(skillNumber));
                 break;
             case 3:
-                bgm.playSFX("Archer_Nature'swrath.wav");
                 // Weaker: 350 to 500 damage
                 dmg = ((random.nextInt(500 - 350 + 1) + 350) * getLevel()) + bonus;
                 msg.append(getName()).append(" uses Ultimate: Nature's Wrath!\n").append("You unleash four guiding arrows, striking your enemy with precision!");
@@ -85,5 +82,15 @@ public class Archer extends Character {
             msg.append(i).append(". ").append(getSkillName(i)).append(" | Damage: ").append(getSkillDamageRange(i)).append(" | Cooldown: ").append(getSkillCooldown(i)).append("\n");
         }
         return msg.toString();
+    }
+
+    @Override
+    public Sprite[] getSkillSprite(int skillNumber) {
+        switch (skillNumber) {
+            case 1 -> bgm.playSFX("Archer_Piercingshot.wav");
+            case 2 -> bgm.playSFX("Archer_VolleyofNature.wav");
+            case 3 -> bgm.playSFX("Archer_Nature'swrath.wav");
+        }
+        return super.getSkillSprite(skillNumber);
     }
 }
